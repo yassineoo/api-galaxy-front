@@ -7,7 +7,7 @@ export default function Navbar(): JSX.Element {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className=' bg-mainColor flex justify-between items-top p-2'>
+        <div className=' bg-mainColor flex justify-between items-top p-1 pl-6'>
             <nav className="flex items-top p-2 justify-start flex-wrap">
                 <div className="flex items-center flex-shrink-0 text-white mr-6">
                     {/* SVG Logo */}
@@ -29,7 +29,7 @@ export default function Navbar(): JSX.Element {
                     </div>
                 </div>
             </nav>
-            <div className="space-x-2 pt-2 flex justify-start items-baseline font-body pr-4">
+            <div className="space-x-2 pt-2 flex justify-start items-baseline font-body pr-4 text-xs sm:text-base">
                 <Link href="/login" className="px-3 py-2 rounded hover:bg-deepBlue">Login</Link>
                 <Link href="/signup" className="px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor">Sign Up</Link>
                 <div className="lg:hidden">
