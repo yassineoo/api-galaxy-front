@@ -23,7 +23,7 @@ const Card: FC<CardType> = ({ imagePath, cardTitle, cardDescription }) => {
             <h2 className="font-medium text-center">
                 {cardTitle}
             </h2>
-            <p className="font-light">
+            <p className="font-light text-base">
                 {cardDescription}
             </p>
         </div>

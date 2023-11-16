@@ -1,6 +1,7 @@
 import Hero from '../components/hero';
 import Navbar from '../components/navbar';
-import SellingCards from '../components/selling';
+import SellingCards from '../components/selling'
+import AboutUs from '../components/aboutUs';
 // VetrinePage.tsx
 
 export default function VetrinePage() {
@@ -12,6 +13,7 @@ export default function VetrinePage() {
                 {/* The rest of your page content */}
 
                 <SellingCards />
+                <AboutUs/>
             </div>
         </>
     )

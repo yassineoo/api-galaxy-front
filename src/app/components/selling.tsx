@@ -23,16 +23,26 @@ const sellingData = [
 export default function SellingCards(): JSX.Element {
     return (
         <>
-            <div className="bg-white p-6 flex flex-col gap-10 md:flex-row md:p-14 ">
-                {sellingData.map((card, index) => (
-                    <Card
-                        key={index}
-                        imagePath={"/assets/" + card.imagePath + ".svg"}
-                        cardTitle={card.cardTitle}
-                        cardDescription={card.cardDescription}
-                    />
-                ))}
+            <div className="bg-white p-6">
+                <h1 className="mt-4 mb-12 text-black text-center text-2xl md:text-3xl font-title font-semibold">
+                    Create & Sell&nbsp;
+                    <span className="text-goldColor">
+                        your
+                    </span>
+                    &nbsp;Api
+                </h1>
+                <div className="flex flex-col justify-center gap-10 md:flex-row md:p-2 md:pt-1">
+                    {sellingData.map((card, index) => (
+                        <Card
+                            key={index}
+                            imagePath={"/assets/" + card.imagePath + ".svg"}
+                            cardTitle={card.cardTitle}
+                            cardDescription={card.cardDescription}
+                        />
+                    ))}
+                </div>
             </div>
+
         </>
     );
 }
