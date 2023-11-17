@@ -13,6 +13,19 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      colors: {
+        transparent: 'transparent',
+        current: 'currentColor',
+        mainColor: '#007FFF',
+        goldColor: '#FFAA00',
+        skyBlue: '#0099FF',
+        blue: '#0055FF',
+        deepBlue: '#0060CC'
+      },
+      fontFamily: {
+        'title': ['"IBM Plex Sans"','-apple-system','BlinkMacSystemFont','"Segoe UI"','Roboto','"Helvetica Neue"','Arial','sans-serif','"Apple Color Emoji"','"Segoe UI Emoji"','"Segoe UI Symbol"' ],
+        'body': ['Roboto', 'sans-serif'],
+      },
     },
   },
   plugins: [],
