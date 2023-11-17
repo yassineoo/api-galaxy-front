@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FC } from "react";
 
 interface CardType {
-    imagePath: string, // Use lowercase 'string' for TypeScript types
+    imagePath: string, 
     cardTitle: string,
     cardDescription: string
 }
