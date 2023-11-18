@@ -31,7 +31,7 @@ export default function SellingCards(): JSX.Element {
                     </span>
                     &nbsp;Api
                 </h1>
-                <div className="flex flex-col justify-center gap-10 md:flex-row md:p-2 md:pt-1">
+                <div className="flex flex-col justify-center px-6 gap-10 md:flex-row md:p-2 md:pt-1">
                     {sellingData.map((card, index) => (
                         <Card
                             key={index}

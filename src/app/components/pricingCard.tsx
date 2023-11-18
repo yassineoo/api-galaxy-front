@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FC } from "react";
 
 interface PricingCardType {
@@ -26,9 +27,16 @@ const PricingCard: FC<PricingCardType> = ({ cardTitle, cardPrice, cardFeatures, 
                     <h2 className="font-semibold self-center" > The Benefits </h2>
                     <div className="flex flex-col gap-2 ">
                         {cardFeatures.map((feature, index) => (
-                            <p key={index} className="font-light text-base">
+                            <span key={index} className="flex items-baseline font-light text-base">
+                               <Image
+                                className="h-1 w-1 mr-2"
+                                src={"/assets/points.png"}
+                                alt="points"
+                                width={9}
+                                height={9}
+                                /> 
                                 {feature}
-                            </p>
+                            </span>
                         ))}
                     </div>
 

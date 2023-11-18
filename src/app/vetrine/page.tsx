@@ -3,7 +3,8 @@ import Navbar from '../components/navbar';
 import SellingCards from '../components/selling'
 import AboutUs from '../components/aboutUs';
 import Plans from '../components/plans';
-
+import Reviews from '../components/reviews';
+import Contacts from '../components/contacts';
 // VetrinePage.tsx
 
 export default function VetrinePage() {
@@ -16,7 +17,9 @@ export default function VetrinePage() {
 
                 <SellingCards />
                 <AboutUs/>
-                <Plans/>
+                <Plans/>    
+                <Reviews/>
+                <Contacts/>
             </div>
         </>
     )

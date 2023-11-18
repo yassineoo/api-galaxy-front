@@ -37,7 +37,7 @@ const plans = [
 export default function Plans(): JSX.Element {
     return (
         <>
-            <div className="bg-white text-black p-8 flex justify-center items-center flex-col md:flex-row gap-8 text-body ">
+            <div className="bg-white text-black py-8 md:p-8 flex justify-center items-center flex-col md:flex-row gap-8 text-body ">
                 {plans.map((plan, index) => (
                     <PricingCard
                         key={index}
