@@ -1,4 +1,4 @@
-import ReviewCard from "./reviewCard";
+import ReviewCard from "../General use/reviewCard";
 
 const reviewCards = [
     {
@@ -39,10 +39,9 @@ const reviewCards = [
     }
 ];
 
-export default function Reviews() {
+export default function Reviews(id:string) {
     return (
-        <>
-            <div className="bg-white text-black p-2">
+            <div id={id} className="bg-white text-black p-2">
                 <h1 className="text-title text-center text-3xl font-semibold text-mainColor"> Reviews </h1>
                 <div className="p-4 flex flex-col gap-6 md:flex-row md:flex-wrap md:justify-center ">
                     {reviewCards.map((reviewCard, index) => (
@@ -55,6 +54,5 @@ export default function Reviews() {
                     ))}
                 </div>
             </div>
-        </>
     );
 }

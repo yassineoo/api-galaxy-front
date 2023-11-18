@@ -1,6 +1,6 @@
-import Image from "next/image";
-import Link from "next/link";
-import Card from "./card";
+import Card from "../General use/card";
+import IdpropType from "./idProp"
+
 
 const sellingData = [
     {
@@ -20,10 +20,9 @@ const sellingData = [
     }
 ]
 
-export default function SellingCards(): JSX.Element {
+export default function SellingCards(id:IdpropType): JSX.Element {
     return (
-        <>
-            <div className="bg-white p-6">
+            <div id={id.id} className="bg-white p-6">
                 <h1 className="mt-4 mb-12 text-black text-center text-2xl md:text-3xl font-title font-semibold">
                     Create & Sell&nbsp;
                     <span className="text-goldColor">
@@ -43,6 +42,5 @@ export default function SellingCards(): JSX.Element {
                 </div>
             </div>
 
-        </>
     );
 }

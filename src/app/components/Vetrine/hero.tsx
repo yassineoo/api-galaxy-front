@@ -1,10 +1,12 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "next/link"
+import IdpropType from "./idProp"
+;
 
 
-export default function Hero(): JSX.Element {
+export default function Hero(id:IdpropType): JSX.Element {
     return (
-        <div className="bg-white text-black flex justify-between">
+        <div id={id.id} className="bg-white text-black flex justify-between">
             <div className="p-10">
                 <h1 className="font-title font-semibold text-4xl sm:text-5xl ">
                     <p className="text-mainColor" >Discover ,</p>

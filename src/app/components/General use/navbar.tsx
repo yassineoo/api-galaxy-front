@@ -3,7 +3,32 @@ import { useState, FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function Navbar(): JSX.Element {
+
+interface Links {
+    services: string,
+    about: string,
+    pricing: string,
+    contacts: string
+}
+
+const smoothScroll = (id: string): void => {
+    console.log(id);
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+        });
+    }
+};
+
+const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string): void => {
+    e.preventDefault();
+    smoothScroll(id);
+};
+
+
+const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -22,10 +47,10 @@ export default function Navbar(): JSX.Element {
                 </div>
                 <div className={`${isOpen ? 'block' : 'hidden'} w-full block flex-grow lg:flex lg:items-center lg:w-auto lg:flex-grow-0`}>
                     <div className="text-sm lg:flex-grow text-white ml-4">
-                        <Link href="/services" className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white">Services</Link>
-                        <Link href="/about" className="block mt-4 lg:inline-block lg:mt-0 mr-4  hover:text-white">About</Link>
-                        <Link href="/pricing" className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white">Pricing</Link>
-                        <Link href="/contacts" className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white">Contacts</Link>
+                        <a href={`#${services}`} onClick={(e) => handleClick(e, services)} className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white">Services</a>
+                        <a href={`#${about}`} onClick={(e) => handleClick(e, about)} className="block mt-4 lg:inline-block lg:mt-0 mr-4  hover:text-white">About</a>
+                        <a href={`#${pricing}`} onClick={(e) => handleClick(e, pricing)} className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white">Pricing</a>
+                        <a href={`#${contacts}`} onClick={(e) => handleClick(e, contacts)} className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white">Contacts</a>
                     </div>
                 </div>
             </nav>
@@ -47,3 +72,5 @@ export default function Navbar(): JSX.Element {
         </div>
     );
 }
+
+export default Navbar;

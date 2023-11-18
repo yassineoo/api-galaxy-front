@@ -1,4 +1,6 @@
-import PricingCard from "./pricingCard";
+import PricingCard from "../General use/pricingCard";
+import IdpropType from "./idProp"
+
 
 const plans = [
     {
@@ -34,10 +36,9 @@ const plans = [
     },
 ]
 
-export default function Plans(): JSX.Element {
+export default function Plans(id:IdpropType): JSX.Element {
     return (
-        <>
-            <div className="bg-white text-black py-8 md:p-8 flex justify-center items-center flex-col md:flex-row gap-8 text-body ">
+            <div id={id.id} className="bg-white text-black py-8 md:p-8 flex justify-center items-center flex-col md:flex-row gap-8 text-body ">
                 {plans.map((plan, index) => (
                     <PricingCard
                         key={index}
@@ -49,6 +50,5 @@ export default function Plans(): JSX.Element {
                 ))}
 
             </div>
-        </>
     );
 }

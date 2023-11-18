@@ -1,10 +1,12 @@
 import Image from "next/image";
+import IdpropType from "./idProp"
 
 
-export default function Contacts() {
+
+export default function Contacts(id:IdpropType) {
     return (
         <>
-            <div className="bg-mainColor p-6 text-3xl text-center font-semibold font-title">
+            <div id={id.id} className="bg-mainColor p-6 text-3xl text-center font-semibold font-title">
                 <h1>Contacts</h1>
 
                 <div className="p-4 flex justify-between md:justify-around items-center" >
