@@ -1,4 +1,5 @@
 import Image from "next/image"
+import IdpropType from "./idProp"
 
 
 const whyChooseUs = [
@@ -20,10 +21,11 @@ const whyChooseUs = [
     }
 ]
 
-export default function AboutUs(): JSX.Element {
+
+export default function AboutUs(id:IdpropType ): JSX.Element {
     return (
         <>
-            <div className="bg-mainColor p-4 px-6 text-white flex flex-col items-center">
+            <div id={id.id} className="bg-mainColor p-4 px-6 text-white flex flex-col items-center">
                 <div>
                     <h1 className="mb-6 text-3xl text-center font-semibold font-title">
                         About Us

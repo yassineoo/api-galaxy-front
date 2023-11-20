@@ -1,19 +1,27 @@
-import Hero from '../components/hero';
-import Navbar from '../components/navbar';
-import SellingCards from '../components/selling'
-import AboutUs from '../components/aboutUs';
+import Hero from '../components/Vetrine/hero';
+import Navbar from '../components/General use/navbar';
+import SellingCards from '../components/Vetrine/selling'
+import AboutUs from '../components/Vetrine/aboutUs';
+import Plans from '../components/Vetrine/plans';
+import Reviews from '../components/Vetrine/reviews';
+import Contacts from '../components/Vetrine/contacts';
 // VetrinePage.tsx
 
 export default function VetrinePage() {
     return (
         <>
             <div>
-                <Navbar />
-                <Hero />
-                {/* The rest of your page content */}
-
-                <SellingCards />
-                <AboutUs/>
+                <Navbar
+                    services='2'
+                    about='3'
+                    pricing='4'
+                    contacts='6' />
+                <Hero id="1" />
+                <SellingCards id="2" />
+                <AboutUs id="3" />
+                <Plans id="4" />
+                <Reviews id="5" />
+                <Contacts id="6" />
             </div>
         </>
     )

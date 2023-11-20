@@ -1,9 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
 import { FC } from "react";
 
 interface CardType {
-    imagePath: string, // Use lowercase 'string' for TypeScript types
+    imagePath: string, 
     cardTitle: string,
     cardDescription: string
 }
@@ -30,4 +29,4 @@ const Card: FC<CardType> = ({ imagePath, cardTitle, cardDescription }) => {
     );
 }
 
-export default Card; // Move export to the bottom for clarity
+export default Card; 
