@@ -4,11 +4,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React from "react";
 import { Label } from "recharts";
 import { DemoPaymentMethod } from "./paymentForm";
-import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const BillingForm = () => {
-  const [page, setPage] = React.useState("paymentMethode");
-
   return (
     <div className="flex  w-full flex-col  items-center -z-20 justify-start  h-screen min-h-screen bg-gray-100">
       <div className=" w-full ml-4 mt-4">
@@ -29,56 +26,21 @@ const BillingForm = () => {
             className="h-full object-cover z-10  absolute"
             src="icons/billing-bg.svg"
           />
-          {page === "paymentMethode" ? (
-            <MethodeForm setPage={setPage} />
-          ) : (
-            <>
-              <div className="relative left-[40%] w-[60%] h-full">
-                <DemoPaymentMethod />
-              </div>
-              <img
-                className=" w-48 top-[30%] left-[18%] absolute z-10"
-                src="icons/Mastercard.svg"
-              />
-              <button
-                onClick={() => setPage("paymentMethode")}
-                className="absolute z-40 flex gap-2 top-4 left-4 py-2 px-4 text-white cursor-pointer"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                >
-                  <path
-                    fill="white"
-                    d="M2.117 12l7.527 6.235-.644.765-9-7.521 9-7.479.645.764-7.529 6.236h21.884v1h-21.883z"
-                  />
-                </svg>
-                Previous Page
-              </button>
-            </>
-          )}
         </div>
       </div>
     </div>
   );
 };
 
-const MethodeForm = ({ setPage }: any) => {
-  const switchPage = (setPage: any) => {
-    setPage("card");
-  };
+const MethodeForm = () => {
   return (
     <>
-      <form className="absolute left-[40%] ">
-        <fieldset className="mb-4 ">
-          <CardHeader>
-            <CardTitle>Choose a payment Methode</CardTitle>
-            <CardDescription>support debits card and paypal</CardDescription>
-          </CardHeader>
-          <RadioGroup defaultValue="option-one" className="ml-8 mt-8">
+      <form className="absolute left-1/2 ">
+        <fieldset className="mb-4 mt-4">
+          <legend className="text-lg font-semibold mb-24">
+            Choose payment method
+          </legend>
+          <RadioGroup defaultValue="option-one">
             <div className="flex flex-col pr-56  items-start space-x-2 px-2 py-3 border border-black  ">
               <div className="flex items-center space-x-2  ">
                 <RadioGroupItem value="option-one" id="option-one" />
@@ -116,14 +78,7 @@ const MethodeForm = ({ setPage }: any) => {
         </svg>
         Previous Page
       </button>
-      <Button
-        onClick={() => {
-          switchPage(setPage);
-        }}
-        className="absolute -bottom-4 right-[20%] w-1/3"
-      >
-        Next
-      </Button>
+      <Button className="absolute -bottom-4 right-[20%] w-1/3">Next</Button>
     </>
   );
 };
