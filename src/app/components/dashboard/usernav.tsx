@@ -17,7 +17,7 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="./images/login_bg_gateway.jpg" alt="@shadcn" />
+            <AvatarImage src="/images/login_bg_gateway.jpg" alt="@shadcn" />
             <AvatarFallback>avatar</AvatarFallback>
           </Avatar>
         </Button>

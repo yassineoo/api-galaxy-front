@@ -40,38 +40,38 @@ const Menu = ({ isMenuOpen }: any) => {
   const menuItems = [
     {
       name: "Dashboard",
-      icon: "icons/icon_dashboard.svg",
+      icon: "/icons/icon_dashboard.svg",
       active: true,
     },
     {
       name: "Inbox",
-      icon: "icons/icon_inbox.svg",
+      icon: "/icons/icon_inbox.svg",
       active: false,
     },
     {
       name: "Add new API",
-      icon: "icons/icon_business_time_solid.svg",
+      icon: "/icons/icon_business_time_solid.svg",
       active: false,
     },
     {
       name: "Billing",
-      icon: "icons/icon_billing.svg",
+      icon: "/icons/icon_billing.svg",
       active: false,
       children: [
         {
           name: "Billing Information",
           active: true,
-          icon: "icons/credit-card.svg",
+          icon: "/icons/credit-card.svg",
         },
         {
           name: "transaction history",
           active: false,
-          icon: "icons/transaction-history.svg",
+          icon: "/icons/transaction-history.svg",
         },
         {
           name: "Subscription",
           active: false,
-          icon: "icons/subscription.svg",
+          icon: "/icons/subscription.svg",
         },
       ],
     },
@@ -125,17 +125,17 @@ const MenuLink = ({ item, active, onClick, isApi, isMenuOpen }: any) => {
       {
         name: "Analyse",
         active: true,
-        icon: "icons/analytics.svg",
+        icon: "/icons/analytics.svg",
       },
       {
         name: "configuration",
         active: false,
-        icon: "icons/config.svg",
+        icon: "/icons/config.svg",
       },
       {
         name: "Authorization",
         active: false,
-        icon: "icons/auth.svg",
+        icon: "/icons/auth.svg",
       },
     ];
   }
@@ -156,7 +156,7 @@ const MenuLink = ({ item, active, onClick, isApi, isMenuOpen }: any) => {
 
         {isMenuOpen && <div> {item.name} </div>}
         {item.children && isMenuOpen && (
-          <img className="ml-1 w-5" src="icons/arrow.svg" />
+          <img className="ml-1 w-5" src="/icons/arrow.svg" />
         )}
       </div>
 

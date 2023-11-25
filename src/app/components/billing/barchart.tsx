@@ -53,7 +53,7 @@ const data = [
   },
 ];
 
-export function Overview() {
+export function Barchart() {
   return (
     <ResponsiveContainer className="mt-6" width="50%" height={350}>
       <BarChart data={data}>

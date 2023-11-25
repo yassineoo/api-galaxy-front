@@ -59,18 +59,18 @@ export default function LoginPage() {
     {
       name: "Google",
       color: "bg-blue-500 text-white",
-      logo: "icons/google.svg",
+      logo: "/icons/google.svg",
     },
     {
       name: "GitHub",
       color: "bg-gray-900 text-white",
-      logo: "icons/github.svg",
+      logo: "/icons/github.svg",
     },
 
     {
       name: "Facebook",
       color: "bg-white border border-bla",
-      logo: "icons/fb.svg",
+      logo: "/icons/fb.svg",
     },
   ];
 
@@ -79,7 +79,7 @@ export default function LoginPage() {
       <div className="hidden lg:block  lg:w-1/2">
         <img
           className="object-fill w-full h-full"
-          src="images/login_bg_gateway.jpg"
+          src="/images/login_bg_gateway.jpg"
           alt="Background image"
         />
       </div>

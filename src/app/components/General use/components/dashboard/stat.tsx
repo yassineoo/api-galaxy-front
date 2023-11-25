@@ -32,7 +32,7 @@ const StatisticsBoxes = () => {
         <StatisticBox
           title="totalprofit"
           value="2000000"
-          icon="icons/icon_billing.svg"
+          icon="/icons/icon_billing.svg"
           percentage="23.36%"
           arrowType="decrease"
         />
@@ -40,7 +40,7 @@ const StatisticsBoxes = () => {
         <StatisticBox
           title="newServiceProviders"
           value="20000"
-          icon="icons/icon_billing.svg"
+          icon="/icons/icon_billing.svg"
           percentage="23.36%"
           arrowType="decrease"
         />
@@ -48,7 +48,7 @@ const StatisticsBoxes = () => {
         <StatisticBox
           title="newclients"
           value="20000"
-          icon="icons/icon_billing.svg"
+          icon="/icons/icon_billing.svg"
           percentage="23.36%"
           arrowType="decrease"
         />

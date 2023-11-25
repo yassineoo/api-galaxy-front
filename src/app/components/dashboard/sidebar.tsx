@@ -1,6 +1,6 @@
 // Sidebar.js
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Sidebar() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
@@ -8,6 +8,23 @@ export default function Sidebar() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const checkScreenSize = () => {
+    if (window.innerWidth <= 888) {
+      // Assuming 768px is your 'medium' breakpoint
+      setIsMenuOpen(false);
+    } else {
+      setIsMenuOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
 
   return (
     <div
@@ -24,10 +41,10 @@ export default function Sidebar() {
 const Logo = ({ toggleMenu, isMenuOpen }: any) => {
   return (
     <div className={`flex items-center w-full  justify-between  mt-4 px-4 `}>
-      {isMenuOpen && <img className="w-16" src="./logos/logo.svg" />}
+      {isMenuOpen && <img className="w-16" src="/logos/logo.svg" />}
       <img
         className="cursor-pointer w-8"
-        src="./icons/buger.svg"
+        src="/icons/buger.svg"
         onClick={toggleMenu}
       />
     </div>
@@ -40,38 +57,38 @@ const Menu = ({ isMenuOpen }: any) => {
   const menuItems = [
     {
       name: "Dashboard",
-      icon: "icons/icon_dashboard.svg",
+      icon: "/icons/icon_dashboard.svg",
       active: true,
     },
     {
       name: "Inbox",
-      icon: "icons/icon_inbox.svg",
+      icon: "/icons/icon_inbox.svg",
       active: false,
     },
     {
       name: "Add new API",
-      icon: "icons/icon_business_time_solid.svg",
+      icon: "/icons/icon_business_time_solid.svg",
       active: false,
     },
     {
       name: "Billing",
-      icon: "icons/icon_billing.svg",
+      icon: "/icons/icon_billing.svg",
       active: false,
       children: [
         {
           name: "Billing Information",
           active: true,
-          icon: "icons/credit-card.svg",
+          icon: "/icons/credit-card.svg",
         },
         {
           name: "transaction history",
           active: false,
-          icon: "icons/transaction-history.svg",
+          icon: "/icons/transaction-history.svg",
         },
         {
           name: "Subscription",
           active: false,
-          icon: "icons/subscription.svg",
+          icon: "/icons/subscription.svg",
         },
       ],
     },
@@ -120,22 +137,22 @@ const Menu = ({ isMenuOpen }: any) => {
 const MenuLink = ({ item, active, onClick, isApi, isMenuOpen }: any) => {
   const isActive = active;
   if (isApi) {
-    item.icon = "./logos/logo.svg";
+    item.icon = "/icons/api_icon.svg";
     item.children = [
       {
         name: "Analyse",
         active: true,
-        icon: "icons/analytics.svg",
+        icon: "/icons/analytics.svg",
       },
       {
         name: "configuration",
         active: false,
-        icon: "icons/config.svg",
+        icon: "/icons/config.svg",
       },
       {
         name: "Authorization",
         active: false,
-        icon: "icons/auth.svg",
+        icon: "/icons/auth.svg",
       },
     ];
   }
@@ -156,7 +173,7 @@ const MenuLink = ({ item, active, onClick, isApi, isMenuOpen }: any) => {
 
         {isMenuOpen && <div> {item.name} </div>}
         {item.children && isMenuOpen && (
-          <img className="ml-1 w-5" src="icons/arrow.svg" />
+          <img className="ml-1 w-5" src="/icons/arrow.svg" />
         )}
       </div>
 
