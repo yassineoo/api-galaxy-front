@@ -1,6 +1,13 @@
 "use client";
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const data = [
   {
@@ -52,7 +59,6 @@ const data = [
     total: Math.floor(Math.random() * 5000) + 1000,
   },
 ];
-
 export function Barchart() {
   return (
     <ResponsiveContainer className="mt-6" width="50%" height={350}>
@@ -69,10 +75,24 @@ export function Barchart() {
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tickFormatter={(value: any) => `$${value}`}
+          tickFormatter={(value) => `$${value}`}
         />
-        <Bar dataKey="total" fill="#adfa1d" radius={[4, 4, 0, 0]} />
+        <Tooltip cursor={{ fill: "transparent" }} content={<CustomTooltip />} />
+        <Bar dataKey="total" fill="#FFA500" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );
 }
+
+// Custom Tooltip Component
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white p-3 border border-gray-200 rounded shadow-lg">
+        <p className="label">{`${label} : $${payload[0].value}`}</p>
+      </div>
+    );
+  }
+
+  return null;
+};

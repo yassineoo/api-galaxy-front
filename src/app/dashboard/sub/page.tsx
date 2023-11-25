@@ -3,8 +3,6 @@
 import Header from "../../components/dashboard/header";
 import Sidebar from "../../components/dashboard/sidebar";
 import StatisticsBoxes from "../../components/dashboard/mainPage/stat";
-import { Overview } from "../../components/billing/barchart";
-import { Search } from "../../components/shared/search";
 import LineChartComponent from "../../components/dashboard/linechart";
 import DonutChartComponent from "../../components/dashboard/mainPage/donutchart";
 import FilterGroup from "../../components/dashboard/mainPage/filterGroup";

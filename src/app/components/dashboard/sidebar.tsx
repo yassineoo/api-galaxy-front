@@ -1,5 +1,6 @@
 // Sidebar.js
 "use client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Sidebar() {
@@ -157,10 +158,15 @@ const MenuLink = ({ item, active, onClick, isApi, isMenuOpen }: any) => {
     ];
   }
   const [activeChild, setActiveChild] = useState("Billing Information");
-
+  const url = item.children
+    ? `/${item.name.toLowerCase().replace(/ /g, "-")}/${item.children[0].name
+        .toLowerCase()
+        .replace(/ /g, "-")}`
+    : `/${item.name.toLowerCase().replace(/ /g, "-")}`;
   return (
     <div className="  flex flex-col items-start justify-start   w-4/5">
-      <div
+      <Link
+        href={url}
         className={`w-full flex items-center gap-2 py-3 cursor-pointer  ${
           isActive ? "bg-orangePure rounded-r-3xl " : ""
         }`}
@@ -175,7 +181,7 @@ const MenuLink = ({ item, active, onClick, isApi, isMenuOpen }: any) => {
         {item.children && isMenuOpen && (
           <img className="ml-1 w-5" src="/icons/arrow.svg" />
         )}
-      </div>
+      </Link>
 
       {isActive && item.children && (
         <div
@@ -183,26 +189,34 @@ const MenuLink = ({ item, active, onClick, isApi, isMenuOpen }: any) => {
             isMenuOpen ? " ml-8 " : " ml-2"
           } mr-4 mt-2 flex flex-col justify-start items-start w-full gap-2`}
         >
-          {item.children.map((child: any) => (
-            <div
-              onClick={() => setActiveChild(child.name)}
-              className={`flex items-center gap-2 text-sm text-gray-400 ml-7 cursor-pointer  ${
-                activeChild === child.name ? "text-white " : ""
-              } ${isMenuOpen ? " ml-7 " : " ml-0"}`}
-            >
-              {child.icon && (
-                <img
-                  className={`w-5 text-white p-2"  ${
-                    activeChild === child.name
-                      ? "bg-orangePure  w-7 border-4 border-orangePure rounded-xl "
-                      : ""
-                  } `}
-                  src={child.icon}
-                />
-              )}
-              {isMenuOpen && <div> {child.name} </div>}
-            </div>
-          ))}
+          {item.children.map((child: any) => {
+            const subUrl = `/${item.name
+              .toLowerCase()
+              .replace(/ /g, "-")}/${child.name
+              .toLowerCase()
+              .replace(/ /g, "-")}`;
+            return (
+              <Link
+                href={subUrl}
+                onClick={() => setActiveChild(child.name)}
+                className={`flex items-center gap-2 text-sm text-gray-400 ml-7 cursor-pointer  ${
+                  activeChild === child.name ? "text-white " : ""
+                } ${isMenuOpen ? " ml-7 " : " ml-0"}`}
+              >
+                {child.icon && (
+                  <img
+                    className={`w-5 text-white p-2"  ${
+                      activeChild === child.name
+                        ? "bg-orangePure  w-7 border-4 border-orangePure rounded-xl "
+                        : ""
+                    } `}
+                    src={child.icon}
+                  />
+                )}
+                {isMenuOpen && <div> {child.name} </div>}
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
