@@ -65,13 +65,13 @@ export function Barchart() {
       <BarChart data={data}>
         <XAxis
           dataKey="name"
-          stroke="#888888"
+          stroke="#007FFF"
           fontSize={12}
           tickLine={false}
           axisLine={false}
         />
         <YAxis
-          stroke="#888888"
+          stroke="#007FFF"
           fontSize={12}
           tickLine={false}
           axisLine={false}
@@ -88,7 +88,7 @@ export function Barchart() {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white p-3 border border-gray-200 rounded shadow-lg">
+      <div className="bg-white dark:bg-blue-900  p-3 border  border-gray-200 rounded shadow-lg">
         <p className="label">{`${label} : $${payload[0].value}`}</p>
       </div>
     );

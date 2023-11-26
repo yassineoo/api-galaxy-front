@@ -11,7 +11,7 @@ const COLORS = ["#FFBB28", "#FF8042"];
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white p-2">
+      <div className="bg-white dark:bg-blue-900 p-2">
         <p className="label">{`${payload[0].name} : $${payload[0].value}`}</p>
       </div>
     );
@@ -22,12 +22,14 @@ const CustomTooltip = ({ active, payload }: any) => {
 
 const RightCircle = () => {
   return (
-    <PieChart width={400} className="p-8 bg-white" height={300}>
+    <PieChart
+      width={400}
+      className="m-auto    bg-white dark:bg-blue-950 flex items-center justify-center w-1/2"
+      height={300}
+    >
       <Pie
+        className="ml-32"
         data={data}
-        cx={100}
-        cy={100}
-        innerRadius={50}
         outerRadius={80}
         fill="#8884d8"
         paddingAngle={5}
