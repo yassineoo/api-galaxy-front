@@ -5,6 +5,7 @@ import AboutUs from '../components/Vetrine/aboutUs';
 import Plans from '../components/Vetrine/plans';
 import Reviews from '../components/Vetrine/reviews';
 import Contacts from '../components/Vetrine/contacts';
+import Footer from '../components/Vetrine/footer';
 // VetrinePage.tsx
 
 export default function VetrinePage() {
@@ -22,6 +23,7 @@ export default function VetrinePage() {
                 <Plans id="4" />
                 <Reviews id="5" />
                 <Contacts id="6" />
+                <Footer/>
             </div>
         </>
     )

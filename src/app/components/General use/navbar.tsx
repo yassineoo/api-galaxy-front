@@ -60,7 +60,7 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
                 <div className="lg:hidden">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className=" px-3 py-2 hover:text-white hover:border-white"
+                        className=" px-3 py-2 hover:text-white hover:border-white relative top-1"
                     >
                         <svg className="fill-current h-5 w-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <title>Menu</title>

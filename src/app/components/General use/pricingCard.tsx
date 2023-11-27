@@ -41,7 +41,7 @@ const PricingCard: FC<PricingCardType> = ({ cardTitle, cardPrice, cardFeatures, 
                     </div>
 
 
-                    <h2 className="font-semibold self-center" > Features </h2>
+                    <h2 className="font-semibold self-center font-title" > Features </h2>
                     <div className="flex flex-col gap-2">
                         {cardBenefits.map((benefit, index) => (
                             <p key={index} className="font-light text-base">
