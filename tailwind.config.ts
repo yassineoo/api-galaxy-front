@@ -57,6 +57,7 @@ module.exports = {
         deepBlue: "#0060CC",
         orangePure: "#FB5B01",
         dashboardBg: "#F2F2F2",
+        sidebar: "#0b1227",
       },
       borderRadius: {
         lg: "var(--radius)",

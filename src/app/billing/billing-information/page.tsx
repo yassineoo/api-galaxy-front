@@ -7,7 +7,7 @@ import Sidebar from "@/app/components/dashboard/sidebar";
 
 export default function DashboardPage() {
   return (
-    <div className="bg-dashboardBg flex ">
+    <div className="bg-dashboardBg dark:bg-transparent flex ">
       <Sidebar />
 
       <div className="w-full">

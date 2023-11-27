@@ -10,7 +10,7 @@ const BillingForm = () => {
   const [page, setPage] = React.useState("paymentMethode");
 
   return (
-    <div className="flex  w-full flex-col  items-center -z-20 justify-start  h-screen min-h-screen bg-gray-100">
+    <div className="flex  w-full flex-col  items-center -z-20 justify-start  h-screen min-h-screen bg-gray-100 dark:bg-transparent">
       <div className=" w-full ml-4 mt-4">
         <h1 className="text-xl font-bold">Billing Information</h1>
       </div>
@@ -28,7 +28,7 @@ const BillingForm = () => {
           src="/icons/circle.svg"
         />
 
-        <div className="bg-white w-full h-full relative z-0 flex justify-center items-center md:block">
+        <div className="bg-green  dark:bg-transparent w-full h-full relative z-0 flex justify-center items-center md:block">
           <img
             className={`hidden  ${
               page == "paymentMethode" ? "md:flex" : "lg:flex"
@@ -88,7 +88,7 @@ const MethodeForm = ({ setPage }: any) => {
             <CardDescription>support debits card and paypal</CardDescription>
           </CardHeader>
           <RadioGroup defaultValue="option-one" className="my-4 mt-4 ">
-            <div className="flex flex-col   items-start space-x-2 px-2 py-1 lg:py-3 border border-black  ">
+            <div className="flex flex-col   items-start space-x-2 px-2 py-1 lg:py-3 border border-black  bg-white text-black ">
               <div className="flex items-center space-x-2  ">
                 <RadioGroupItem value="option-one" id="option-one" />
                 <label htmlFor="option-one">Cards</label>
@@ -98,7 +98,7 @@ const MethodeForm = ({ setPage }: any) => {
                 <img className="w-7 lg:w-10" src="/images/mastercard.png" />
               </div>
             </div>
-            <div className="flex flex-col  items-start space-x-2 px-2 py-1 lg:py-3 border border-black  ">
+            <div className="flex flex-col  items-start space-x-2 px-2 py-1 lg:py-3 border border-black  bg-white text-black ">
               <div className="flex items-center space-x-2  ">
                 <RadioGroupItem value="option-one" id="option-one" />
                 <label htmlFor="option-one">Paypal</label>

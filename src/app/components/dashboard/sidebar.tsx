@@ -29,7 +29,7 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`bg-black text-white dark:bg-blue-900 dark:text-white sticky top-0 ${
+      className={`bg-black text-white dark:bg-sidebar dark:text-white sticky top-0 ${
         isMenuOpen ? " w-1/4 " : " w-16 lg:w-[6%]  "
       } h-screen`}
     >
