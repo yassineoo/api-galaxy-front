@@ -1,9 +1,11 @@
-'use client'
-import { useState, FC } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+"use client";
+import { useState, FC } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
-
+export default function Navbar(): JSX.Element {
+  const [isOpen, setIsOpen] = useState(false);
+  
 interface Links {
     services: string,
     about: string,
@@ -68,9 +70,35 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
                         </svg>
                     </button>
                 </div>
-            </div>
-        </div>
-    );
-}
 
-export default Navbar;
+        </div>
+      </nav>
+      <div className="space-x-2 pt-2 flex justify-start items-baseline font-body pr-4 text-xs sm:text-base">
+        <Link href="/login" className="px-3 py-2 rounded hover:bg-deepBlue">
+          Login
+        </Link>
+        <Link
+          href="/signup"
+          className="px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
+        >
+          Sign Up
+        </Link>
+        <div className="lg:hidden">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className=" px-3 py-2 hover:text-white hover:border-white"
+          >
+            <svg
+              className="fill-current h-5 w-4"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>Menu</title>
+              <path d="M0 3h20v2H0zM0 9h20v2H0zM0 15h20v2H0z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
