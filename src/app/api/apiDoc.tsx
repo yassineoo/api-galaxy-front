@@ -1,3 +1,4 @@
+"use client";
 import generateGraph from "@/lib/graphGenerator";
 import React, { useCallback } from "react";
 import ReactFlow, {
@@ -8,10 +9,6 @@ import ReactFlow, {
 } from "reactflow";
 import { Position } from "reactflow";
 import "reactflow/dist/style.css";
-
-const nodeStyle = {
-  padding: 4,
-};
 
 // Example endpoints array
 const endpoints = [
@@ -26,10 +23,7 @@ const endpoints = [
 
 const CustomNode = ({ data }: any) => {
   return (
-    <div
-      style={nodeStyle}
-      className="bg-gray-300 text-black py-4 px-8 rounded-md"
-    >
+    <div className="bg-orange-500   text-black py-2 px-4 rounded-md">
       <Handle
         type="target"
         position={Position.Left}
@@ -45,7 +39,7 @@ const CustomNode = ({ data }: any) => {
   );
 };
 
-export default function App() {
+export default function ApiDocsGraph() {
   const { nodes: initialNodes, edges: initialEdges } = generateGraph(endpoints);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -56,15 +50,10 @@ export default function App() {
   );
 
   return (
-    <div className="h-4/5 bg-black w-2/3 ">
+    <div className=" h-[400px]  w-4/5 ">
       <ReactFlow
-        nodes={nodes.map((node) => ({
-          ...node,
-          style: nodeStyle,
-        }))}
+        nodes={nodes}
         edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
       />

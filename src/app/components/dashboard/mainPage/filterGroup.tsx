@@ -7,16 +7,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const FilterButton = ({ name }: any) => {
+const defaultItems = ["item1", "item2", "item3", "item4", "item5"];
+
+export const FilterButton = ({ name, items = defaultItems }: any) => {
   return (
     <Select>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder={name} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="light">Light</SelectItem>
-        <SelectItem value="dark">Dark</SelectItem>
-        <SelectItem value="system">System</SelectItem>
+        {items.map((item: any) => (
+          <SelectItem value={item}>{item}</SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );
@@ -25,8 +27,8 @@ const FilterButton = ({ name }: any) => {
 const FilterGroup = () => {
   return (
     <div className="flex my-4   items-center justify-between w-4/5 m-auto text-black ">
-      <FilterButton name="Days" />
-      <FilterButton name="Earnings" />
+      <FilterButton name="Days" items={["Days", "Months", "Years"]} />
+      <FilterButton name="Earnings" items={["Eernings", "Requests"]} />
       <FilterButton name="last 7days" />
       <Button>Apply</Button>
     </div>

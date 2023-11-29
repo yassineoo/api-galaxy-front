@@ -6,19 +6,14 @@ export default function generateGraph(endpoints: any[]) {
     {
       id: "root",
       type: "input",
-      position: { x: 0, y: 100 },
+      position: { x: 20, y: 100 },
       data: { label: "/ (Root)" },
-      style: {
-        background: "#9CA8B3",
-        color: "white",
-        padding: 10,
-      },
     },
   ];
 
   const edges: any = [];
   const groupPositions: any = {}; // To track the Y position of each group
-  let currentGroupY = 0; // Initial Y position for the first group
+  let currentGroupY = 10; // Initial Y position for the first group
 
   // Create group nodes and edges from root to group
   const groups = Array.from(new Set(endpoints.map((ep) => ep.groupName)));
@@ -32,11 +27,6 @@ export default function generateGraph(endpoints: any[]) {
 
       position: { x: 200, y: currentGroupY },
       data: { label: group.toString() },
-      style: {
-        background: "#6E85B2",
-        color: "white",
-        padding: 10,
-      },
     });
 
     edges.push({
@@ -46,6 +36,9 @@ export default function generateGraph(endpoints: any[]) {
       animated: true,
       targetPosition: Position.Left,
       sourcePosition: Position.Left,
+      style: {
+        stroke: "#FF0077",
+      },
     });
 
     currentGroupY += 150; // Increment Y position for the next group
@@ -59,11 +52,6 @@ export default function generateGraph(endpoints: any[]) {
       type: "custom",
       position: { x: 400, y: groupPositions[endpoint.groupName] },
       data: { label: endpoint.pathUrl },
-      style: {
-        background: "#486581",
-        color: "white",
-        padding: 10,
-      },
     });
 
     edges.push({
@@ -73,6 +61,10 @@ export default function generateGraph(endpoints: any[]) {
       targetPosition: Position.Left,
       sourcePosition: Position.Left,
       animated: true,
+
+      style: {
+        stroke: "#FF0077",
+      },
     });
 
     // Move the next endpoint in this group down
