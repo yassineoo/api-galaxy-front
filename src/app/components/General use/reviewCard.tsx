@@ -15,7 +15,7 @@ interface ReviewCardType {
 const ReviewCard: FC<ReviewCardType> = ({ review, reviewer, rating }) => {
     return (
         <>
-            <div className="bg-white text-black p-6 flex flex-col shadow-md rounded-md gap-4 lg:w-1/2 xl:w-1/3">
+            <div className="bg-white text-black p-6 flex flex-col justify-around shadow-md rounded-md gap-4 md:w-5/12 xl:w-1/3">
                 <div className="flex justify-between">
                     <Image
                         src="/assets/double_quotations-1.svg"
@@ -27,7 +27,7 @@ const ReviewCard: FC<ReviewCardType> = ({ review, reviewer, rating }) => {
                     <StarsForDisplay ratingValue={rating} />
                 </div>
 
-                <p className="text-body font-light">
+                <p className="font-body font-light">
                     {review}
                 </p>
 

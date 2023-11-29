@@ -60,7 +60,7 @@ export default function AboutUs(id:IdpropType ): JSX.Element {
                                     <h2 className="mb-2 font-title font-medium text-lg">
                                         {item.title}
                                     </h2>
-                                    <p className="font-body font-thin text-base">
+                                    <p className="font-body font-light text-base">
                                         {item.description}
                                     </p>
                                 </div>

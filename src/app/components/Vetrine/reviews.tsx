@@ -1,4 +1,6 @@
 import ReviewCard from "../General use/reviewCard";
+import IdpropType from "./idProp"
+
 
 const reviewCards = [
     {
@@ -39,11 +41,11 @@ const reviewCards = [
     }
 ];
 
-export default function Reviews(id:string) {
+export default function Reviews(id:IdpropType) {
     return (
-            <div id={id} className="bg-white text-black p-2">
+            <div id={id.id} className="bg-white text-black p-4">
                 <h1 className="text-title text-center text-3xl font-semibold text-mainColor"> Reviews </h1>
-                <div className="p-4 flex flex-col gap-6 md:flex-row md:flex-wrap md:justify-center ">
+                <div className="p-2 flex flex-col gap-6 md:flex-row md:flex-wrap md:justify-center ">
                     {reviewCards.map((reviewCard, index) => (
                         <ReviewCard
                             key={index}
