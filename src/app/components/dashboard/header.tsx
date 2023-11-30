@@ -22,7 +22,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white w-full  dark:bg-mainColor  p-4 flex justify-between 2xl:justify-around items-center">
+    <header className="bg-white w-full  dark:bg-slate-900  p-4 flex justify-between 2xl:justify-around items-center">
       {/* Left side: Dashboard */}
       <div>
         <span className="text-lg font-bold">Dashboard</span>

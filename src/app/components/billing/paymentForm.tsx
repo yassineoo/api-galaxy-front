@@ -80,7 +80,7 @@ export function DemoPaymentMethod() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full lg:absolute lg:-bottom-5 lg:right-8 ">
+        <Button className="w-full lg:absolute lg:-bottom-[100px] lg:right-8 ">
           save
         </Button>
       </CardFooter>

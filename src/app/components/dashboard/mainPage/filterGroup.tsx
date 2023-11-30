@@ -9,9 +9,19 @@ import {
 
 const defaultItems = ["item1", "item2", "item3", "item4", "item5"];
 
-export const FilterButton = ({ name, items = defaultItems }: any) => {
+export const FilterButton = ({
+  name,
+  items = defaultItems,
+  handleSelectionChange = (value: any) =>
+    console.log("default on change", value),
+}: any) => {
   return (
-    <Select>
+    <Select
+      onValueChange={(value) => {
+        console.log("hello ", value);
+        handleSelectionChange(value);
+      }}
+    >
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder={name} />
       </SelectTrigger>

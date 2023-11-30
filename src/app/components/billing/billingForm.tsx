@@ -28,7 +28,7 @@ const BillingForm = () => {
           src="/icons/circle.svg"
         />
 
-        <div className="bg-green  dark:bg-transparent w-full h-full relative z-0 flex justify-center items-center md:block">
+        <div className="bg-white  dark:bg-transparent w-full h-full relative z-0 flex justify-center items-center md:block">
           <img
             className={`hidden  ${
               page == "paymentMethode" ? "md:flex" : "lg:flex"
@@ -119,40 +119,6 @@ const MethodeForm = ({ setPage }: any) => {
       >
         Next
       </Button>
-    </>
-  );
-};
-
-const CardForm = () => {
-  return (
-    <>
-      <form className="absolute left-1/2 ">
-        <fieldset className="mb-4 mt-4">
-          <legend className="text-lg font-semibold mb-24">
-            Your payment details
-          </legend>
-        </fieldset>
-      </form>
-      <img
-        className=" w-64 top-[30%] left-[20%] absolute z-10"
-        src="/icons/Mastercard.svg"
-      />
-      <button className="absolute z-40 flex gap-2 top-4 left-4 py-2 px-4 text-white cursor-pointer">
-        <svg
-          width="24"
-          height="24"
-          xmlns="http://www.w3.org/2000/svg"
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-        >
-          <path
-            fill="white"
-            d="M2.117 12l7.527 6.235-.644.765-9-7.521 9-7.479.645.764-7.529 6.236h21.884v1h-21.883z"
-          />
-        </svg>
-        Previous Page
-      </button>
-      <Button className="absolute -bottom-4 right-[20%] w-1/3">Save</Button>
     </>
   );
 };
