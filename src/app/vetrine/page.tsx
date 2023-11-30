@@ -1,5 +1,5 @@
 import Hero from '../components/Vetrine/hero';
-import Navbar from '../components/General use/navbar';
+import Navbar from '../components/VetrineXs/navbar';
 import SellingCards from '../components/Vetrine/selling'
 import AboutUs from '../components/Vetrine/aboutUs';
 import Plans from '../components/Vetrine/plans';

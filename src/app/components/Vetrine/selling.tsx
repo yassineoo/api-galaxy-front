@@ -1,4 +1,4 @@
-import Card from "../General use/card";
+import Card from "../VetrineXs/card";
 import IdpropType from "./idProp"
 
 

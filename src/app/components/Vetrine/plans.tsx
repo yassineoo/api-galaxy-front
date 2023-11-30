@@ -1,4 +1,4 @@
-import PricingCard from "../General use/pricingCard";
+import PricingCard from "../VetrineXs/pricingCard";
 import IdpropType from "./idProp"
 
 

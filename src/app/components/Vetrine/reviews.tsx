@@ -1,4 +1,4 @@
-import ReviewCard from "../General use/reviewCard";
+import ReviewCard from "../VetrineXs/reviewCard";
 import IdpropType from "./idProp"
 
 
