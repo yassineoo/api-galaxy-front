@@ -5,10 +5,10 @@ import Image from 'next/image';
 
 
 interface Links {
-    apiHub?: string,
-    docs?: string,
-    ListApi?: string,
-    myApis?: string
+    apiHub: string,
+    docs: string,
+    ListApi: string,
+    myApis: string
 }
 
 
@@ -44,16 +44,16 @@ const Navbar: FC<Links> = ({ apiHub, docs, ListApi, myApis }) => {
 
                 <div className={`${isOpen ? 'block' : 'hidden'} w-full block flex-grow lg:flex lg:items-center lg:w-auto lg:flex-grow-0`}>
                     <div className="text-sm lg:flex-grow text-black ml-4">
-                        <Link href={""} className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"> API Hub </Link>
-                        <Link href={""} className="block mt-4 lg:inline-block lg:mt-0 mr-4  hover:text-white">Docs</Link>
-                        <Link href={""} className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white">List your API</Link>
-                        <Link href={""} className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white">My API's</Link>
+                        <Link href={apiHub || ""} className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-mainColor"> API Hub </Link>
+                        <Link href={docs || ""} className="block mt-4 lg:inline-block lg:mt-0 mr-4  hover:text-mainColor">Docs</Link>
+                        <Link href={ListApi || ""} className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-mainColor">List your API</Link>
+                        <Link href={myApis || ""} className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-mainColor">My API's</Link>
                     </div>
                 </div>
             </nav>
             <div className="space-x-2 flex justify-start items-center font-body pr-4 text-xs sm:text-base">
                 <Link href="/login" className="px-3 py-2 rounded md:rounded-lg md:px-6 bg-mainColor hover:bg-deepBlue">Login</Link>
-                <Link href="/signup" className="px-3 py-2 rounded md:rounded-lg md:px-6 border text-black bg-goldColor hover:bg-white hover:text-goldColor hover:border-goldColor">Sign Up</Link>
+                <Link href="/signup" className="px-3 py-2 rounded md:rounded-lg md:px-6 border text-white bg-goldColor hover:bg-white hover:text-goldColor hover:border-goldColor">Sign Up</Link>
                 <div className="lg:hidden relative bottom-1">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
