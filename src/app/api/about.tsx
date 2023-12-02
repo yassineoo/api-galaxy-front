@@ -1,7 +1,6 @@
 import React, { use, useEffect, useState } from "react";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import ReactQuillRender from "./libRender";
+import dynamic from "next/dynamic";
 
 const defaultText = `<div>
 <h1>Google Translation API Documentation</h1>
@@ -62,7 +61,7 @@ const About = () => {
 
   return (
     <div>
-      <ReactQuill
+      <QuillNoSSRWrapper
         modules={modules}
         theme="snow"
         value={defaultText}
@@ -73,5 +72,10 @@ const About = () => {
   );
   // return <ReactQuill theme="snow" value={text} onChange={setText} />;
 };
+
+const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 export default About;

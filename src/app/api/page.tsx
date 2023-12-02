@@ -10,7 +10,7 @@ import { ApiTabs } from "./apiBody";
 
 const DashboardPage = () => {
   return (
-    <div className="bg-white ">
+    <div className=" ">
       <Head>
         <title>Dashboard</title>
       </Head>

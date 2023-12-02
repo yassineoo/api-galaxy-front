@@ -1,7 +1,7 @@
 // components/ServiceCard.js
 const ApiHeader = () => {
   return (
-    <div className="w_full flex items-center justify-between  p-2 rounded-lg shadow-md">
+    <div className="w_full flex items-center justify-between  bg-white p-2 shadow-md">
       <div className="flex items-center ml-8 gap-2">
         <img
           src="/images/Google_Translate_logo 1.png" // Replace with your logo path

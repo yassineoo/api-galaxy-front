@@ -16,6 +16,7 @@ import { useState } from "react";
 import About from "./about";
 import Footer from "../components/Vetrine/footer";
 import Plans from "../components/Vetrine/plans";
+import CommentsContainer from "../test/page";
 const codeString = `
 const axios = require('axios');
 
@@ -125,8 +126,10 @@ export function ApiTabs() {
       </TabsContent>
       <TabsContent
         value="discussion"
-        className="w-full  bg-orange-400 flex justify-center items-start"
-      ></TabsContent>
+        className="  flex justify-center items-start"
+      >
+        <CommentsContainer />
+      </TabsContent>
       <TabsContent
         value="pricing"
         className="w-full  bg-purple-400 flex justify-center items-start "
@@ -199,9 +202,9 @@ const ParamterControler = () => {
   };
 
   return (
-    <div className="flex flex-col w-1/2 mt-[55px] pt-2 border border-t text-white h-[569px]">
-      <div className="w-full py-1 px-2 flex justify-between items-center">
-        <h2 className="text-lg text-black font-semibold">Put :/ModifyUser</h2>
+    <div className="flex flex-col w-1/2 mt-[56px]  border border-t  h-[568px]">
+      <div className="w-full py-1  px-2 flex justify-between items-center bg-gray-100 dark:bg-slate-900 dark:text-white">
+        <h2 className="text-lg  font-semibold">Put :/ModifyUser</h2>
         <div className="flex gap-2">
           <Button className="" onClick={handleReset}>
             Reset
@@ -237,9 +240,9 @@ const ParamterControler = () => {
       <Accordion
         type="single"
         collapsible
-        className="overflow-scroll w-full py-4 bg-[#14073D] h-full"
+        className="overflow-scroll w-full py-4 bg-[#14073D] h-full text-white"
       >
-        <p className=" p-4 w-full">
+        <p className=" p-4 w-full text-white">
           This endpoint is used to translate text from one language to another
           using the post method
         </p>
