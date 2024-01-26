@@ -17,9 +17,9 @@ const Navbar: FC<Links> = ({ apiHub, docs, ListApi, myApis }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className=' bg-white flex justify-between align-baseline py-2 px-6'>
-            <nav className="flex items-top p-2 justify-start flex-wrap">
-                <div className="flex items-center flex-shrink-0 pl-6 text-black mr-6">
+        <div className=' bg-white flex flex-row justify-between align-top py-2 px-4'>
+            <nav className="flex items-center md:p-2 justify-start flex-wrap">
+                <div className="flex items-center flex-shrink-0 p-1 text-black md:mr-4">
                     {/* SVG Logo */}
                     <Image
                         src="/logos/logo-white-bg.svg"
@@ -31,7 +31,7 @@ const Navbar: FC<Links> = ({ apiHub, docs, ListApi, myApis }) => {
                 </div>
 
                 <div className='relative'>
-                    <input className="border  rounded-md p-2 pl-10 md:w-80 text-sm md:text-base" type="text" placeholder="Search" />
+                    <input className="border  rounded-md p-2 pl-10 w-10/12 md:w-80 text-sm md:text-base" type="text" placeholder="Search" />
                     <Image
                         className='absolute left-3 top-1/2 transform -translate-y-1/2 '
                         src="/assets/magnifying-glass.png"
@@ -51,13 +51,13 @@ const Navbar: FC<Links> = ({ apiHub, docs, ListApi, myApis }) => {
                     </div>
                 </div>
             </nav>
-            <div className="space-x-2 flex justify-start items-center font-body pr-4 text-xs sm:text-base">
-                <Link href="/login" className="px-3 py-2 rounded md:rounded-lg md:px-6 bg-mainColor hover:bg-deepBlue">Login</Link>
-                <Link href="/signup" className="px-3 py-2 rounded md:rounded-lg md:px-6 border text-white bg-goldColor hover:bg-white hover:text-goldColor hover:border-goldColor">Sign Up</Link>
+            <div className="space-x-2 flex flex-row justify-start items-center line font-body  text-xs sm:text-base">
+                <Link href="/login" className=" px-2 py-2 inline-block rounded text-center md:rounded-lg md:px-6 bg-mainColor hover:bg-deepBlue">Login</Link>
+                <Link href="/signup" className="px-2 py-2 inline-block rounded text-center w-16 md:w-auto md:rounded-lg md:px-6 border text-white bg-goldColor hover:bg-white hover:text-goldColor hover:border-goldColor">Sign Up</Link>
                 <div className="lg:hidden relative bottom-1">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className=" px-3 py-2 hover:text-white hover:border-white relative top-1"
+                        className=" px-2 py-2 hover:text-white hover:border-white relative top-1"
                     >
                         <svg className="fill-black h-5 w-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <title>Menu</title>

@@ -20,7 +20,8 @@ const config: Config = {
         goldColor: '#FFAA00',
         skyBlue: '#0099FF',
         blue: '#0055FF',
-        deepBlue: '#0060CC'
+        deepBlue: '#0060CC',
+        usedGrey: '#f4f2f2'
       },
       fontFamily: {
         'title': ['"IBM Plex Sans"','-apple-system','BlinkMacSystemFont','"Segoe UI"','Roboto','"Helvetica Neue"','Arial','sans-serif','"Apple Color Emoji"','"Segoe UI Emoji"','"Segoe UI Symbol"' ],
