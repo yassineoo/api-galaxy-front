@@ -14,8 +14,8 @@ import { Input } from "@/components/ui/input";
 import Result from "./result";
 import { useState } from "react";
 import About from "./about";
-import Footer from "../components/Vetrine/footer";
-import Plans from "../components/Vetrine/plans";
+import Footer from "../../components/Vetrine/footer";
+import Plans from "../../components/Vetrine/plans";
 import CommentsContainer from "../test/page";
 const codeString = `
 const axios = require('axios');

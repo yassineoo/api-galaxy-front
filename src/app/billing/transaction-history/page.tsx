@@ -1,10 +1,10 @@
 // DashboardPage.js
 "use client";
 
-import Header from "@/app/components/dashboard/header";
-import Sidebar from "@/app/components/dashboard/sidebar";
+import Header from "@/components/dashboard/header";
+import Sidebar from "@/components/dashboard/sidebar";
 
-import HistoryBody from "@/app/components/billing/historyBody";
+import HistoryBody from "@//components/billing/historyBody";
 
 export default function DashboardPage() {
   return (

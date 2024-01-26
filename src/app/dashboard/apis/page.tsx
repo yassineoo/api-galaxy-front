@@ -2,10 +2,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Header from "../../components/dashboard/header";
-import Sidebar from "../../components/dashboard/sidebar";
-import { columns } from "@/app/components/dashboard/apiTable/apiColumns";
-import { DataTable } from "@/app/components/dashboard/apiTable/data-table";
+import Header from "../../../components/dashboard/header";
+import Sidebar from "../../../components/dashboard/sidebar";
+import { columns } from "@/components/dashboard/apiTable/apiColumns";
+import { DataTable } from "@/components/dashboard/apiTable/data-table";
 
 export default function DashboardPage() {
   const [apis, setApis] = useState([]);

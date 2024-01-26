@@ -1,19 +1,22 @@
-// DashboardPage.js
 "use client";
 
-import BillingForm from "@/components/billing/billingForm";
-import Header from "@/components/dashboard/header";
 import Sidebar from "@/components/dashboard/sidebar";
 
-export default function DashboardPage() {
+import AddNewApiForm from "@/components/addNewApi/generalCard";
+import Header from "@/components/dashboard/header";
+
+const AddApiPage = () => {
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex ">
       <Sidebar />
 
       <div className="w-full">
         <Header />
-        <BillingForm />
+
+        <AddNewApiForm />
       </div>
     </div>
   );
-}
+};
+
+export default AddApiPage;
