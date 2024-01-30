@@ -2,8 +2,9 @@
 
 import Sidebar from "@/components/dashboard/sidebar";
 
-import AddNewApiForm from "@/components/addNewApi/generalCard";
+import AddNewApiForm from "@/components/addNewApi/addApiPopUp";
 import Header from "@/components/dashboard/header";
+import { ApiConfigTabs } from "@/components/addNewApi/apiConfig";
 
 const AddApiPage = () => {
   return (
@@ -12,8 +13,7 @@ const AddApiPage = () => {
 
       <div className="w-full">
         <Header />
-
-        <AddNewApiForm />
+        <ApiConfigTabs />
       </div>
     </div>
   );

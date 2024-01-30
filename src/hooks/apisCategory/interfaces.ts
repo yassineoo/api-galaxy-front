@@ -1,23 +1,13 @@
 // interfaces.ts
 
-export interface ApiCreation {
+export interface ApiCategoryCreation {
   Name: string;
-  ProviderID: number;
-  ApiUrl: string;
-  CategoryID: number;
-  ImagePath: string;
-  Keywords: string;
   Description: string;
 }
 
-export interface Api {
+export interface Category {
   id: string;
   Name: string;
-  ProviderID: number;
-  ApiUrl: string;
-  CategoryID: number;
-  ImagePath: string;
-  Keywords: string;
   Description: string;
   // Add other properties as needed
 }

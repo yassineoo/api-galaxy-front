@@ -9,7 +9,7 @@ import {
 
 const defaultItems = ["item1", "item2", "item3", "item4", "item5"];
 
-export const FilterButton = ({
+export const SelectButton = ({
   name,
   items = defaultItems,
   handleSelectionChange = (value: any) =>
@@ -18,7 +18,6 @@ export const FilterButton = ({
   return (
     <Select
       onValueChange={(value) => {
-        console.log("hello ", value);
         handleSelectionChange(value);
       }}
     >
@@ -37,9 +36,9 @@ export const FilterButton = ({
 const FilterGroup = () => {
   return (
     <div className="flex my-4   items-center justify-between w-4/5 m-auto text-black ">
-      <FilterButton name="Days" items={["Days", "Months", "Years"]} />
-      <FilterButton name="Earnings" items={["Eernings", "Requests"]} />
-      <FilterButton name="last 7days" />
+      <SelectButton name="Days" items={["Days", "Months", "Years"]} />
+      <SelectButton name="Earnings" items={["Eernings", "Requests"]} />
+      <SelectButton name="last 7days" />
       <Button>Apply</Button>
     </div>
   );

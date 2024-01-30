@@ -10,8 +10,9 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Input } from "../ui/input";
+import { useCreateApi } from "@/hooks/apis/api.Mutation";
 
-export default function AddNewApiForm() {
+export default function AddNewApiForm({ closeModal }: any) {
   // Define states for input fields
   const [name, setName] = useState("");
   const [apiUrl, setApiUrl] = useState("");
@@ -22,28 +23,12 @@ export default function AddNewApiForm() {
   // Create a ref for file input
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Handle input field changes
-  const handleNameChange = (event: any) => {
-    setName(event.target.value);
-  };
-
-  const handleApiUrlChange = (event: any) => {
-    setApiUrl(event.target.value);
-  };
+  const { mutate: createApi, isError, isPending, error } = useCreateApi();
 
   const handleImageChange = (event: any) => {
     const file = event.target.files[0];
     setImage(file ? URL.createObjectURL(file) : ""); // Use a fake URL for testing
   };
-
-  const handleKeywordsChange = (event: any) => {
-    setKeywords(event.target.value);
-  };
-
-  const handleDescriptionChange = (event: any) => {
-    setDescription(event.target.value);
-  };
-
   // Handle form submission
   const handleSubmit = async () => {
     try {
@@ -57,15 +42,9 @@ export default function AddNewApiForm() {
         Description: description,
       };
 
-      await fetch("http://localhost:5000/apis", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Adjust content type if needed
-          // Other headers as needed
-        },
-        body: JSON.stringify(Data),
-        credentials: "include", // Include this if dealing with credentials
-      });
+      await createApi(Data);
+
+      closeModal();
 
       console.log("API entity created successfully!");
     } catch (error) {
@@ -79,7 +58,7 @@ export default function AddNewApiForm() {
   };
 
   return (
-    <Card className="w-1/2">
+    <Card className="w-full">
       <CardHeader className="space-y-1">
         <div className="flex items-center justify-start gap-4">
           <img src="/icons/add-api.svg" alt="" className="w-4 h-4 ml-2 " />
@@ -100,7 +79,7 @@ export default function AddNewApiForm() {
               type="text"
               placeholder="Google Translator"
               value={name}
-              onChange={handleNameChange}
+              onChange={(event) => setName(event.target.value)}
             />
           </div>
           <div className="flex justify-start gap-2">
@@ -112,7 +91,7 @@ export default function AddNewApiForm() {
               type="text"
               placeholder="https://api.example.com"
               value={apiUrl}
-              onChange={handleApiUrlChange}
+              onChange={(event) => setApiUrl(event.target.value)}
             />
           </div>
           <div className="flex justify-start gap-2">
@@ -153,7 +132,7 @@ export default function AddNewApiForm() {
               type="text"
               placeholder="Keyword1, Keyword2, Keyword3"
               value={keywords}
-              onChange={handleKeywordsChange}
+              onChange={(event) => setKeywords(event.target.value)}
             />
           </div>
           <div className="flex justify-start gap-2">
@@ -165,18 +144,52 @@ export default function AddNewApiForm() {
               type="text"
               placeholder="Description about the API"
               value={description}
-              onChange={handleDescriptionChange}
+              onChange={(event) => setDescription(event.target.value)}
             />
           </div>
         </div>
       </CardContent>
       <CardFooter className="w-full gap-4 m-auto  flex items-center justify-center">
-        <Button className="w-1/3" onClick={handleSubmit}>
+        <Button className="w-1/3" onClick={closeModal}>
           Cancel
         </Button>
-        <Button className="w-1/3" onClick={() => {}}>
-          Create Api
+        <Button
+          className={`w-5/12  ${
+            isPending ? "bg-gray-500" : "bg-blue-500 hover:bg-blue-700"
+          } ${isPending ? "cursor-not-allowed" : "cursor-pointer"}`}
+          onClick={handleSubmit}
+          disabled={isPending}
+        >
+          {isPending ? (
+            <span className="flex items-center">
+              Creating...
+              <svg
+                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 016 12H2c0 3.042 1.135 5.824 3 7.938l1-1.647zM18 12a6.91 6.91 0 00-3-5.659V7h-1V4h4v4h-1v2h1a8 8 0 005-2.647l-1 1.646zM18 14h1v2h-4v-4h1V7h-1v-.344A8 8 0 0020 12h-2z"
+                ></path>
+              </svg>
+            </span>
+          ) : (
+            "Create Api"
+          )}
         </Button>
+        {/* Display an error message if there is an error */}
+        {isError && <p className="text-red-500">{error.message}</p>}
       </CardFooter>
     </Card>
   );
