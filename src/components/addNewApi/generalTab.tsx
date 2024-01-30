@@ -13,10 +13,12 @@ import { Input } from "../ui/input";
 import { useCreateApi, useUpdateApi } from "@/hooks/apis/api.Mutation";
 import ProductCard from "./productCard";
 import { SelectButton } from "../dashboard/mainPage/filterGroup";
+import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
 
 export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields
   const [name, setName] = useState(api.name);
+  const [categoryId, setCategoryId] = useState(3);
   const [apiUrl, setApiUrl] = useState(api.apiUrl);
   const [image, setImage] = useState(api.image); // Change to empty string
   const [keywords, setKeywords] = useState(api.keywords);
@@ -24,6 +26,7 @@ export default function GenralApiInfoTab({ api }: any) {
 
   // Create a ref for file input
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const apiCategoryListQuery = useApiCategoryList();
 
   const { mutate: updateApi, isError, isPending, error } = useUpdateApi();
 
@@ -84,14 +87,20 @@ export default function GenralApiInfoTab({ api }: any) {
               />
             </div>
             <div className="flex justify-start gap-2">
-              <label htmlFor="Name" style={{ width: "25%" }}>
-                Api Category
-              </label>
-              <SelectButton
-                name="Api Category"
-                items={["Transportation", "Health", "Finance"]}
-                selectedOption={"Transportation"}
-              />
+              {apiCategoryListQuery.isSuccess && (
+                <>
+                  <label htmlFor="Name" style={{ width: "25%" }}>
+                    Api Category
+                  </label>
+                  <SelectButton
+                    name="Api Category"
+                    items={apiCategoryListQuery.data.data}
+                    defaultValue={"Transportation"}
+                    selectedOption={"Transportation"}
+                    handleSelectionChange={setCategoryId}
+                  />
+                </>
+              )}
             </div>
 
             <div className="flex justify-start gap-2">

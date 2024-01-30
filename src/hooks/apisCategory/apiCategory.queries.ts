@@ -1,23 +1,24 @@
 // apiQueries.ts
 
+import { ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const useApiList = () => {
+export const useApiCategoryList = () => {
   return useQuery({
-    queryKey: ["apiList"],
+    queryKey: ["apiCategoryList"],
     queryFn: async () => {
-      const response = await axios.get("/apis"); // Adjust the endpoint
+      const response = await axios.get(`${ApiUrl}/categories`); // Adjust the endpoint
       return response.data;
     },
   });
 };
 
-export const useApiById = (apiId: string) => {
+export const useApiCategoryById = (apiId: string) => {
   return useQuery({
-    queryKey: ["api", apiId],
+    queryKey: ["apiCategory", apiId],
     queryFn: async () => {
-      const response = await axios.get(`/apis/${apiId}`); // Adjust the endpoint
+      const response = await axios.get(`${ApiUrl}/${apiId}`); // Adjust the endpoint
       return response.data;
     },
   });

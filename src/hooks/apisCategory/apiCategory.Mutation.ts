@@ -2,49 +2,53 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { Api, ApiCreation } from "./interfaces";
+import { ApiCategory, ApiCategoryCreation } from "./interfaces";
 import { ApiUrl } from "@/utils/constants";
 
-export const useCreateApi = () => {
+export const useCreateApiCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (apiData: ApiCreation) => {
-      const response = await axios.post(`${ApiUrl}/apis`, apiData); // Adjust the endpoint
+    mutationFn: async (data: ApiCategory) => {
+      const response = await axios.post(`${ApiUrl}/categories`, data); // Adjust the endpoint
       return response.data;
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["apiList"] });
+      queryClient.invalidateQueries({ queryKey: ["apiCategoryList"] });
     },
   });
 };
 
-export const useUpdateApi = () => {
+export const useUpdateApiCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (apiData: Api) => {
-      const response = await axios.put(`${ApiUrl}/apis/${apiData.id}`, apiData); // Adjust the endpoint
+    mutationFn: async (apiData: ApiCategory) => {
+      const response = await axios.put(
+        `${ApiUrl}/categories/${apiData.id}`,
+        apiData
+      ); // Adjust the endpoint
+      console.log(response.data);
       return response.data;
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["apiList"] });
+      queryClient.invalidateQueries({ queryKey: ["apiCategoryList"] });
     },
   });
 };
 
-export const useDeleteApi = () => {
+export const useDeleteApiCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (apiId: string) => {
-      await axios.delete(`/apis/${apiId}`); // Adjust the endpoint
+    mutationFn: async (id: string) => {
+      await axios.delete(`/categories/${id}`); // Adjust the endpoint
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["apiList"] });
+      queryClient.invalidateQueries({ queryKey: ["apiCategoryList"] });
     },
   });
 };
