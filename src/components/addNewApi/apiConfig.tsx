@@ -1,14 +1,14 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AddNewApiForm from "./addApiPopUp";
-import PopupForm from "./modal";
-import GenralApiInfoTab from "./generalTab";
-import ProductCard from "./productCard";
-import DefinitionTab from "./definitionTab";
+import AddNewApiForm from "./genralTab/addApiPopUp";
+import PopupForm from "./genralTab/modal";
+import GenralApiInfoTab from "./genralTab/generalTab";
+import ProductCard from "./genralTab/productCard";
+import DefinitionTab from "./defnintionTab/definitionTab";
 
 export function ApiConfigTabs() {
   const api = {
-    id: 1,
+    id: 3,
     name: "transportation api",
     apiUrl: "https://api.transportation.com",
     image: "https://images.pexels.com/photos/414860/pexels-photo-414860.jpeg",
@@ -37,7 +37,7 @@ export function ApiConfigTabs() {
         value="Definitions"
         className="w-full  flex flex-col justify-center items-start px-8 "
       >
-        <DefinitionTab />
+        <DefinitionTab api={api} />
       </TabsContent>
       <TabsContent
         value="Endpoints"

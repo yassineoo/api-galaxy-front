@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import axios from "axios";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   Card,
   CardContent,
@@ -8,8 +8,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Input } from "../ui/input";
+} from "../../ui/card";
+import { Input } from "../../ui/input";
 import { useCreateApi } from "@/hooks/apis/api.Mutation";
 
 export default function AddNewApiForm({ closeModal }: any) {

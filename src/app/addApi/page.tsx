@@ -2,7 +2,7 @@
 
 import Sidebar from "@/components/dashboard/sidebar";
 
-import AddNewApiForm from "@/components/addNewApi/addApiPopUp";
+import AddNewApiForm from "@/components/addNewApi/genralTab/addApiPopUp";
 import Header from "@/components/dashboard/header";
 import { ApiConfigTabs } from "@/components/addNewApi/apiConfig";
 

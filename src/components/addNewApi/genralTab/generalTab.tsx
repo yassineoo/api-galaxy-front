@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import axios from "axios";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   Card,
   CardContent,
@@ -8,14 +8,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Input } from "../ui/input";
+} from "../../ui/card";
+import { Input } from "../../ui/input";
 import { useCreateApi, useUpdateApi } from "@/hooks/apis/api.Mutation";
 import ProductCard from "./productCard";
-import { SelectButton } from "../dashboard/mainPage/filterGroup";
+import { SelectButton } from "../../dashboard/mainPage/filterGroup";
 import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
-import { Switch } from "../ui/switch";
-import { Label } from "../ui/label";
+import { Switch } from "../../ui/switch";
+import { Label } from "../../ui/label";
 
 export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields

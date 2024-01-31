@@ -5,7 +5,7 @@ import axios from "axios";
 import Header from "../../../components/dashboard/header";
 import Sidebar from "../../../components/dashboard/sidebar";
 import { columns } from "@/components/dashboard/apiTable/apiColumns";
-import { DataTable } from "@/components/dashboard/apiTable/data-table";
+import { ApiTable } from "@/components/dashboard/apiTable/api-table";
 
 export default function DashboardPage() {
   const [apis, setApis] = useState([]);
@@ -34,7 +34,7 @@ export default function DashboardPage() {
         <Header />
 
         <div className="container mx-auto py-10">
-          <DataTable columns={columns} data={apis} />
+          <ApiTable columns={columns} data={apis} />
         </div>
       </div>
     </div>

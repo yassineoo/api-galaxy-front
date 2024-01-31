@@ -1,14 +1,18 @@
-import { useRef, useState } from "react";
+import { use, useRef, useState } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Search } from "../shared/search";
+} from "../../ui/card";
+import { Search } from "../../shared/search";
+import { EndpointsTable } from "./endpointsTable/endpoints-table";
+import { Endpointscolumns } from "./endpointsTable/endpointsColumns";
+import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
 
 export default function DefinitionTab({ api }: any) {
+  const EndpointsList = useApiEndpointsList(api.id);
   return (
     <div className="flex justify-start items-start gap-4 w-full ">
       <Card className="w-full">
@@ -21,6 +25,13 @@ export default function DefinitionTab({ api }: any) {
         </CardHeader>
         <CardContent className="grid gap-4">
           <Search />
+          {EndpointsList.isLoading && <p>Loading...</p>}
+          {EndpointsList.isSuccess && (
+            <EndpointsTable
+              columns={Endpointscolumns}
+              data={EndpointsList.data}
+            />
+          )}
         </CardContent>
       </Card>
     </div>
