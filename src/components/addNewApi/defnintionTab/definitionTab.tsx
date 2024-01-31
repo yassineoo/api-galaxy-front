@@ -10,6 +10,7 @@ import { Search } from "../../shared/search";
 import { EndpointsTable } from "./endpointsTable/endpoints-table";
 import { Endpointscolumns } from "./endpointsTable/endpointsColumns";
 import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
+import CreateEndpointsGroupForm from "./endpointGroupCreateModal";
 
 export default function DefinitionTab({ api }: any) {
   const EndpointsList = useApiEndpointsList(api.id);
@@ -25,11 +26,30 @@ export default function DefinitionTab({ api }: any) {
         </CardHeader>
         <CardContent className="grid gap-4">
           <Search />
+          <CreateEndpointsGroupForm apiId={api.id} />
           {EndpointsList.isLoading && <p>Loading...</p>}
           {EndpointsList.isSuccess && (
             <EndpointsTable
               columns={Endpointscolumns}
-              data={EndpointsList.data}
+              data={EndpointsList.data.map((endpoint: any) => {
+                console.log(endpoint.Group);
+                console.log("endpoint kkoko ===============", {
+                  ...endpoint,
+                  apiId: api.id,
+                  GroupName: endpoint.Group?.Group,
+                  GroupId: endpoint.Group?.Group,
+                });
+
+                const obj = {
+                  ...endpoint,
+                  apiId: api.id,
+                  GroupName: endpoint.Group?.Group,
+                  GroupId: endpoint.Group?.Group,
+                };
+                delete obj.Group;
+
+                return obj;
+              })}
             />
           )}
         </CardContent>

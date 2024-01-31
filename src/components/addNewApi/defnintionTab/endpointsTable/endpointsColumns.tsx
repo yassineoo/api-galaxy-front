@@ -1,5 +1,6 @@
 // app/apis/columns.tsx
 import { Button } from "@/components/ui/button";
+import { ApiEndpoints } from "@/hooks/Endpoints/interfaces";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,14 +14,14 @@ import { MoreHorizontal } from "lucide-react";
 
 export const Endpointscolumns: ColumnDef<any>[] = [
   {
-    accessorKey: "GroupID",
+    accessorKey: "GroupName", // Access the nested Name property
     header: "Group",
-    cell: ({ row }) => row.getValue("Name"),
+    cell: ({ row }) => row.getValue("GroupName"), // Access the nested Name property
   },
   {
     accessorKey: "Methode",
     header: "Method",
-    cell: ({ row }) => row.getValue("ProviderID"),
+    cell: ({ row }) => row.getValue("Methode"),
   },
 
   {
