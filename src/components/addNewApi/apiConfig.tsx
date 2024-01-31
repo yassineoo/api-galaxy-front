@@ -4,6 +4,7 @@ import AddNewApiForm from "./addApiPopUp";
 import PopupForm from "./modal";
 import GenralApiInfoTab from "./generalTab";
 import ProductCard from "./productCard";
+import DefinitionTab from "./definitionTab";
 
 export function ApiConfigTabs() {
   const api = {
@@ -34,9 +35,9 @@ export function ApiConfigTabs() {
       </TabsContent>
       <TabsContent
         value="Definitions"
-        className="w-full  flex flex-col justify-center items-start ml-8 "
+        className="w-full  flex flex-col justify-center items-start px-8 "
       >
-        <PopupForm />
+        <DefinitionTab />
       </TabsContent>
       <TabsContent
         value="Endpoints"

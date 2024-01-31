@@ -14,6 +14,8 @@ import { useCreateApi, useUpdateApi } from "@/hooks/apis/api.Mutation";
 import ProductCard from "./productCard";
 import { SelectButton } from "../dashboard/mainPage/filterGroup";
 import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
+import { Switch } from "../ui/switch";
+import { Label } from "../ui/label";
 
 export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields
@@ -167,6 +169,19 @@ export default function GenralApiInfoTab({ api }: any) {
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
               />
+            </div>
+
+            <div className="flex flex-col justify-start gap-2">
+              <h3>API Project is Private</h3>
+              <div className="flex items-center justify-start gap-2">
+                It’s not visible on the Hub and new users can’t access it I
+                confirm that I own or have rights to publish this API according
+                to the Hub Terms of Service
+              </div>
+              <div className="flex items-center space-x-2">
+                <Switch id="airplane-mode" />
+                <Label htmlFor="airplane-mode">Public Api</Label>
+              </div>
             </div>
           </div>
         </CardContent>
