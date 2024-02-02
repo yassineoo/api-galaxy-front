@@ -14,3 +14,18 @@ export interface ApiEndpoints {
   Description: string;
   // Add other properties as needed
 }
+
+export enum ParametersTypes {
+  PathParmater = "PathParmater",
+  QueryParmater = "QueryParmater",
+  BodyParmater = "BodyParmater",
+  HeaderParmater = "HeaderParmater",
+}
+
+export interface Parameter {
+  key: string;
+  valueType: string;
+  parameterType: ParametersTypes;
+  exampleValue: string;
+  required: boolean;
+}

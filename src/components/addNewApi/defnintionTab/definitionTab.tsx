@@ -10,7 +10,7 @@ import { Search } from "../../shared/search";
 import { EndpointsTable } from "./endpointsTable/endpoints-table";
 import { Endpointscolumns } from "./endpointsTable/endpointsColumns";
 import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
-import CreateEndpointsGroupForm from "./endpointGroupCreateModal";
+import CreateEndpointsGroupForm from "./endpoints/endpointGroupCreateModal";
 
 export default function DefinitionTab({ api }: any) {
   const EndpointsList = useApiEndpointsList(api.id);

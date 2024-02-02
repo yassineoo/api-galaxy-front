@@ -5,6 +5,7 @@ import PopupForm from "./genralTab/modal";
 import GenralApiInfoTab from "./genralTab/generalTab";
 import ProductCard from "./genralTab/productCard";
 import DefinitionTab from "./defnintionTab/definitionTab";
+import AddEndpointsForm from "./defnintionTab/endpoints/endpointsForm";
 
 export function ApiConfigTabs() {
   const api = {
@@ -41,8 +42,10 @@ export function ApiConfigTabs() {
       </TabsContent>
       <TabsContent
         value="Endpoints"
-        className="w-full  flex flex-col justify-center items-start ml-8 "
-      ></TabsContent>
+        className="w-full  flex flex-col justify-center items-start px-8 "
+      >
+        <AddEndpointsForm />
+      </TabsContent>
     </Tabs>
   );
 }

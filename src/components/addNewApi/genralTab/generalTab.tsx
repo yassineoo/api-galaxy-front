@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import axios from "axios";
 import { Button } from "../../ui/button";
 import {
   Card,
@@ -10,12 +9,12 @@ import {
   CardTitle,
 } from "../../ui/card";
 import { Input } from "../../ui/input";
-import { useCreateApi, useUpdateApi } from "@/hooks/apis/api.Mutation";
+import { useUpdateApi } from "@/hooks/apis/api.Mutation";
 import ProductCard from "./productCard";
-import { SelectButton } from "../../dashboard/mainPage/filterGroup";
 import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
 import { Switch } from "../../ui/switch";
 import { Label } from "../../ui/label";
+import ApiCategorySelect from "./apiCategorySelect";
 
 export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields
@@ -94,7 +93,7 @@ export default function GenralApiInfoTab({ api }: any) {
                   <label htmlFor="Name" style={{ width: "25%" }}>
                     Api Category
                   </label>
-                  <SelectButton
+                  <ApiCategorySelect
                     name="Api Category"
                     items={apiCategoryListQuery.data.data}
                     defaultValue={"Transportation"}
