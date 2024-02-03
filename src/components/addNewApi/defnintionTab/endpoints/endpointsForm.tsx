@@ -3,20 +3,52 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "../../../ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
-import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@/components/ui/tabs";
-import PathParameters from "./parmeter";
+import PathParameters from "./pathParmeter";
 import { FormContext } from "./parameterContext";
 import { Parameter, ParametersTypes } from "@/hooks/Endpoints/interfaces";
+import StandardParameter from "./standardParameter";
+import { Button } from "@/components/ui/button";
+import { useCreateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
+import { randomBytes } from "crypto";
 
 const AddEndpointsForm = () => {
   const [parameters, setParameters] = useState<Parameter[]>([]);
+
+  const [standardParameters, setStandardParameters] = useState<Parameter[]>([
+    {
+      id: randomBytes(16).toString("hex"),
+      key: "",
+      exampleValue: "",
+      parameterType: ParametersTypes.QueryParmater,
+      valueType: "string",
+      required: false,
+    },
+    {
+      id: randomBytes(16).toString("hex"),
+      key: "",
+      exampleValue: "",
+      parameterType: ParametersTypes.BodyParmater,
+      valueType: "string",
+      required: false,
+    },
+    {
+      id: randomBytes(16).toString("hex"),
+      key: "",
+      exampleValue: "",
+      parameterType: ParametersTypes.HeaderParmater,
+      valueType: "string",
+      required: false,
+    },
+  ]);
   const [endpointName, setEndpointName] = useState<string>("");
   const [endpointUrl, setEndpointUrl] = useState<string>("");
   const [UrlMessage, setUrlMessage] = useState<string>(
@@ -61,6 +93,7 @@ const AddEndpointsForm = () => {
       const pathParameters = matches.map((match, index) => {
         const paramName = match.substring(1, match.length - 1); // Remove curly braces
         return {
+          id: randomBytes(16).toString("hex"),
           key: paramName,
           valueType: "string",
           exampleValue: "",
@@ -76,8 +109,36 @@ const AddEndpointsForm = () => {
     return [];
   };
 
+  const {
+    mutate: createEndpoint,
+    isError,
+    isPending,
+    error,
+  } = useCreateApiEndpoints();
+  // Handle form submission
+  const handleSubmit = async () => {
+    try {
+      const Data = {
+        Name: endpointName,
+        Description: endpointDescription,
+        Methode: endpointMethod,
+        Url: endpointUrl,
+        ApiID: 3,
+        GroupID: 0,
+      };
+      console.log("this is data is sent to the server");
+      console.log(Data);
+
+      await createEndpoint(Data);
+      //closeModal();
+
+      console.log("API entity updated successfully!");
+    } catch (error) {
+      console.error("Error creating API entity:", error);
+    }
+  };
   return (
-    <Card className="w-full text-sm">
+    <Card className="w-full text-sm pb-32 ">
       <CardHeader>
         <CardTitle className="text-base">Add New Endpoint</CardTitle>
         <CardDescription className="text-sm">
@@ -91,6 +152,8 @@ const AddEndpointsForm = () => {
             setParameters,
             endpointUrl,
             setEndpointUrl,
+            standardParameters,
+            setStandardParameters,
           }}
         >
           <div className="flex flex-col space-y-2">
@@ -132,8 +195,9 @@ const AddEndpointsForm = () => {
                   // Add more HTTP methods as needed
                 ]}
                 defaultValue={"GET"}
+                handleSelectionChange={setEndpointMethod}
               />
-              <div className="flex flex-col items-start mt-[18px] w-full space-2">
+              <div className="flex flex-col items-start  w-full space-2">
                 <Input
                   id="endpoint-url"
                   type="text"
@@ -142,12 +206,18 @@ const AddEndpointsForm = () => {
                   value={endpointUrl}
                   onChange={(e) => handleUrlChange(e.target.value)}
                 />
-                <p className="text-gray-400 text-sm">{UrlMessage}</p>
               </div>
             </div>
+            <p
+              className={`${
+                UrlMessage.indexOf("Error") ? "text-gray-400" : "text-red-500"
+              } ml-48  text-sm`}
+            >
+              {UrlMessage}
+            </p>
 
             <Tabs defaultValue="Query">
-              <TabsList className="grid  grid-cols-4 w-1/2  ml-8 my-2">
+              <TabsList className="grid  grid-cols-4 w-2/3 gap-2 ml-8 my-2">
                 <TabsTrigger value="Path-Parematers">
                   Path parematers
                 </TabsTrigger>
@@ -164,19 +234,37 @@ const AddEndpointsForm = () => {
               <TabsContent
                 value="Query"
                 className="w-full  flex flex-col justify-center items-start px-8  "
-              ></TabsContent>
+              >
+                <StandardParameter
+                  parameterType={ParametersTypes.QueryParmater}
+                />
+              </TabsContent>
               <TabsContent
                 value="Headers"
                 className="w-full  flex flex-col justify-center items-start px-8 "
-              ></TabsContent>
+              >
+                <StandardParameter
+                  parameterType={ParametersTypes.HeaderParmater}
+                />
+              </TabsContent>
               <TabsContent
                 value="Body"
                 className="w-full  flex flex-col justify-center items-start px-8 "
-              ></TabsContent>
+              >
+                <StandardParameter
+                  parameterType={ParametersTypes.BodyParmater}
+                />
+              </TabsContent>
             </Tabs>
           </div>
         </FormContext.Provider>
       </CardContent>
+      <CardFooter className=" w-full  items-center flex justify-between">
+        <Button className="w-1/3" onClick={handleSubmit}>
+          Add Endpoint
+        </Button>
+        <Button className="w-1/3">Discard</Button>
+      </CardFooter>
     </Card>
   );
 };

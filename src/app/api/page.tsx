@@ -16,6 +16,7 @@ const DashboardPage = () => {
       </Head>
       <Navbar services="2" about="3" pricing="4" contacts="6" />
       <ApiHeader />
+
       <ApiTabs />
     </div>
   );

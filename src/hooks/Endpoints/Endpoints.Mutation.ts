@@ -10,9 +10,13 @@ export const useCreateApiEndpoints = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: ApiEndpoints) => {
-      const response = await axios.post(`${ApiUrl}/endpoints`, data); // Adjust the endpoint
-      return response.data;
+    mutationFn: async (data: any) => {
+      if (data.Parameters.length === 0) {
+        const response = await axios.post(`${ApiUrl}/endpoints`, data); // Adjust the endpoint
+        return response.data;
+      } else {
+        console.log("data", data);
+      }
     },
 
     onSuccess: () => {

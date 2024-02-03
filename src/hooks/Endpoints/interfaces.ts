@@ -23,6 +23,7 @@ export enum ParametersTypes {
 }
 
 export interface Parameter {
+  id: string;
   key: string;
   valueType: string;
   parameterType: ParametersTypes;

@@ -1,9 +1,10 @@
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
 import { Input } from "@/components/ui/input";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Parameter, ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useFormContext } from "./parameterContext";
+import { ParameterTableHeader } from "./standardParameter";
 
 const PathParameters = () => {
   const { parameters } = useFormContext();
@@ -22,18 +23,6 @@ const PathParameters = () => {
   );
 };
 
-const ParameterTableHeader = () => {
-  return (
-    <div className="flex items-center gap-4 w-full bg-blue-200 rounded-sm p-2">
-      <label className="text-sm text-center w-1/6">Name</label>
-      <label className="text-sm text-center w-[120px]">Type</label>
-      <label className="text-sm text-center w-2/6">Example value</label>
-      <label className="text-sm text-center w-1/6">Required</label>
-      <label className="text-sm text-center w-1/6">Actions</label>
-    </div>
-  );
-};
-
 const ParameterColumn = ({ index }: any) => {
   const { parameters, setParameters, setEndpointUrl, endpointUrl } =
     useFormContext();
@@ -42,8 +31,8 @@ const ParameterColumn = ({ index }: any) => {
 
   // Local state for the component
   const [localKey, setLocalKey] = useState(parameter?.key);
-  const [selectedType, setSelectedType] = useState(parameter?.type);
-  const [example, setExample] = useState(parameter?.example);
+  const [selectedType, setSelectedType] = useState(parameter?.valueType);
+  const [example, setExample] = useState(parameter?.exampleValue);
 
   useEffect(() => {
     // Update global state when local state changes
@@ -66,21 +55,8 @@ const ParameterColumn = ({ index }: any) => {
     // Update the endpoint URL when the parameter name changes
     //setEndpointUrl(updatedEndpointUrl);
     if (localKey !== parameters[index]?.key) {
-      console.log(
-        "=////////////////////////////////////////////=======================",
-        localKey,
-        index,
-        parameters[index]?.key
-      );
       setLocalKey(parameters[index]?.key);
     }
-    console.log(
-      "parameters updating localKey =======================",
-      index,
-      localKey,
-      parameters[index]?.key
-    );
-    console.log(parameters);
   }, [parameters]);
   const handleTypeChange = (value: any) => {
     setSelectedType(value);
@@ -120,7 +96,6 @@ const ParameterColumn = ({ index }: any) => {
       ""
     );
 
-    console.log("updatedEndpointUrl final", updatedEndpointUrl);
     const updatedParameters = parameters.filter(
       (p: any) => p.key !== parameters[index]?.key
     );
@@ -137,7 +112,6 @@ const ParameterColumn = ({ index }: any) => {
         type="text"
         placeholder="Name"
         value={localKey}
-        //onChange={(e) => setlocalKey(e.target.value)}
       />
       <SelectButton
         width="w-[120px]"
