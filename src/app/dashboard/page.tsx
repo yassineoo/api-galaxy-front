@@ -5,7 +5,7 @@ import Sidebar from "../../components/dashboard/sidebar";
 import StatisticsBoxes from "../../components/dashboard/mainPage/stat";
 import LineChartComponent from "../../components/dashboard/linechart";
 import DonutChartComponent from "../../components/dashboard/mainPage/donutchart";
-import FilterGroup from "../../components/dashboard/mainPage/filterGroup";
+import FilterGroup from "../../components/dashboard/mainPage/filterGroupColor";
 import { ApiSelection } from "../../components/dashboard/mainPage/apiSelcetion";
 
 export default function DashboardPage() {

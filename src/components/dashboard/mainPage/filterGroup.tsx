@@ -27,9 +27,9 @@ export const SelectButton = ({
         <SelectValue placeholder={name} />
       </SelectTrigger>
       <SelectContent>
-        {items?.map(({ value, color }: any) => (
-          <SelectItem key={value} value={value} style={{ color: color }}>
-            {value}
+        {items?.map(({ label, value }: any) => (
+          <SelectItem key={value} value={value}>
+            {label}
           </SelectItem>
         ))}
       </SelectContent>

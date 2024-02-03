@@ -22,21 +22,36 @@ import {
 
 import { useState } from "react";
 import PaginationManual from "@/components/billing/paginationManual";
+import { Button } from "@/components/ui/button";
+import { SelectButton } from "@/components/dashboard/mainPage/filterGroupColor";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onUpdateEndpointGroup: any | null;
+  groups: any;
 }
 
 export function EndpointsTable<TData, TValue>({
   columns,
   data,
+  onUpdateEndpointGroup,
+  groups,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  console.log(" data ======================================");
-  console.log(data);
-  console.log(" data ======================================");
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
 
+  const handleGroupChange = (groupId: string) => {
+    setSelectedGroup(groupId);
+  };
+
+  const handleMoveToClick = (endpointId: string) => {
+    if (selectedGroup) {
+      onUpdateEndpointGroup(endpointId, selectedGroup);
+      // Clear the selected group after the update
+      setSelectedGroup(null);
+    }
+  };
   const table = useReactTable({
     data,
     columns,
@@ -87,6 +102,18 @@ export function EndpointsTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
+                  <TableCell>
+                    {/* Move To button */}
+                    <Button
+                      variant="ghost"
+                      className="h-8 w-8 p-0"
+                      onClick={() => handleMoveToClick(row.original?.id)}
+                    >
+                      Move To
+                    </Button>
+                    {/* Dropdown to select groups */}
+                    {groups && <SelectButton items={groups} />}
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

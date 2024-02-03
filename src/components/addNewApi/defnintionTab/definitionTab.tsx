@@ -12,9 +12,11 @@ import { Endpointscolumns } from "./endpointsTable/endpointsColumns";
 import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
 import CreateEndpointsGroupForm from "./endpoints/endpointGroupCreateModal";
 import AddNewEndpointModal from "../genralTab/addNewEndpointModal";
+import { useEndpointsGroupList } from "@/hooks/Endpoints Group/EndpointsGroup.queries";
 
 export default function DefinitionTab({ api }: any) {
   const EndpointsList = useApiEndpointsList(api.id);
+  const EndpointsGroupsList = useEndpointsGroupList(api.id);
   return (
     <div className="flex justify-start items-start gap-4 w-full ">
       <Card className="w-full">
@@ -27,21 +29,21 @@ export default function DefinitionTab({ api }: any) {
         </CardHeader>
         <CardContent className="grid gap-4">
           <Search />
-          <AddNewEndpointModal />
-          <CreateEndpointsGroupForm apiId={api.id} />
-          {EndpointsList.isLoading && <p>Loading...</p>}
-          {EndpointsList.isSuccess && (
+          <div className="flex gap-4 justify-end items-center">
+            <AddNewEndpointModal />
+            <CreateEndpointsGroupForm apiId={api.id} />
+          </div>
+          {EndpointsList.isLoading && EndpointsGroupsList.isLoading && (
+            <p>Loading...</p>
+          )}
+          {EndpointsList.isSuccess && EndpointsGroupsList.isSuccess && (
             <EndpointsTable
+              groups={EndpointsGroupsList.data.map((group: any) => {
+                return { label: group.Group, value: group.Id || "jiik" };
+              })}
+              onUpdateEndpointGroup={() => {}}
               columns={Endpointscolumns}
               data={EndpointsList.data.map((endpoint: any) => {
-                console.log(endpoint.Group);
-                console.log("endpoint kkoko ===============", {
-                  ...endpoint,
-                  apiId: api.id,
-                  GroupName: endpoint.Group?.Group,
-                  GroupId: endpoint.Group?.Group,
-                });
-
                 const obj = {
                   ...endpoint,
                   apiId: api.id,

@@ -9,7 +9,7 @@ import {
 } from "../../../ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
+import { SelectButton } from "@/components/dashboard/mainPage/filterGroupColor";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@/components/ui/tabs";
 import PathParameters from "./pathParmeter";

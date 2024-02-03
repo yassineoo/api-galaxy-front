@@ -1,4 +1,4 @@
-import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
+import { SelectButton } from "@/components/dashboard/mainPage/filterGroupColor";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";

@@ -4,7 +4,7 @@ import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import FilterGroup, {
   SelectButton,
-} from "../../components/dashboard/mainPage/filterGroup";
+} from "../../components/dashboard/mainPage/filterGroupColor";
 import { Button } from "@/components/ui/button";
 import {
   generateAxiosSnippet,
