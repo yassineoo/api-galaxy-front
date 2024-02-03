@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { Button } from "../../ui/button";
 import AddNewApiForm from "./addApiPopUp";
 
-const PopupForm = () => {
+const AddNewApiModal = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
@@ -53,4 +53,4 @@ const PopupForm = () => {
   );
 };
 
-export default PopupForm;
+export default AddNewApiModal;

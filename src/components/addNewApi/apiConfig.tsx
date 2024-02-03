@@ -1,7 +1,7 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AddNewApiForm from "./genralTab/addApiPopUp";
-import PopupForm from "./genralTab/modal";
+import PopupForm from "./genralTab/addNewEndpointModal";
 import GenralApiInfoTab from "./genralTab/generalTab";
 import ProductCard from "./genralTab/productCard";
 import DefinitionTab from "./defnintionTab/definitionTab";

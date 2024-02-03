@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { useCreateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
 import { randomBytes } from "crypto";
 
-const AddEndpointsForm = () => {
+const AddEndpointsForm = ({ closeModal }: any) => {
   const [parameters, setParameters] = useState<Parameter[]>([]);
 
   const [standardParameters, setStandardParameters] = useState<Parameter[]>([
@@ -125,14 +125,19 @@ const AddEndpointsForm = () => {
         Url: endpointUrl,
         ApiID: 3,
         GroupID: 0,
+        Parameters: [
+          ...parameters,
+          ...standardParameters.filter((p) => p.key != ""),
+        ],
       };
       console.log("this is data is sent to the server");
       console.log(Data);
 
       await createEndpoint(Data);
       //closeModal();
+      closeModal();
 
-      console.log("API entity updated successfully!");
+      console.log("API Endpoint request finshees  successfully!");
     } catch (error) {
       console.error("Error creating API entity:", error);
     }
@@ -157,7 +162,7 @@ const AddEndpointsForm = () => {
           }}
         >
           <div className="flex flex-col space-y-2">
-            <div className="flex items-center space-2 w-2/3">
+            <div className="flex items-center space-2 w-4/5">
               <label className=" w-1/5 flex " htmlFor=" endpoint-name">
                 Name{" "}
                 <span className="text-red-500 text-lg ml-2 mt-[1px]">*</span>
@@ -170,7 +175,7 @@ const AddEndpointsForm = () => {
                 onChange={(e) => setEndpointName(e.target.value)}
               />
             </div>
-            <div className="flex items-center space-2 w-2/3">
+            <div className="flex items-center space-2 w-4/5">
               <label className="text-md w-1/5" htmlFor=" endpoint-description">
                 Description
                 <span className="text-red-500 text-lg ml-2 mt-[1px]">*</span>
@@ -263,7 +268,9 @@ const AddEndpointsForm = () => {
         <Button className="w-1/3" onClick={handleSubmit}>
           Add Endpoint
         </Button>
-        <Button className="w-1/3">Discard</Button>
+        <Button className="w-1/3" onClick={closeModal}>
+          Discard
+        </Button>
       </CardFooter>
     </Card>
   );
