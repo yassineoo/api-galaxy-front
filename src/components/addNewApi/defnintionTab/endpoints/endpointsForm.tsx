@@ -21,16 +21,51 @@ import { useCreateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
 import { randomBytes } from "crypto";
 import { DefaultParameters } from "@/utils/endpoints.functions";
 
-const AddEndpointsForm = ({
-  closeModal,
-  passedParameters = [],
-  passedStandardParameters = DefaultParameters,
-  endpoint,
-}: any) => {
-  const [parameters, setParameters] = useState<Parameter[]>([passedParameters]);
+const AddEndpointsForm = ({ closeModal, endpoint }: any) => {
+  const [parameters, setParameters] = useState<Parameter[]>(
+    endpoint?.Parameters?.filter(
+      (p: any) => p.ParameterType === ParametersTypes.PathParmater
+    ).map((p: any) => {
+      return {
+        id: p.ID,
+        key: p.Key,
+        valueType: p.ValueType,
+        exampleValue: p.ExampleValue,
+        parameterType: p.ParameterType,
+        required: p.Required,
+      };
+    }) || []
+  );
+
+  console.log(
+    endpoint?.Parameters?.filter(
+      (p: any) => p.ParameterType === ParametersTypes.PathParmater
+    ).map((p: any) => {
+      return {
+        id: p.ID,
+        key: p.Key,
+        valueType: p.ValueType,
+        exampleValue: p.ExampleValue,
+        parameterType: p.ParameterType,
+        required: p.Required,
+      };
+    })
+  );
+  console.log("#######################################################");
 
   const [standardParameters, setStandardParameters] = useState<Parameter[]>(
-    passedStandardParameters
+    endpoint?.Parameters?.filter(
+      (p: any) => p.ParameterType !== ParametersTypes.PathParmater
+    ).map((p: any) => {
+      return {
+        id: p.ID,
+        key: p.Key,
+        valueType: p.ValueType,
+        exampleValue: p.ExampleValue,
+        parameterType: p.ParameterType,
+        required: p.Required,
+      };
+    }) || DefaultParameters
   );
   const [endpointName, setEndpointName] = useState<string>(
     endpoint?.Name || ""
@@ -39,8 +74,12 @@ const AddEndpointsForm = ({
   const [UrlMessage, setUrlMessage] = useState<string>(
     "use {curly braces} to indicate path parameters if needed. e.g., /employees/{id}"
   ); // ["", "valid", "invalid"
-  const [endpointMethod, setEndpointMethod] = useState<string>("GET");
-  const [endpointDescription, setEndpointDescription] = useState<string>("");
+  const [endpointMethod, setEndpointMethod] = useState<string>(
+    endpoint.Methode || "GET"
+  );
+  const [endpointDescription, setEndpointDescription] = useState<string>(
+    endpoint.Description || ""
+  );
 
   const handleUrlChange = (url: string) => {
     setEndpointUrl(url);
