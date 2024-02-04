@@ -27,8 +27,10 @@ export const useUpdateApiEndpoints = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (apiData: ApiEndpoints) => {
-      const response = await axios.put(
+    mutationFn: async (apiData: Partial<ApiEndpoints>) => {
+      console.log("updateEndpoint ========== ", apiData);
+
+      const response = await axios.patch(
         `${ApiUrl}/endpoints/${apiData.id}`,
         apiData
       ); // Adjust the endpoint

@@ -9,7 +9,7 @@ import {
 } from "../../../ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { SelectButton } from "@/components/dashboard/mainPage/filterGroupColor";
+import { SelectButtonColor } from "@/components/dashboard/mainPage/filterGroupColor";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@/components/ui/tabs";
 import PathParameters from "./pathParmeter";
@@ -19,38 +19,23 @@ import StandardParameter from "./standardParameter";
 import { Button } from "@/components/ui/button";
 import { useCreateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
 import { randomBytes } from "crypto";
+import { DefaultParameters } from "@/utils/endpoints.functions";
 
-const AddEndpointsForm = ({ closeModal }: any) => {
-  const [parameters, setParameters] = useState<Parameter[]>([]);
+const AddEndpointsForm = ({
+  closeModal,
+  passedParameters = [],
+  passedStandardParameters = DefaultParameters,
+  endpoint,
+}: any) => {
+  const [parameters, setParameters] = useState<Parameter[]>([passedParameters]);
 
-  const [standardParameters, setStandardParameters] = useState<Parameter[]>([
-    {
-      id: randomBytes(16).toString("hex"),
-      key: "",
-      exampleValue: "",
-      parameterType: ParametersTypes.QueryParmater,
-      valueType: "string",
-      required: false,
-    },
-    {
-      id: randomBytes(16).toString("hex"),
-      key: "",
-      exampleValue: "",
-      parameterType: ParametersTypes.BodyParmater,
-      valueType: "string",
-      required: false,
-    },
-    {
-      id: randomBytes(16).toString("hex"),
-      key: "",
-      exampleValue: "",
-      parameterType: ParametersTypes.HeaderParmater,
-      valueType: "string",
-      required: false,
-    },
-  ]);
-  const [endpointName, setEndpointName] = useState<string>("");
-  const [endpointUrl, setEndpointUrl] = useState<string>("");
+  const [standardParameters, setStandardParameters] = useState<Parameter[]>(
+    passedStandardParameters
+  );
+  const [endpointName, setEndpointName] = useState<string>(
+    endpoint?.Name || ""
+  );
+  const [endpointUrl, setEndpointUrl] = useState<string>(endpoint?.Url || "");
   const [UrlMessage, setUrlMessage] = useState<string>(
     "use {curly braces} to indicate path parameters if needed. e.g., /employees/{id}"
   ); // ["", "valid", "invalid"
@@ -190,7 +175,7 @@ const AddEndpointsForm = ({ closeModal }: any) => {
 
             {/*the params part ----------------------------------------------- */}
             <div className="flex items-center  gap-4 w-full ">
-              <SelectButton
+              <SelectButtonColor
                 items={[
                   { value: "GET", color: "green" },
                   { value: "POST", color: "blue" },

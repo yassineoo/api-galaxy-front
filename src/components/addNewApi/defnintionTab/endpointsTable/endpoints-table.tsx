@@ -23,7 +23,9 @@ import {
 import { useState } from "react";
 import PaginationManual from "@/components/billing/paginationManual";
 import { Button } from "@/components/ui/button";
-import { SelectButton } from "@/components/dashboard/mainPage/filterGroupColor";
+import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
+import { useUpdateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
+import AddNewEndpointModal from "../endpoints/addNewEndpointModal";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -40,16 +42,22 @@ export function EndpointsTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+  const updateEndpoint = useUpdateApiEndpoints();
 
   const handleGroupChange = (groupId: string) => {
     setSelectedGroup(groupId);
   };
 
-  const handleMoveToClick = (endpointId: string) => {
-    if (selectedGroup) {
-      onUpdateEndpointGroup(endpointId, selectedGroup);
-      // Clear the selected group after the update
-      setSelectedGroup(null);
+  const handleMoveToClick = async (groupId: number, endpointId: number) => {
+    const data = {
+      id: endpointId,
+      GroupID: groupId,
+    };
+    try {
+      await updateEndpoint.mutate(data);
+      console.log("done");
+    } catch (error) {
+      console.log(error);
     }
   };
   const table = useReactTable({
@@ -102,17 +110,32 @@ export function EndpointsTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
-                  <TableCell>
+                  <TableCell className="flex justify-center gap-2 items-center">
                     {/* Move To button */}
+
+                    <AddNewEndpointModal
+                      Label="Copy"
+                      variant
+                      endpoint={row.original}
+                    />
+
                     <Button
                       variant="ghost"
-                      className="h-8 w-8 p-0"
-                      onClick={() => handleMoveToClick(row.original?.id)}
+                      className="text-blue-400 h-8 w-8 p-0"
                     >
-                      Move To
+                      Edit{" "}
                     </Button>
                     {/* Dropdown to select groups */}
-                    {groups && <SelectButton items={groups} />}
+                    {groups && (
+                      <SelectButton
+                        items={groups}
+                        name="Move to"
+                        handleSelectionChange={(value: number) => {
+                          handleMoveToClick(value, row.original?.ID);
+                          console.log(row.original);
+                        }}
+                      />
+                    )}
                   </TableCell>
                 </TableRow>
               ))

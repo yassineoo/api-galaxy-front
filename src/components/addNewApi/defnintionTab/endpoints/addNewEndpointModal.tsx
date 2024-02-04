@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { Button } from "../../ui/button";
-import AddNewApiForm from "./addApiPopUp";
-import AddEndpointsForm from "../defnintionTab/endpoints/endpointsForm";
+import { Button } from "../../../ui/button";
+import AddNewApiForm from "../../genralTab/addApiPopUp";
+import AddEndpointsForm from "./endpointsForm";
 
-const AddNewEndpointModal = () => {
+const AddNewEndpointModal = ({ Label, variant, endpoint = {} }: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
+  console.log("endpoint00000000000@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+  console.log(endpoint);
+  console.log("endpoint00000000000@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
   useEffect(() => {
     Modal.setAppElement("body"); // Set the app element to the body element
   }, []);
 
-  const openModal = () => {
+  const openModal: any = () => {
     setModalOpen(true);
   };
 
@@ -27,7 +30,17 @@ const AddNewEndpointModal = () => {
 
   return (
     <div>
-      <Button onClick={openModal}>Add New Endpoint</Button>
+      {variant ? (
+        <Button
+          onClick={openModal}
+          variant="ghost"
+          className="text-blue-400 h-8 w-8 p-0"
+        >
+          {Label}
+        </Button>
+      ) : (
+        <Button onClick={openModal}>{Label}</Button>
+      )}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -48,7 +61,7 @@ const AddNewEndpointModal = () => {
           &times;
         </span> */}
 
-        <AddEndpointsForm closeModal={closeModal} />
+        <AddEndpointsForm closeModal={closeModal} endpoint={endpoint} />
       </Modal>
     </div>
   );

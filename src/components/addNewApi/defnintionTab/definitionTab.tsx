@@ -11,11 +11,12 @@ import { EndpointsTable } from "./endpointsTable/endpoints-table";
 import { Endpointscolumns } from "./endpointsTable/endpointsColumns";
 import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
 import CreateEndpointsGroupForm from "./endpoints/endpointGroupCreateModal";
-import AddNewEndpointModal from "../genralTab/addNewEndpointModal";
+import AddNewEndpointModal from "./endpoints/addNewEndpointModal";
 import { useEndpointsGroupList } from "@/hooks/Endpoints Group/EndpointsGroup.queries";
 
 export default function DefinitionTab({ api }: any) {
   const EndpointsList = useApiEndpointsList(api.id);
+
   const EndpointsGroupsList = useEndpointsGroupList(api.id);
   return (
     <div className="flex justify-start items-start gap-4 w-full ">
@@ -30,7 +31,7 @@ export default function DefinitionTab({ api }: any) {
         <CardContent className="grid gap-4">
           <Search />
           <div className="flex gap-4 justify-end items-center">
-            <AddNewEndpointModal />
+            <AddNewEndpointModal Label="Add New Endpoint" />
             <CreateEndpointsGroupForm apiId={api.id} />
           </div>
           {EndpointsList.isLoading && EndpointsGroupsList.isLoading && (
@@ -39,7 +40,7 @@ export default function DefinitionTab({ api }: any) {
           {EndpointsList.isSuccess && EndpointsGroupsList.isSuccess && (
             <EndpointsTable
               groups={EndpointsGroupsList.data.map((group: any) => {
-                return { label: group.Group, value: group.Id || "jiik" };
+                return { label: group.Group, value: group.ID };
               })}
               onUpdateEndpointGroup={() => {}}
               columns={Endpointscolumns}

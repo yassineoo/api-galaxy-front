@@ -1,19 +1,7 @@
 // app/apis/columns.tsx
-import { SelectButton } from "@/components/dashboard/mainPage/filterGroupColor";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { SelectGroup } from "@/components/ui/select";
-import { ApiEndpoints } from "@/hooks/Endpoints/interfaces";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
 
 export const Endpointscolumns: ColumnDef<any>[] = [
   {
@@ -32,23 +20,6 @@ export const Endpointscolumns: ColumnDef<any>[] = [
     cell: ({ row }) => row.getValue("Methode"),
   },
 
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const api = row.original;
-
-      return (
-        <div className="w-full flex gap-2">
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            Copy{" "}
-          </Button>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            Edit{" "}
-          </Button>
-        </div>
-      );
-    },
-  },
   // Add more columns as needed
 ];
 

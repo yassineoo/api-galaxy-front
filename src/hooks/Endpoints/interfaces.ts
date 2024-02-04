@@ -8,10 +8,11 @@ export interface ApiEndpointsCreation {
 }
 
 export interface ApiEndpoints {
-  id: string;
+  id: number;
   Methode: string;
   Url: string;
   Description: string;
+  GroupID: number;
   // Add other properties as needed
 }
 
