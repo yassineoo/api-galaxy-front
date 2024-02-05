@@ -27,7 +27,7 @@ export const useUpdateEndpointsGroup = () => {
   return useMutation({
     mutationFn: async (apiData: EndpointsGroup) => {
       const response = await axios.put(
-        `${ApiUrl}/endpoints-group/${apiData.id}`,
+        `${ApiUrl}/endpoints-group/${apiData.ID}`,
         apiData
       ); // Adjust the endpoint
       console.log(response.data);

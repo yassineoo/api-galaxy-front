@@ -15,9 +15,9 @@ import AddNewEndpointModal from "./endpoints/addNewEndpointModal";
 import { useEndpointsGroupList } from "@/hooks/Endpoints Group/EndpointsGroup.queries";
 
 export default function DefinitionTab({ api }: any) {
-  const EndpointsList = useApiEndpointsList(api.id);
+  const EndpointsList = useApiEndpointsList(api.ID);
 
-  const EndpointsGroupsList = useEndpointsGroupList(api.id);
+  const EndpointsGroupsList = useEndpointsGroupList(api.ID);
   return (
     <div className="flex justify-start items-start gap-4 w-full ">
       <Card className="w-full">
@@ -32,7 +32,7 @@ export default function DefinitionTab({ api }: any) {
           <Search />
           <div className="flex gap-4 justify-end items-center">
             <AddNewEndpointModal Label="Add New Endpoint" />
-            <CreateEndpointsGroupForm apiId={api.id} />
+            <CreateEndpointsGroupForm apiId={api.ID} />
           </div>
           {EndpointsList.isLoading && EndpointsGroupsList.isLoading && (
             <p>Loading...</p>
@@ -47,7 +47,7 @@ export default function DefinitionTab({ api }: any) {
               data={EndpointsList.data.map((endpoint: any) => {
                 const obj = {
                   ...endpoint,
-                  apiId: api.id,
+                  apiId: api.ID,
                   GroupName: endpoint.Group?.Group,
                   GroupId: endpoint.Group?.Group,
                 };

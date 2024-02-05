@@ -7,7 +7,7 @@ export interface EndpointsGroupCreation {
 }
 
 export interface EndpointsGroup {
-  id: string;
+  ID: string;
   Group: string;
   Description: string;
   // Add other properties as needed

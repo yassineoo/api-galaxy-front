@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Parameter, ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useFormContext } from "./parameterContext";
 import { ParameterTableHeader } from "./standardParameter";
+import { ValueTypes } from "@/utils/endpoints.functions";
 
 const PathParameters = () => {
   const { parameters } = useFormContext();
@@ -119,14 +120,7 @@ const ParameterColumn = ({ index }: any) => {
         defaultValue={selectedType}
         handleSelectionChange={handleTypeChange}
         name="Type"
-        items={[
-          { value: "string", color: "black" },
-          { value: "number", color: "black" },
-          { value: "boolean", color: "black" },
-          { value: "date", color: "black" },
-          { value: "object", color: "black" },
-          { value: "time", color: "black" },
-        ]}
+        items={ValueTypes}
       />
 
       <Input

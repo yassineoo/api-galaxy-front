@@ -39,7 +39,7 @@ export default function GenralApiInfoTab({ api }: any) {
   const handleSubmit = async () => {
     try {
       const Data = {
-        id: api.id,
+        id: api.ID,
         Name: name,
         ProviderID: 21,
         ApiUrl: apiUrl,

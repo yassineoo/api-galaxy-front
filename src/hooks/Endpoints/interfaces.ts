@@ -8,7 +8,7 @@ export interface ApiEndpointsCreation {
 }
 
 export interface ApiEndpoints {
-  id: number;
+  ID: number;
   Methode: string;
   Url: string;
   Description: string;
@@ -24,7 +24,7 @@ export enum ParametersTypes {
 }
 
 export interface Parameter {
-  id: string;
+  id: number;
   key: string;
   valueType: string;
   parameterType: ParametersTypes;

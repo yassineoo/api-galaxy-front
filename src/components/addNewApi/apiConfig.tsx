@@ -9,7 +9,7 @@ import AddEndpointsForm from "./defnintionTab/endpoints/endpointsForm";
 
 export function ApiConfigTabs() {
   const api = {
-    id: 3,
+    ID: 3,
     name: "transportation api",
     apiUrl: "https://api.transportation.com",
     image: "https://images.pexels.com/photos/414860/pexels-photo-414860.jpeg",

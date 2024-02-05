@@ -1,9 +1,8 @@
 import { ParametersTypes } from "@/hooks/Endpoints/interfaces";
-import { randomBytes } from "crypto";
 
 export const DefaultParameters = [
   {
-    id: randomBytes(16).toString("hex"),
+    id: Math.floor(Math.random() * 100000 + 1), // Adjust the range as needed
     key: "",
     exampleValue: "",
     parameterType: ParametersTypes.QueryParmater,
@@ -11,7 +10,7 @@ export const DefaultParameters = [
     required: false,
   },
   {
-    id: randomBytes(16).toString("hex"),
+    id: Math.floor(Math.random() * 100000 + 1),
     key: "",
     exampleValue: "",
     parameterType: ParametersTypes.BodyParmater,
@@ -19,7 +18,7 @@ export const DefaultParameters = [
     required: false,
   },
   {
-    id: randomBytes(16).toString("hex"),
+    id: Math.floor(Math.random() * 100000 + 1),
     key: "",
     exampleValue: "",
     parameterType: ParametersTypes.HeaderParmater,
@@ -27,3 +26,36 @@ export const DefaultParameters = [
     required: false,
   },
 ];
+
+export const ValueTypes = [
+  { value: "string", label: "string" },
+  { value: "number", label: "number" },
+  { value: "boolean", label: "boolean" },
+  { value: "date", label: "date" },
+  { value: "object", label: "object" },
+  { value: "time", label: "time" },
+];
+// Function to extract path parameters from the URL
+export const extractPathParameters = (url: string) => {
+  const regex = /\{(\w+)\}/g; // Matches anything inside curly braces
+  const matches = url.match(regex);
+
+  if (matches) {
+    const pathParameters = matches.map((match, index) => {
+      const paramName = match.substring(1, match.length - 1); // Remove curly braces
+      return {
+        id: Math.floor(Math.random() * 100000 + 1),
+        key: paramName,
+        valueType: "string",
+        exampleValue: "",
+        parameterType: ParametersTypes.PathParmater,
+        required: true,
+      }; // Default type is string
+    });
+    console.log("pathParameters", pathParameters);
+
+    return pathParameters;
+  }
+
+  return [];
+};

@@ -31,7 +31,7 @@ export const useUpdateApiEndpoints = () => {
       console.log("updateEndpoint ========== ", apiData);
 
       const response = await axios.patch(
-        `${ApiUrl}/endpoints/${apiData.id}`,
+        `${ApiUrl}/endpoints/${apiData.ID}`,
         apiData
       ); // Adjust the endpoint
       console.log(response.data);

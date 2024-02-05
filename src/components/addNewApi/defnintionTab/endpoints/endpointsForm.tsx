@@ -17,11 +17,17 @@ import { FormContext } from "./parameterContext";
 import { Parameter, ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import StandardParameter from "./standardParameter";
 import { Button } from "@/components/ui/button";
-import { useCreateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
+import {
+  useCreateApiEndpoints,
+  useUpdateApiEndpoints,
+} from "@/hooks/Endpoints/Endpoints.Mutation";
 import { randomBytes } from "crypto";
-import { DefaultParameters } from "@/utils/endpoints.functions";
+import {
+  DefaultParameters,
+  extractPathParameters,
+} from "@/utils/endpoints.functions";
 
-const AddEndpointsForm = ({ closeModal, endpoint }: any) => {
+const AddEndpointsForm = ({ closeModal, endpoint, edit }: any) => {
   const [parameters, setParameters] = useState<Parameter[]>(
     endpoint?.Parameters?.filter(
       (p: any) => p.ParameterType === ParametersTypes.PathParmater
@@ -75,10 +81,10 @@ const AddEndpointsForm = ({ closeModal, endpoint }: any) => {
     "use {curly braces} to indicate path parameters if needed. e.g., /employees/{id}"
   ); // ["", "valid", "invalid"
   const [endpointMethod, setEndpointMethod] = useState<string>(
-    endpoint.Methode || "GET"
+    endpoint?.Methode || "GET"
   );
   const [endpointDescription, setEndpointDescription] = useState<string>(
-    endpoint.Description || ""
+    endpoint?.Description || ""
   );
 
   const handleUrlChange = (url: string) => {
@@ -108,30 +114,6 @@ const AddEndpointsForm = ({ closeModal, endpoint }: any) => {
     console.log("parametersUpdated", parameters);
   };
   // Function to extract path parameters from the URL
-  // Function to extract path parameters from the URL
-  const extractPathParameters = (url: string) => {
-    const regex = /\{(\w+)\}/g; // Matches anything inside curly braces
-    const matches = url.match(regex);
-
-    if (matches) {
-      const pathParameters = matches.map((match, index) => {
-        const paramName = match.substring(1, match.length - 1); // Remove curly braces
-        return {
-          id: randomBytes(16).toString("hex"),
-          key: paramName,
-          valueType: "string",
-          exampleValue: "",
-          parameterType: ParametersTypes.PathParmater,
-          required: true,
-        }; // Default type is string
-      });
-      console.log("pathParameters", pathParameters);
-
-      return pathParameters;
-    }
-
-    return [];
-  };
 
   const {
     mutate: createEndpoint,
@@ -139,10 +121,17 @@ const AddEndpointsForm = ({ closeModal, endpoint }: any) => {
     isPending,
     error,
   } = useCreateApiEndpoints();
+  const {
+    mutate: updateEndpoint,
+    isError: isUpdateError,
+    isPending: isUpdatePending,
+    error: updateError,
+  } = useUpdateApiEndpoints();
   // Handle form submission
   const handleSubmit = async () => {
     try {
       const Data = {
+        ID: endpoint?.ID || 0,
         Name: endpointName,
         Description: endpointDescription,
         Methode: endpointMethod,
@@ -157,7 +146,8 @@ const AddEndpointsForm = ({ closeModal, endpoint }: any) => {
       console.log("this is data is sent to the server");
       console.log(Data);
 
-      await createEndpoint(Data);
+      if (edit) await updateEndpoint(Data);
+      else await createEndpoint(Data);
       //closeModal();
       closeModal();
 
@@ -290,7 +280,7 @@ const AddEndpointsForm = ({ closeModal, endpoint }: any) => {
       </CardContent>
       <CardFooter className=" w-full  items-center flex justify-between">
         <Button className="w-1/3" onClick={handleSubmit}>
-          Add Endpoint
+          {edit ? "Save modifcations" : "create Endpoint"}
         </Button>
         <Button className="w-1/3" onClick={closeModal}>
           Discard

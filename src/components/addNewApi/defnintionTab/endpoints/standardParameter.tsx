@@ -5,14 +5,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Parameter, ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useFormContext } from "./parameterContext";
 import { Button } from "@/components/ui/button";
-import { randomBytes } from "crypto";
+import { randomBytes, randomInt } from "crypto";
+import { ValueTypes } from "@/utils/endpoints.functions";
 
 const StandardParameter = ({ parameterType }: any) => {
   const { standardParameters, setStandardParameters } = useFormContext();
 
   const handleAddParameter = () => {
     const newParameter: Parameter = {
-      id: randomBytes(16).toString("hex"),
+      id: Math.floor(Math.random() * 100000 + 1),
       key: "",
       exampleValue: "",
       parameterType: parameterType,
@@ -54,7 +55,9 @@ const ParameterColumn = ({ index }: any) => {
   // Local state for the component
   const [isRequired, setIsRequired] = useState(parameter?.required || false);
   const [localKey, setLocalKey] = useState(parameter?.key);
-  const [selectedType, setSelectedType] = useState(parameter?.valueType);
+  const [selectedType, setSelectedType] = useState(
+    parameter?.valueType || "string"
+  );
   const [example, setExample] = useState(parameter?.exampleValue);
 
   useEffect(() => {
@@ -130,14 +133,7 @@ const ParameterColumn = ({ index }: any) => {
         defaultValue={selectedType}
         handleSelectionChange={handleTypeChange}
         name="Type"
-        items={[
-          { value: "string", color: "black" },
-          { value: "number", color: "black" },
-          { value: "boolean", color: "black" },
-          { value: "date", color: "black" },
-          { value: "object", color: "black" },
-          { value: "time", color: "black" },
-        ]}
+        items={ValueTypes}
       />
 
       <Input

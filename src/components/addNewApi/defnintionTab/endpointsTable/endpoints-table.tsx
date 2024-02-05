@@ -118,13 +118,13 @@ export function EndpointsTable<TData, TValue>({
                       variant
                       endpoint={row.original}
                     />
+                    <AddNewEndpointModal
+                      Label="Edit"
+                      variant
+                      edit
+                      endpoint={row.original}
+                    />
 
-                    <Button
-                      variant="ghost"
-                      className="text-blue-400 h-8 w-8 p-0"
-                    >
-                      Edit{" "}
-                    </Button>
                     {/* Dropdown to select groups */}
                     {groups && (
                       <SelectButton
