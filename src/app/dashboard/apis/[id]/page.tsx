@@ -1,13 +1,34 @@
 "use client";
+import Sidebar from "@/components/dashboard/sidebar";
 
-import { useRouter } from "next/navigation";
+import AddNewApiForm from "@/components/addNewApi/genralTab/addApiPopUp";
+import Header from "@/components/dashboard/header";
+import { ApiConfigTabs } from "@/components/addNewApi/apiConfig";
+import { useApiById } from "@/hooks/apis/api.queries";
+import LoadingPage from "@/components/shared/loadingPage";
+import NotFoundPage from "@/components/shared/errorPage";
 
-export default function Page() {
-  const router = useRouter();
+const AddApiPage = ({ params }: any) => {
+  const { id } = params;
+  const apiSelceted = useApiById(id);
 
   return (
-    <button type="button" onClick={() => router.push("/dashboard")}>
-      Dashboard
-    </button>
+    <div className="bg-dashboardBg dark:bg-transparent flex ">
+      {apiSelceted.isLoading && <LoadingPage />}
+      {apiSelceted.isError && <NotFoundPage />}
+      {apiSelceted.isSuccess && (
+        <>
+          <Sidebar />
+
+          <div className="w-full">
+            <Header />
+
+            <ApiConfigTabs api={apiSelceted.data} />
+          </div>
+        </>
+      )}
+    </div>
   );
-}
+};
+
+export default AddApiPage;

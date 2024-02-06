@@ -16,9 +16,6 @@ export const ApiCategorySelect = ({
   handleSelectionChange = (value: any) =>
     console.log("default on change", value),
 }: any) => {
-  console.log("items", items);
-  console.log("items type", typeof items?.length);
-
   return (
     <Select
       defaultValue={defaultValue}

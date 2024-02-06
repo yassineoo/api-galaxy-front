@@ -7,18 +7,8 @@ import ProductCard from "./genralTab/productCard";
 import DefinitionTab from "./defnintionTab/definitionTab";
 import AddEndpointsForm from "./defnintionTab/endpoints/endpointsForm";
 
-export function ApiConfigTabs() {
-  const api = {
-    ID: 3,
-    name: "transportation api",
-    apiUrl: "https://api.transportation.com",
-    image: "https://images.pexels.com/photos/414860/pexels-photo-414860.jpeg",
-    keywords: "transportation, api, transportation api",
-    description: "api for transportation services in the US ",
-    averageRating: 4.8,
-    latency: 7,
-    availability: 99.99,
-  };
+export function ApiConfigTabs({ api }: any) {
+  console.log(api);
 
   return (
     <Tabs defaultValue="General">

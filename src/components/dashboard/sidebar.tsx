@@ -1,5 +1,6 @@
 // Sidebar.js
 "use client";
+import { useApiById, useApiByUserId } from "@/hooks/apis/api.queries";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -54,7 +55,7 @@ const Logo = ({ toggleMenu, isMenuOpen }: any) => {
 
 const Menu = ({ isMenuOpen }: any) => {
   const [activeMenu, setActiveMenu] = useState("Dashboard");
-
+  const maApisList = useApiByUserId(123);
   const menuItems = [
     {
       name: "Dashboard",
@@ -120,22 +121,39 @@ const Menu = ({ isMenuOpen }: any) => {
         />
       ))}
       {isMenuOpen && <Separator text="MY apis" />}
+      {isMenuOpen && maApisList.isLoading && <div>Loading...</div>}
       {isMenuOpen &&
-        Apis.map((item) => (
-          <MenuLink
-            isMenuOpen={isMenuOpen}
-            key={item.id}
-            item={item}
-            isApi
-            onClick={() => setActiveMenu(item.name)}
-            active={activeMenu === item.name}
-          />
-        ))}
+        maApisList.isSuccess &&
+        maApisList.data.data
+          .map((api: any) => {
+            return {
+              id: api.ID,
+              name: api.Name,
+              active: false,
+            };
+          })
+          .map((item: any) => (
+            <MenuLink
+              isMenuOpen={isMenuOpen}
+              key={item.id}
+              item={item}
+              isApi
+              onClick={() => setActiveMenu(item.name)}
+              active={activeMenu === item.name}
+            />
+          ))}
     </div>
   );
 };
 
-const MenuLink = ({ item, active, onClick, isApi, isMenuOpen }: any) => {
+const MenuLink = ({
+  item,
+  active,
+  onClick,
+  isApi,
+  isMenuOpen,
+  isAddNewApi,
+}: any) => {
   const isActive = active;
   if (isApi) {
     item.icon = "/icons/api_icon.svg";
@@ -158,11 +176,17 @@ const MenuLink = ({ item, active, onClick, isApi, isMenuOpen }: any) => {
     ];
   }
   const [activeChild, setActiveChild] = useState("Billing Information");
-  const url = item.children
-    ? `/${item.name.toLowerCase().replace(/ /g, "-")}/${item.children[0].name
-        .toLowerCase()
-        .replace(/ /g, "-")}`
-    : `/${item.name.toLowerCase().replace(/ /g, "-")}`;
+  let url = "";
+  if (item?.children) {
+    url = `/dashboard/apis/${item.id || 0}/${item.children[0].name
+      .toLowerCase()
+      .replace(/ /g, "-")}`;
+
+    url = `/dashboard/apis/${item.id || 0}`;
+  } else {
+    url = `/dashboard${item.name.toLowerCase().replace(/ /g, "-")}`;
+  }
+
   return (
     <div className="  flex flex-col items-start justify-start   w-4/5">
       <Link

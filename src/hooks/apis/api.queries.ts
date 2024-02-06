@@ -1,5 +1,6 @@
 // apiQueries.ts
 
+import { ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -17,7 +18,19 @@ export const useApiById = (apiId: string) => {
   return useQuery({
     queryKey: ["api", apiId],
     queryFn: async () => {
-      const response = await axios.get(`/apis/${apiId}`); // Adjust the endpoint
+      const response = await axios.get(`${ApiUrl}/apis/${apiId}`); // Adjust the endpoint
+      return response.data;
+    },
+  });
+};
+
+export const useApiByUserId = (userId: number) => {
+  return useQuery({
+    queryKey: ["myApis", userId],
+    queryFn: async () => {
+      const response = await axios.get(`${ApiUrl}/apis/user-apis/${userId}`); // Adjust the endpoint
+      console.log("response ============= ", response.data);
+
       return response.data;
     },
   });
