@@ -2,7 +2,7 @@ import React, { use, useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 
-const defaultText = `<div>
+export const defaultText = `<div>
 <h1>Google Translation API Documentation</h1>
 <p>This document provides an overview of the Google Translation API, including how to make requests, handle responses, and understand error codes.</p>
 

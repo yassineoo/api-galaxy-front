@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+"use client";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../../ui/button";
 import {
   Card,
@@ -15,38 +16,57 @@ import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
 import { Switch } from "../../ui/switch";
 import { Label } from "../../ui/label";
 import ApiCategorySelect from "./apiCategorySelect";
+import { ToastAction } from "@/components/ui/toast";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields
-  const [name, setName] = useState(api.name);
-  const [categoryId, setCategoryId] = useState(3);
-  const [apiUrl, setApiUrl] = useState(api.apiUrl);
-  const [image, setImage] = useState(api.image); // Change to empty string
-  const [keywords, setKeywords] = useState(api.keywords);
-  const [description, setDescription] = useState(api.description);
+  const [name, setName] = useState(api.Name);
+  const [categoryId, setCategoryId] = useState(api.CategoryID);
+  const [apiUrl, setApiUrl] = useState(api.ApiUrl);
+  const [image, setImage] = useState(api.ImagePath); // Change to empty string
+  const [keywords, setKeywords] = useState(api.Keywords);
+  const [description, setDescription] = useState(api.Description);
+  const [Visibility, setVisibility] = useState(api.Visibility);
 
   // Create a ref for file input
   const fileInputRef = useRef<HTMLInputElement>(null);
   const apiCategoryListQuery = useApiCategoryList();
 
-  const { mutate: updateApi, isError, isPending, error } = useUpdateApi();
+  const {
+    mutate: updateApi,
+    isError,
+    isPending,
+    error,
+    isSuccess,
+  } = useUpdateApi();
 
   const handleImageChange = (event: any) => {
     const file = event.target.files[0];
     setImage(file ? URL.createObjectURL(file) : ""); // Use a fake URL for testing
   };
+  useEffect(() => {
+    if (isError) {
+      toast.error("Error saving the modification try agian !");
+    }
+    if (isSuccess) {
+      toast.success("you api has been modified succufully!");
+    }
+  }, [isError, isSuccess]);
   // Handle form submission
   const handleSubmit = async () => {
     try {
       const Data = {
-        id: api.ID,
+        ID: api.ID,
         Name: name,
         ProviderID: 21,
         ApiUrl: apiUrl,
-        CategoryID: 1,
-        ImagePath: "path/image", // Use the fake URL for testing
+        CategoryID: categoryId,
+        ImagePath: image, // Use the fake URL for testing
         Keywords: keywords,
         Description: description,
+        Visibility: Visibility,
       };
 
       await updateApi(Data);
@@ -54,6 +74,7 @@ export default function GenralApiInfoTab({ api }: any) {
 
       console.log("API entity updated successfully!");
     } catch (error) {
+      //errorToast();
       console.error("Error creating API entity:", error);
     }
   };
@@ -62,9 +83,13 @@ export default function GenralApiInfoTab({ api }: any) {
   const handleImagePlaceholderClick = () => {
     fileInputRef?.current?.click(); // Programmatically trigger file input click
   };
+  const handleSwitchChange = () => {
+    setVisibility((prev: any) => !prev);
+  };
 
   return (
     <div className="flex justify-start items-start gap-4 w-full ">
+      <ToastContainer className="z-40" />
       <Card className="w-full">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-start gap-4">
@@ -73,10 +98,10 @@ export default function GenralApiInfoTab({ api }: any) {
           </div>
           <CardDescription>Update Information about your API</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4">
+        <CardContent className="grid gap-4 text-sm">
           <div className="grid gap-2">
             <div className="flex justify-start gap-2">
-              <label htmlFor="Name" style={{ width: "25%" }}>
+              <label htmlFor="Name" style={{ width: "30%" }}>
                 Name
               </label>
               <Input
@@ -90,14 +115,14 @@ export default function GenralApiInfoTab({ api }: any) {
             <div className="flex justify-start gap-2">
               {apiCategoryListQuery.isSuccess && (
                 <>
-                  <label htmlFor="Name" style={{ width: "25%" }}>
+                  <label htmlFor="Name" style={{ width: "30%" }}>
                     Api Category
                   </label>
                   <ApiCategorySelect
-                    name="Api Category"
+                    name={api.CategoryName}
                     items={apiCategoryListQuery.data.data}
-                    defaultValue={"Transportation"}
-                    selectedOption={"Transportation"}
+                    defaultValue={api.CategoryID}
+                    selectedOption={api.CategoryName}
                     handleSelectionChange={setCategoryId}
                   />
                 </>
@@ -105,7 +130,7 @@ export default function GenralApiInfoTab({ api }: any) {
             </div>
 
             <div className="flex justify-start gap-2">
-              <label htmlFor="ApiUrl" style={{ width: "25%" }}>
+              <label htmlFor="ApiUrl" style={{ width: "30%" }}>
                 API URL
               </label>
               <Input
@@ -117,7 +142,7 @@ export default function GenralApiInfoTab({ api }: any) {
               />
             </div>
             <div className="flex justify-start gap-2">
-              <label htmlFor="Image" style={{ width: "25%" }}>
+              <label htmlFor="Image" style={{ width: "30%" }}>
                 Image
               </label>
               <input
@@ -146,7 +171,7 @@ export default function GenralApiInfoTab({ api }: any) {
               )}
             </div>
             <div className="flex justify-start gap-2">
-              <label htmlFor="Keywords" style={{ width: "25%" }}>
+              <label htmlFor="Keywords" style={{ width: "30%" }}>
                 Keywords
               </label>
               <Input
@@ -158,7 +183,7 @@ export default function GenralApiInfoTab({ api }: any) {
               />
             </div>
             <div className="flex justify-start gap-2">
-              <label htmlFor="Description" style={{ width: "25%" }}>
+              <label htmlFor="Description" style={{ width: "30%" }}>
                 Description
               </label>
               <Input
@@ -177,10 +202,26 @@ export default function GenralApiInfoTab({ api }: any) {
                 confirm that I own or have rights to publish this API according
                 to the Hub Terms of Service
               </div>
-              <div className="flex items-center space-x-2">
-                <Switch id="airplane-mode" />
-                <Label htmlFor="airplane-mode">Public Api</Label>
-              </div>
+
+              {!Visibility ? (
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="somthing"
+                    checked={Visibility}
+                    onClick={handleSwitchChange}
+                  />
+                  <Label htmlFor="airplane-mode">Public Api</Label>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="somthing"
+                    checked={Visibility}
+                    onClick={handleSwitchChange}
+                  />
+                  <Label htmlFor="airplane-mode">Private Api</Label>
+                </div>
+              )}
             </div>
           </div>
         </CardContent>
@@ -223,8 +264,6 @@ export default function GenralApiInfoTab({ api }: any) {
               "save"
             )}
           </Button>
-          {/* Display an error message if there is an error */}
-          {isError && <p className="text-red-500">{error.message}</p>}
         </CardFooter>
       </Card>
       <ProductCard

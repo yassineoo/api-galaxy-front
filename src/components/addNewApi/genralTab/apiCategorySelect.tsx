@@ -6,11 +6,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { memo } from "react";
 
 const defaultItems = ["item1", "item2", "item3", "item4", "item5"];
 
 export const ApiCategorySelect = ({
-  name = "Select",
   defaultValue,
   items = defaultItems,
   handleSelectionChange = (value: any) =>
@@ -24,7 +24,7 @@ export const ApiCategorySelect = ({
       }}
     >
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder={name} />
+        <SelectValue placeholder={defaultValue} />
       </SelectTrigger>
       <SelectContent>
         {items?.map((item: any) => (
@@ -37,4 +37,4 @@ export const ApiCategorySelect = ({
   );
 };
 
-export default ApiCategorySelect;
+export default memo(ApiCategorySelect);

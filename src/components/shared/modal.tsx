@@ -1,5 +1,13 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Button } from "../ui/button";
 
 const PopupForm = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -12,7 +20,7 @@ const PopupForm = () => {
     setModalOpen(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     // Handle form submission logic here
     closeModal();
@@ -38,23 +46,22 @@ const PopupForm = () => {
           },
         }}
       >
-        <span className="close" onClick={closeModal}>
-          &times;
-        </span>
-        <form onSubmit={handleSubmit}>
-          {/* Your form fields go here */}
-          <label>
-            Name:
-            <input type="text" name="name" />
-          </label>
-          <br />
-          <label>
-            Email:
-            <input type="email" name="email" />
-          </label>
-          <br />
-          <button type="submit">Submit</button>
-        </form>
+        <Card className="w-full">
+          <CardHeader className="space-y-1">
+            <div className="flex items-center justify-start gap-4">
+              <img src="/icons/add-api.svg" alt="" className="w-4 h-4 ml-2 " />
+              <CardTitle className="text-2xl">Monetize Your Api</CardTitle>
+            </div>
+            <CardDescription>
+              Update Information about your API Plans
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4 text-sm">
+            <Button className="w-1/3" onClick={closeModal}>
+              Discard
+            </Button>
+          </CardContent>
+        </Card>
       </Modal>
     </div>
   );

@@ -11,7 +11,7 @@ export interface ApiCreation {
 }
 
 export interface Api {
-  ID: string;
+  ID: number;
   Name: string;
   ProviderID: number;
   ApiUrl: string;

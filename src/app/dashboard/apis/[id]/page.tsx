@@ -18,7 +18,7 @@ const AddApiPage = ({ params }: any) => {
       {apiSelceted.isError && <NotFoundPage />}
       {apiSelceted.isSuccess && (
         <>
-          <Sidebar />
+          <Sidebar apiId={id} />
 
           <div className="w-full">
             <Header />

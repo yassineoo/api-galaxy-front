@@ -25,7 +25,7 @@ export const useUpdateApi = () => {
 
   return useMutation({
     mutationFn: async (apiData: Api) => {
-      const response = await axios.put(`${ApiUrl}/apis/${apiData.id}`, apiData); // Adjust the endpoint
+      const response = await axios.put(`${ApiUrl}/apis/${apiData.ID}`, apiData); // Adjust the endpoint
       return response.data;
     },
 
@@ -40,11 +40,32 @@ export const useDeleteApi = () => {
 
   return useMutation({
     mutationFn: async (apiId: string) => {
-      await axios.delete(`/apis/${apiId}`); // Adjust the endpoint
+      await axios.delete(`${ApiUrl}/apis/${apiId}`); // Adjust the endpoint
     },
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["apiList"] });
+    },
+  });
+};
+
+export const useUpdateDocs = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: {
+      docsId: number;
+      docsContent: string;
+      apiID: number;
+    }) => {
+      await axios.patch(`${ApiUrl}/apis-docs/${data.docsId}`, data); // Adjust the endpoint
+    },
+
+    onSuccess: (_, variables) => {
+      // Invalidate the specific API query by its ID
+      queryClient.invalidateQueries({
+        queryKey: ["api", variables?.apiID?.toString()],
+      });
     },
   });
 };

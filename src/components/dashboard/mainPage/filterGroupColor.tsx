@@ -24,7 +24,7 @@ export const SelectButtonColor = ({
       }}
     >
       <SelectTrigger className={`${width}`}>
-        <SelectValue placeholder={name} />
+        <SelectValue placeholder={defaultValue} />
       </SelectTrigger>
       <SelectContent>
         {items?.map(({ value, color }: any) => (

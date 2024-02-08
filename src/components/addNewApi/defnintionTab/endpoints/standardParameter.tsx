@@ -5,7 +5,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Parameter, ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useFormContext } from "./parameterContext";
 import { Button } from "@/components/ui/button";
-import { randomBytes, randomInt } from "crypto";
 import { ValueTypes } from "@/utils/endpoints.functions";
 
 const StandardParameter = ({ parameterType }: any) => {
