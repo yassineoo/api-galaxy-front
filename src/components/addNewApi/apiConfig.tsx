@@ -13,7 +13,7 @@ export function ApiConfigTabs({ api }: any) {
   console.log(api);
 
   return (
-    <Tabs defaultValue="General">
+    <Tabs defaultValue="Monetization">
       <TabsList className="grid  grid-cols-5 w-2/3  ml-8 my-2">
         <TabsTrigger value="General">General</TabsTrigger>
         <TabsTrigger value="Definitions">Definitions</TabsTrigger>
@@ -50,7 +50,7 @@ export function ApiConfigTabs({ api }: any) {
         value="Monetization"
         className="w-full  flex flex-col justify-center items-start px-8 "
       >
-        <MonetizationTab />
+        <MonetizationTab api={api} />
       </TabsContent>
     </Tabs>
   );

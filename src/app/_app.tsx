@@ -1,7 +1,6 @@
 // pages/_app.tsx
 
 import type { AppProps } from "next/app";
-import Head from "next/head";
 import "./globals.css";
 
 import {
@@ -9,7 +8,6 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
-import { useState } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const client = new QueryClient();

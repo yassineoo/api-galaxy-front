@@ -16,8 +16,96 @@ import "react-toastify/dist/ReactToastify.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import EditPlanModal from "./editPlanModal";
+import FeutureModal from "./feutureModal";
+import YourComponent, { SelectMulti } from "./object";
+import {
+  useApiEndpointsById,
+  useApiEndpointsList,
+} from "@/hooks/Endpoints/Endpoints.queries";
+import PlanObjectModal from "./planObjectModal";
 export default function MonetizationTab({ api }: any) {
   // Create a ref for file input
+
+  const endpointsList = useApiEndpointsList(api.ID);
+
+  const [publicPlans, setPublicPlans] = useState([
+    {
+      name: "Basic",
+      active: true,
+      price: 0,
+      type: "Usage",
+      rate: "1000",
+      rateUnite: "Request",
+      recomndedPlan: true,
+    },
+    {
+      name: "PRO",
+      active: true,
+      price: 10,
+      type: "Monthely",
+      rate: "1000",
+      rateUnite: "Request",
+      recomndedPlan: false,
+    },
+    {
+      name: "Ultra",
+      active: true,
+      price: 100,
+      type: "Monthely",
+      rate: "1000",
+      rateUnite: "Request",
+      recomndedPlan: false,
+    },
+    {
+      name: "Mega",
+      active: true,
+      price: 1000,
+      type: "Monthely",
+      rate: "1000",
+      rateUnite: "Request",
+      recomndedPlan: true,
+    },
+  ]);
+  const [objectList, SetObjectList] = useState([
+    {
+      id: 1,
+      name: "Requests",
+      description: "every Requests  is included",
+      endpointList: [
+        {
+          id: 1,
+          name: "GET /users",
+        },
+        {
+          id: 2,
+          name: "GET /users/:id",
+        },
+        {
+          id: 3,
+          name: "POST /users",
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "Requests",
+      description: "every Requests  is included",
+      endpointList: [
+        {
+          id: 1,
+          name: "GET /users",
+        },
+        {
+          id: 2,
+          name: "GET /users/:id",
+        },
+        {
+          id: 3,
+          name: "POST /users",
+        },
+      ],
+    },
+  ]);
   const apiCategoryListQuery = useApiCategoryList();
 
   const { mutate: updateApi, isPending, isError, isSuccess } = useUpdateApi();
@@ -61,6 +149,7 @@ export default function MonetizationTab({ api }: any) {
           </div>
           <CardDescription>
             Update Information about your API Plans
+            <SelectMulti />
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 text-sm">
@@ -74,8 +163,13 @@ export default function MonetizationTab({ api }: any) {
               value="Public "
               className="w-full  flex flex-col justify-center items-start px-8 "
             >
-              <PlanHeaders />
-              <Button className="w-1/3">Add Plan</Button>
+              <PlanHeaders
+                publicPlans={publicPlans}
+                setPublicPlans={setPublicPlans}
+                endpointsList={endpointsList}
+                objectList={objectList}
+                setObjectList={SetObjectList}
+              />
             </TabsContent>
             <TabsContent
               value="Private"
@@ -132,31 +226,86 @@ export default function MonetizationTab({ api }: any) {
   );
 }
 
-const PlanHeaders = () => {
-  const plans = [
-    { Name: "Basic", active: true, price: 0, Unite: "month" },
-    { Name: "PRO", active: true, price: 10, Unite: "month" },
-    { Name: "Ultra", active: true, price: 100, Unite: "month" },
-    { Name: "Mega", active: true, price: 10000, Unite: "month" },
-  ];
+const PlanHeaders = ({
+  publicPlans,
+  setPublicPlans,
+  endpointsList,
+  objectList,
+  setObjectList,
+}: any) => {
+  console.log("publicPlans ============= ", publicPlans);
+
   return (
-    <div className="flex items-center justify-start gap-8 w-full">
-      {plans.map((plan) => (
-        <PlanHeader {...plan} />
+    <div className="grid grid-cols-5 gap-8 mb-2 w-full">
+      <div className="col-span-1"></div> {/* Empty column */}
+      {publicPlans.map((publicPlan: any, index: number) => (
+        <PlanHeader
+          index={index}
+          key={publicPlan?.name}
+          publicPlans={publicPlans}
+          setPublicPlans={setPublicPlans}
+        />
+      ))}
+      {objectList.map((object: any) => (
+        <FeutureLine
+          key={object.id}
+          id={object.id}
+          publicPlans={publicPlans}
+          endpointsList={endpointsList}
+          objectList={objectList}
+          setObjectList={setObjectList}
+        />
       ))}
     </div>
   );
 };
 
-const PlanHeader = ({ Name, active, price, Unite }: any) => {
+const FeutureLine = ({
+  id,
+  publicPlans,
+  endpointsList,
+  setObjectList,
+  objectList,
+}: any) => {
+  const objectSelceted = objectList.find((object: any) => object.id === id);
   return (
-    <div className="flex flex-col w-1/5  items-center gap-2 py-8">
-      <Switch checked={active} />
-      <CardTitle className="text-2xl">{Name}</CardTitle>
-      <CardDescription>
-        {price}$/{Unite}
+    <>
+      {endpointsList.isLoading && <p>loading ...</p>}
+
+      {endpointsList.isSuccess && (
+        <PlanObjectModal
+          edit
+          optionsList={endpointsList.data}
+          objectList={objectList}
+          setObjectList={setObjectList}
+          objectSelceted={objectSelceted}
+        />
+      )}
+
+      <FeutureModal
+        plan={publicPlans[0]}
+        objectSelceted={objectSelceted}
+        setObjectList={setObjectList}
+      />
+      <FeutureModal plan={publicPlans[1]} />
+      <FeutureModal plan={publicPlans[2]} />
+      <FeutureModal plan={publicPlans[3]} />
+    </>
+  );
+};
+
+const PlanHeader = ({ index, publicPlans, setPublicPlans }: any) => {
+  const plan = publicPlans[index];
+
+  return (
+    <div className="col-span-1 flex flex-col   items-center gap-2 py-8">
+      <CardTitle className="text-xl">{plan?.name}</CardTitle>
+
+      <Switch checked={plan?.active} />
+      <CardDescription className="text-xs">
+        {plan?.price}$/{plan?.type === "Monthely" ? "Month" : "Day"}
       </CardDescription>
-      <EditPlanModal />
+      <EditPlanModal index setPublicPlans={setPublicPlans} plan={plan} />
     </div>
   );
 };
