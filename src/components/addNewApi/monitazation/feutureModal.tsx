@@ -14,18 +14,16 @@ import { title } from "process";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
-const FeutureModal = ({
-  plan,
-  setPublicPlans,
-  title = "Basic/Request",
-  Quota = {},
-}: any) => {
+const FeutureModal = ({ index, plan, objectSelceted, setObjectList }: any) => {
+  const Quota = objectSelceted?.cross[index];
+  console.log("this is Quota", Object.keys(Quota).length);
+
   const [isModalOpen, setModalOpen] = useState(false);
   const [limitType, setLimitType] = useState(Quota?.limitType || "soft");
-  const [limitFee, setLimitFee] = useState(0.0001);
-  const [quotaType, setQuotaType] = useState(Quota?.type || "Monthely");
-  const [quotaValue, setQuotaValue] = useState(100);
-  const [price, setPrice] = useState(22);
+  const [limitFee, setLimitFee] = useState(Quota?.limitFee || 0);
+  const [quotaType, setQuotaType] = useState(Quota?.type || "Month");
+  const [quotaValue, setQuotaValue] = useState(Quota?.value || 0);
+  const [price, setPrice] = useState(Quota?.price || 0);
 
   const openModal = () => {
     setModalOpen(true);
@@ -41,11 +39,26 @@ const FeutureModal = ({
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    setPublicPlans((prev: any) => {
+
+    setObjectList((prev: any) => {
       return prev.map((item: any) => {
-        if (item.name === plan.name) {
+        if (item.id === objectSelceted.id) {
           return {
             ...item,
+            // i want to update the cross:
+            cross: item.cross.map((cross: any, i: any) => {
+              if (i === index) {
+                return {
+                  ...cross,
+                  price: price,
+                  limitType: limitType,
+                  limitFee: limitFee,
+                  type: quotaType,
+                  value: quotaValue,
+                };
+              }
+              return cross;
+            }),
           };
         }
         return item;
@@ -57,12 +70,20 @@ const FeutureModal = ({
 
   return (
     <div className="w-full flex justify-center items-center">
-      <Button
-        className="text-2xl flex justify-center items-center "
-        onClick={openModal}
-      >
-        +
-      </Button>
+      {Object.keys(Quota).length !== 0 ? (
+        <Button variant={"ghost"} onClick={openModal}>
+          {plan.type == "Usage"
+            ? `${Quota.price} $/use`
+            : `${Quota.value}/${Quota.type}`}
+        </Button>
+      ) : (
+        <Button
+          className="text-2xl flex justify-center items-center "
+          onClick={openModal}
+        >
+          +
+        </Button>
+      )}
 
       <Modal
         isOpen={isModalOpen}
@@ -85,7 +106,7 @@ const FeutureModal = ({
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-start gap-4">
               <img src="/icons/add-api.svg" alt="" className="w-4 h-4 ml-2 " />
-              <h2 className="text-2xl">{title}</h2>
+              <h2 className="text-2xl">{`${plan.name}/${objectSelceted.name}`}</h2>
             </div>
           </CardHeader>
           <CardContent>
@@ -111,13 +132,13 @@ const FeutureModal = ({
                     className="ml-2 flex gap-8"
                   >
                     <div className="flex items-center space-x-4">
-                      <RadioGroupItem value="Monthely" id="r1" />
+                      <RadioGroupItem value="Month" id="r1" />
                       <label className="  cursor-pointer" htmlFor="r1">
                         Monthely
                       </label>
                     </div>
                     <div className="flex items-center space-x-4">
-                      <RadioGroupItem value="Usage" id="r2" />
+                      <RadioGroupItem value="Day" id="r2" />
                       <label className="  cursor-pointer" htmlFor="r2">
                         Daily
                       </label>
@@ -175,25 +196,7 @@ const FeutureModal = ({
                     </div>
                   </RadioGroup>
                 </div>
-                <div className="flex items-center gap-4 py-1 ">
-                  <label className="w-1/3" htmlFor="recommended-plan-switch">
-                    Quota Limite
-                  </label>
 
-                  <Input
-                    value={quotaValue}
-                    onChange={(e) =>
-                      setQuotaValue(
-                        Number((e.target as HTMLInputElement).value)
-                      )
-                    }
-                    type="number"
-                    id="rate-limit-number"
-                    placeholder="Enter number"
-                    className="w-1/3"
-                    //disabled={!isRateActivated}
-                  />
-                </div>
                 {limitType === "soft" && (
                   <div className="flex items-center gap-4 py-1 ">
                     <label className="w-1/3" htmlFor="recommended-plan-switch">

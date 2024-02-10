@@ -85,6 +85,7 @@ export default function MonetizationTab({ api }: any) {
           name: "POST /users",
         },
       ],
+      cross: [{}, {}, {}, {}],
     },
     {
       id: 2,
@@ -104,6 +105,7 @@ export default function MonetizationTab({ api }: any) {
           name: "POST /users",
         },
       ],
+      cross: [{}, {}, {}, {}],
     },
   ]);
   const apiCategoryListQuery = useApiCategoryList();
@@ -268,6 +270,8 @@ const FeutureLine = ({
   objectList,
 }: any) => {
   const objectSelceted = objectList.find((object: any) => object.id === id);
+  console.log("objectSelceted ============= ", objectSelceted);
+
   return (
     <>
       {endpointsList.isLoading && <p>loading ...</p>}
@@ -286,10 +290,26 @@ const FeutureLine = ({
         plan={publicPlans[0]}
         objectSelceted={objectSelceted}
         setObjectList={setObjectList}
+        index={0}
       />
-      <FeutureModal plan={publicPlans[1]} />
-      <FeutureModal plan={publicPlans[2]} />
-      <FeutureModal plan={publicPlans[3]} />
+      <FeutureModal
+        plan={publicPlans[1]}
+        objectSelceted={objectSelceted}
+        setObjectList={setObjectList}
+        index={1}
+      />
+      <FeutureModal
+        plan={publicPlans[2]}
+        objectSelceted={objectSelceted}
+        setObjectList={setObjectList}
+        index={2}
+      />
+      <FeutureModal
+        plan={publicPlans[3]}
+        objectSelceted={objectSelceted}
+        setObjectList={setObjectList}
+        index={3}
+      />
     </>
   );
 };
@@ -303,7 +323,7 @@ const PlanHeader = ({ index, publicPlans, setPublicPlans }: any) => {
 
       <Switch checked={plan?.active} />
       <CardDescription className="text-xs">
-        {plan?.price}$/{plan?.type === "Monthely" ? "Month" : "Day"}
+        {plan.type == "Usage" ? "Pay per Use" : plan?.price + "$/Monthely"}
       </CardDescription>
       <EditPlanModal index setPublicPlans={setPublicPlans} plan={plan} />
     </div>
