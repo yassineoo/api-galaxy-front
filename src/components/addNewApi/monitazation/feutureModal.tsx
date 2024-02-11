@@ -57,6 +57,7 @@ const FeutureModal = ({ index, plan, objectSelceted, setObjectList }: any) => {
                   LimitFee: Number(LimitFee),
                   QuotaType: QuotaType,
                   QuotaValue: Number(QuotaValue),
+                  Add: true,
                 };
               }
               return cross;
@@ -70,9 +71,38 @@ const FeutureModal = ({ index, plan, objectSelceted, setObjectList }: any) => {
     closeModal();
   };
 
+  const handleDelete = () => {
+    setObjectList((prev: any) => {
+      return prev.map((item: any) => {
+        if (item.ID === objectSelceted.ID) {
+          return {
+            ...item,
+            // i want to update the cross:
+            Cross: item.Cross.map((cross: any, i: any) => {
+              if (i === index) {
+                return {
+                  ...cross,
+                  Price: 0,
+                  LimitType: "soft",
+                  LimitFee: 0,
+                  QuotaType: "Month",
+                  QuotaValue: 0,
+                  Add: false,
+                };
+              }
+              return cross;
+            }),
+          };
+        }
+        return item;
+      });
+    });
+    closeModal();
+  };
+
   return (
     <div className="w-full flex justify-center items-center">
-      {Object.keys(Quota).length !== 0 ? (
+      {Quota.Add ? (
         <Button variant={"ghost"} onClick={openModal}>
           {plan.Type == "Usage"
             ? `${Quota.Price} $/use`
@@ -225,6 +255,9 @@ const FeutureModal = ({ index, plan, objectSelceted, setObjectList }: any) => {
           <CardFooter className="w-full gap-4 m-auto  flex items-center justify-center">
             <Button className="w-1/3" onClick={closeModal}>
               Cancel
+            </Button>
+            <Button className="w-1/3" onClick={handleDelete}>
+              Delete
             </Button>
             <Button className={`w-5/12 `} onClick={handleSubmit}>
               Save

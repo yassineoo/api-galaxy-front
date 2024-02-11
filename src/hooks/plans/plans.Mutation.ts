@@ -30,10 +30,7 @@ export const useUpdateApiPlans = () => {
     mutationFn: async (apiData: any) => {
       console.log("updateEndpoint ========== ", apiData);
 
-      const response = await axios.patch(
-        `${ApiUrl}/Plans/${apiData.ID}`,
-        apiData
-      ); // Adjust the endpoint
+      const response = await axios.patch(`${ApiUrl}/Plans/`, apiData); // Adjust the endpoint
       console.log(response.data);
       return response.data;
     },

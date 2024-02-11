@@ -58,3 +58,42 @@ export const extractPathParameters = (url: string) => {
 
   return [];
 };
+
+export const defaultPlans = [
+  {
+    Name: "Basic",
+    Active: true,
+    Price: 0,
+    Type: "Usage",
+    Rate: 1000,
+    RateUnite: "Request",
+    RecomndedPlan: true,
+  },
+  {
+    Name: "PRO",
+    Active: true,
+    Price: 10,
+    Type: "Monthely",
+    Rate: 1000,
+    RateUnite: "Request",
+    RecomndedPlan: false,
+  },
+  {
+    Name: "Ultra",
+    Active: true,
+    Price: 100,
+    Type: "Monthely",
+    Rate: 1000,
+    RateUnite: "Request",
+    RecomndedPlan: false,
+  },
+  {
+    Name: "Mega",
+    Active: true,
+    Price: 1000,
+    Type: "Monthely",
+    Rate: 1000,
+    RateUnite: "Request",
+    RecomndedPlan: true,
+  },
+];

@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../../ui/card";
-import { useUpdateApi } from "@/hooks/apis/api.Mutation";
 import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,105 +16,61 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import EditPlanModal from "./editPlanModal";
 import FeutureModal from "./feutureModal";
-import YourComponent, { SelectMulti } from "./object";
-import {
-  useApiEndpointsById,
-  useApiEndpointsList,
-} from "@/hooks/Endpoints/Endpoints.queries";
+import { SelectMulti } from "./object";
+
 import PlanObjectModal from "./planObjectModal";
-import { useCreateApiPlans } from "@/hooks/plans/plans.Mutation";
-export default function MonetizationTab({ api }: any) {
+import {
+  useCreateApiPlans,
+  useUpdateApiPlans,
+} from "@/hooks/plans/plans.Mutation";
+import { defaultPlans } from "@/utils/endpoints.functions";
+import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
+
+export default function MonetizationTab({ api, apiPlans }: any) {
   // Create a ref for file input
+  console.log("apiplans ==========", apiPlans);
 
-  const endpointsList = useApiEndpointsList(api.ID);
-
-  const [publicPlans, setPublicPlans] = useState([
-    {
-      Name: "Basic",
-      Active: true,
-      Price: 0,
-      Type: "Usage",
-      Rate: 1000,
-      RateUnite: "Request",
-      RecomndedPlan: true,
-    },
-    {
-      Name: "PRO",
-      Active: true,
-      Price: 10,
-      Type: "Monthely",
-      Rate: 1000,
-      RateUnite: "Request",
-      RecomndedPlan: false,
-    },
-    {
-      Name: "Ultra",
-      Active: true,
-      Price: 100,
-      Type: "Monthely",
-      Rate: 1000,
-      RateUnite: "Request",
-      RecomndedPlan: false,
-    },
-    {
-      Name: "Mega",
-      Active: true,
-      Price: 1000,
-      Type: "Monthely",
-      Rate: 1000,
-      RateUnite: "Request",
-      RecomndedPlan: true,
-    },
-  ]);
-  const [objectList, SetObjectList] = useState([
-    {
-      ID: 1,
-      Name: "Requests",
-      Description: "every Requests  is included",
-      endpointList: [
-        {
-          ID: 1,
-          Name: "GET /users",
-        },
-        {
-          ID: 2,
-          Name: "GET /users/:ID",
-        },
-        {
-          ID: 3,
-          Name: "POST /users",
-        },
-      ],
-      Cross: [{}, {}, {}, {}],
-    },
-    {
-      ID: 2,
-      Name: "Requests",
-      Description: "every Requests  is included",
-      EndpointList: [
-        {
-          ID: 1,
-          Name: "GET /users",
-        },
-        {
-          ID: 2,
-          Name: "GET /users/:ID",
-        },
-        {
-          ID: 3,
-          Name: "POST /users",
-        },
-      ],
-      Cross: [{}, {}, {}, {}],
-    },
-  ]);
+  const [publicPlans, setPublicPlans] = useState(
+    apiPlans.plans || defaultPlans
+  );
+  const [objectList, SetObjectList] = useState(
+    apiPlans.ObjectPlans || [
+      {
+        ID: Math.floor(Math.random() * 1000000 + 1),
+        Name: "Requests",
+        Description: "every Requests  is included",
+        endpointList: [
+          {
+            ID: 1,
+            Name: "GET /users",
+          },
+          {
+            ID: 2,
+            Name: "GET /users/:ID",
+          },
+          {
+            ID: 3,
+            Name: "POST /users",
+          },
+        ],
+        Cross: [{}, {}, {}, {}],
+      },
+    ]
+  );
   const apiCategoryListQuery = useApiCategoryList();
+  const endpointsList = useApiEndpointsList(api.ID);
   const {
     mutateAsync: createPlan,
+    isPending: isCreationPending,
+    isError: isCreationError,
+    isSuccess: isCreationSuccess,
+  } = useCreateApiPlans();
+  const {
+    mutateAsync: updatePlan,
     isPending,
     isError,
     isSuccess,
-  } = useCreateApiPlans();
+  } = useUpdateApiPlans();
 
   useEffect(() => {
     if (isError) {
@@ -124,7 +79,7 @@ export default function MonetizationTab({ api }: any) {
     if (isSuccess) {
       toast.success("you api plans has been modified succufully!");
     }
-  }, [isError, isSuccess]);
+  }, [isCreationError, isCreationSuccess]);
   // Handle form submission
   const handleSubmit = async () => {
     try {
@@ -198,12 +153,14 @@ export default function MonetizationTab({ api }: any) {
           </Button>
           <Button
             className={`w-5/12  ${
-              isPending ? "bg-gray-500" : "bg-blue-500 hover:bg-blue-700"
-            } ${isPending ? "cursor-not-allowed" : "cursor-pointer"}`}
+              isCreationPending
+                ? "bg-gray-500"
+                : "bg-blue-500 hover:bg-blue-700"
+            } ${isCreationPending ? "cursor-not-allowed" : "cursor-pointer"}`}
             onClick={handleSubmit}
-            disabled={isPending}
+            disabled={isCreationPending}
           >
-            {isPending ? (
+            {isCreationPending ? (
               <span className="flex items-center">
                 saving...
                 <svg

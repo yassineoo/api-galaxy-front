@@ -8,9 +8,11 @@ import DefinitionTab from "./defnintionTab/definitionTab";
 import AddEndpointsForm from "./defnintionTab/endpoints/endpointsForm";
 import DocsTab from "./docs/docsTab";
 import MonetizationTab from "./monitazation/monetizationTab";
+import { useApiPlanList } from "@/hooks/plans/plans.queries";
 
 export function ApiConfigTabs({ api }: any) {
   console.log(api);
+  const apiPlans = useApiPlanList(api.ID);
 
   return (
     <Tabs defaultValue="Monetization">
@@ -50,7 +52,10 @@ export function ApiConfigTabs({ api }: any) {
         value="Monetization"
         className="w-full  flex flex-col justify-center items-start px-8 "
       >
-        <MonetizationTab api={api} />
+        {apiPlans.isLoading && <div>Loading...</div>}
+        {apiPlans.isSuccess && (
+          <MonetizationTab api={api} apiPlans={apiPlans.data} />
+        )}
       </TabsContent>
     </Tabs>
   );
