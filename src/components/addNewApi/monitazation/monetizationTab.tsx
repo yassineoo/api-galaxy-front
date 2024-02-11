@@ -23,6 +23,7 @@ import {
   useApiEndpointsList,
 } from "@/hooks/Endpoints/Endpoints.queries";
 import PlanObjectModal from "./planObjectModal";
+import { useCreateApiPlans } from "@/hooks/plans/plans.Mutation";
 export default function MonetizationTab({ api }: any) {
   // Create a ref for file input
 
@@ -30,103 +31,111 @@ export default function MonetizationTab({ api }: any) {
 
   const [publicPlans, setPublicPlans] = useState([
     {
-      name: "Basic",
-      active: true,
-      price: 0,
-      type: "Usage",
-      rate: "1000",
-      rateUnite: "Request",
-      recomndedPlan: true,
+      Name: "Basic",
+      Active: true,
+      Price: 0,
+      Type: "Usage",
+      Rate: 1000,
+      RateUnite: "Request",
+      RecomndedPlan: true,
     },
     {
-      name: "PRO",
-      active: true,
-      price: 10,
-      type: "Monthely",
-      rate: "1000",
-      rateUnite: "Request",
-      recomndedPlan: false,
+      Name: "PRO",
+      Active: true,
+      Price: 10,
+      Type: "Monthely",
+      Rate: 1000,
+      RateUnite: "Request",
+      RecomndedPlan: false,
     },
     {
-      name: "Ultra",
-      active: true,
-      price: 100,
-      type: "Monthely",
-      rate: "1000",
-      rateUnite: "Request",
-      recomndedPlan: false,
+      Name: "Ultra",
+      Active: true,
+      Price: 100,
+      Type: "Monthely",
+      Rate: 1000,
+      RateUnite: "Request",
+      RecomndedPlan: false,
     },
     {
-      name: "Mega",
-      active: true,
-      price: 1000,
-      type: "Monthely",
-      rate: "1000",
-      rateUnite: "Request",
-      recomndedPlan: true,
+      Name: "Mega",
+      Active: true,
+      Price: 1000,
+      Type: "Monthely",
+      Rate: 1000,
+      RateUnite: "Request",
+      RecomndedPlan: true,
     },
   ]);
   const [objectList, SetObjectList] = useState([
     {
-      id: 1,
-      name: "Requests",
-      description: "every Requests  is included",
+      ID: 1,
+      Name: "Requests",
+      Description: "every Requests  is included",
       endpointList: [
         {
-          id: 1,
-          name: "GET /users",
+          ID: 1,
+          Name: "GET /users",
         },
         {
-          id: 2,
-          name: "GET /users/:id",
+          ID: 2,
+          Name: "GET /users/:ID",
         },
         {
-          id: 3,
-          name: "POST /users",
+          ID: 3,
+          Name: "POST /users",
         },
       ],
-      cross: [{}, {}, {}, {}],
+      Cross: [{}, {}, {}, {}],
     },
     {
-      id: 2,
-      name: "Requests",
-      description: "every Requests  is included",
-      endpointList: [
+      ID: 2,
+      Name: "Requests",
+      Description: "every Requests  is included",
+      EndpointList: [
         {
-          id: 1,
-          name: "GET /users",
+          ID: 1,
+          Name: "GET /users",
         },
         {
-          id: 2,
-          name: "GET /users/:id",
+          ID: 2,
+          Name: "GET /users/:ID",
         },
         {
-          id: 3,
-          name: "POST /users",
+          ID: 3,
+          Name: "POST /users",
         },
       ],
-      cross: [{}, {}, {}, {}],
+      Cross: [{}, {}, {}, {}],
     },
   ]);
   const apiCategoryListQuery = useApiCategoryList();
-
-  const { mutate: updateApi, isPending, isError, isSuccess } = useUpdateApi();
+  const {
+    mutateAsync: createPlan,
+    isPending,
+    isError,
+    isSuccess,
+  } = useCreateApiPlans();
 
   useEffect(() => {
     if (isError) {
       toast.error("Error saving the modification try agian !");
     }
     if (isSuccess) {
-      toast.success("you api has been modified succufully!");
+      toast.success("you api plans has been modified succufully!");
     }
   }, [isError, isSuccess]);
   // Handle form submission
   const handleSubmit = async () => {
     try {
-      const Data = {};
-
-      //  await updateApi(Data);
-      //closeModal();
+      const Data = {
+        ApiID: api.ID,
+        PublicPlans: publicPlans,
+        ObjectList: objectList,
+      };
+      console.log("Data", Data);
+      await createPlan(Data);
+      //await updateApi(Data);
 
       console.log("API entity updated successfully!");
     } catch (error) {
@@ -235,23 +244,21 @@ const PlanHeaders = ({
   objectList,
   setObjectList,
 }: any) => {
-  console.log("publicPlans ============= ", publicPlans);
-
   return (
     <div className="grid grid-cols-5 gap-8 mb-2 w-full">
       <div className="col-span-1"></div> {/* Empty column */}
       {publicPlans.map((publicPlan: any, index: number) => (
         <PlanHeader
           index={index}
-          key={publicPlan?.name}
+          key={publicPlan?.Name}
           publicPlans={publicPlans}
           setPublicPlans={setPublicPlans}
         />
       ))}
       {objectList.map((object: any) => (
         <FeutureLine
-          key={object.id}
-          id={object.id}
+          key={object.ID}
+          ID={object.ID}
           publicPlans={publicPlans}
           endpointsList={endpointsList}
           objectList={objectList}
@@ -263,14 +270,13 @@ const PlanHeaders = ({
 };
 
 const FeutureLine = ({
-  id,
+  ID,
   publicPlans,
   endpointsList,
   setObjectList,
   objectList,
 }: any) => {
-  const objectSelceted = objectList.find((object: any) => object.id === id);
-  console.log("objectSelceted ============= ", objectSelceted);
+  const objectSelceted = objectList.find((object: any) => object.ID === ID);
 
   return (
     <>
@@ -316,14 +322,28 @@ const FeutureLine = ({
 
 const PlanHeader = ({ index, publicPlans, setPublicPlans }: any) => {
   const plan = publicPlans[index];
+  const [isActive, setIsActive] = useState(plan.Active);
+
+  useEffect(() => {
+    setPublicPlans((prev: any) => {
+      const newPlans = [...prev];
+      newPlans[index].Active = isActive;
+      return newPlans;
+    });
+  }, [isActive]);
+
+  const handleSwitchClick = () => {
+    setIsActive((prevIsActive: any) => !prevIsActive);
+  };
 
   return (
-    <div className="col-span-1 flex flex-col   items-center gap-2 py-8">
-      <CardTitle className="text-xl">{plan?.name}</CardTitle>
+    <div className="col-span-1 flex flex-col items-center gap-2 py-8">
+      <CardTitle className="text-xl">{plan?.Name}</CardTitle>
 
-      <Switch checked={plan?.active} />
+      <Switch checked={isActive} onClick={handleSwitchClick} />
+
       <CardDescription className="text-xs">
-        {plan.type == "Usage" ? "Pay per Use" : plan?.price + "$/Monthely"}
+        {plan.Type === "Usage" ? "Pay per Use" : plan?.Price + "$/Monthly"}
       </CardDescription>
       <EditPlanModal index setPublicPlans={setPublicPlans} plan={plan} />
     </div>

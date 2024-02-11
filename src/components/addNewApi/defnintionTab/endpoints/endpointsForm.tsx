@@ -43,22 +43,6 @@ const AddEndpointsForm = ({ closeModal, endpoint, edit }: any) => {
     }) || []
   );
 
-  console.log(
-    endpoint?.Parameters?.filter(
-      (p: any) => p.ParameterType === ParametersTypes.PathParmater
-    ).map((p: any) => {
-      return {
-        id: p.ID,
-        key: p.Key,
-        valueType: p.ValueType,
-        exampleValue: p.ExampleValue,
-        parameterType: p.ParameterType,
-        required: p.Required,
-      };
-    })
-  );
-  console.log("#######################################################");
-
   const [standardParameters, setStandardParameters] = useState<Parameter[]>(
     endpoint?.Parameters?.filter(
       (p: any) => p.ParameterType !== ParametersTypes.PathParmater
@@ -108,10 +92,8 @@ const AddEndpointsForm = ({ closeModal, endpoint, edit }: any) => {
       );
     }
     const pathParameters = extractPathParameters(url);
-    console.log("pathParameters", pathParameters);
 
     setParameters(pathParameters);
-    console.log("parametersUpdated", parameters);
   };
   // Function to extract path parameters from the URL
 
@@ -143,8 +125,6 @@ const AddEndpointsForm = ({ closeModal, endpoint, edit }: any) => {
           ...standardParameters.filter((p) => p.key != ""),
         ],
       };
-      console.log("this is data is sent to the server");
-      console.log(Data);
 
       if (edit) await updateEndpoint(Data);
       else await createEndpoint(Data);

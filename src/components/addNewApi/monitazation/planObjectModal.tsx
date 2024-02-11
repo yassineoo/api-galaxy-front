@@ -7,11 +7,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { set } from "date-fns";
-import { title } from "process";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import MultiSelect from "./object";
@@ -27,12 +23,12 @@ const PlanObjectModal = ({
   });
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const [name, setName] = useState(objectSelceted?.name || "");
-  const [description, setDescription] = useState(
-    objectSelceted?.description || ""
+  const [Name, setName] = useState(objectSelceted?.Name || "");
+  const [Description, setDescription] = useState(
+    objectSelceted?.Description || ""
   );
   const [endpointList, setEndpointList] = useState(
-    objectSelceted.endpoints || []
+    objectSelceted.Endpoints || []
   );
 
   const openModal = () => {
@@ -58,9 +54,9 @@ const PlanObjectModal = ({
         if (item.id === objectSelceted.id) {
           return {
             ...item,
-            name: name,
-            description: description,
-            endpoints: endpointList,
+            Name: Name,
+            Description: Description,
+            Endpoints: endpointList,
           };
         }
         return item;
@@ -77,7 +73,7 @@ const PlanObjectModal = ({
         className="col-span-1 flex justify-center items-center"
         onClick={openModal}
       >
-        {edit ? objectSelceted.name : "Add New Object"}
+        {edit ? objectSelceted.Name : "Add New Object"}
       </Button>
 
       <Modal
@@ -109,10 +105,10 @@ const PlanObjectModal = ({
               <h3>Name</h3>
               <div className="flex items-center justify-start gap-2">
                 <Input
-                  id="group-name"
+                  id="group-Name"
                   type="text"
                   placeholder="Object  Name"
-                  value={name}
+                  value={Name}
                   onChange={(event) => setName(event.target.value)}
                 />
               </div>
@@ -120,9 +116,9 @@ const PlanObjectModal = ({
                 <h3>Description</h3>
                 <div className="flex items-center justify-start gap-2">
                   <Textarea
-                    id="group-description"
+                    id="group-Description"
                     placeholder="Object Description"
-                    value={description}
+                    value={Description}
                     onChange={(event) => setDescription(event.target.value)}
                   />
                 </div>
@@ -152,23 +148,3 @@ const PlanObjectModal = ({
 };
 
 export default PlanObjectModal;
-
-export const PriceInput = ({ price, setPrice, label, unite }: any) => {
-  return (
-    <div className="flex items-center gap-4 py-1">
-      <label className="w-1/3" htmlFor="price-number">
-        {label}
-      </label>
-
-      <Input
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        type="number"
-        id="price-number"
-        placeholder="Enter number"
-        className="w-1/3"
-      />
-      <p>{unite}</p>
-    </div>
-  );
-};

@@ -15,13 +15,13 @@ import Modal from "react-modal";
 
 const EditPlanModal = ({ plan, setPublicPlans }: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isRecommendedPlan, setRecommendedPlan] = useState(plan?.recomndedPlan);
-  const [isRateActivated, setRateActivated] = useState(plan?.rate > 0);
-  const [planType, setPlanType] = useState(plan?.type);
-  const [price, setPrice] = useState(plan?.price);
-  const [rateLimit, setRateLimit] = useState(plan?.rate);
+  const [isRecommendedPlan, setRecommendedPlan] = useState(plan?.RecomndedPlan);
+  const [isRateActivated, setRateActivated] = useState(plan?.Rate > 0);
+  const [planType, setPlanType] = useState(plan?.Type);
+  const [Price, setPrice] = useState(plan?.Price);
+  const [RateLimit, setRateLimit] = useState(Number(plan?.Rate) || 0);
 
-  const [rateLimitType, setRateLimitType] = useState(plan?.rateUnite);
+  const [RateLimitType, setRateLimitType] = useState(plan?.RateUnite);
 
   const openModal = () => {
     setModalOpen(true);
@@ -45,14 +45,14 @@ const EditPlanModal = ({ plan, setPublicPlans }: any) => {
     e.preventDefault();
     setPublicPlans((prev: any) => {
       return prev.map((item: any) => {
-        if (item.name === plan.name) {
+        if (item.Name === plan.Name) {
           return {
             ...item,
-            recomndedPlan: isRecommendedPlan,
-            rate: rateLimit,
-            rateUnite: rateLimitType,
-            type: planType,
-            price: price,
+            RecomndedPlan: isRecommendedPlan,
+            Rate: Number(RateLimit),
+            RateUnite: RateLimitType,
+            Type: planType,
+            Price: Price,
           };
         }
         return item;
@@ -97,7 +97,7 @@ const EditPlanModal = ({ plan, setPublicPlans }: any) => {
                 <h3 className="w-1/3">Plan Type</h3>
                 <RadioGroup
                   defaultValue={planType}
-                  onChange={(e) =>
+                  onClick={(e) =>
                     setPlanType((e.target as HTMLInputElement).value)
                   }
                   className="ml-2 flex gap-8"
@@ -129,10 +129,10 @@ const EditPlanModal = ({ plan, setPublicPlans }: any) => {
                 />
 
                 <Input
-                  value={rateLimit}
-                  onChange={(e) => setRateLimit(e.target.value)}
+                  value={RateLimit}
+                  onChange={(e) => setRateLimit(Number(e.target.value))}
                   type="number"
-                  id="rate-limit-number"
+                  id="Rate-limit-number"
                   placeholder="Enter number"
                   className="w-1/4"
                   disabled={!isRateActivated}
@@ -141,7 +141,7 @@ const EditPlanModal = ({ plan, setPublicPlans }: any) => {
                   width="w-1/5"
                   disabled={!isRateActivated}
                   handleSelectionChange={(e: any) => setRateLimitType(e)}
-                  defaultValue={rateLimitType}
+                  defaultValue={RateLimitType}
                   items={[
                     {
                       label: "seconds",
@@ -160,15 +160,15 @@ const EditPlanModal = ({ plan, setPublicPlans }: any) => {
               </div>
               <hr className="my-2 border-t" />
               <div className="flex items-center gap-4 py-1">
-                <label className="w-1/3" htmlFor="price-number">
+                <label className="w-1/3" htmlFor="Price-number">
                   Subscription Price
                 </label>
 
                 <Input
-                  value={price}
+                  value={Price}
                   onChange={(e) => setPrice(e.target.value)}
                   type="number"
-                  id="price-number"
+                  id="Price-number"
                   placeholder="Enter number"
                   className="w-1/4"
                 />

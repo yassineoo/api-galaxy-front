@@ -4,32 +4,34 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 import { ApiUrl } from "@/utils/constants";
-import { ApiEndpoints } from "./interfaces";
+//import { ApiPlans } from "./interfaces";
 
-export const useCreateApiEndpoints = () => {
+export const useCreateApiPlans = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (data: any) => {
-      console.log("data ============ ", data);
+      console.log("data create Plans  ============ ", data);
 
-      const response = await axios.post(`${ApiUrl}/endpoints`, data); // Adjust the endpoint
+      const response = await axios.post(`${ApiUrl}/plans/`, data); // Adjust the endpoint
       return response.data;
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["apiEndpointsList"] });
+      queryClient.invalidateQueries({ queryKey: ["apiPlansList"] });
     },
   });
 };
 
-export const useUpdateApiEndpoints = () => {
+export const useUpdateApiPlans = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (apiData: Partial<ApiEndpoints>) => {
+    mutationFn: async (apiData: any) => {
+      console.log("updateEndpoint ========== ", apiData);
+
       const response = await axios.patch(
-        `${ApiUrl}/endpoints/${apiData.ID}`,
+        `${ApiUrl}/Plans/${apiData.ID}`,
         apiData
       ); // Adjust the endpoint
       console.log(response.data);
@@ -37,21 +39,21 @@ export const useUpdateApiEndpoints = () => {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["apiEndpointsList"] });
+      queryClient.invalidateQueries({ queryKey: ["apiPlansList"] });
     },
   });
 };
 
-export const useDeleteApiEndpoints = () => {
+export const useDeleteApiPlans = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string) => {
-      await axios.delete(`/endpoints/${id}`); // Adjust the endpoint
+      await axios.delete(`/Plans/${id}`); // Adjust the endpoint
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["apiEndpointsList"] });
+      queryClient.invalidateQueries({ queryKey: ["apiPlansList"] });
     },
   });
 };

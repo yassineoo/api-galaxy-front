@@ -104,7 +104,6 @@ const Menu = ({ isMenuOpen, apiId, maApisList }: any) => {
       ],
     },
   ];
-  console.log("apiId ============= ", apiId, activeMenu);
 
   const handleMenuClick = (event: any) => {
     setActiveMenu(event.target.value);

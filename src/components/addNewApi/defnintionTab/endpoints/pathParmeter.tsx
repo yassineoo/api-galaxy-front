@@ -28,7 +28,6 @@ const ParameterColumn = ({ index }: any) => {
   const { parameters, setParameters, setEndpointUrl, endpointUrl } =
     useFormContext();
   const parameter = parameters[index];
-  console.log("parameter", parameter);
 
   // Local state for the component
   const [localKey, setLocalKey] = useState(parameter?.key);
@@ -38,9 +37,6 @@ const ParameterColumn = ({ index }: any) => {
   useEffect(() => {
     // Update global state when local state changes
     setParameters((prevParameters: any) => {
-      console.log(prevParameters);
-      console.log(localKey, selectedType, example);
-
       const updatedParameters = [...prevParameters];
       updatedParameters[index] = {
         ...updatedParameters[index],
@@ -87,11 +83,7 @@ const ParameterColumn = ({ index }: any) => {
 
     // Update the endpoint URL by removing the parameter
     let updatedEndpointUrl = endpointUrl;
-    console.log("updatedEndpointUrl original", endpointUrl);
 
-    console.log(
-      `updatedEndpointUrl wt should be replaced : /{${parameters[index]?.key}}`
-    );
     updatedEndpointUrl = updatedEndpointUrl.replace(
       `/{${parameters[index]?.key}}`,
       ""

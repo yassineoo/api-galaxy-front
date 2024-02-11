@@ -52,7 +52,6 @@ export const extractPathParameters = (url: string) => {
         required: true,
       }; // Default type is string
     });
-    console.log("pathParameters", pathParameters);
 
     return pathParameters;
   }

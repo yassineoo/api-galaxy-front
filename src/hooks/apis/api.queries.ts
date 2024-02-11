@@ -29,7 +29,6 @@ export const useApiByUserId = (userId: number) => {
     queryKey: ["myApis", userId],
     queryFn: async () => {
       const response = await axios.get(`${ApiUrl}/apis/user-apis/${userId}`); // Adjust the endpoint
-      console.log("response ============= ", response.data);
 
       return response.data;
     },
