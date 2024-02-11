@@ -18,7 +18,7 @@ const EditPlanModal = ({ plan, setPublicPlans }: any) => {
   const [isRecommendedPlan, setRecommendedPlan] = useState(plan?.RecomndedPlan);
   const [isRateActivated, setRateActivated] = useState(plan?.Rate > 0);
   const [planType, setPlanType] = useState(plan?.Type);
-  const [Price, setPrice] = useState(plan?.Price);
+  const [Price, setPrice] = useState(Number(plan?.Price));
   const [RateLimit, setRateLimit] = useState(Number(plan?.Rate) || 0);
 
   const [RateLimitType, setRateLimitType] = useState(plan?.RateUnite);
@@ -166,7 +166,7 @@ const EditPlanModal = ({ plan, setPublicPlans }: any) => {
 
                 <Input
                   value={Price}
-                  onChange={(e) => setPrice(e.target.value)}
+                  onChange={(e) => setPrice(Number(e.target.value))}
                   type="number"
                   id="Price-number"
                   placeholder="Enter number"

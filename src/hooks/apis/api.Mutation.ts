@@ -55,7 +55,7 @@ export const useUpdateDocs = () => {
   return useMutation({
     mutationFn: async (data: {
       docsId: number;
-      docsContent: string;
+      Content: string;
       apiID: number;
     }) => {
       await axios.patch(`${ApiUrl}/apis-docs/${data.docsId}`, data); // Adjust the endpoint

@@ -30,7 +30,7 @@ export const useUpdateApiPlans = () => {
     mutationFn: async (apiData: any) => {
       console.log("updateEndpoint ========== ", apiData);
 
-      const response = await axios.patch(`${ApiUrl}/Plans/`, apiData); // Adjust the endpoint
+      const response = await axios.patch(`${ApiUrl}/plans/`, apiData); // Adjust the endpoint
       console.log(response.data);
       return response.data;
     },
@@ -46,7 +46,7 @@ export const useDeleteApiPlans = () => {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      await axios.delete(`/Plans/${id}`); // Adjust the endpoint
+      await axios.delete(`/plans/${id}`); // Adjust the endpoint
     },
 
     onSuccess: () => {

@@ -17,12 +17,10 @@ import { ToastContainer, toast } from "react-toastify";
 
 export default function DocsTab({ api }: any) {
   // Define states for input fields
-  const [docs, setDocs] = useState<string>(
-    api?.ApiDocs?.Content || defaultText
-  );
+  const [docs, setDocs] = useState<string>(api?.ApiDocs?.Content || "");
 
   const {
-    mutate: updateApiDocs,
+    mutateAsync: updateApiDocs,
     isError,
     isPending,
     error,
@@ -45,7 +43,7 @@ export default function DocsTab({ api }: any) {
   const handleSubmit = async () => {
     try {
       const Data = {
-        docsContent: docs as string,
+        Content: docs as string,
         docsId: api.ID as number,
         apiID: api.ID as number,
       };

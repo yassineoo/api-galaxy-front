@@ -54,7 +54,11 @@ export function ApiConfigTabs({ api }: any) {
       >
         {apiPlans.isLoading && <div>Loading...</div>}
         {apiPlans.isSuccess && (
-          <MonetizationTab api={api} apiPlans={apiPlans.data} />
+          <MonetizationTab
+            api={api}
+            apiPlans={apiPlans.data}
+            edit={apiPlans.data.Plans.length !== 0 ? true : false}
+          />
         )}
       </TabsContent>
     </Tabs>

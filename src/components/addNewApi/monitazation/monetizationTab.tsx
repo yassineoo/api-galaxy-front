@@ -16,7 +16,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import EditPlanModal from "./editPlanModal";
 import FeutureModal from "./feutureModal";
-import { SelectMulti } from "./object";
 
 import PlanObjectModal from "./planObjectModal";
 import {
@@ -25,37 +24,39 @@ import {
 } from "@/hooks/plans/plans.Mutation";
 import { defaultPlans } from "@/utils/endpoints.functions";
 import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
+import { LoadingButton } from "@/components/shared/loadingButton";
 
-export default function MonetizationTab({ api, apiPlans }: any) {
+export default function MonetizationTab({ api, apiPlans, edit }: any) {
   // Create a ref for file input
-  console.log("apiplans ==========", apiPlans);
 
   const [publicPlans, setPublicPlans] = useState(
-    apiPlans.plans || defaultPlans
+    apiPlans.Plans || defaultPlans
   );
   const [objectList, SetObjectList] = useState(
-    apiPlans.ObjectPlans || [
-      {
-        ID: Math.floor(Math.random() * 1000000 + 1),
-        Name: "Requests",
-        Description: "every Requests  is included",
-        endpointList: [
+    edit
+      ? apiPlans.ObjectPlans
+      : [
           {
-            ID: 1,
-            Name: "GET /users",
+            ID: Math.floor(Math.random() * 1000000 + 1),
+            Name: "Requests",
+            Description: "every Requests  is included",
+            endpointList: [
+              {
+                ID: 1,
+                Name: "GET /users",
+              },
+              {
+                ID: 2,
+                Name: "GET /users/:ID",
+              },
+              {
+                ID: 3,
+                Name: "POST /users",
+              },
+            ],
+            Cross: [{}, {}, {}, {}],
           },
-          {
-            ID: 2,
-            Name: "GET /users/:ID",
-          },
-          {
-            ID: 3,
-            Name: "POST /users",
-          },
-        ],
-        Cross: [{}, {}, {}, {}],
-      },
-    ]
+        ]
   );
   const apiCategoryListQuery = useApiCategoryList();
   const endpointsList = useApiEndpointsList(api.ID);
@@ -88,10 +89,9 @@ export default function MonetizationTab({ api, apiPlans }: any) {
         PublicPlans: publicPlans,
         ObjectList: objectList,
       };
-      console.log("Data", Data);
-      await createPlan(Data);
-      //await updateApi(Data);
 
+      edit ? await updatePlan(Data) : await createPlan(Data);
+      //await updateApi(Data);
       console.log("API entity updated successfully!");
     } catch (error) {
       console.error("Error creating API entity:", error);
@@ -115,7 +115,6 @@ export default function MonetizationTab({ api, apiPlans }: any) {
           </div>
           <CardDescription>
             Update Information about your API Plans
-            <SelectMulti />
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 text-sm">
@@ -153,40 +152,14 @@ export default function MonetizationTab({ api, apiPlans }: any) {
           </Button>
           <Button
             className={`w-5/12  ${
-              isCreationPending
+              isCreationPending || isPending
                 ? "bg-gray-500"
                 : "bg-blue-500 hover:bg-blue-700"
             } ${isCreationPending ? "cursor-not-allowed" : "cursor-pointer"}`}
             onClick={handleSubmit}
             disabled={isCreationPending}
           >
-            {isCreationPending ? (
-              <span className="flex items-center">
-                saving...
-                <svg
-                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 016 12H2c0 3.042 1.135 5.824 3 7.938l1-1.647zM18 12a6.91 6.91 0 00-3-5.659V7h-1V4h4v4h-1v2h1a8 8 0 005-2.647l-1 1.646zM18 14h1v2h-4v-4h1V7h-1v-.344A8 8 0 0020 12h-2z"
-                  ></path>
-                </svg>
-              </span>
-            ) : (
-              "save"
-            )}
+            {isCreationPending || isPending ? <LoadingButton /> : "save"}
           </Button>
         </CardFooter>
       </Card>
