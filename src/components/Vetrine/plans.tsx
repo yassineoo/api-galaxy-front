@@ -1,5 +1,4 @@
-import PricingCard from "../General use/pricingCard";
-import IdpropType from "./idProp";
+import PricingCard from "../VetrineXs/pricingCard";
 
 const plans = [
   {
@@ -35,7 +34,7 @@ const plans = [
   },
 ];
 
-export default function Plans(id: IdpropType): JSX.Element {
+export default function Plans(id: any): JSX.Element {
   return (
     <div
       id={id.id}

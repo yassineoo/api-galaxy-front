@@ -1,5 +1,4 @@
-import ReviewCard from "../General use/reviewCard";
-import IdpropType from "./idProp";
+import ReviewCard from "../VetrineXs/reviewCard";
 
 const reviewCards = [
   {
@@ -44,7 +43,7 @@ const reviewCards = [
   },
 ];
 
-export default function Reviews(id: IdpropType) {
+export default function Reviews(id: any) {
   return (
     <div id={id.id} className="bg-white text-black p-4">
       <h1 className="text-title text-center text-3xl font-semibold text-mainColor">

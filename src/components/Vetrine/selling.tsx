@@ -1,5 +1,4 @@
-import Card from "../General use/card";
-import IdpropType from "./idProp";
+import Card from "../VetrineXs/card";
 
 const sellingData = [
   {
@@ -22,7 +21,7 @@ const sellingData = [
   },
 ];
 
-export default function SellingCards(id: IdpropType): JSX.Element {
+export default function SellingCards(id: any): JSX.Element {
   return (
     <div id={id.id} className="bg-white p-6">
       <h1 className="mt-4 mb-12 text-black text-center text-2xl md:text-3xl font-title font-semibold">

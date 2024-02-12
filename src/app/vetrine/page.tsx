@@ -6,6 +6,7 @@ import Plans from "../../components/Vetrine/plans";
 import Reviews from "../../components/Vetrine/reviews";
 import Contacts from "../../components/Vetrine/contacts";
 import Footer from "../../components/Vetrine/footer";
+
 // VetrinePage.tsx
 
 export default function VetrinePage() {

@@ -30,7 +30,7 @@ export default function MonetizationTab({ api, apiPlans, edit }: any) {
   // Create a ref for file input
 
   const [publicPlans, setPublicPlans] = useState(
-    apiPlans.Plans || defaultPlans
+    apiPlans.Plans.slice(0, 4) || defaultPlans
   );
   const [objectList, SetObjectList] = useState(
     edit
