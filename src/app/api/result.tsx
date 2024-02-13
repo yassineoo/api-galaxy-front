@@ -2,9 +2,7 @@ import React from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import FilterGroup, {
-  SelectButton,
-} from "../../components/dashboard/mainPage/filterGroupColor";
+
 import { Button } from "@/components/ui/button";
 import {
   generateAxiosSnippet,
@@ -16,6 +14,7 @@ import {
   generatePythonRequestsSnippet,
   generateSwiftSnippet,
 } from "@/lib/codeGenerator";
+import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
 
 const Result = ({ codeString, language }: any) => {
   // const [snippet, setSnippet] = React.useState(snippetExample);

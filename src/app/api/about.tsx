@@ -49,8 +49,10 @@ export const defaultText = `<div>
 </div>
 `;
 
-const About = () => {
-  const [text, setText] = useState(defaultText);
+const About = ({ apiDocs }: any) => {
+  console.log("Docs is : ", apiDocs.Content);
+
+  const [text, setText] = useState(apiDocs?.Content || defaultText);
 
   useEffect(() => {
     console.log(text);
@@ -64,7 +66,7 @@ const About = () => {
       <QuillNoSSRWrapper
         modules={modules}
         theme="snow"
-        value={defaultText}
+        value={text}
         onChange={setText}
         readOnly
       />

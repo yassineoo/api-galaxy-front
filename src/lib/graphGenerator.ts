@@ -7,7 +7,7 @@ export default function generateGraph(endpoints: any[]) {
       id: "root",
       type: "input",
       position: { x: 20, y: 100 },
-      data: { label: "/ (Root)" },
+      data: { label: "/ (Root)", id: 0 },
     },
   ];
 
@@ -26,7 +26,7 @@ export default function generateGraph(endpoints: any[]) {
       type: "custom",
 
       position: { x: 200, y: currentGroupY },
-      data: { label: group.toString() },
+      data: { label: group.toString(), id: 0 },
     });
 
     edges.push({
@@ -51,7 +51,7 @@ export default function generateGraph(endpoints: any[]) {
       id: endpointId,
       type: "custom",
       position: { x: 400, y: groupPositions[endpoint.groupName] },
-      data: { label: endpoint.pathUrl },
+      data: { label: endpoint.pathUrl, id: endpoint.id },
     });
 
     edges.push({

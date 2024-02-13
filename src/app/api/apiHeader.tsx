@@ -1,16 +1,16 @@
 // components/ServiceCard.js
-const ApiHeader = () => {
+const ApiHeader = ({ Name, Description, ImagePath }: any) => {
   return (
     <div className="w_full flex items-center justify-between  bg-white p-2 shadow-md">
       <div className="flex items-center ml-8 gap-2">
         <img
-          src="/images/Google_Translate_logo 1.png" // Replace with your logo path
+          src={ImagePath} // Replace with your logo path
           alt="Google Translator Logo"
           className="h-8 w-8 mr-2" // Adjust height and width as needed
         />
         <div className="text-blue-900 font-semibold">
-          <h2> Google Translator </h2>
-          <p className="text-sm text-gray-600">Translate text in real time</p>
+          <h2> {Name} </h2>
+          <p className="text-sm text-gray-600">{Description}</p>
         </div>
       </div>
       <div className="flex items-center gap-4 mr-3">

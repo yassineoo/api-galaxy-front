@@ -21,9 +21,20 @@ const endpoints = [
   // Add more endpoints here...
 ];
 
-const CustomNode = ({ data }: any) => {
+const CustomNode = React.memo(({ data, onClick }: any) => {
+  console.log("data ===========", data);
+
+  const handleClick = () => {
+    // Call the onClick handler passed from the parent component
+    console.log("clickedd ===========", data.id);
+
+    onClick(data.id);
+  };
   return (
-    <div className="bg-orange-500   text-black py-2 px-4 rounded-md">
+    <div
+      onClick={handleClick}
+      className="bg-orange-500   text-black py-2 px-4 rounded-md"
+    >
       <Handle
         type="target"
         position={Position.Left}
@@ -37,10 +48,21 @@ const CustomNode = ({ data }: any) => {
       />
     </div>
   );
-};
+});
 
-export default function ApiDocsGraph() {
-  const { nodes: initialNodes, edges: initialEdges } = generateGraph(endpoints);
+export default React.memo(function ApiDocsGraph({
+  endpointsList,
+  setSelectedNodeId,
+}: any) {
+  const { nodes: initialNodes, edges: initialEdges } = generateGraph(
+    endpointsList.map((endpoint: any) => {
+      return {
+        id: endpoint.ID,
+        pathUrl: endpoint.Url,
+        groupName: endpoint.Group.Group,
+      };
+    }) || endpoints
+  );
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -49,17 +71,28 @@ export default function ApiDocsGraph() {
     [setEdges]
   );
 
+  const handleNodeClick = (nodeId: any) => {
+    // Change the state in the parent component
+    console.log("clickedd nodeId", nodeId);
+
+    setSelectedNodeId(nodeId);
+  };
   return (
     <div className=" h-[400px]  w-4/5 ">
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onConnect={onConnect}
-        nodeTypes={nodeTypes}
+        nodeTypes={{
+          ...nodeTypes,
+          custom: (props: any) => (
+            <CustomNode {...props} onClick={handleNodeClick} />
+          ),
+        }}
       />
     </div>
   );
-}
+});
 const nodeTypes = {
   custom: CustomNode, // 'custom' is the type name you'll refer to
 };

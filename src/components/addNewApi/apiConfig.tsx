@@ -3,7 +3,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AddNewApiForm from "./genralTab/addApiPopUp";
 import PopupForm from "./defnintionTab/endpoints/addNewEndpointModal";
 import GenralApiInfoTab from "./genralTab/generalTab";
-import ProductCard from "./genralTab/productCard";
 import DefinitionTab from "./defnintionTab/definitionTab";
 import AddEndpointsForm from "./defnintionTab/endpoints/endpointsForm";
 import DocsTab from "./docs/docsTab";

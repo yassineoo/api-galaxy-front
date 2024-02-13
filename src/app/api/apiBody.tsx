@@ -17,6 +17,7 @@ import About from "./about";
 import Footer from "../../components/Vetrine/footer";
 import Plans from "../../components/Vetrine/plans";
 import CommentsContainer from "../test/page";
+import { useApiEndpointsById } from "@/hooks/Endpoints/Endpoints.queries";
 const codeString = `
 const axios = require('axios');
 
@@ -99,7 +100,11 @@ const result = `{
 }
 `;
 
-export function ApiTabs() {
+export function ApiTabs({ api }: any) {
+  const endpointList = useApiEndpointsById(api.ID);
+  const [selectedNodeId, setSelectedNodeId] = useState(100);
+  console.log("selectedNodeId ", selectedNodeId);
+
   return (
     <Tabs defaultValue="endpoints">
       <TabsList className="grid  grid-cols-4 w-1/3  ml-8 my-2">
@@ -112,7 +117,13 @@ export function ApiTabs() {
         value="endpoints"
         className="w-full  flex flex-col justify-center "
       >
-        <ApiDocsGraph />
+        {endpointList.isLoading && <div>Loading...</div>}
+        {endpointList.isSuccess && (
+          <ApiDocsGraph
+            endpointsList={endpointList.data}
+            setSelectedNodeId={setSelectedNodeId}
+          />
+        )}
         <div className="w-full flex justify-center h-screen">
           <ParamterControler />
           <CodeResult />
@@ -122,7 +133,7 @@ export function ApiTabs() {
         value="about"
         className="w-full   flex flex-col justify-start mx-12 items-start "
       >
-        <About />
+        <About apiDocs={api.ApiDocs} />
       </TabsContent>
       <TabsContent
         value="discussion"

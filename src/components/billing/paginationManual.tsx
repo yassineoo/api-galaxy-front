@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 
 const PaginationManual = ({ currentPage, totalPages, onPageChange }: any) => {
+  console.log(currentPage, totalPages, onPageChange);
+
   return (
     <div className="flex items-center justify-center space-x-1 mt-6">
       <Button

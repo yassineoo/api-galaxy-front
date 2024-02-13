@@ -1,34 +1,10 @@
+"use client";
 import Image from "next/image";
 import LeftBarButton from "../HubXs/leftBarButton";
 import ProductCard from "../HubXs/productCard";
-
-const cards = [
-  {
-    averageRating: 4.8,
-    latency: 7,
-    availability: 99.99,
-    imagePath: "/assets/apis/Google_Translate_logo.png",
-    cardTitle: "Google translate API",
-    cardDescription: "Translate text from one language to another",
-  },
-  {
-    averageRating: 4.2,
-    latency: 25,
-    availability: 99,
-    imagePath: "/assets/apis/football_api.png",
-    cardTitle: "Movies API",
-    cardDescription: "Api for movies",
-  },
-  {
-    averageRating: 4.0,
-    latency: 120,
-    availability: 99.9,
-    imagePath: "/assets/apis/movie_api.png",
-    cardTitle: "Football API",
-    cardDescription:
-      "Api for football matches , stats,  from all over the world",
-  },
-];
+import { useApiList } from "@/hooks/apis/api.queries";
+import { useEffect, useState } from "react";
+import PaginationManual from "../billing/paginationManual";
 
 const buttons = [
   {
@@ -58,12 +34,21 @@ const buttons = [
   },
 ];
 
-let dupCards = cards;
-for (let i = 0; i < 2; i++) {
-  dupCards = dupCards.concat(cards);
-}
-
 export default function ProductsHub() {
+  const [page, setPage] = useState(1);
+
+  const apiList = useApiList({
+    page,
+    limit: 5,
+  });
+
+  useEffect(() => {
+    console.log(apiList.error);
+  }, [apiList.isError]);
+  useEffect(() => {
+    console.log(apiList.data);
+  }, [apiList.data]);
+
   return (
     <>
       <div className="bg-white py-10  text-black flex">
@@ -83,18 +68,28 @@ export default function ProductsHub() {
           </h1>
 
           <div className="flex flex-wrap gap-2 p-2">
-            {dupCards.map((card, index) => (
-              <ProductCard
-                key={index}
-                averageRating={card.averageRating}
-                latency={card.latency}
-                availability={card.availability}
-                imagePath={card.imagePath}
-                cardTitle={card.cardTitle}
-                cardDescription={card.cardDescription}
-              />
-            ))}
+            {apiList.isLoading && <p>Loading ...</p>}
+            {apiList.isError && <p>apiList.Error</p>}
+
+            {apiList.isSuccess &&
+              apiList?.data?.data?.apis?.map((card: any, index: any) => (
+                <ProductCard
+                  id={card.ID}
+                  key={index}
+                  averageRating={321}
+                  latency={12}
+                  availability={42}
+                  imagePath={card.ImagePath}
+                  cardTitle={card.Name}
+                  cardDescription={card.Description}
+                />
+              ))}
           </div>
+          <PaginationManual
+            currentPage={page}
+            totalPages={apiList?.data?.data?.meta?.totalPages}
+            onPageChange={setPage}
+          />
         </div>
       </div>
     </>

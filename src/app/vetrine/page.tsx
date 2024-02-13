@@ -1,13 +1,11 @@
-import Hero from "../../components/Vetrine/hero";
-import Navbar from "../../components/General use/navbar";
-import SellingCards from "../../components/Vetrine/selling";
-import AboutUs from "../../components/Vetrine/aboutUs";
-import Plans from "../../components/Vetrine/plans";
-import Reviews from "../../components/Vetrine/reviews";
-import Contacts from "../../components/Vetrine/contacts";
-import Footer from "../../components/Vetrine/footer";
-
 // VetrinePage.tsx
+
+import AboutUs from "@/components/General use/aboutUs";
+import Hero from "@/components/General use/hero";
+import Navbar from "@/components/General use/navbar";
+import SellingCards from "@/components/General use/selling";
+import Plans from "@/components/Vetrine/plans";
+import Reviews from "@/components/Vetrine/reviews";
 
 export default function VetrinePage() {
   return (
@@ -19,8 +17,8 @@ export default function VetrinePage() {
         <AboutUs id="3" />
         <Plans id="4" />
         <Reviews id="5" />
-        <Contacts id="6" />
-        <Footer />
+
+        <footer />
       </div>
     </>
   );

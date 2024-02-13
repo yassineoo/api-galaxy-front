@@ -11,7 +11,6 @@ import {
 } from "../../ui/card";
 import { Input } from "../../ui/input";
 import { useUpdateApi } from "@/hooks/apis/api.Mutation";
-import ProductCard from "./productCard";
 import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
 import { Switch } from "../../ui/switch";
 import { Label } from "../../ui/label";
@@ -19,6 +18,7 @@ import ApiCategorySelect from "./apiCategorySelect";
 import { ToastAction } from "@/components/ui/toast";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProductCard from "@/components/HubXs/productCard";
 
 export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields
@@ -267,6 +267,7 @@ export default function GenralApiInfoTab({ api }: any) {
         </CardFooter>
       </Card>
       <ProductCard
+        id={api.ID}
         averageRating={api.averageRating}
         latency={api.latency}
         availability={api.availability}
