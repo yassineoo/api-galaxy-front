@@ -18,6 +18,7 @@ import Footer from "../../components/Vetrine/footer";
 import Plans from "../../components/Vetrine/plans";
 import CommentsContainer from "../test/page";
 import { useApiEndpointsById } from "@/hooks/Endpoints/Endpoints.queries";
+import axios from "axios";
 const codeString = `
 const axios = require('axios');
 
@@ -125,7 +126,12 @@ export function ApiTabs({ api }: any) {
           />
         )}
         <div className="w-full flex justify-center h-screen">
-          <ParamterControler />
+          {endpointList.isSuccess && (
+            <ParamterControler
+              selectedNodeId={selectedNodeId}
+              endpointList={endpointList.data}
+            />
+          )}
           <CodeResult />
         </div>
       </TabsContent>
@@ -176,9 +182,17 @@ export function CodeResult() {
   );
 }
 
-const ParamterControler = () => {
+const ParamterControler = ({ selectedNodeId = 14, endpointList }: any) => {
   // States for each input field
-  const [url, setUrl] = useState("");
+  console.log("selectedNodeId from ParamContoler ", selectedNodeId);
+  console.log("selectedNodeId from ParamContoler ", endpointList);
+
+  const endpoint = endpointList.find(
+    (endpoint: any) => endpoint.ID == selectedNodeId
+  );
+  console.log("selectedNodeId from ParamContoler ", endpoint);
+
+  const [url, setUrl] = useState(endpoint?.Url || "mediom.com");
   const [apiKey, setApiKey] = useState("");
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
@@ -215,7 +229,7 @@ const ParamterControler = () => {
   return (
     <div className="flex flex-col w-1/2 mt-[56px]  border border-t  h-[568px]">
       <div className="w-full py-1  px-2 flex justify-between items-center bg-gray-100 dark:bg-slate-900 dark:text-white">
-        <h2 className="text-lg  font-semibold">Put :/ModifyUser</h2>
+        <h2 className="text-lg  font-semibold">{`${endpoint?.Methode}/ ${endpoint?.Url}`}</h2>
         <div className="flex gap-2">
           <Button className="" onClick={handleReset}>
             Reset

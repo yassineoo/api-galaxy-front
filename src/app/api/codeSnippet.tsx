@@ -17,16 +17,16 @@ import {
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
 
 const supportedLanguagesForAPIIntegration = [
-  "Node.js",
-  "PHP",
-  "Python",
-  "Java",
-  "C#",
-  "Ruby",
-  "Go",
-  "JavaScript (Browser)",
-  "Swift",
-  "Kotlin",
+  { label: "Node.js", value: "Node.js" },
+  { label: "PHP", value: "Php" },
+  { label: "Python", value: "Python" },
+  { label: "Java", value: "Java" },
+  { label: "C#", value: "C#" },
+  { label: "Ruby", value: "Ruby" },
+  { label: "Go", value: "Go" },
+  { label: "JavaScript (Browser)", value: "Javascript (browser)" },
+  { label: "Swift", value: "swift" },
+  { label: "Kotlin", value: "Kotlin" },
   // Add more languages as needed
 ];
 
