@@ -4,7 +4,7 @@ import LeftBarButton from "../HubXs/leftBarButton";
 import ProductCard from "../HubXs/productCard";
 import { useApiList } from "@/hooks/apis/api.queries";
 import { useEffect, useState } from "react";
-import PaginationManual from "../billing/paginationManual";
+import PaginationManual from "../dashboard/billing/paginationManual";
 
 const buttons = [
   {

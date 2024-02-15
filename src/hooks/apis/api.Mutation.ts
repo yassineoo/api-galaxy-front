@@ -69,3 +69,14 @@ export const useUpdateDocs = () => {
     },
   });
 };
+
+export const useSendRequest = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (RequestData: Api) => {
+      const response = await axios.put(`${ApiUrl}/send-request/`, RequestData); // Adjust the endpoint
+      return response.data;
+    },
+  });
+};

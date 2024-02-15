@@ -158,7 +158,7 @@ const Menu = ({ isMenuOpen, apiId, maApisList }: any) => {
 const RegularMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
   const isActive = active;
 
-  let url = `/dashboard${item.name.toLowerCase().replace(/ /g, "-")}`;
+  let url = `/dashboard/${item.name.toLowerCase().replace(/ /g, "-")}`;
 
   return (
     <div className="flex flex-col items-start justify-start w-4/5">

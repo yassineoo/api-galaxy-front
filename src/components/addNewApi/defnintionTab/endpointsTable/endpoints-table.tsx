@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/table";
 
 import { useState } from "react";
-import PaginationManual from "@/components/billing/paginationManual";
+import PaginationManual from "@/components/dashboard/billing/paginationManual";
 import { Button } from "@/components/ui/button";
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
 import { useUpdateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";

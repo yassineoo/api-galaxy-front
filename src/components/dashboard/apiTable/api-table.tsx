@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/table";
 
 import { useState } from "react";
-import PaginationManual from "../../billing/paginationManual";
+import PaginationManual from "../billing/paginationManual";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
