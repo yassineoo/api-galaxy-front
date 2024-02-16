@@ -28,9 +28,11 @@ import { LoadingButton } from "@/components/shared/loadingButton";
 
 export default function MonetizationTab({ api, apiPlans, edit }: any) {
   // Create a ref for file input
+  const planss = apiPlans?.Plans?.slice(0, 4);
+  console.log("planss )))))))))))", planss);
 
   const [publicPlans, setPublicPlans] = useState(
-    apiPlans.Plans.slice(0, 4) || defaultPlans
+    planss.length != 0 ? planss : defaultPlans
   );
   const [objectList, SetObjectList] = useState(
     edit

@@ -31,7 +31,7 @@ export default function DefinitionTab({ api }: any) {
         <CardContent className="grid gap-4">
           <Search />
           <div className="flex gap-4 justify-end items-center">
-            <AddNewEndpointModal Label="Add New Endpoint" />
+            <AddNewEndpointModal Label="Add New Endpoint" apiID={api.ID} />
             <CreateEndpointsGroupForm apiId={api.ID} />
           </div>
           {EndpointsList.isLoading && EndpointsGroupsList.isLoading && (

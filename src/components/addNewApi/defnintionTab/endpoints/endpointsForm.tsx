@@ -27,7 +27,7 @@ import {
   extractPathParameters,
 } from "@/utils/endpoints.functions";
 
-const AddEndpointsForm = ({ closeModal, endpoint, edit }: any) => {
+const AddEndpointsForm = ({ closeModal, apiID, endpoint, edit }: any) => {
   const [parameters, setParameters] = useState<Parameter[]>(
     endpoint?.Parameters?.filter(
       (p: any) => p.ParameterType === ParametersTypes.PathParmater
@@ -98,13 +98,13 @@ const AddEndpointsForm = ({ closeModal, endpoint, edit }: any) => {
   // Function to extract path parameters from the URL
 
   const {
-    mutate: createEndpoint,
+    mutateAsync: createEndpoint,
     isError,
     isPending,
     error,
   } = useCreateApiEndpoints();
   const {
-    mutate: updateEndpoint,
+    mutateAsync: updateEndpoint,
     isError: isUpdateError,
     isPending: isUpdatePending,
     error: updateError,
@@ -118,7 +118,7 @@ const AddEndpointsForm = ({ closeModal, endpoint, edit }: any) => {
         Description: endpointDescription,
         Methode: endpointMethod,
         Url: endpointUrl,
-        ApiID: 3,
+        ApiID: apiID,
         GroupID: 0,
         Parameters: [
           ...parameters,

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Button } from "../../ui/button";
 import {
@@ -11,6 +11,7 @@ import {
 } from "../../ui/card";
 import { Input } from "../../ui/input";
 import { useCreateApi } from "@/hooks/apis/api.Mutation";
+import { toast } from "react-toastify";
 
 export default function AddNewApiForm({ closeModal }: any) {
   // Define states for input fields
@@ -23,7 +24,13 @@ export default function AddNewApiForm({ closeModal }: any) {
   // Create a ref for file input
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { mutate: createApi, isError, isPending, error } = useCreateApi();
+  const {
+    mutate: createApi,
+    isError,
+    isPending,
+    error,
+    isSuccess,
+  } = useCreateApi();
 
   const handleImageChange = (event: any) => {
     const file = event.target.files[0];
@@ -51,6 +58,15 @@ export default function AddNewApiForm({ closeModal }: any) {
       console.error("Error creating API entity:", error);
     }
   };
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Error saving the modification try agian !");
+    }
+    if (isSuccess) {
+      toast.success("you api has been modified succufully!");
+    }
+  }, [isError, isSuccess]);
 
   // Handle click on placeholder image
   const handleImagePlaceholderClick = () => {

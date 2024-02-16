@@ -4,7 +4,7 @@ import { Button } from "../../ui/button";
 import AddNewApiForm from "./addApiPopUp";
 
 const AddNewApiModal = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(true);
 
   useEffect(() => {
     Modal.setAppElement("body"); // Set the app element to the body element

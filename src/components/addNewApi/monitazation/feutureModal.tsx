@@ -44,7 +44,7 @@ const FeutureModal = ({ index, plan, objectSelceted, setObjectList }: any) => {
 
     setObjectList((prev: any) => {
       return prev.map((item: any) => {
-        if (item.ID === objectSelceted.ID) {
+        if (item.ID === objectSelceted?.ID) {
           return {
             ...item,
             // i want to update the cross:
@@ -74,7 +74,7 @@ const FeutureModal = ({ index, plan, objectSelceted, setObjectList }: any) => {
   const handleDelete = () => {
     setObjectList((prev: any) => {
       return prev.map((item: any) => {
-        if (item.ID === objectSelceted.ID) {
+        if (item.ID === objectSelceted?.ID) {
           return {
             ...item,
             // i want to update the cross:
@@ -104,7 +104,7 @@ const FeutureModal = ({ index, plan, objectSelceted, setObjectList }: any) => {
     <div className="w-full flex justify-center items-center">
       {Quota.Add ? (
         <Button variant={"ghost"} onClick={openModal}>
-          {plan.Type == "Usage"
+          {plan?.Type == "Usage"
             ? `${Quota.Price} $/use`
             : `${Quota.QuotaValue}/${Quota.QuotaType}`}
         </Button>
@@ -138,7 +138,7 @@ const FeutureModal = ({ index, plan, objectSelceted, setObjectList }: any) => {
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-start gap-4">
               <img src="/icons/add-api.svg" alt="" className="w-4 h-4 ml-2 " />
-              <h2 className="text-2xl">{`${plan.Name}/${objectSelceted.Name}`}</h2>
+              <h2 className="text-2xl">{`${plan?.Name}/${objectSelceted?.Name}`}</h2>
             </div>
           </CardHeader>
           <CardContent>

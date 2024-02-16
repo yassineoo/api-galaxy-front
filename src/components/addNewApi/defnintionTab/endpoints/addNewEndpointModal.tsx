@@ -4,7 +4,13 @@ import { Button } from "../../../ui/button";
 import AddNewApiForm from "../../genralTab/addApiPopUp";
 import AddEndpointsForm from "./endpointsForm";
 
-const AddNewEndpointModal = ({ Label, variant, endpoint = {}, edit }: any) => {
+const AddNewEndpointModal = ({
+  Label,
+  apiID,
+  variant,
+  endpoint = {},
+  edit,
+}: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
   console.log("endpoint00000000000@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
   console.log(endpoint);
@@ -61,7 +67,12 @@ const AddNewEndpointModal = ({ Label, variant, endpoint = {}, edit }: any) => {
           &times;
         </span> */}
 
-        <AddEndpointsForm closeModal={closeModal} endpoint={endpoint} edit />
+        <AddEndpointsForm
+          closeModal={closeModal}
+          endpoint={endpoint}
+          edit={edit}
+          apiID={apiID}
+        />
       </Modal>
     </div>
   );
