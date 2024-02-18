@@ -102,7 +102,7 @@ const FeutureModal = ({ index, plan, objectSelceted, setObjectList }: any) => {
 
   return (
     <div className="w-full flex justify-center items-center">
-      {Quota.Add ? (
+      {Quota?.Add ? (
         <Button variant={"ghost"} onClick={openModal}>
           {plan?.Type == "Usage"
             ? `${Quota.Price} $/use`

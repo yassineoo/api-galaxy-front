@@ -21,6 +21,8 @@ import { useApiEndpointsById } from "@/hooks/Endpoints/Endpoints.queries";
 import axios from "axios";
 import { ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useSendRequest } from "@/hooks/apis/api.Mutation";
+import PricingCardsApi from "@/components/addNewApi/monitazation/pricingCardsApi";
+import PricingCard from "@/components/General use/pricingCard";
 const codeString = `
 const axios = require('axios');
 
@@ -33,79 +35,10 @@ axios.get('https://yourapi.com/endpoint')
     });
 `;
 
-const result = `{
-  "coupons": [
-    {
-      "id": "1",
-      "useDate": "2023-11-28T00:00:00.000Z",
-      "eventId": "e312504a-3286-4801-be4f-dd2ddcb26213",
-      "user": {
-        "user_id": "8fb2a159-84ee-42df-a250-022f4ca1b7d5",
-        "phoneNumber": "+213555555555",
-        "status": "banned",
-        "type": "client",
-        "adminPassword": null,
-        "createdAt": "2023-09-22T09:27:34.162Z",
-        "deletedAt": null,
-        "updatedAt": "2023-11-28T08:10:06.336Z",
-        "points": 1760,
-        "email": "_@yahoo.com",
-        "emailState": "not_verified",
-        "displayName": "معين26",
-        "stripCustomerId": "cus_OgSZ0GyXPvYx6y",
-        "refreshToken": "$2a$12$GOxCKBr5Xg66cGTPgdMHMOZFEOzkyv.EHLDO6pNlg.7A4Ky27Fi9W",
-        "storeId": null,
-        "imageUrl": "0c3062a2-d48b-40b2-af37-aa3bff4852b5.jpg",
-        "referrerId": "8fb2a159-84ee-42df-a250-022f4ca1b7d5",
-        "online": false,
-        "contactDetails": null,
-        "store": null
-      },
-      "coupon": {
-        "id": 1,
-        "percentage": 30,
-        "promoCode": "COUPON5",
-        "eventId": "e312504a-3286-4801-be4f-dd2ddcb26213",
-        "minPoints": "90"
-      },
-      "event": {
-        "title": "الفعالية",
-        "id": "e312504a-3286-4801-be4f-dd2ddcb26213"
-      }
-    },
-    {
-      "id": "2",
-      "useDate": "2023-11-28T00:00:00.000Z",
-      "eventId": "e312504a-3286-4801-be4f-dd2ddcb26213",
-      "user": {
-        "user_id": "8fb2a159-84ee-42df-a250-022f4ca1b7d5",
-        "phoneNumber": "+213555555555",
-        "status": "banned",
-        "type": "client",
-        "adminPassword": null,
-        "createdAt": "2023-09-22T09:27:34.162Z",
-        "deletedAt": null,
-        "updatedAt": "2023-11-28T08:10:06.336Z",
-        "points": 1760,
-        "email": "_@yahoo.com",
-        "emailState": "not_verified",
-        "displayName": "معين26",
-        "stripCustomerId": "cus_OgSZ0GyXPvYx6y",
-        "refreshToken": "$2a$12$GOxCKBr5Xg66cGTPgdMHMOZFEOzkyv.EHLDO6pNlg.7A4Ky27Fi9W",
-        "storeId": null,
-        "imageUrl": "0c3062a2-d48b-40b2-af37-aa3bff4852b5.jpg",
-        "referrerId": "8fb2a159-84ee-42df-a250-022f4ca1b7d5",
-        "online": false,
-        "contactDetails": null,
-        "store": null
-      },
-  }
-}
-`;
-
 export function ApiTabs({ api }: any) {
   const endpointList = useApiEndpointsById(api.ID);
   const [selectedNodeId, setSelectedNodeId] = useState(100);
+  const [resquestResult, setResquestResult] = useState();
   console.log("selectedNodeId ", selectedNodeId);
 
   const {
@@ -137,12 +70,14 @@ export function ApiTabs({ api }: any) {
         <div className="w-full flex justify-center h-screen">
           {endpointList.isSuccess && (
             <ParamterControler
+              setResquestResult={setResquestResult}
+              slectedApiUrl={api.ApiUrl}
               sendRequest={sendRequest}
               selectedNodeId={selectedNodeId}
               endpointList={endpointList.data}
             />
           )}
-          <CodeResult />
+          <CodeResult resquestResult={resquestResult} />
         </div>
       </TabsContent>
       <TabsContent
@@ -159,25 +94,27 @@ export function ApiTabs({ api }: any) {
       </TabsContent>
       <TabsContent
         value="pricing"
-        className="w-full  bg-purple-400 flex justify-center items-start "
-      ></TabsContent>
+        className="w-full   flex justify-center items-start "
+      >
+        <PricingCardsApi api={api} />
+      </TabsContent>
     </Tabs>
   );
 }
 
-export function CodeResult() {
+export function CodeResult({ resquestResult }: any) {
   return (
     <Tabs defaultValue="CodeSnippet" className=" h-[760px] w-1/2 ">
       <TabsList className="my-2">
-        <TabsTrigger value="Result">CodeSnippet</TabsTrigger>
-        <TabsTrigger value="CodeSnippet">Result</TabsTrigger>
+        <TabsTrigger value="CodeSnippet">CodeSnippet</TabsTrigger>
+        <TabsTrigger value="Result">Result</TabsTrigger>
       </TabsList>
       <TabsContent
         value="Result"
         className="w-full   bg-slate-900 flex flex-col justify-center "
       >
         <div className="m-0 pt-2   w-full flex justify-center ">
-          <Result codeString={result} language="javascript" />
+          <Result codeString={resquestResult} language="javascript" />
         </div>
       </TabsContent>
       <TabsContent
@@ -193,6 +130,8 @@ export function CodeResult() {
 }
 
 const ParamterControler = ({
+  setResquestResult,
+  slectedApiUrl,
   sendRequest,
   selectedNodeId = 14,
   endpointList,
@@ -256,14 +195,15 @@ const ParamterControler = ({
       // Example: Make a request using the input values
       const Data = {
         method: selectedEndpoint?.Methode,
-        url: url, // Use the updated url state
+        url: `${slectedApiUrl}/${url}`, // Use the updated url state
         headers: headerParams,
         params: queryParams,
         data: bodyParams,
       };
-      //const response = await sendRequest(Data);
+      const response = await sendRequest(Data);
+      setResquestResult(response);
 
-      console.log("Request sent!", Data);
+      console.log("Request sent!", response);
 
       // console.log(response.data);
     } catch (error) {

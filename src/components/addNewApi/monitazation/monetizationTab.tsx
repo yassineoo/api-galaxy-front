@@ -156,11 +156,12 @@ export default function MonetizationTab({ api, apiPlans, edit }: any) {
             className={`w-5/12  ${
               isCreationPending || isPending
                 ? "bg-gray-500"
-                : "bg-blue-500 hover:bg-blue-700"
+                : "bg-blue hover:bg-blue-700"
             } ${isCreationPending ? "cursor-not-allowed" : "cursor-pointer"}`}
             onClick={handleSubmit}
             disabled={isCreationPending}
           >
+            QSDQS
             {isCreationPending || isPending ? <LoadingButton /> : "save"}
           </Button>
         </CardFooter>

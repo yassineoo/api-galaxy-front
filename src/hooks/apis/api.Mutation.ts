@@ -75,7 +75,7 @@ export const useSendRequest = () => {
 
   return useMutation({
     mutationFn: async (RequestData: Api) => {
-      const response = await axios.put(`${ApiUrl}/send-request/`, RequestData); // Adjust the endpoint
+      const response = await axios.post(`${ApiUrl}/send-request/`, RequestData); // Adjust the endpoint
       return response.data;
     },
   });

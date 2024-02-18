@@ -15,28 +15,43 @@ import {
   generateSwiftSnippet,
 } from "@/lib/codeGenerator";
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Result = ({ codeString, language }: any) => {
   // const [snippet, setSnippet] = React.useState(snippetExample);
+  console.log("codeString", codeString);
 
   return (
-    <div className="w-full ml-2  flex flex-col justify-center h-screen">
-      <div className="flex items-center gap-2">
-        <SelectButton name="framework" />
-        <Button onClick={() => navigator.clipboard.writeText(codeString)}>
-          Copy code{" "}
-          <img src="/icons/icon_copy.svg" alt="" className="w-4 h-4 ml-2 " />
-        </Button>
-      </div>
-      <SyntaxHighlighter
-        className="w-full flex-1  p-12 overflow-scroll"
-        language={language}
-        style={atomDark}
-        wrapLines={true}
-        showLineNumbers={true}
-      >
-        {codeString}
-      </SyntaxHighlighter>
+    <div className="w-full ml-2  flex flex-col justify-start overflow-y-scroll h-screen ">
+      <Tabs defaultValue="Body" className="w-full">
+        <TabsList>
+          <TabsTrigger value="Body">Body</TabsTrigger>
+          <TabsTrigger value="Header">Header</TabsTrigger>
+        </TabsList>
+        <TabsContent value="Body">
+          <SyntaxHighlighter
+            className="w-full flex-1  p-12 overflow-scroll"
+            language={language}
+            style={atomDark}
+            wrapLines={true}
+            showLineNumbers={true}
+          >
+            {codeString?.RequestBody}
+          </SyntaxHighlighter>
+        </TabsContent>
+        <TabsContent value="Header">
+          {" "}
+          <SyntaxHighlighter
+            className="w-full flex-1  p-12 overflow-scroll"
+            language={language}
+            style={atomDark}
+            wrapLines={true}
+            showLineNumbers={true}
+          >
+            {JSON.stringify(codeString?.RequestHeader, null, 2)}
+          </SyntaxHighlighter>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
