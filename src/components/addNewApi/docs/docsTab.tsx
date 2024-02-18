@@ -44,7 +44,7 @@ export default function DocsTab({ api }: any) {
     try {
       const Data = {
         Content: docs as string,
-        docsId: api.ID as number,
+        docsId: api?.ApiDocs?.ID as number,
         apiID: api.ID as number,
       };
 
@@ -96,7 +96,9 @@ export default function DocsTab({ api }: any) {
           </Button>
           <Button
             className={`w-5/12  ${
-              isPending ? "bg-gray-500" : "bg-blue-500 hover:bg-blue-700"
+              isPending
+                ? "bg-gray-500"
+                : "bg-bluePure text-white hover:bg-blue-700"
             } ${isPending ? "cursor-not-allowed" : "cursor-pointer"}`}
             onClick={handleSubmit}
             disabled={isPending}

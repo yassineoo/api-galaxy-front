@@ -15,7 +15,9 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 const PlanConfermationModal = ({ plan }: any) => {
   return (
     <Drawer className="">
-      <DrawerTrigger>Open</DrawerTrigger>
+      <DrawerTrigger>
+        <Button>Subscribe</Button>
+      </DrawerTrigger>
       <DrawerContent className="flex  h-[580px]  overflow-y-scroll   justify-between items-center">
         <DrawerHeader>
           <DrawerTitle>Plans Confermation </DrawerTitle>

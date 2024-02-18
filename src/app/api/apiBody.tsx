@@ -16,13 +16,14 @@ import { useEffect, useState } from "react";
 import About from "./about";
 import Footer from "../../components/Vetrine/footer";
 import Plans from "../../components/Vetrine/plans";
-import CommentsContainer from "../test/page";
+
 import { useApiEndpointsById } from "@/hooks/Endpoints/Endpoints.queries";
 import axios from "axios";
 import { ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useSendRequest } from "@/hooks/apis/api.Mutation";
 import PricingCardsApi from "@/components/addNewApi/monitazation/pricingCardsApi";
 import PricingCard from "@/components/General use/pricingCard";
+import CommentsContainer from "../test/discussion";
 const codeString = `
 const axios = require('axios');
 
@@ -49,56 +50,61 @@ export function ApiTabs({ api }: any) {
   } = useSendRequest();
 
   return (
-    <Tabs defaultValue="endpoints">
-      <TabsList className="grid  grid-cols-4 w-1/3  ml-8 my-2">
-        <TabsTrigger value="endpoints">Endpoints</TabsTrigger>
-        <TabsTrigger value="about">About</TabsTrigger>
-        <TabsTrigger value="discussion">Discussion</TabsTrigger>
-        <TabsTrigger value="pricing">Pricing</TabsTrigger>
-      </TabsList>
-      <TabsContent
-        value="endpoints"
-        className="w-full  flex flex-col justify-center "
-      >
-        {endpointList.isLoading && <div>Loading...</div>}
-        {endpointList.isSuccess && (
-          <ApiDocsGraph
-            endpointsList={endpointList.data}
-            setSelectedNodeId={setSelectedNodeId}
-          />
-        )}
-        <div className="w-full flex justify-center h-screen">
+    <>
+      <Tabs defaultValue="endpoints">
+        <TabsList className="grid  grid-cols-4 w-1/3  ml-8 my-2">
+          <TabsTrigger value="endpoints">Endpoints</TabsTrigger>
+          <TabsTrigger value="about">About</TabsTrigger>
+          <TabsTrigger value="discussion">Discussion</TabsTrigger>
+          <TabsTrigger value="pricing">Pricing</TabsTrigger>
+        </TabsList>
+        <TabsContent
+          value="endpoints"
+          className="w-full  flex flex-col justify-center "
+        >
+          {endpointList.isLoading && <div>Loading...</div>}
           {endpointList.isSuccess && (
-            <ParamterControler
-              setResquestResult={setResquestResult}
-              slectedApiUrl={api.ApiUrl}
-              sendRequest={sendRequest}
-              selectedNodeId={selectedNodeId}
-              endpointList={endpointList.data}
+            <ApiDocsGraph
+              endpointsList={endpointList.data}
+              setSelectedNodeId={setSelectedNodeId}
             />
           )}
-          <CodeResult resquestResult={resquestResult} />
-        </div>
-      </TabsContent>
-      <TabsContent
-        value="about"
-        className="w-full   flex flex-col justify-start mx-12 items-start "
-      >
-        <About apiDocs={api.ApiDocs} />
-      </TabsContent>
-      <TabsContent
-        value="discussion"
-        className="  flex justify-center items-start"
-      >
-        <CommentsContainer />
-      </TabsContent>
-      <TabsContent
-        value="pricing"
-        className="w-full   flex justify-center items-start "
-      >
-        <PricingCardsApi api={api} />
-      </TabsContent>
-    </Tabs>
+          <div className="w-full flex justify-center h-screen">
+            {endpointList.isSuccess && (
+              <ParamterControler
+                setResquestResult={setResquestResult}
+                slectedApiUrl={api.ApiUrl}
+                sendRequest={sendRequest}
+                selectedNodeId={selectedNodeId}
+                endpointList={endpointList.data}
+              />
+            )}
+            <CodeResult resquestResult={resquestResult} />
+          </div>
+        </TabsContent>
+        <TabsContent
+          value="about"
+          className="w-full   flex flex-col justify-start mx-12 items-start "
+        >
+          <About apiDocs={api.ApiDocs} />
+        </TabsContent>
+        <TabsContent
+          value="discussion"
+          className="  flex justify-center items-start"
+        >
+          <CommentsContainer />
+        </TabsContent>
+        <TabsContent
+          value="pricing"
+          className="w-full bg-gray-100   flex justify-center items-start "
+        >
+          <PricingCardsApi api={api} />
+        </TabsContent>
+      </Tabs>
+      <section className="mt-28">
+        <Footer />
+      </section>
+    </>
   );
 }
 
@@ -222,7 +228,7 @@ const ParamterControler = ({
   };
 
   return (
-    <div className="flex flex-col w-1/2 mt-[56px]  border border-t  h-[568px]">
+    <div className="flex flex-col w-1/2 mt-[56px]  border border-t  h-[595px]">
       <ParamsHeader
         selectedEndpoint={selectedEndpoint}
         isLoading={isLoading}

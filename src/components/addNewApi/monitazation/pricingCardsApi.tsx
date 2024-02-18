@@ -47,6 +47,7 @@ export default function PricingCardsApi({ api, plans }: any) {
               plan={apiPlans.data?.Plans[0]}
             />
           ))}
+        <hr className="my-1 text-red-900 col-span-5 border-t" />
         {apiPlans.isSuccess && (
           <>
             <Button

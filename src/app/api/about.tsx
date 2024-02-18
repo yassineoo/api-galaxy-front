@@ -62,7 +62,7 @@ const About = ({ apiDocs }: any) => {
   };
 
   return (
-    <div>
+    <div className="w-2/3">
       <QuillNoSSRWrapper
         modules={modules}
         theme="snow"
