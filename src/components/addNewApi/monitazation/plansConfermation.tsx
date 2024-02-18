@@ -12,6 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { set } from "date-fns";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
+import { DemoPaymentMethod } from "./paymentCard";
 
 const PlanConfermationModal = ({ plan, setPublicPlans }: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -68,7 +69,8 @@ const PlanConfermationModal = ({ plan, setPublicPlans }: any) => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col justify-start gap-2">
+            <div className="flex  justify-start gap-4">
+              <DemoPaymentMethod />
               <hr className="my-2 border-t" />
             </div>
           </CardContent>

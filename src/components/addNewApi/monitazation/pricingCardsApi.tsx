@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useApiPlanList } from "@/hooks/plans/plans.queries";
 import React from "react";
-import PlanConfermationModal from "./plansConfermation";
+import PlanConfermationModal from "./plansDrawer";
+//import PlanConfermationModal from "./plansConfermation";
 
 function PricingCard({ plan }: any) {
   console.log("plannn", plan);
