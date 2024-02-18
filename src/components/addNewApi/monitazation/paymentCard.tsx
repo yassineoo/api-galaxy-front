@@ -27,8 +27,8 @@ export function DemoPaymentMethod() {
           Add a new payment method to your account.
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-6">
-        <RadioGroup defaultValue="card" className="grid grid-cols-3 gap-4">
+      <CardContent className="grid gap-3">
+        <RadioGroup defaultValue="card" className="grid grid-cols-3 gap-2">
           <div>
             <RadioGroupItem value="card" id="card" className="peer sr-only" />
             <Label
