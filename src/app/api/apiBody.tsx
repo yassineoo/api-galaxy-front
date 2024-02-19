@@ -9,21 +9,17 @@ import {
 } from "@radix-ui/react-accordion";
 import { Button } from "@/components/ui/button";
 import ApiDocsGraph from "./apiDoc";
-import { Label } from "recharts";
 import { Input } from "@/components/ui/input";
 import Result from "./result";
 import { useEffect, useState } from "react";
 import About from "./about";
 import Footer from "../../components/Vetrine/footer";
-import Plans from "../../components/Vetrine/plans";
 
 import { useApiEndpointsById } from "@/hooks/Endpoints/Endpoints.queries";
-import axios from "axios";
 import { ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useSendRequest } from "@/hooks/apis/api.Mutation";
-import PricingCardsApi from "@/components/addNewApi/monitazation/pricingCardsApi";
-import PricingCard from "@/components/General use/pricingCard";
 import CommentsContainer from "../test/discussion";
+import PrcingTabs from "@/components/addNewApi/monitazation/pricingCardsApi";
 const codeString = `
 const axios = require('axios');
 
@@ -98,7 +94,7 @@ export function ApiTabs({ api }: any) {
           value="pricing"
           className="w-full bg-gray-100   flex justify-center items-start "
         >
-          <PricingCardsApi api={api} />
+          <PrcingTabs api={api} />
         </TabsContent>
       </Tabs>
       <section className="mt-28">

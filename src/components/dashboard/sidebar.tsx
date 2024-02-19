@@ -4,7 +4,7 @@ import { useApiById, useApiByUserId } from "@/hooks/apis/api.queries";
 import Link from "next/link";
 import { memo, useCallback, useEffect, useState } from "react";
 
-export default function Sidebar({ apiId }: any) {
+export default function Sidebar({ apiId, activeItem }: any) {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const maApisListCallback = useCallback(() => useApiByUserId(123), []);
   const maApisList = maApisListCallback();
@@ -37,7 +37,12 @@ export default function Sidebar({ apiId }: any) {
       } h-screen`}
     >
       <Logo toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
-      <Menu isMenuOpen={isMenuOpen} apiId={apiId} maApisList={maApisList} />
+      <Menu
+        isMenuOpen={isMenuOpen}
+        apiId={apiId}
+        maApisList={maApisList}
+        activeItem={activeItem}
+      />
     </div>
   );
 }
@@ -55,9 +60,7 @@ const Logo = ({ toggleMenu, isMenuOpen }: any) => {
   );
 };
 
-const Menu = ({ isMenuOpen, apiId, maApisList }: any) => {
-  const [activeMenu, setActiveMenu] = useState<number>(apiId || 90); // 90 is the id of the dashboard
-
+const Menu = ({ isMenuOpen, apiId, maApisList, activeItem }: any) => {
   const menuItems = [
     {
       ID: 90,
@@ -104,6 +107,11 @@ const Menu = ({ isMenuOpen, apiId, maApisList }: any) => {
       ],
     },
   ];
+
+  const activeOne = menuItems.find((item) => item.name === activeItem);
+  const [activeMenu, setActiveMenu] = useState<number>(
+    apiId || activeOne?.ID || 90
+  ); // 90 is the id of the dashboard
 
   const handleMenuClick = (event: any) => {
     setActiveMenu(event.target.value);
@@ -159,6 +167,9 @@ const RegularMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
   const isActive = active;
 
   let url = `/dashboard/${item.name.toLowerCase().replace(/ /g, "-")}`;
+  if (item.name === "Dashboard") {
+    url = "/dashboard";
+  }
 
   return (
     <div className="flex flex-col items-start justify-start w-4/5">

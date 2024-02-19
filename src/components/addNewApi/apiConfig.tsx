@@ -1,7 +1,5 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AddNewApiForm from "./genralTab/addApiPopUp";
-import PopupForm from "./defnintionTab/endpoints/addNewEndpointModal";
 import GenralApiInfoTab from "./genralTab/generalTab";
 import DefinitionTab from "./defnintionTab/definitionTab";
 import AddEndpointsForm from "./defnintionTab/endpoints/endpointsForm";
@@ -45,7 +43,7 @@ export function ApiConfigTabs({ api }: any) {
         value="Endpoints"
         className="w-full  flex flex-col justify-center items-start px-8 "
       >
-        <AddEndpointsForm />
+        <AddEndpointsForm api={api} />
       </TabsContent>
       <TabsContent
         value="Monetization"

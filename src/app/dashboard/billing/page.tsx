@@ -8,7 +8,7 @@ import Sidebar from "@/components/dashboard/sidebar";
 export default function DashboardPage() {
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex ">
-      <Sidebar />
+      <Sidebar activeItem="Billing" />
 
       <div className="w-full">
         <Header />

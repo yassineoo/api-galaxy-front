@@ -28,12 +28,6 @@ const AddNewEndpointModal = ({
     setModalOpen(false);
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    closeModal();
-  };
-
   return (
     <div>
       {variant ? (

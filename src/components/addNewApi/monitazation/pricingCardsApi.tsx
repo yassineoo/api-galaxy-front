@@ -8,8 +8,19 @@ function PricingCard({ plan }: any) {
   console.log("plannn", plan);
 
   return (
-    <div className="bg-white rounded-lg shadow-md px-3 py-4 col-span-1 flex justify-center items-center flex-col">
-      <h3 className="text-md text-blue font-bold mb-2">{plan.Name}</h3>
+    <div
+      className={`bg-white rounded-lg shadow-md px-3 py-4 col-span-1 flex justify-center items-center flex-col
+    hover:scale-110 transition-transform duration-300 ease-in-out
+
+    ${plan.RecomndedPlan && "bg-blue-900 text-white"}`}
+    >
+      <h3
+        className={`text-md  font-bold mb-2  ${
+          plan.RecomndedPlan ? " text-white" : "text-bluee"
+        } `}
+      >
+        {plan.Name}
+      </h3>
       <div className="flex justify-between items-center mb-6">
         <span className="text-sm font-bold">
           {plan.Type == "Usage" ? "Pay per Use" : `${plan.Price}$/Monthely`}{" "}
@@ -21,7 +32,7 @@ function PricingCard({ plan }: any) {
   );
 }
 
-export default function PricingCardsApi({ api, plans }: any) {
+function PricingCardsApi({ api, plans }: any) {
   const apiPlans = useApiPlanList(api?.ID);
 
   return (
@@ -70,13 +81,22 @@ export default function PricingCardsApi({ api, plans }: any) {
                       : "Secondes"}
                   </p>
                 ) : (
-                  <p className="text-gray-400 text-2xl">x</p>
+                  <p className=" text-2xl text-red-500">x</p>
                 )}
               </div>
             ))}
           </>
         )}
       </div>
+    </div>
+  );
+}
+
+export default function PrcingTabs({ api, plans }: any) {
+  return (
+    <div className="flex flex-col ">
+      <PricingCardsApi api={api} plans={plans} />
+      <FAQ />
     </div>
   );
 }
@@ -91,9 +111,9 @@ const ObjectLine = ({ object, plan }: any) => {
       {object?.Cross?.map((cross: any, index: number) => (
         <div className="col-span-1 w-full flex justify-center items-center">
           {!cross?.Add ? (
-            <p className="text-gray-400 text-2xl">x</p>
+            <p className="text-red-500 text-2xl">x</p>
           ) : (
-            <Button variant={"ghost"} disabled>
+            <span className="text-md">
               {plan?.Type == "Usage" ? (
                 `${cross?.Price} $/use`
               ) : (
@@ -101,10 +121,51 @@ const ObjectLine = ({ object, plan }: any) => {
                   `${cross?.QuotaValue}/${cross?.QuotaType}`
                 </span>
               )}
-            </Button>
+            </span>
           )}
         </div>
       ))}
     </>
+  );
+};
+
+export const FAQ = () => {
+  const qsts = [
+    {
+      qst: "Is my payment information secure?",
+      rep: "Credit cards are processed through a PCI compliant banking partner.",
+    },
+    {
+      qst: "Why do you require a credit card for a freemium API?",
+      rep: "We work directly with API providers to implement clear, transparent pricing for developers. The Provider may require a credit card if a plan has a quota with an overage fee. If you would no longer like to use the API, you can unsubscribe from the plan at anytime by clicking the 'unsubscribe' button under the Billing section of the RapidAPI Dashboard.",
+    },
+    {
+      qst: "What if I exceed my plan limits?",
+      rep: "Depending on your plan's specification, you will either incur overage charges or be suspended.",
+    },
+    {
+      qst: "When will I be billed?",
+      rep: "We charge your credit card upon subscription to an API's plan and at the next recurring interval.",
+    },
+    {
+      qst: "How are refunds handled?",
+      rep: "For refund requests, please contact us at",
+    },
+  ];
+
+  return (
+    <div className="w-full justify-center items-center border py-12 border-t-2  ">
+      <h1 className="text-skyBlue text-bold text-xl text-center">
+        Frequently Asked Questions
+      </h1>
+      <div className="flex justify-between items-start pl-16 flex-col">
+        {qsts.map((qst, index) => (
+          <div key={index} className="flex flex-col gap-2">
+            <h3 className="text-md font-semibold">{qst.qst}</h3>
+            <p className="text-sm ">{qst.rep}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };

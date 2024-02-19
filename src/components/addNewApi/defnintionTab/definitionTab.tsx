@@ -11,8 +11,8 @@ import { EndpointsTable } from "./endpointsTable/endpoints-table";
 import { Endpointscolumns } from "./endpointsTable/endpointsColumns";
 import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
 import CreateEndpointsGroupForm from "./endpoints/endpointGroupCreateModal";
-import AddNewEndpointModal from "./endpoints/addNewEndpointModal";
 import { useEndpointsGroupList } from "@/hooks/Endpoints Group/EndpointsGroup.queries";
+import AddNewEndpointDrawer from "./endpoints/addNewEndpointDrawer";
 
 export default function DefinitionTab({ api }: any) {
   const EndpointsList = useApiEndpointsList(api.ID);
@@ -31,7 +31,7 @@ export default function DefinitionTab({ api }: any) {
         <CardContent className="grid gap-4">
           <Search />
           <div className="flex gap-4 justify-end items-center">
-            <AddNewEndpointModal Label="Add New Endpoint" apiID={api.ID} />
+            <AddNewEndpointDrawer Label="Add New Endpoint" apiID={api.ID} />
             <CreateEndpointsGroupForm apiId={api.ID} />
           </div>
           {EndpointsList.isLoading && EndpointsGroupsList.isLoading && (

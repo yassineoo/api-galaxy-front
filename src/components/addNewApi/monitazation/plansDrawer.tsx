@@ -24,11 +24,12 @@ const PlanConfermationModal = ({ plan }: any) => {
           <DrawerDescription>This action cannot be undone.</DrawerDescription>
         </DrawerHeader>
         <div className="flex w-2/3  justify-start gap-4">
-          {plan.price != 0 && (
-            <div className="">
-              <DemoPaymentMethod />
-            </div>
-          )}
+          {plan.Price != 0 ||
+            (plan.Type != "Monthely" && (
+              <div className="">
+                <DemoPaymentMethod />
+              </div>
+            ))}
           <hr className="my-2 border-t" />
           <DrawerFooter className="w-1/2 flex flex-col h-full">
             <Card className="py-4 px-3 flex justify-center items-center flex-col">

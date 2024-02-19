@@ -22,10 +22,9 @@ import {
 
 import { useState } from "react";
 import PaginationManual from "@/components/dashboard/billing/paginationManual";
-import { Button } from "@/components/ui/button";
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
 import { useUpdateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
-import AddNewEndpointModal from "../endpoints/addNewEndpointModal";
+import AddNewEndpointDrawer from "../endpoints/addNewEndpointDrawer";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -113,12 +112,12 @@ export function EndpointsTable<TData, TValue>({
                   <TableCell className="flex justify-center gap-2 items-center">
                     {/* Move To button */}
 
-                    <AddNewEndpointModal
+                    <AddNewEndpointDrawer
                       Label="Copy"
                       variant
                       endpoint={row.original}
                     />
-                    <AddNewEndpointModal
+                    <AddNewEndpointDrawer
                       Label="Edit"
                       variant
                       edit

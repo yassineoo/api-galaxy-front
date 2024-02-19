@@ -1,4 +1,4 @@
-import { use, useRef, useState } from "react";
+import { use, useCallback, useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -27,7 +27,7 @@ import {
   extractPathParameters,
 } from "@/utils/endpoints.functions";
 
-const AddEndpointsForm = ({ closeModal, apiID, endpoint, edit }: any) => {
+const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
   const [parameters, setParameters] = useState<Parameter[]>(
     endpoint?.Parameters?.filter(
       (p: any) => p.ParameterType === ParametersTypes.PathParmater
@@ -110,8 +110,10 @@ const AddEndpointsForm = ({ closeModal, apiID, endpoint, edit }: any) => {
     error: updateError,
   } = useUpdateApiEndpoints();
   // Handle form submission
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     try {
+      console.log("from submiting form", endpoint?.ID);
+
       const Data = {
         ID: endpoint?.ID || 0,
         Name: endpointName,
@@ -129,21 +131,26 @@ const AddEndpointsForm = ({ closeModal, apiID, endpoint, edit }: any) => {
       if (edit) await updateEndpoint(Data);
       else await createEndpoint(Data);
       //closeModal();
-      closeModal();
+      // closeModal();
 
       console.log("API Endpoint request finshees  successfully!");
     } catch (error) {
       console.error("Error creating API entity:", error);
     }
-  };
+  }, [
+    endpointName,
+    endpointDescription,
+    endpointMethod,
+    endpointUrl,
+    apiID,
+    parameters,
+    standardParameters,
+    edit,
+    updateEndpoint,
+    createEndpoint,
+  ]);
   return (
-    <Card className="w-full text-sm pb-32 ">
-      <CardHeader>
-        <CardTitle className="text-base">Add New Endpoint</CardTitle>
-        <CardDescription className="text-sm">
-          Define your Endpoint
-        </CardDescription>
-      </CardHeader>
+    <Card className="w-full text-sm pb-32 relative border-none ">
       <CardContent>
         <FormContext.Provider
           value={{
@@ -258,12 +265,10 @@ const AddEndpointsForm = ({ closeModal, apiID, endpoint, edit }: any) => {
           </div>
         </FormContext.Provider>
       </CardContent>
-      <CardFooter className=" w-full  items-center flex justify-between">
-        <Button className="w-1/3" onClick={handleSubmit}>
-          {edit ? "Save modifcations" : "create Endpoint"}
-        </Button>
-        <Button className="w-1/3" onClick={closeModal}>
-          Discard
+      <CardFooter className=" w-full  items-center flex justify-around py-8">
+        {Colser}
+        <Button className="w-2/5 bg-blue-700" onClick={handleSubmit}>
+          {edit ? "Save modifcations" : "Create Endpoint"}
         </Button>
       </CardFooter>
     </Card>

@@ -22,7 +22,7 @@ module.exports = {
         mainColor: "#007FFF",
         goldColor: "#FFAA00",
         skyBlue: "#0099FF",
-        blue: "#0055FF",
+        bluee: "#0055FF",
         deepBlue: "#0060CC",
         usedGrey: "#f4f2f2",
         border: "hsl(var(--border))",
