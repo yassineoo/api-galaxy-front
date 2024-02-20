@@ -4,7 +4,7 @@ import { useApiById, useApiByUserId } from "@/hooks/apis/api.queries";
 import Link from "next/link";
 import { memo, useCallback, useEffect, useState } from "react";
 
-export default function Sidebar({ apiId, activeItem }: any) {
+export default function Sidebar({ apiId, activeItem, activeChildName }: any) {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const maApisListCallback = useCallback(() => useApiByUserId(123), []);
   const maApisList = maApisListCallback();
@@ -32,9 +32,9 @@ export default function Sidebar({ apiId, activeItem }: any) {
 
   return (
     <div
-      className={` bg-black text-white  dark:bg-sidebar dark:text-white sticky top-0 ${
+      className={` bg-black text-white  dark:bg-sidebar overflow-scroll dark:text-white sticky top-0 ${
         isMenuOpen ? " w-1/4 " : " w-16 lg:w-[6%]  "
-      } h-screen`}
+      } h-full min-h-screen `}
     >
       <Logo toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
       <Menu
@@ -42,6 +42,7 @@ export default function Sidebar({ apiId, activeItem }: any) {
         apiId={apiId}
         maApisList={maApisList}
         activeItem={activeItem}
+        activeChildName={activeChildName}
       />
     </div>
   );
@@ -101,7 +102,7 @@ const Menu = ({
           icon: "/icons/credit-card.svg",
         },
         {
-          name: "transaction history",
+          name: "Transaction history",
           active: false,
           icon: "/icons/transaction-history.svg",
         },
@@ -118,10 +119,7 @@ const Menu = ({
   const [activeMenu, setActiveMenu] = useState<number>(
     apiId || activeOne?.ID || 90
   ); // 90 is the id of the dashboard
-  const activeChildOne = activeOne?.children?.find(
-    (child) => child.name == activeChildName
-  );
-  const [activeChild, setActiveChild] = useState(activeChildOne?.name);
+
   const handleMenuClick = (event: any) => {
     setActiveMenu(event.target.value);
   };
@@ -135,6 +133,7 @@ const Menu = ({
           active={activeMenu === item.ID}
           onClick={() => setActiveMenu(item.ID)}
           isMenuOpen={isMenuOpen}
+          activeChildName={activeChildName}
         />
       ))}
       {isMenuOpen && <Separator text="MY apis" />}
@@ -143,12 +142,7 @@ const Menu = ({
         maApisList.isSuccess &&
         maApisList.data.data
           .map((api: any) => {
-            console.log(
-              "api maping ============= ",
-              api.ID,
-              api.ID == apiId,
-              apiId
-            );
+            console.log("api maping ===== ", api.ID, api.ID == apiId, apiId);
 
             return {
               ID: api.ID,
@@ -171,8 +165,15 @@ const Menu = ({
 
 // ... (other imports)
 
-const RegularMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
+const RegularMenuItem = ({
+  item,
+  active,
+  onClick,
+  isMenuOpen,
+  activeChildName,
+}: any) => {
   const isActive = active;
+  const [activeChild, setActiveChild] = useState(item?.name);
 
   let url = `/dashboard/${item.name.toLowerCase().replace(/ /g, "-")}/${
     item?.children
@@ -182,6 +183,13 @@ const RegularMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
   if (item.name === "Dashboard") {
     url = "/dashboard";
   }
+
+  console.log(
+    "activeChildName",
+    activeChildName,
+    item?.children ? item?.children[1].name : "not found ",
+    item?.children ? activeChildName == item?.children[1]?.name : "not found éé"
+  );
 
   return (
     <div className="flex flex-col items-start justify-start w-4/5">
@@ -226,7 +234,7 @@ const RegularMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
                 {child.icon && (
                   <img
                     className={`w-5 text-white p-2 ${
-                      child.isActive
+                      activeChildName == child.name
                         ? "bg-orangePure w-9 border-1 border-orangePure rounded-xl"
                         : "w-9 border-1 rounded-xl"
                     }`}

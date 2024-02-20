@@ -13,7 +13,7 @@ export default function DashboardPage() {
     <div className="bg-dashboardBg dark:bg-transparent flex ">
       <Sidebar />
 
-      <div className="w-full">
+      <div className="w-full h-full overflow-scroll">
         <Header />
         <StatisticsBoxes />
         <ApiSelection />

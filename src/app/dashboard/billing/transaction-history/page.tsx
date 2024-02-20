@@ -8,10 +8,10 @@ import HistoryBody from "@/components/dashboard/billing/historyBody";
 
 export default function DashboardPage() {
   return (
-    <div className=" flex ">
-      <Sidebar />
+    <div className=" flex w-full h-full ">
+      <Sidebar activeItem="Billing" activeChildName="Transaction history" />
 
-      <div className="w-full">
+      <div className="w-full h-full overflow-scroll">
         <Header />
         <HistoryBody />
       </div>

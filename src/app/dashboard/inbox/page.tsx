@@ -15,7 +15,7 @@ const AddApiPage = ({ params }: any) => {
     <div className="bg-dashboardBg dark:bg-transparent flex ">
       <Sidebar activeItem="Inbox" />
 
-      <div className="w-full">
+      <div className="w-full h-full overflow-scroll">
         <Header />
       </div>
     </div>
