@@ -9,10 +9,10 @@ function PricingCard({ plan }: any) {
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-md px-3 py-4 col-span-1 flex justify-center items-center flex-col
+      className={` rounded-lg shadow-md px-3 py-4 col-span-1 flex justify-center items-center flex-col
     hover:scale-110 transition-transform duration-300 ease-in-out
 
-    ${plan.RecomndedPlan && "bg-blue-900 text-white"}`}
+    ${plan.RecomndedPlan ? "bg-blue-900 text-white" : "bg-white"}`}
     >
       <h3
         className={`text-md  font-bold mb-2  ${

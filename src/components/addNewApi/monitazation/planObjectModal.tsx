@@ -66,15 +66,26 @@ const PlanObjectModal = ({
     closeModal();
   };
 
+  const handleDeleteObject = () => {
+    setObjectList((prev: any) => {
+      return prev.filter((item: any) => item.id != objectSelceted.id);
+    });
+  };
+
   return (
     <div className="w-full ">
-      <Button
-        variant="ghost"
-        className="col-span-1 flex justify-center items-center"
-        onClick={openModal}
-      >
-        {edit ? objectSelceted.Name : "Add New Object"}
-      </Button>
+      <div className="flex justify-center gap-1 items-center">
+        <Button variant="destructive" onClick={handleDeleteObject}>
+          <img src="/icons/delete.svg" alt="" className="w-6 h-6  " />
+        </Button>
+        <Button
+          variant="ghost"
+          className="col-span-1 flex justify-center items-center"
+          onClick={openModal}
+        >
+          {edit ? objectSelceted.Name : "Add New Object"}
+        </Button>
+      </div>
 
       <Modal
         isOpen={isModalOpen}

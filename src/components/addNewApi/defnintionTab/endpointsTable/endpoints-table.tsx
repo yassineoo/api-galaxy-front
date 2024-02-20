@@ -25,6 +25,7 @@ import PaginationManual from "@/components/dashboard/billing/paginationManual";
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
 import { useUpdateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
 import AddNewEndpointDrawer from "../endpoints/addNewEndpointDrawer";
+import { AlertDialogDemo } from "../deleteModal";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,8 +49,10 @@ export function EndpointsTable<TData, TValue>({
   };
 
   const handleMoveToClick = async (groupId: number, endpointId: number) => {
+    console.log("groupId  endpontID", groupId, endpointId);
+    handleGroupChange(groupId.toString());
     const data = {
-      id: endpointId,
+      ID: endpointId,
       GroupID: groupId,
     };
     try {
@@ -123,15 +126,17 @@ export function EndpointsTable<TData, TValue>({
                       edit
                       endpoint={row.original}
                     />
+                    <AlertDialogDemo endpoint={row.original} />
 
                     {/* Dropdown to select groups */}
                     {groups && (
                       <SelectButton
                         items={groups}
                         name="Move to"
+                        value={selectedGroup}
                         handleSelectionChange={(value: number) => {
                           handleMoveToClick(value, row.original?.ID);
-                          console.log(row.original);
+                          //  console.log(row.original);
                         }}
                       />
                     )}

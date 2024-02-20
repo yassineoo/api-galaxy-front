@@ -47,7 +47,7 @@ export const useDeleteApiEndpoints = () => {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      await axios.delete(`/endpoints/${id}`); // Adjust the endpoint
+      await axios.delete(`${ApiUrl}/endpoints/${id}`); // Adjust the endpoint
     },
 
     onSuccess: () => {

@@ -200,7 +200,7 @@ const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
                   { value: "PATCH", color: "purple" },
                   // Add more HTTP methods as needed
                 ]}
-                defaultValue={"GET"}
+                defaultValue={endpoint?.Methode || "GET"}
                 handleSelectionChange={setEndpointMethod}
               />
               <div className="flex flex-col items-start  w-full space-2">

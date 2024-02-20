@@ -1,65 +1,54 @@
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import { Button } from "../../ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { useDeleteApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
 
-const DeleteModal = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
+export function AlertDialogDemo({ endpoint }: any) {
+  const {
+    mutateAsync: deleteEndpoint,
+    isError,
+    isPending,
+    error,
+  } = useDeleteApiEndpoints();
 
-  useEffect(() => {
-    Modal.setAppElement("body"); // Set the app element to the body element
-  }, []);
-
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    closeModal();
+  const handleDelete = async () => {
+    try {
+      await deleteEndpoint(endpoint.ID);
+      console.log("done");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div>
-      <img
-        src="/icons/delete.svg "
-        onClick={openModal}
-        alt=""
-        className="w-4 h-4 pointer"
-      />
-
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        style={{
-          overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          },
-          content: {
-            width: "50%",
-            margin: "auto",
-            backgroundColor: "white",
-            padding: "20px",
-            borderRadius: "8px",
-          },
-        }}
-      >
-        {/*<span className="close" onClick={closeModal}>
-          &times;
-        </span> */}
-
-        <div className="flex flex-col justify-between items-start gap-4">
-          <h1 className="text-2xl font-bold">Delete Path Parmeter </h1>
-          <Button onClick={closeModal}>Cancel</Button>
-          <Button onClick={closeModal}>Delete</Button>
-        </div>
-      </Modal>
-    </div>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="outline" className="border-none">
+          <img src="/icons/delete.svg" className="w-5 h-5" />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete this
+            endpoint
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
-};
-
-export default DeleteModal;
+}
