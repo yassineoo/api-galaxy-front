@@ -60,7 +60,13 @@ const Logo = ({ toggleMenu, isMenuOpen }: any) => {
   );
 };
 
-const Menu = ({ isMenuOpen, apiId, maApisList, activeItem }: any) => {
+const Menu = ({
+  isMenuOpen,
+  apiId,
+  maApisList,
+  activeItem,
+  activeChildName,
+}: any) => {
   const menuItems = [
     {
       ID: 90,
@@ -112,7 +118,10 @@ const Menu = ({ isMenuOpen, apiId, maApisList, activeItem }: any) => {
   const [activeMenu, setActiveMenu] = useState<number>(
     apiId || activeOne?.ID || 90
   ); // 90 is the id of the dashboard
-
+  const activeChildOne = activeOne?.children?.find(
+    (child) => child.name == activeChildName
+  );
+  const [activeChild, setActiveChild] = useState(activeChildOne?.name);
   const handleMenuClick = (event: any) => {
     setActiveMenu(event.target.value);
   };
@@ -120,12 +129,12 @@ const Menu = ({ isMenuOpen, apiId, maApisList, activeItem }: any) => {
   return (
     <div className="flex flex-col mt-6 text-sm">
       {menuItems.map((item) => (
-        <MenuLink
-          isMenuOpen={isMenuOpen}
+        <RegularMenuItem
           key={item.ID}
           item={item}
-          onClick={() => setActiveMenu(item.ID)}
           active={activeMenu === item.ID}
+          onClick={() => setActiveMenu(item.ID)}
+          isMenuOpen={isMenuOpen}
         />
       ))}
       {isMenuOpen && <Separator text="MY apis" />}
@@ -148,13 +157,12 @@ const Menu = ({ isMenuOpen, apiId, maApisList, activeItem }: any) => {
             };
           })
           .map((item: any) => (
-            <MenuLink
-              isMenuOpen={isMenuOpen}
+            <ApiMenuItem
               key={item.ID}
               item={item}
-              isApi
-              onClick={handleMenuClick}
               active={activeMenu == item.ID}
+              onClick={handleMenuClick}
+              isMenuOpen={isMenuOpen}
             />
           ))}
     </div>
@@ -166,7 +174,11 @@ const Menu = ({ isMenuOpen, apiId, maApisList, activeItem }: any) => {
 const RegularMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
   const isActive = active;
 
-  let url = `/dashboard/${item.name.toLowerCase().replace(/ /g, "-")}`;
+  let url = `/dashboard/${item.name.toLowerCase().replace(/ /g, "-")}/${
+    item?.children
+      ? item.children[0]?.name?.toLowerCase()?.replace(/ /g, "-")
+      : ""
+  }`;
   if (item.name === "Dashboard") {
     url = "/dashboard";
   }
@@ -198,7 +210,7 @@ const RegularMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
           } mr-4 mt-2 flex flex-col justify-start items-start w-full gap-2`}
         >
           {item.children.map((child: any) => {
-            const subUrl = `/${item.name
+            const subUrl = `/dashboard/${item.name
               .toLowerCase()
               .replace(/ /g, "-")}/${child.name
               .toLowerCase()
@@ -214,9 +226,9 @@ const RegularMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
                 {child.icon && (
                   <img
                     className={`w-5 text-white p-2 ${
-                      isActive
-                        ? "bg-orangePure w-7 border-4 border-orangePure rounded-xl"
-                        : ""
+                      child.isActive
+                        ? "bg-orangePure w-9 border-1 border-orangePure rounded-xl"
+                        : "w-9 border-1 rounded-xl"
                     }`}
                     src={child.icon}
                   />
@@ -284,7 +296,7 @@ const ApiMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
           } mr-4 mt-2 flex flex-col justify-start items-start w-full gap-2`}
         >
           {item.children.map((child: any) => {
-            const subUrl = `/${item.name
+            const subUrl = `/dashboard/${item.name
               .toLowerCase()
               .replace(/ /g, "-")}/${child.name
               .toLowerCase()
@@ -318,37 +330,6 @@ const ApiMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
 };
 
 // ... (other components)
-
-const MenuLink = ({
-  item,
-  active,
-  onClick,
-  isApi,
-  isMenuOpen,
-  isAddNewApi,
-}: any) => {
-  if (isApi) {
-    return (
-      <ApiMenuItem
-        key={item.ID}
-        item={item}
-        active={active}
-        onClick={onClick}
-        isMenuOpen={isMenuOpen}
-      />
-    );
-  } else {
-    return (
-      <RegularMenuItem
-        key={item.ID}
-        item={item}
-        active={active}
-        onClick={onClick}
-        isMenuOpen={isMenuOpen}
-      />
-    );
-  }
-};
 
 const Separator = ({ text }: any) => {
   return (

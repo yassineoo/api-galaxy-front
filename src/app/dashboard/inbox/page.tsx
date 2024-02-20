@@ -13,13 +13,10 @@ const AddApiPage = ({ params }: any) => {
   const apiSelceted = useApiById(id);
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex ">
-      <Sidebar activeItem="Add new API" />
+      <Sidebar activeItem="Inbox" />
 
       <div className="w-full">
         <Header />
-        <div className="flex w-full h-full justify-center items-center">
-          <AddNewApiModal />
-        </div>
       </div>
     </div>
   );

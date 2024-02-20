@@ -22,7 +22,7 @@ export const useApiById = (apiId: string) => {
   return useQuery({
     queryKey: ["api", apiId],
     queryFn: async () => {
-      console.log("function excuted ");
+      console.log("function excuted getting apis by id");
 
       const response = await axios.get(`${ApiUrl}/apis/${apiId}`); // Adjust the endpoint
       console.log(response.data);

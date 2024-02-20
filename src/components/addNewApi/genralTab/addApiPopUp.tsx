@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Button } from "../../ui/button";
@@ -13,7 +14,11 @@ import { Input } from "../../ui/input";
 import { useCreateApi } from "@/hooks/apis/api.Mutation";
 import { toast } from "react-toastify";
 
+import { useRouter } from "next/navigation";
+
 export default function AddNewApiForm({ closeModal }: any) {
+  const router = useRouter();
+
   // Define states for input fields
   const [name, setName] = useState("");
   const [apiUrl, setApiUrl] = useState("");
@@ -25,7 +30,7 @@ export default function AddNewApiForm({ closeModal }: any) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
-    mutate: createApi,
+    mutateAsync: createApi,
     isError,
     isPending,
     error,
@@ -49,8 +54,8 @@ export default function AddNewApiForm({ closeModal }: any) {
         Description: description,
       };
 
-      await createApi(Data);
-
+      const res = await createApi(Data);
+      router.push(`/dashboard/apis/${res.ID}`);
       closeModal();
 
       console.log("API entity created successfully!");
