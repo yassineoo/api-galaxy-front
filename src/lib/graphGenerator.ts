@@ -41,7 +41,7 @@ export default function generateGraph(endpoints: any[]) {
       },
     });
 
-    currentGroupY += 150; // Increment Y position for the next group
+    currentGroupY += 170; // Increment Y position for the next group
   });
 
   // Create endpoint nodes and edges from group to endpoint
@@ -50,7 +50,7 @@ export default function generateGraph(endpoints: any[]) {
     nodes.push({
       id: endpointId,
       type: "custom",
-      position: { x: 400, y: groupPositions[endpoint.groupName] },
+      position: { x: 500, y: groupPositions[endpoint.groupName] },
       data: { label: endpoint.pathUrl, id: endpoint.id },
     });
 
@@ -68,7 +68,7 @@ export default function generateGraph(endpoints: any[]) {
     });
 
     // Move the next endpoint in this group down
-    groupPositions[endpoint.groupName] += 50;
+    groupPositions[endpoint.groupName] += 60;
   });
 
   return { nodes, edges };

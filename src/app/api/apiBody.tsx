@@ -61,6 +61,7 @@ export function ApiTabs({ api }: any) {
           {endpointList.isLoading && <div>Loading...</div>}
           {endpointList.isSuccess && (
             <ApiDocsGraph
+              selectedNodeId={selectedNodeId}
               endpointsList={endpointList.data}
               setSelectedNodeId={setSelectedNodeId}
             />

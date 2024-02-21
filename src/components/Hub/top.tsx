@@ -1,4 +1,16 @@
+"use client";
+
 import CollectionCard from "../HubXs/collectionCard";
+
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Image from "next/image";
 
 const items = [
   {
@@ -21,6 +33,18 @@ const items = [
     ImagePath: "/assets/hub_assets/location.svg",
     Title: "Top location API",
   },
+  {
+    ImagePath: "/assets/hub_assets/movie.svg",
+    Title: "Top Movie API",
+  },
+  {
+    ImagePath: "/assets/hub_assets/movie.svg",
+    Title: "Top Movie API",
+  },
+  {
+    ImagePath: "/assets/hub_assets/movie.svg",
+    Title: "Top Movie API",
+  },
 ];
 
 export default function TopCollection() {
@@ -30,15 +54,34 @@ export default function TopCollection() {
         Top Collection
       </h1>
 
-      <div className="flex p-4 gap-4 md:w-5/6 m-auto flex-wrap">
-        {items.map((item, index) => (
-          <CollectionCard
-            key={index}
-            imagePath={item.ImagePath}
-            cardTitle={item.Title}
-          />
-        ))}
+      <div className="flex p-4 gap-4 md:w-5/6 m-auto  flex-wrap">
+        <CarouselSize />
       </div>
     </div>
+  );
+}
+
+export function CarouselSize() {
+  return (
+    <Carousel
+      opts={{
+        align: "center",
+      }}
+      className="w-full "
+    >
+      <CarouselContent>
+        {items.map((item, index) => (
+          <CarouselItem className="basis-1/5">
+            <CollectionCard
+              key={index}
+              imagePath={item.ImagePath}
+              cardTitle={item.Title}
+            />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
   );
 }

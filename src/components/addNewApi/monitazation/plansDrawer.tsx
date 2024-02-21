@@ -10,11 +10,17 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { DemoPaymentMethod } from "./paymentCard";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardTitle,
+} from "@/components/ui/card";
+import Congratulations from "./congrats";
 
 const PlanConfermationModal = ({ plan }: any) => {
   return (
-    <Drawer className="">
+    <Drawer>
       <DrawerTrigger>
         <Button>Subscribe</Button>
       </DrawerTrigger>
@@ -24,7 +30,7 @@ const PlanConfermationModal = ({ plan }: any) => {
           <DrawerDescription>This action cannot be undone.</DrawerDescription>
         </DrawerHeader>
         <div className="flex w-2/3  justify-start gap-4">
-          {(plan.Price != 0 || plan.Type == "Monthely") && (
+          {(plan.Price != 0 || plan.Type != "Monthely") && (
             <div className="">
               <DemoPaymentMethod />
             </div>
@@ -68,8 +74,12 @@ const PlanConfermationModal = ({ plan }: any) => {
                 <span>Total : </span> {plan.Price * 0.98} $
               </CardDescription>
             </Card>
+            <Congratulations />
+
             <DrawerClose>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" className="ml-4">
+                Cancel
+              </Button>
             </DrawerClose>
           </DrawerFooter>
         </div>

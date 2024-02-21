@@ -21,7 +21,7 @@ const endpoints = [
   // Add more endpoints here...
 ];
 
-const CustomNode = React.memo(({ data, onClick }: any) => {
+const CustomNode = React.memo(({ data, onClick, selectedNodeId }: any) => {
   console.log("data ===========", data);
 
   const handleClick = () => {
@@ -30,10 +30,18 @@ const CustomNode = React.memo(({ data, onClick }: any) => {
 
     onClick(data.id);
   };
+
+  const getNodeStyle = (node: any) => ({
+    background: selectedNodeId === node.id ? "orange" : "rgb(241, 245, 249)",
+
+    // Add other styles as needed
+  });
+
   return (
     <div
       onClick={handleClick}
-      className="bg-orange-500   text-black py-2 px-4 rounded-md"
+      className=" py-2 px-4 rounded-md"
+      style={getNodeStyle(data)}
     >
       <Handle
         type="target"
@@ -41,11 +49,7 @@ const CustomNode = React.memo(({ data, onClick }: any) => {
         style={{ borderRadius: 0 }}
       />
       {data.label}
-      <Handle
-        type="source"
-        position={Position.Right}
-        style={{ borderRadius: 0 }}
-      />
+      <Handle type="source" position={Position.Right} />
     </div>
   );
 });
@@ -53,6 +57,7 @@ const CustomNode = React.memo(({ data, onClick }: any) => {
 export default React.memo(function ApiDocsGraph({
   endpointsList,
   setSelectedNodeId,
+  selectedNodeId,
 }: any) {
   const { nodes: initialNodes, edges: initialEdges } = generateGraph(
     endpointsList.map((endpoint: any) => {
@@ -86,7 +91,11 @@ export default React.memo(function ApiDocsGraph({
         nodeTypes={{
           ...nodeTypes,
           custom: (props: any) => (
-            <CustomNode {...props} onClick={handleNodeClick} />
+            <CustomNode
+              {...props}
+              onClick={handleNodeClick}
+              selectedNodeId={selectedNodeId}
+            />
           ),
         }}
       />
