@@ -126,7 +126,7 @@ export function EndpointsTable<TData, TValue>({
                       edit
                       endpoint={row.original}
                     />
-                    <AlertDialogDemo endpoint={row.original} />
+                    <AlertDialogDemo endpoint={row.original} name="endpoint" />
 
                     {/* Dropdown to select groups */}
                     {groups && (

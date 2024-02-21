@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useDeleteApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
 
-export function AlertDialogDemo({ endpoint }: any) {
+export function AlertDialogDemo({ action, endpoint, name }: any) {
   const {
     mutateAsync: deleteEndpoint,
     isError,
@@ -41,12 +41,14 @@ export function AlertDialogDemo({ endpoint }: any) {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete this
-            endpoint
+            {" " + name}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={action ? action : handleDelete}>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import MultiSelect from "./object";
+import { AlertDialogDemo } from "../defnintionTab/deleteModal";
 
 const PlanObjectModal = ({
   edit,
@@ -51,7 +52,7 @@ const PlanObjectModal = ({
     e.preventDefault();
     setObjectList((prev: any) => {
       return prev.map((item: any) => {
-        if (item.id === objectSelceted.id) {
+        if (item.ID === objectSelceted.ID) {
           return {
             ...item,
             Name: Name,
@@ -69,24 +70,23 @@ const PlanObjectModal = ({
   const handleDeleteObject = () => {
     setObjectList((prev: any) => {
       console.log(
-        "objectSelceted.id %%%%%%%%%%%%%%%,",
-        objectSelceted.id,
+        "objectSelceted.ID %%%%%%%%%%%%%%%,",
+        objectSelceted.ID,
         prev
       );
 
-      return prev.filter((item: any) => item.id != objectSelceted.id);
+      return prev.filter((item: any) => item.ID != objectSelceted.ID);
     });
   };
 
   return (
     <div className="w-full ">
-      <div className="flex justify-center gap-1 items-center">
-        <Button variant="destructive" onClick={handleDeleteObject}>
-          <img src="/icons/delete.svg" alt="" className="w-6 h-6  " />
-        </Button>
+      <div className="flex justify-start gap-1 items-center col-span-1 ">
+        <AlertDialogDemo action={handleDeleteObject} name="object" />
+
         <Button
           variant="ghost"
-          className="col-span-1 flex justify-center items-center"
+          className=" px-1 text-sm flex justify-center items-center"
           onClick={openModal}
         >
           {edit ? objectSelceted.Name : "Add New Object"}
