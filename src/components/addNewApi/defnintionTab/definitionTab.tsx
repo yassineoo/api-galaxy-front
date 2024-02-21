@@ -13,6 +13,9 @@ import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
 import CreateEndpointsGroupForm from "./endpoints/endpointGroupCreateModal";
 import { useEndpointsGroupList } from "@/hooks/Endpoints Group/EndpointsGroup.queries";
 import AddNewEndpointDrawer from "./endpoints/addNewEndpointDrawer";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { EndpointsGroupsTable } from "./endpointsTable/endpoints-group-table";
+import { EndpointsGroupscolumns } from "./endpointsTable/endpointsGroupsColumns";
 
 export default function DefinitionTab({ api }: any) {
   const EndpointsList = useApiEndpointsList(api.ID);
@@ -34,29 +37,49 @@ export default function DefinitionTab({ api }: any) {
             <AddNewEndpointDrawer Label="Add New Endpoint" apiID={api.ID} />
             <CreateEndpointsGroupForm apiId={api.ID} />
           </div>
-          {EndpointsList.isLoading && EndpointsGroupsList.isLoading && (
-            <p>Loading...</p>
-          )}
-          {EndpointsList.isSuccess && EndpointsGroupsList.isSuccess && (
-            <EndpointsTable
-              groups={EndpointsGroupsList.data.map((group: any) => {
-                return { label: group.Group, value: group.ID };
-              })}
-              onUpdateEndpointGroup={() => {}}
-              columns={Endpointscolumns}
-              data={EndpointsList.data.map((endpoint: any) => {
-                const obj = {
-                  ...endpoint,
-                  apiId: api.ID,
-                  GroupName: endpoint.Group?.Group,
-                  GroupId: endpoint.Group?.Group,
-                };
-                delete obj.Group;
 
-                return obj;
-              })}
-            />
-          )}
+          <Tabs defaultValue="Endpoints">
+            <TabsList className="w-[200px] border-none bg-transparent">
+              <TabsTrigger value="Endpoints">Endpoints</TabsTrigger>
+              <TabsTrigger value="Groups">Groups</TabsTrigger>
+            </TabsList>
+            <TabsContent value="Endpoints">
+              {EndpointsList.isLoading && EndpointsGroupsList.isLoading && (
+                <p>Loading...</p>
+              )}
+              {EndpointsList.isSuccess && EndpointsGroupsList.isSuccess && (
+                <EndpointsTable
+                  groups={EndpointsGroupsList.data.map((group: any) => {
+                    return { label: group.Group, value: group.ID };
+                  })}
+                  onUpdateEndpointGroup={() => {}}
+                  columns={Endpointscolumns}
+                  data={EndpointsList.data.map((endpoint: any) => {
+                    const obj = {
+                      ...endpoint,
+                      apiId: api.ID,
+                      GroupName: endpoint.Group?.Group,
+                      GroupId: endpoint.Group?.Group,
+                    };
+                    delete obj.Group;
+
+                    return obj;
+                  })}
+                />
+              )}
+            </TabsContent>
+            <TabsContent value="Groups">
+              {EndpointsGroupsList.isLoading &&
+                EndpointsGroupsList.isLoading && <p>Loading...</p>}
+              {EndpointsGroupsList.isSuccess &&
+                EndpointsGroupsList.isSuccess && (
+                  <EndpointsGroupsTable
+                    columns={EndpointsGroupscolumns}
+                    data={EndpointsGroupsList.data}
+                  />
+                )}
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
     </div>

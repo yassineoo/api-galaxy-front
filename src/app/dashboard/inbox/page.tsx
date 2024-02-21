@@ -13,11 +13,7 @@ const AddApiPage = ({ params }: any) => {
   const apiSelceted = useApiById(id);
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex ">
-      <Sidebar activeItem="Inbox" />
-
-      <div className="w-full h-full overflow-scroll">
-        <Header />
-      </div>
+      <Header />
     </div>
   );
 };

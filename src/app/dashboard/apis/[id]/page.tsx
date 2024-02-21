@@ -17,15 +17,11 @@ const AddApiPage = ({ params }: any) => {
       {apiSelceted.isLoading && <LoadingPage />}
       {apiSelceted.isError && <NotFoundPage />}
       {apiSelceted.isSuccess && (
-        <>
-          <Sidebar apiId={id} />
+        <div className="w-full">
+          <Header />
 
-          <div className="w-full">
-            <Header />
-
-            <ApiConfigTabs api={apiSelceted.data} />
-          </div>
-        </>
+          <ApiConfigTabs api={apiSelceted.data} />
+        </div>
       )}
     </div>
   );

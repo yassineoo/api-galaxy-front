@@ -251,7 +251,13 @@ const RegularMenuItem = ({
   );
 };
 
-const ApiMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
+const ApiMenuItem = ({
+  item,
+  active,
+  onClick,
+  isMenuOpen,
+  activeChildName,
+}: any) => {
   const isActive = active;
 
   // Assuming isApi should have some custom logic
@@ -259,17 +265,17 @@ const ApiMenuItem = ({ item, active, onClick, isMenuOpen }: any) => {
   item.children = [
     {
       name: "Analyse",
-      active: true,
+      active: activeChildName == "Analyse",
       icon: "/icons/analytics.svg",
     },
     {
       name: "configuration",
-      active: false,
+      active: activeChildName == "configuration",
       icon: "/icons/config.svg",
     },
     {
       name: "Authorization",
-      active: false,
+      active: activeChildName == "configuration",
       icon: "/icons/auth.svg",
     },
   ];

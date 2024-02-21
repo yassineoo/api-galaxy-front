@@ -1,8 +1,5 @@
 "use client";
 import Head from "next/head";
-import LineChartComponent from "../../../components/dashboard/linechart";
-import DonutChartComponent from "../../../components/dashboard/mainPage/donutchart";
-import { use } from "react";
 
 import Navbar from "../../../components/General use/navbar";
 import ApiHeader from "../apiHeader";

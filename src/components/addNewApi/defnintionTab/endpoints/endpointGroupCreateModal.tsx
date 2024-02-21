@@ -9,16 +9,22 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useCreateEndpointsGroup } from "@/hooks/Endpoints Group/EndpointsGroup.Mutation";
+import {
+  useCreateEndpointsGroup,
+  useUpdateEndpointsGroup,
+} from "@/hooks/Endpoints Group/EndpointsGroup.Mutation";
 import { Textarea } from "@/components/ui/textarea";
 
-const CreateEndpointsGroupForm = ({ apiId }: any) => {
+const CreateEndpointsGroupForm = ({ apiId, edit, group }: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const [groupName, setGroupName] = useState("");
-  const [groupDescription, setGroupDescription] = useState("");
+  const [groupName, setGroupName] = useState(edit ? group?.Group : "");
+  const [groupDescription, setGroupDescription] = useState(
+    edit ? group?.Description : ""
+  );
 
   const createEndpointGroup = useCreateEndpointsGroup();
+  const updateGroup = useUpdateEndpointsGroup();
 
   useEffect(() => {
     Modal.setAppElement("body"); // Set the app element to the body element
@@ -32,14 +38,19 @@ const CreateEndpointsGroupForm = ({ apiId }: any) => {
     setModalOpen(false);
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     try {
       e.preventDefault();
-      createEndpointGroup.mutate({
+      const Data = {
+        ID: edit ? group?.ID : "",
         ApiId: apiId,
         Group: groupName,
         Description: groupDescription,
-      });
+      };
+
+      edit
+        ? await updateGroup.mutateAsync(Data)
+        : await createEndpointGroup.mutateAsync(Data);
       // Handle form submission logic here
       closeModal();
     } catch (error) {
@@ -49,7 +60,10 @@ const CreateEndpointsGroupForm = ({ apiId }: any) => {
 
   return (
     <div>
-      <Button onClick={openModal}>Add New Group</Button>
+      <Button onClick={openModal} variant={`${edit ? "ghost" : "default"}`}>
+        {" "}
+        {edit ? "Edit" : "Add New Group"}
+      </Button>
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
