@@ -60,7 +60,7 @@ export default function MonetizationTab({ api, apiPlans, edit }: any) {
           },
         ]
   );
-  const apiCategoryListQuery = useApiCategoryList();
+  //const apiCategoryListQuery = useApiCategoryList();
   const endpointsList = useApiEndpointsList(api.ID);
   const {
     mutateAsync: createPlan,
