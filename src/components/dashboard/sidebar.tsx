@@ -289,7 +289,7 @@ const ApiMenuItem = ({
   ];
 
   const [activeChild, setActiveChild] = useState(activeChildName);
-  let url = `/dashboard/apis/${item.ID || 0}/analyse`;
+  let url = `/dashboard/apis/${item.ID || 0}/Analyse`;
 
   return (
     <div className="flex flex-col items-start justify-start w-4/5">
@@ -331,8 +331,8 @@ const ApiMenuItem = ({
                   <img
                     className={`w-5 text-white p-2 ${
                       activeChild === child.name
-                        ? "bg-orangePure w-7 border-4 border-orangePure rounded-xl"
-                        : ""
+                        ? "bg-orangePure w-9 border-1 border-orangePure rounded-xl"
+                        : "w-9 border-1"
                     }`}
                     src={child.icon}
                   />
