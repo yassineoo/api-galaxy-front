@@ -10,7 +10,7 @@ const BillingForm = () => {
   const [page, setPage] = React.useState("paymentMethode");
 
   return (
-    <div className="flex  w-full flex-col  items-center -z-20 justify-start  h-screen min-h-screen bg-gray-100 dark:bg-transparent">
+    <div className="flex  w-full flex-col  items-center  justify-start  h-screen min-h-screen bg-gray-100 dark:bg-transparent">
       <div className=" w-full ml-4 mt-4">
         <h1 className="text-xl font-bold">Billing Information</h1>
       </div>

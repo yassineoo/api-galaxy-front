@@ -9,7 +9,6 @@ import HistoryBody from "@/components/dashboard/billing/historyBody";
 export default function DashboardPage() {
   return (
     <div className=" flex w-full h-full ">
-      <Header />
       <HistoryBody />
     </div>
   );

@@ -197,11 +197,12 @@ const ParamterControler = ({
     try {
       // Example: Make a request using the input values
       const Data = {
-        method: selectedEndpoint?.Methode,
-        url: `${slectedApiUrl}/${url}`, // Use the updated url state
-        headers: headerParams,
-        params: queryParams,
-        data: bodyParams,
+        Method: selectedEndpoint?.Methode,
+        URL: `${slectedApiUrl}/${url}`, // Use the updated url state
+        Headers: headerParams,
+        Params: queryParams,
+        Data: bodyParams,
+        EndpointID: selectedNodeId || 18,
       };
       const response = await sendRequest(Data);
       setResquestResult(response);
