@@ -10,23 +10,19 @@ import { ApiSelection } from "../../components/dashboard/mainPage/apiSelcetion";
 
 export default function DashboardPage() {
   return (
-    <div className="bg-dashboardBg dark:bg-transparent flex ">
-      <Sidebar />
-
-      <div className="w-full h-full overflow-scroll">
-        <Header />
-        <StatisticsBoxes />
-        <ApiSelection />
-        <FilterGroup />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-lg font-semibold">API Analytics</h2>
-            <LineChartComponent />
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-lg font-semibold">Earnings</h2>
-            <DonutChartComponent />
-          </div>
+    <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
+      <Header />
+      <StatisticsBoxes />
+      <ApiSelection />
+      <FilterGroup />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-lg font-semibold">API Analytics</h2>
+          <LineChartComponent />
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-lg font-semibold">Earnings</h2>
+          <DonutChartComponent />
         </div>
       </div>
     </div>

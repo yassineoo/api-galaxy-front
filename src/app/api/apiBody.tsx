@@ -202,7 +202,7 @@ const ParamterControler = ({
         Headers: headerParams,
         Params: queryParams,
         Data: bodyParams,
-        EndpointID: selectedNodeId || 18,
+        EndpointID: selectedNodeId,
       };
       const response = await sendRequest(Data);
       setResquestResult(response);

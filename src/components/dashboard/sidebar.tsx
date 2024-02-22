@@ -3,11 +3,25 @@
 import { useApiById, useApiByUserId } from "@/hooks/apis/api.queries";
 import Link from "next/link";
 import { memo, useCallback, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
-export default function Sidebar({ apiId, activeItem, activeChildName }: any) {
+export default function Sidebar({ apiId }: any) {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const pathname = usePathname();
+
+  // Extract the active item and child from the current route
+  const pathSegments = pathname.split("/");
+  const activeItem = pathSegments[2]; // Assuming the item is the third segment
+  let activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
   const maApisListCallback = useCallback(() => useApiByUserId(123), []);
   const maApisList = maApisListCallback();
+
+  if (activeItem != "apis") activeChildName = pathname;
+  console.log(
+    "pathname rendered again ========================= ",
+    pathname,
+    activeItem
+  );
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -73,55 +87,60 @@ const Menu = ({
       ID: 90,
       name: "Dashboard",
       icon: "/icons/icon_dashboard.svg",
+      url: "/dashboard",
       active: true,
     },
     {
       ID: 91,
-
       name: "Inbox",
       icon: "/icons/icon_inbox.svg",
+      url: "/dashboard/inbox",
       active: false,
     },
     {
       ID: 92,
-
       name: "Add new API",
       icon: "/icons/icon_business_time_solid.svg",
+      url: "/dashboard/add-new-api",
       active: false,
     },
     {
       ID: 93,
-
       name: "Billing",
+
       icon: "/icons/icon_billing.svg",
+      url: "/dashboard/billing/billing-information",
       active: false,
       children: [
         {
           name: "Billing Information",
           active: true,
           icon: "/icons/credit-card.svg",
+          url: "/dashboard/billing/billing-information",
         },
         {
           name: "Transaction history",
           active: false,
           icon: "/icons/transaction-history.svg",
+          url: "/dashboard/billing/transaction-history",
         },
         {
           name: "Subscription",
           active: false,
           icon: "/icons/subscription.svg",
+          url: "/dashboard/billing/subscription",
         },
       ],
     },
   ];
 
-  const activeOne = menuItems.find((item) => item.name === activeItem);
+  const activeOne = menuItems.find((item) => item.url.includes(activeItem));
   const [activeMenu, setActiveMenu] = useState<number>(
     apiId || activeOne?.ID || 90
   ); // 90 is the id of the dashboard
 
-  const handleMenuClick = (event: any) => {
-    setActiveMenu(event.target.value);
+  const handleMenuClick = (ID: number) => {
+    setActiveMenu(ID);
   };
 
   return (
@@ -131,7 +150,7 @@ const Menu = ({
           key={item.ID}
           item={item}
           active={activeMenu === item.ID}
-          onClick={() => setActiveMenu(item.ID)}
+          onClick={handleMenuClick}
           isMenuOpen={isMenuOpen}
           activeChildName={activeChildName}
         />
@@ -142,8 +161,6 @@ const Menu = ({
         maApisList.isSuccess &&
         maApisList.data.data
           .map((api: any) => {
-            console.log("api maping ===== ", api.ID, api.ID == apiId, apiId);
-
             return {
               ID: api.ID,
               name: api.Name,
@@ -173,32 +190,23 @@ const RegularMenuItem = ({
   activeChildName,
 }: any) => {
   const isActive = active;
-  const [activeChild, setActiveChild] = useState(item?.name);
-
-  let url = `/dashboard/${item.name.toLowerCase().replace(/ /g, "-")}/${
-    item?.children
-      ? item.children[0]?.name?.toLowerCase()?.replace(/ /g, "-")
-      : ""
-  }`;
-  if (item.name === "Dashboard") {
-    url = "/dashboard";
-  }
-
+  const [activeChild, setActiveChild] = useState(activeChildName);
   console.log(
-    "activeChildName",
     activeChildName,
-    item?.children ? item?.children[1].name : "not found ",
-    item?.children ? activeChildName == item?.children[1]?.name : "not found éé"
+    "acrive ",
+    active,
+    "activeChildName ======== ",
+    item.url
   );
 
   return (
     <div className="flex flex-col items-start justify-start w-4/5">
       <Link
-        href={url}
+        href={item.url}
         className={`w-full flex items-center gap-2 py-3 cursor-pointer ${
           isActive ? "bg-orangePure rounded-r-3xl" : ""
         }`}
-        onClick={onClick}
+        onClick={() => onClick(item.ID)}
       >
         <img
           className={`w-5 ${isMenuOpen ? "ml-8" : "ml-4"} `}
@@ -218,15 +226,15 @@ const RegularMenuItem = ({
           } mr-4 mt-2 flex flex-col justify-start items-start w-full gap-2`}
         >
           {item.children.map((child: any) => {
-            const subUrl = `/dashboard/${item.name
-              .toLowerCase()
-              .replace(/ /g, "-")}/${child.name
-              .toLowerCase()
-              .replace(/ /g, "-")}`;
+            const handleChildClick = () => {
+              console.log("child.url ========= ", child.url);
+
+              setActiveChild(child.url);
+            };
             return (
               <Link
-                href={subUrl}
-                onClick={onClick}
+                href={child.url}
+                onClick={handleChildClick}
                 className={`flex items-center gap-2 text-sm text-gray-400 ml-7 cursor-pointer ${
                   isMenuOpen ? "ml-7" : "ml-0"
                 }`}
@@ -234,7 +242,7 @@ const RegularMenuItem = ({
                 {child.icon && (
                   <img
                     className={`w-5 text-white p-2 ${
-                      activeChildName == child.name
+                      activeChild == child.url
                         ? "bg-orangePure w-9 border-1 border-orangePure rounded-xl"
                         : "w-9 border-1 rounded-xl"
                     }`}
@@ -280,8 +288,8 @@ const ApiMenuItem = ({
     },
   ];
 
-  const [activeChild, setActiveChild] = useState("Billing Information");
-  let url = `/dashboard/apis/${item.ID || 0}`;
+  const [activeChild, setActiveChild] = useState(activeChildName);
+  let url = `/dashboard/apis/${item.ID || 0}/analyse`;
 
   return (
     <div className="flex flex-col items-start justify-start w-4/5">
@@ -290,7 +298,7 @@ const ApiMenuItem = ({
         className={`w-full flex items-center gap-2 py-3 cursor-pointer ${
           isActive ? "bg-orangePure rounded-r-3xl" : ""
         }`}
-        onClick={onClick}
+        onClick={() => onClick(item.ID)}
       >
         <img
           className={`w-5 ${isMenuOpen ? "ml-8" : "ml-4"} `}
@@ -310,11 +318,7 @@ const ApiMenuItem = ({
           } mr-4 mt-2 flex flex-col justify-start items-start w-full gap-2`}
         >
           {item.children.map((child: any) => {
-            const subUrl = `/dashboard/${item.name
-              .toLowerCase()
-              .replace(/ /g, "-")}/${child.name
-              .toLowerCase()
-              .replace(/ /g, "-")}`;
+            const subUrl = `/dashboard/apis/${item.ID || 0}/${child.name}`;
             return (
               <Link
                 href={subUrl}

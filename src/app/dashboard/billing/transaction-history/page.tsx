@@ -8,7 +8,9 @@ import HistoryBody from "@/components/dashboard/billing/historyBody";
 
 export default function DashboardPage() {
   return (
-    <div className=" flex w-full h-full ">
+    <div className=" bg-dashboardBg dark:bg-transparent flex flex-col w-full ">
+      <Header />
+
       <HistoryBody />
     </div>
   );

@@ -7,7 +7,7 @@ import Sidebar from "@/components/dashboard/sidebar";
 
 export default function DashboardPage() {
   return (
-    <div className="bg-dashboardBg dark:bg-transparent flex ">
+    <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full ">
       <Header />
       <BillingForm />
     </div>
