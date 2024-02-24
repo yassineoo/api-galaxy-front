@@ -3,17 +3,19 @@ import { Button } from "@/components/ui/button";
 
 import { ColumnDef } from "@tanstack/react-table";
 
-export const Endpointscolumns: ColumnDef<any>[] = [
+export const Logscolumns: ColumnDef<any>[] = [
   {
     accessorKey: "Timestamp", // Access the nested Name property
     header: "Time",
     cell: ({ row }) => row.getValue("Timestamp"), // Access the nested Name property
   },
+
   {
-    accessorKey: "Endpoint", // Access the nested Endpoint property
+    accessorKey: "EndpointName", // Access the nested Endpoint property
     header: "Endpoint",
-    cell: ({ row }) => row.getValue("Endpoint"), // Access the nested Name property
+    cell: ({ row }) => row.getValue("EndpointName"), // Access the nested Name property
   },
+
   {
     accessorKey: "Methode",
     header: "Method",

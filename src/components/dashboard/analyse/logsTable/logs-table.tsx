@@ -28,38 +28,16 @@ import { useUpdateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onUpdateEndpointGroup: any | null;
-  groups: any;
 }
 
-export function EndpointsTable<TData, TValue>({
+export function LogsTable<TData, TValue>({
   columns,
   data,
-  onUpdateEndpointGroup,
-  groups,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
-  const updateEndpoint = useUpdateApiEndpoints();
 
-  const handleGroupChange = (groupId: string) => {
-    setSelectedGroup(groupId);
-  };
+  console.log(data, "data");
 
-  const handleMoveToClick = async (groupId: number, endpointId: number) => {
-    console.log("groupId  endpontID", groupId, endpointId);
-    handleGroupChange(groupId.toString());
-    const data = {
-      ID: endpointId,
-      GroupID: groupId,
-    };
-    try {
-      await updateEndpoint.mutate(data);
-      console.log("done");
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const table = useReactTable({
     data,
     columns,
@@ -74,7 +52,8 @@ export function EndpointsTable<TData, TValue>({
 
   return (
     <div>
-      <h2 className="font-bold m-4"> Endpints List</h2>
+      <h2 className="font-bold m-4"> Logs List</h2>
+
       <div className="rounded-md border bg-white dark:bg-transparent">
         <Table>
           <TableHeader>

@@ -10,17 +10,10 @@ export const useApiLogsList = (apiId: string) => {
     queryFn: async () => {
       console.log("apiId from logs ====================", apiId);
 
-      const response = await axios.get(`${ApiUrl}/endpoints-group/${apiId}`); // Adjust the endpoint
-      return response.data;
-    },
-  });
-};
+      const response = await axios.get(`${ApiUrl}/apis-logs/${apiId}`); // Adjust the endpoint
+      console.log("response from logs", response.data);
+      console.log("type  response from logs", typeof response.data);
 
-export const useEndpointsGroupById = (apiId: string) => {
-  return useQuery({
-    queryKey: ["EndpointsGroup", apiId],
-    queryFn: async () => {
-      const response = await axios.get(`${ApiUrl}/endpoints-group/${apiId}`); // Adjust the endpoint
       return response.data;
     },
   });

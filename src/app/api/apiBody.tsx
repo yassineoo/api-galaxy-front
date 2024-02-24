@@ -68,15 +68,21 @@ export function ApiTabs({ api }: any) {
           )}
           <div className="w-full flex justify-center h-screen">
             {endpointList.isSuccess && (
-              <ParamterControler
-                setResquestResult={setResquestResult}
-                slectedApiUrl={api.ApiUrl}
-                sendRequest={sendRequest}
-                selectedNodeId={selectedNodeId}
-                endpointList={endpointList.data}
-              />
+              <>
+                <ParamterControler
+                  setResquestResult={setResquestResult}
+                  slectedApiUrl={api.ApiUrl}
+                  sendRequest={sendRequest}
+                  selectedNodeId={selectedNodeId}
+                  endpointList={endpointList.data}
+                />
+                <CodeResult
+                  resquestResult={resquestResult}
+                  selectedNodeId={selectedNodeId}
+                  endpointList={endpointList}
+                />
+              </>
             )}
-            <CodeResult resquestResult={resquestResult} />
           </div>
         </TabsContent>
         <TabsContent
@@ -105,7 +111,11 @@ export function ApiTabs({ api }: any) {
   );
 }
 
-export function CodeResult({ resquestResult }: any) {
+export function CodeResult({
+  resquestResult,
+  selectedNodeId,
+  endpointList,
+}: any) {
   return (
     <Tabs defaultValue="CodeSnippet" className=" h-[760px] w-1/2 ">
       <TabsList className="my-2">
@@ -125,7 +135,12 @@ export function CodeResult({ resquestResult }: any) {
         className="w-full   bg-slate-900 flex flex-col justify-center "
       >
         <div className="m-0 pt-2   w-full flex justify-center ">
-          <CodeSnippet codeString={codeString} language="javascript" />
+          <CodeSnippet
+            codeString={codeString}
+            language="javascript"
+            selectedNodeId={selectedNodeId}
+            endpointList={endpointList}
+          />
         </div>
       </TabsContent>
     </Tabs>

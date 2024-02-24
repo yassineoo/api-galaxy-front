@@ -39,7 +39,13 @@ const snippetExample = generateAxiosSnippet(
   { page: 1, limit: 10 }
 );
 
-const CodeSnippet = ({ codeString, language }: any) => {
+const CodeSnippet = ({
+  codeString,
+  language,
+  selectedNodeId,
+  endpointList,
+}: any) => {
+  const endpoint = endpointList.find((item: any) => item.ID === selectedNodeId);
   const [snippet, setSnippet] = React.useState(snippetExample);
   const changeFramwork = (value: any) => {
     // console.log(value);
@@ -52,9 +58,6 @@ const CodeSnippet = ({ codeString, language }: any) => {
     ): string => {
       return "Not implemented yet";
     };
-
-    console.log("change to ", value);
-    console.log("test change to ", value == "Node.js");
 
     switch (value.trim()) {
       case "Node.js":
@@ -102,8 +105,8 @@ const CodeSnippet = ({ codeString, language }: any) => {
 
     setSnippet(
       fun(
-        "https://api.example.com/users",
-        "post",
+        endpoint?.URL || "https://api.example.com/users",
+        endpoint?.Methode || "post",
         { "Content-Type": "application/json" },
         { name: "John Doe", age: 30 },
         { page: 1, limit: 10 }
