@@ -9,13 +9,17 @@ import LoadingPage from "@/components/shared/loadingPage";
 import NotFoundPage from "@/components/shared/errorPage";
 import MultiSelect from "@/components/addNewApi/monitazation/object";
 import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Logscolumns } from "@/components/dashboard/analyse/logsTable/logsColumns";
-import { useApiLogsList } from "@/hooks/apiLogs/apiLogs.queries";
+import {
+  useApiLogsList,
+  useApiLogsStats,
+} from "@/hooks/apiLogs/apiLogs.queries";
 import { LogsTable } from "@/components/dashboard/analyse/logsTable/logs-table";
 import LineChartComponent from "@/components/dashboard/linechart";
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
 import Statis from "./endpointStatis";
+import { error } from "console";
 
 const AddApiPage = ({ params }: any) => {
   const { id } = params;
@@ -27,17 +31,28 @@ const AddApiPage = ({ params }: any) => {
   const changeLogsFilter = (value: any) => {
     setLogsFilter(value);
   };
+  const stas = useApiLogsStats([18, 16]);
+  useEffect(() => {
+    console.log(stas.error, "stas errrr");
+  }, [stas.error]);
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex h-full flex-col ">
       <Header />
+      {stas.isLoading && <LoadingPage />}
+      {stas.isError && <p> stas.Error</p>}
+      {stas.isSuccess && <div className="w-full flex-col"></div>}
       {apiSelceted.isLoading && <LoadingPage />}
       {apiSelceted.isError && <NotFoundPage />}
       {apiSelceted.isSuccess && (
         <div className="w-full flex-col">
           {endpointsList.isLoading && <p>loading ...</p>}
 
-          {endpointsList.isSuccess && (
-            <Statis api={apiSelceted.data} endpointsList={endpointsList.data} />
+          {endpointsList.isSuccess && stas.isSuccess && (
+            <Statis
+              api={apiSelceted.data}
+              endpointsList={endpointsList.data}
+              stat={stas.data}
+            />
           )}
         </div>
       )}
@@ -84,3 +99,8 @@ const AddApiPage = ({ params }: any) => {
 };
 
 export default AddApiPage;
+
+/*
+
+
+*/

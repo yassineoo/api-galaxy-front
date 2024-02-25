@@ -13,9 +13,12 @@ import {
   YAxis,
 } from "recharts";
 import { fakeData } from "./data";
+import { ChartFormater, replaceNullValues } from "@/lib/utils";
 
-const Statis = ({ api, endpointsList }: any) => {
-  console.log("endpointList", endpointsList);
+const Statis = ({ api, endpointsList, stat }: any) => {
+  //console.log("endpointList", endpointsList);
+
+  const updatedStat = ChartFormater(stat, endpointsList);
 
   const handleSelectChange = (selectedOptions: any) => {
     setEndpointList(selectedOptions);
@@ -29,9 +32,12 @@ const Statis = ({ api, endpointsList }: any) => {
     setTimeRnageFilter(value);
   };
 
+  // selected Endpoints
   const [endpointList, setEndpointList] = useState([]);
+
+  useEffect(() => {}, [endpointList]);
   return (
-    <div className=" w-full h-96 ">
+    <div className=" w-full ">
       <h2 className="px-12 text-lg font-bold py-4  ">{api.Name} </h2>
       <div className="px-12 py-4">
         <MultiSelect
@@ -46,7 +52,7 @@ const Statis = ({ api, endpointsList }: any) => {
             items={timeFilter}
           />
         </div>
-        <LineChartComponent />
+        <LineChartComponent data={updatedStat} />
       </div>
     </div>
   );
@@ -69,20 +75,27 @@ const Filter = ({ items, changeFilter, name }: any) => {
   );
 };
 
-const LineChartComponent = () => {
-  const [TotalData, setTotalData] = useState(fakeData);
+const LineChartComponent = ({ data }: any) => {
+  const [TotalData, setTotalData] = useState(data);
+
   const [chartData, setChartData] = useState(
-    fakeData.map((item: any) => {
+    TotalData.map((item: any) => {
+      const endpointData: any = {};
+      Object.keys(item).forEach((key) => {
+        if (key !== "name") {
+          endpointData[key] = item[key]?.Calls || 0;
+        }
+      });
+
       return {
-        name: item?.name,
-        getUsers: item?.getUsers?.Calls,
-        CreateUsers: item?.createUsers?.Calls,
+        name: item.name,
+        ...endpointData,
       };
     })
   );
 
   const [totalCalls, totalErrors, totalLatency] = TotalData.reduce(
-    (accumulator, item) => {
+    (accumulator: any, item: any) => {
       // Check if item has defined getUsers and createUsers objects
       if (item?.getUsers && item?.createUsers) {
         // Increment total calls
@@ -113,7 +126,7 @@ const LineChartComponent = () => {
   useEffect(() => {
     // Calculate total calls, average errors, and average latency
     const [totalCalls, totalErrors, totalLatency] = TotalData.reduce(
-      (accumulator, item) => {
+      (accumulator: any, item: any) => {
         // Check if item has defined getUsers and createUsers objects
         if (item?.getUsers && item?.createUsers) {
           // Increment total calls
@@ -139,28 +152,46 @@ const LineChartComponent = () => {
     let data;
     if (metrics === "Calls") {
       data = TotalData.map((item: any) => {
+        const endpointData: any = {};
+        Object.keys(item).forEach((key) => {
+          if (key !== "name") {
+            endpointData[key] = item[key]?.Calls || 0;
+          }
+        });
+
         return {
           name: item.name,
-          getUsers: item.getUsers?.Calls,
-          CreateUsers: item.createUsers?.Calls,
+          ...endpointData,
         };
       });
     }
     if (metrics === "Errors") {
       data = TotalData.map((item: any) => {
+        const endpointData: any = {};
+        Object.keys(item).forEach((key) => {
+          if (key !== "name") {
+            endpointData[key] = item[key]?.Errors || 0;
+          }
+        });
+
         return {
           name: item.name,
-          getUsers: item.getUsers?.Errors,
-          CreateUsers: item.createUsers?.Errors,
+          ...endpointData,
         };
       });
     }
     if (metrics === "Latency") {
       data = TotalData.map((item: any) => {
+        const endpointData: any = {};
+        Object.keys(item).forEach((key) => {
+          if (key !== "name") {
+            endpointData[key] = item[key]?.Latency || 0;
+          }
+        });
+
         return {
           name: item.name,
-          getUsers: item.getUsers?.Latency,
-          CreateUsers: item.createUsers?.Latency,
+          ...endpointData,
         };
       });
     }
@@ -168,7 +199,7 @@ const LineChartComponent = () => {
     setChartData(data as any);
   }, [TotalData, metrics]);
   return (
-    <div className="w-full mb-32 ">
+    <div className="w-full ">
       <div className="flex justify-center gap-6 items-center mb-8">
         <AnlyseButtonType
           metrics={metrics}
@@ -200,18 +231,23 @@ const LineChartComponent = () => {
           data={chartData}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
+          {/* Iterate over the endpoints and create Line components */}
+          {Object.keys(chartData[0])
+            .filter((endpointName) => endpointName != "name")
+            .map((endpointName, index) => (
+              <Line
+                key={index}
+                type="monotone"
+                dataKey={endpointName}
+                stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`} // Random color
+                activeDot={{ r: 8 }}
+              />
+            ))}
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line
-            type="monotone"
-            dataKey="getUsers"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-          />
-          <Line type="monotone" dataKey="CreateUsers" stroke="#82ca9d" />
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -243,7 +279,7 @@ const AnlyseButtonType = ({
         metrics === type ? "bg-blue-200" : "bg-slate-100"
       }`}
       onClick={() => {
-        console.log("type", type, metrics);
+        // console.log("type", type, metrics);
 
         return setMetrics(type);
       }}
