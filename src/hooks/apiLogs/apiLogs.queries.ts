@@ -3,7 +3,6 @@
 import { ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import qs from "qs";
 
 export const useApiLogsList = (apiId: string) => {
   return useQuery({

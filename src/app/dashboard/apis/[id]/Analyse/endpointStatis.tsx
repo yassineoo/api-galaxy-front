@@ -1,7 +1,7 @@
 import MultiSelect from "@/components/addNewApi/monitazation/object";
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -14,14 +14,20 @@ import {
 } from "recharts";
 import { fakeData } from "./data";
 import { ChartFormater, replaceNullValues } from "@/lib/utils";
+import { useApiLogsStats } from "@/hooks/apiLogs/apiLogs.queries";
 
-const Statis = ({ api, endpointsList, stat }: any) => {
-  //console.log("endpointList", endpointsList);
+const Statis = ({ api, endpointsList }: any) => {
+  const [slectedEndpointList, setSlectedEndpointList] = useState([]);
 
-  const updatedStat = ChartFormater(stat, endpointsList);
+  //console.log("slectedEndpointList", endpointsList);
+  console.log("endpointsList ============= ", slectedEndpointList);
+  console.log(
+    "endpointsList ============= ",
+    slectedEndpointList.map((Element: any) => Number(Element.value))
+  );
 
   const handleSelectChange = (selectedOptions: any) => {
-    setEndpointList(selectedOptions);
+    setSlectedEndpointList(selectedOptions);
   };
   const options = endpointsList.map((item: any) => {
     return { value: item.ID, label: item.Name };
@@ -33,26 +39,29 @@ const Statis = ({ api, endpointsList, stat }: any) => {
   };
 
   // selected Endpoints
-  const [endpointList, setEndpointList] = useState([]);
 
-  useEffect(() => {}, [endpointList]);
+  useEffect(() => {}, [slectedEndpointList]);
   return (
     <div className=" w-full ">
-      <h2 className="px-12 text-lg font-bold py-4  ">{api.Name} </h2>
-      <div className="px-12 py-4">
+      <h2 className="px-12 text-lg font-bold py-2  ">{api.Name} </h2>
+      <div className="px-12 py-2">
         <MultiSelect
           options={options}
-          selectedValues={endpointList}
+          selectedValues={slectedEndpointList}
           onChange={handleSelectChange}
         />
-        <div className="flex justify-start items-center mb-8">
+        <div className="flex justify-start items-center mb-1">
           <Filter
             name="Time Rnage"
             changeFilter={changeTimeRangeFilter}
             items={timeFilter}
           />
         </div>
-        <LineChartComponent data={updatedStat} />
+
+        <LineWrapper
+          slectedEndpointList={slectedEndpointList}
+          endpointsList={endpointsList}
+        />
       </div>
     </div>
   );
@@ -62,8 +71,8 @@ export default Statis;
 
 const Filter = ({ items, changeFilter, name }: any) => {
   return (
-    <div className="flex flex-col justify-start gap-6 items-center">
-      <h3 className="font-bold m-4"> {name}</h3>
+    <div className="flex  justify-start gap-6 my-3 items-center">
+      <h3 className="font-bold "> {name}</h3>
 
       <SelectButton
         handleSelectionChange={changeFilter}
@@ -72,6 +81,28 @@ const Filter = ({ items, changeFilter, name }: any) => {
         items={items}
       />
     </div>
+  );
+};
+
+const LineWrapper = ({ slectedEndpointList, endpointsList }: any) => {
+  const stat =
+    slectedEndpointList.length > 0
+      ? useApiLogsStats(
+          slectedEndpointList.map((Element: any) => Number(Element.value))
+        )
+      : null;
+
+  return (
+    <>
+      {stat === null && <EmptyLineChartComponent />}
+      {stat?.isLoading && <p>loading ...</p>}
+      {stat?.isSuccess && (
+        <LineChartComponent
+          data={ChartFormater(stat.data, endpointsList)}
+          slectedEndpointList={slectedEndpointList}
+        />
+      )}
+    </>
   );
 };
 
@@ -254,6 +285,51 @@ const LineChartComponent = ({ data }: any) => {
   );
 };
 
+const EmptyLineChartComponent = ({}: any) => {
+  return (
+    <div className="w-full ">
+      <div className="flex justify-center gap-6 items-center mb-1">
+        <AnlyseButtonType
+          metrics=""
+          setMetrics={() => {}}
+          type="Calls"
+          number={0}
+          hint="Total Api Calls"
+          unite=" calls"
+        />
+        <AnlyseButtonType
+          metrics=""
+          setMetrics={() => {}}
+          type="Errors"
+          number={0}
+          hint="Average Errors"
+          unite=" %"
+        />
+        <AnlyseButtonType
+          metrics={""}
+          setMetrics={() => {}}
+          type="Latency"
+          number={0}
+          hint="Average Latency"
+          unite=" ms"
+        />
+      </div>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart
+          data={[{ name: "No Data", "No Data": 0 }]}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
 const timeFilter = [
   { value: "7days", label: "last 7 days" },
   { value: "30days", label: "last 30 days" },
@@ -275,7 +351,7 @@ const AnlyseButtonType = ({
 }: any) => {
   return (
     <Button
-      className={`w-1/3 flex flex-col h-24 py-2  text-black border-2 hover:bg-blue-200" ${
+      className={`w-1/3 flex flex-col h-20   text-black border-2 hover:bg-blue-200" ${
         metrics === type ? "bg-blue-200" : "bg-slate-100"
       }`}
       onClick={() => {
@@ -284,7 +360,7 @@ const AnlyseButtonType = ({
         return setMetrics(type);
       }}
     >
-      <div className="text-lg font-bold">{type}</div>
+      <div className="text-md font-semibold">{type}</div>
       <p className="text-sm text-gray-400 ">{hint}</p>
       <div className="text-sm text-gray-500">{number + unite} </div>
     </Button>

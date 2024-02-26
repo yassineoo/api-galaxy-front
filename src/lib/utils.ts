@@ -26,31 +26,33 @@ export function replaceNullValues(input: any) {
 }
 
 export function ChartFormater(stat: any, endpointsList: any) {
-  return replaceNullValues(stat).map((item: any) => {
-    const updatedEndpoints = Object.keys(item).reduce((acc: any, key) => {
-      if (key !== "name") {
-        const endpointId = parseInt(key, 10);
-        const matchingEndpoint: any = endpointsList.find(
-          (ep: any) => ep?.ID == endpointId
-        );
-        if (matchingEndpoint) {
-          acc[matchingEndpoint?.Name] = item[key];
-        }
-        console.log(
-          matchingEndpoint?.Name,
-          "matchingEndpoint?.Name",
-          endpointId,
-          key
-        );
-      }
-      return acc;
-    }, {});
+  return stat
+    ? replaceNullValues(stat).map((item: any) => {
+        const updatedEndpoints = Object.keys(item).reduce((acc: any, key) => {
+          if (key !== "name") {
+            const endpointId = parseInt(key, 10);
+            const matchingEndpoint: any = endpointsList.find(
+              (ep: any) => ep?.ID == endpointId
+            );
+            if (matchingEndpoint) {
+              acc[matchingEndpoint?.Name] = item[key];
+            }
+            console.log(
+              matchingEndpoint?.Name,
+              "matchingEndpoint?.Name",
+              endpointId,
+              key
+            );
+          }
+          return acc;
+        }, {});
 
-    console.log("updatedEndpoints", updatedEndpoints);
+        console.log("updatedEndpoints", updatedEndpoints);
 
-    return {
-      name: item.name,
-      ...updatedEndpoints,
-    };
-  });
+        return {
+          name: item.name,
+          ...updatedEndpoints,
+        };
+      })
+    : null;
 }

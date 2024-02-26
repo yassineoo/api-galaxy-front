@@ -31,32 +31,23 @@ const AddApiPage = ({ params }: any) => {
   const changeLogsFilter = (value: any) => {
     setLogsFilter(value);
   };
-  const stas = useApiLogsStats([18, 16]);
-  useEffect(() => {
-    console.log(stas.error, "stas errrr");
-  }, [stas.error]);
+
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex h-full flex-col ">
       <Header />
-      {stas.isLoading && <LoadingPage />}
-      {stas.isError && <p> stas.Error</p>}
-      {stas.isSuccess && <div className="w-full flex-col"></div>}
+
       {apiSelceted.isLoading && <LoadingPage />}
       {apiSelceted.isError && <NotFoundPage />}
       {apiSelceted.isSuccess && (
         <div className="w-full flex-col">
           {endpointsList.isLoading && <p>loading ...</p>}
 
-          {endpointsList.isSuccess && stas.isSuccess && (
-            <Statis
-              api={apiSelceted.data}
-              endpointsList={endpointsList.data}
-              stat={stas.data}
-            />
+          {endpointsList.isSuccess && (
+            <Statis api={apiSelceted.data} endpointsList={endpointsList.data} />
           )}
         </div>
       )}
-      <div className="px-12 py-10 mt-36">
+      <div className="px-12 py-10 ">
         {logs.isLoading && <p>loading ...</p>}
         {logs.isSuccess && (
           <>
