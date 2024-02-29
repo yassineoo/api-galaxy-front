@@ -12,7 +12,7 @@ export function ApiConfigTabs({ api }: any) {
   const apiPlans = useApiPlanList(api.ID);
 
   return (
-    <Tabs defaultValue="Monetization">
+    <Tabs defaultValue="General">
       <TabsList className="grid  grid-cols-5 w-2/3  ml-8 my-2">
         <TabsTrigger value="General">General</TabsTrigger>
         <TabsTrigger value="Definitions">Definitions</TabsTrigger>

@@ -104,11 +104,7 @@ export function LogsTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <PaginationManual
-        currentPage={1}
-        totalPages={10}
-        onPageChange={(page: any) => console.log(page)}
-      />
+
       {/*
           <DataTablePagination table={table} />
       <div className="flex items-center justify-end space-x-2 py-4">

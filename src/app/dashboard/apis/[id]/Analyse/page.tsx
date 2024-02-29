@@ -11,21 +11,23 @@ import MultiSelect from "@/components/addNewApi/monitazation/object";
 import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
 import { use, useEffect, useState } from "react";
 import { Logscolumns } from "@/components/dashboard/analyse/logsTable/logsColumns";
-import {
-  useApiLogsList,
-  useApiLogsStats,
-} from "@/hooks/apiLogs/apiLogs.queries";
+import { useApiLogsList } from "@/hooks/apiLogs/apiLogs.queries";
 import { LogsTable } from "@/components/dashboard/analyse/logsTable/logs-table";
 import LineChartComponent from "@/components/dashboard/linechart";
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
 import Statis from "./endpointStatis";
 import { error } from "console";
+import PaginationManual from "@/components/dashboard/billing/paginationManual";
+import { timeFilter } from "@/utils/constants";
 
 const AddApiPage = ({ params }: any) => {
   const { id } = params;
   const apiSelceted = useApiById(id);
   const endpointsList = useApiEndpointsList(id);
-  const logs = useApiLogsList(id);
+  //const logs = useApiLogsList(id);
+  const [page, setPage] = useState(1);
+
+  const logs = useApiLogsList({ apiId: id, page, limit: 5 });
   const [logsFilter, setLogsFilter] = useState("");
 
   const changeLogsFilter = (value: any) => {
@@ -58,21 +60,12 @@ const AddApiPage = ({ params }: any) => {
                 handleSelectionChange={changeLogsFilter}
                 name="Time Range"
                 defaultSelected="7days"
-                items={[
-                  { value: "7days", label: "last 7 days" },
-                  { value: "30days", label: "last 30 days" },
-                  { value: "90days", label: "last 90 days" },
-                  { value: "1hour", label: "last hour" },
-                  { value: "3hours", label: "last 3 hours" },
-                  { value: "6hours", label: "last 6 hours" },
-                  { value: "12hours", label: "last 12 hours" },
-                  { value: "24hours", label: "last 24 hours" },
-                ]}
+                items={timeFilter}
               />
             </div>
             <LogsTable
               columns={Logscolumns}
-              data={logs.data.map((log: any) => {
+              data={logs.data?.logs.map((log: any) => {
                 return {
                   ...log,
                   Methode: log.Endpoint.Methode,
@@ -84,6 +77,11 @@ const AddApiPage = ({ params }: any) => {
         )}
 
         {logs.isError && <p>logs ERROR</p>}
+        <PaginationManual
+          currentPage={page}
+          totalPages={logs?.data?.meta?.totalPages}
+          onPageChange={setPage}
+        />
       </div>
     </div>
   );

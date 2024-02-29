@@ -1,33 +1,30 @@
 "use client";
-import Head from "next/head";
+import Sidebar from "@/components/dashboard/sidebar";
 
-import Navbar from "../../../../../components/General use/navbar";
-import ApiHeader from "../../../../api/apiHeader";
-import { ApiTabs } from "../../../../api/apiBody";
+import AddNewApiForm from "@/components/addNewApi/genralTab/addApiPopUp";
+import Header from "@/components/dashboard/header";
+import { ApiConfigTabs } from "@/components/addNewApi/apiConfig";
 import { useApiById } from "@/hooks/apis/api.queries";
+import LoadingPage from "@/components/shared/loadingPage";
+import NotFoundPage from "@/components/shared/errorPage";
 
-const DashboardPage = ({ params }: any) => {
+const AddApiPage = ({ params }: any) => {
   const { id } = params;
   const apiSelceted = useApiById(id);
+
   return (
-    <div className=" ">
-      <Head>
-        <title>Dashboard</title>
-      </Head>
-      <Navbar services="2" about="3" pricing="4" contacts="6" />
-      {apiSelceted.isLoading && <p>Loading ... </p>}
+    <div className="bg-dashboardBg dark:bg-transparent flex ">
+      {apiSelceted.isLoading && <LoadingPage />}
+      {apiSelceted.isError && <NotFoundPage />}
       {apiSelceted.isSuccess && (
-        <>
-          <ApiHeader
-            Name={apiSelceted.data.Name}
-            Description={apiSelceted.data.Description}
-            ImagePath={apiSelceted.data.ImagePath}
-          />
-          <ApiTabs api={apiSelceted.data} />
-        </>
+        <div className="w-full">
+          <Header />
+
+          <ApiConfigTabs api={apiSelceted.data} />
+        </div>
       )}
     </div>
   );
 };
 
-export default DashboardPage;
+export default AddApiPage;

@@ -15,16 +15,11 @@ import {
 import { fakeData } from "./data";
 import { ChartFormater, replaceNullValues } from "@/lib/utils";
 import { useApiLogsStats } from "@/hooks/apiLogs/apiLogs.queries";
+import { timeFilter } from "@/utils/constants";
+import TimeFilterButtons from "./timeRange";
 
 const Statis = ({ api, endpointsList }: any) => {
   const [slectedEndpointList, setSlectedEndpointList] = useState([]);
-
-  //console.log("slectedEndpointList", endpointsList);
-  console.log("endpointsList ============= ", slectedEndpointList);
-  console.log(
-    "endpointsList ============= ",
-    slectedEndpointList.map((Element: any) => Number(Element.value))
-  );
 
   const handleSelectChange = (selectedOptions: any) => {
     setSlectedEndpointList(selectedOptions);
@@ -32,7 +27,7 @@ const Statis = ({ api, endpointsList }: any) => {
   const options = endpointsList.map((item: any) => {
     return { value: item.ID, label: item.Name };
   });
-  const [timeRnageFilter, setTimeRnageFilter] = useState("");
+  const [timeRnageFilter, setTimeRnageFilter] = useState("7d");
 
   const changeTimeRangeFilter = (value: any) => {
     setTimeRnageFilter(value);
@@ -51,16 +46,17 @@ const Statis = ({ api, endpointsList }: any) => {
           onChange={handleSelectChange}
         />
         <div className="flex justify-start items-center mb-1">
-          <Filter
+          <TimeFilterButtons
             name="Time Rnage"
-            changeFilter={changeTimeRangeFilter}
-            items={timeFilter}
+            timeSelected={timeRnageFilter}
+            setTimeSelected={setTimeRnageFilter}
           />
         </div>
 
         <LineWrapper
           slectedEndpointList={slectedEndpointList}
           endpointsList={endpointsList}
+          timeRnageFilter={timeRnageFilter}
         />
       </div>
     </div>
@@ -84,12 +80,19 @@ const Filter = ({ items, changeFilter, name }: any) => {
   );
 };
 
-const LineWrapper = ({ slectedEndpointList, endpointsList }: any) => {
+const LineWrapper = ({
+  slectedEndpointList,
+  endpointsList,
+  timeRnageFilter,
+}: any) => {
   const stat =
     slectedEndpointList.length > 0
-      ? useApiLogsStats(
-          slectedEndpointList.map((Element: any) => Number(Element.value))
-        )
+      ? useApiLogsStats({
+          endpointIds: slectedEndpointList.map((Element: any) =>
+            Number(Element.value)
+          ),
+          timeFilter: timeRnageFilter,
+        })
       : null;
 
   return (
@@ -259,7 +262,7 @@ const LineChartComponent = ({ data }: any) => {
       </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
-          data={chartData}
+          data={chartData.reverse()}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           {/* Iterate over the endpoints and create Line components */}
@@ -329,17 +332,6 @@ const EmptyLineChartComponent = ({}: any) => {
     </div>
   );
 };
-
-const timeFilter = [
-  { value: "7days", label: "last 7 days" },
-  { value: "30days", label: "last 30 days" },
-  { value: "90days", label: "last 90 days" },
-  { value: "1hour", label: "last hour" },
-  { value: "3hours", label: "last 3 hours" },
-  { value: "6hours", label: "last 6 hours" },
-  { value: "12hours", label: "last 12 hours" },
-  { value: "24hours", label: "last 24 hours" },
-];
 
 const AnlyseButtonType = ({
   metrics,

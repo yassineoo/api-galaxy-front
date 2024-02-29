@@ -73,13 +73,15 @@ export function ApiTabs({ api }: any) {
                   setResquestResult={setResquestResult}
                   slectedApiUrl={api.ApiUrl}
                   sendRequest={sendRequest}
-                  selectedNodeId={selectedNodeId}
-                  endpointList={endpointList.data}
+                  selectedEndpoint={endpointList.data.find(
+                    (endpoint: any) => endpoint.ID === selectedNodeId
+                  )}
                 />
                 <CodeResult
                   resquestResult={resquestResult}
-                  selectedNodeId={selectedNodeId}
-                  endpointList={endpointList}
+                  selectedEndpoint={endpointList.data.find(
+                    (endpoint: any) => endpoint.ID === selectedNodeId
+                  )}
                 />
               </>
             )}
@@ -111,11 +113,7 @@ export function ApiTabs({ api }: any) {
   );
 }
 
-export function CodeResult({
-  resquestResult,
-  selectedNodeId,
-  endpointList,
-}: any) {
+export function CodeResult({ resquestResult, selectedEndpoint }: any) {
   return (
     <Tabs defaultValue="CodeSnippet" className=" h-[760px] w-1/2 ">
       <TabsList className="my-2">
@@ -138,8 +136,7 @@ export function CodeResult({
           <CodeSnippet
             codeString={codeString}
             language="javascript"
-            selectedNodeId={selectedNodeId}
-            endpointList={endpointList}
+            selectedEndpoint={selectedEndpoint}
           />
         </div>
       </TabsContent>
@@ -151,13 +148,9 @@ const ParamterControler = ({
   setResquestResult,
   slectedApiUrl,
   sendRequest,
-  selectedNodeId = 14,
-  endpointList,
+  selectedEndpoint,
 }: any) => {
   // States for each input field
-  const selectedEndpoint = endpointList.find(
-    (endpoint: any) => endpoint.ID == selectedNodeId
-  );
 
   const [url, setUrl] = useState(selectedEndpoint?.Url || "koko");
   const [apiKey, setApiKey] = useState("azeazazdqzsdq");
@@ -217,7 +210,7 @@ const ParamterControler = ({
         Headers: headerParams,
         Params: queryParams,
         Data: bodyParams,
-        EndpointID: selectedNodeId,
+        EndpointID: selectedEndpoint?.ID,
       };
       const response = await sendRequest(Data);
       setResquestResult(response);
