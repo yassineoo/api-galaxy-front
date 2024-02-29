@@ -1,25 +1,10 @@
-/*export function AuthProviderButton({ provider }: any) {
-  return (
-    <button
-      className={`flex  w-4/5 lg:w-1/2  pl-6 gap-8 justify-start py-1 rounded-lg ${provider.color}`}
-    >
-      <img src={provider.logo} width={26} height={26} alt={provider.name} />
-      <span className="ml-2 text-sm">Login with {provider.name}</span>
-    </button>
-  );
-}
-*/
-// components/LoginForm.js
-import { AuthProviderButton } from "@/components/login/AuthProviderButton";
 import { AuthForm } from "@/components/login/AuthForm";
 import { Provider } from "@/types/common.types";
+import { AuthProviderButton } from "@/components/login/AuthProviderButton";
 import Link from "next/link";
-import { redirect } from 'next/navigation'
-import { getCurrentUser } from "@/lib/session";
-
-export default async function LoginPage() {
-
-
+import { getCsrfToken } from "next-auth/react";
+const RegisterPage = async () => {
+    const csrf=await getCsrfToken()
   const authProviders: Provider[] = [
     {
       name: "google",
@@ -40,17 +25,17 @@ export default async function LoginPage() {
   ];
 
   return (
-    <div className="flex flex-row-reverse w-full bg-white text-black h-screen ">
+    <div className="flex flex-row-reverse w-full bg-white text-black h-screen py-4">
       <div className="hidden lg:block  lg:w-1/2">
         <img
-          className="object-fill w-full h-full"
+          className="object-cover w-full min-h-screen"
           src="/images/login_bg_gateway.jpg"
           alt="Background image"
         />
       </div>
 
       <div className="w-full lg:w-1/2 p-8 flex flex-col items-center">
-        <h2 className="text-xl font-bold mb-2">Welcome back !</h2>
+        <h2 className="text-xl font-bold mb-2">Get started now</h2>
 
         <div className="space-y-3 w-full flex flex-col items-center">
           {authProviders.map((provider) => (
@@ -59,7 +44,7 @@ export default async function LoginPage() {
         </div>
 
         <p className="mt-4 text-base mb-1">
-           haven't an account ?  <Link href={"/register"} className="text-blue-500 ml-3 underline"> register now</Link>
+          Have an account ? <Link href="/login" className="text-blue-500 ml-3 underline">login</Link>
         </p>
 
         <div className="flex items-center mb-3">
@@ -68,8 +53,10 @@ export default async function LoginPage() {
           <div className="border-t border-gray-300 flex-grow ml-3" />
         </div>
 
-        <AuthForm type="login" />
+        <AuthForm type="register" />
       </div>
     </div>
   );
 }
+
+export default RegisterPage
