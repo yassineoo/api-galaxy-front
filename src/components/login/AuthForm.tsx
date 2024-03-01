@@ -5,10 +5,12 @@ import { Inputs } from '@/types/common.types';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Modal from '../modal/modal';
 
 export function AuthForm({ type }: { type: string }) {
   const { push } = useRouter();
   const [success, setSuccess] = useState(false);
+  const [showModal,setShwoModal]=useState(false)
   const {
     register,
     handleSubmit,
@@ -20,14 +22,17 @@ export function AuthForm({ type }: { type: string }) {
   };
 
   useEffect(() => {
-    if (success && type == 'register') push('/login');
+    if (success && type == 'register') setShwoModal(true)
     if (success && type == 'login') push('/');
   }, [success]);
   return (
+    <>
+    {showModal && <Modal closeModal={setShwoModal} />}
     <form
       onSubmit={handleSubmit(onsubmit)}
       className="flex flex-col gap-4 text-black items-center border border-slate-200 p-5 py-10 rounded-md shadow-md max-w-md w-full"
     >
+
       <div className="w-full">
         <label className="text-sm font-semibold">
           {' '}
@@ -103,5 +108,6 @@ export function AuthForm({ type }: { type: string }) {
         {type}
       </button>
     </form>
+    </>
   );
 }

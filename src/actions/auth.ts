@@ -72,7 +72,7 @@ export const getUserSession = async (email: string) => {
 
 export const verifyEmail = async (data: any, type: string) => {
   try {
-    const session = await getSession();
+    const session = await getSession()
     if (type == 'confirmRegistration') {
       const res = await placeholderApi.get(`/verifyEmail/${data}`, {
         headers: {
@@ -90,7 +90,6 @@ export const verifyEmail = async (data: any, type: string) => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${session?.token}`,
           },
         }
       );

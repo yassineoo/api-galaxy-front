@@ -20,7 +20,7 @@ const page = () => {
           message: 'unknown email address',
         });
       }
-      if (res) push('/resetPassword');
+      if (res) push('/confirmMail');
     });
   };
   return (

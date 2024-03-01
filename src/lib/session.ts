@@ -5,11 +5,9 @@ import CredentialProvider from 'next-auth/providers/credentials';
 import { UserData, authUser, getUserSession, oauthUser } from '@/actions/auth';
 import { Session } from 'inspector';
 import SignToken from './utils';
+import { getSession } from 'next-auth/react';
 
 export const authOptions: NextAuthOptions = {
-  session: {
-    strategy: 'jwt',
-  },
   providers: [
     GoogleProvider({
       clientId:
@@ -45,6 +43,7 @@ export const authOptions: NextAuthOptions = {
         if (res?.message) {
           throw new Error(res?.message);
         } else {
+        
           return res;
         }
       },
@@ -56,31 +55,36 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    async jwt({ user, token }) {
+    async jwt({ token,user}) {
+     
       if (user && user.id) {
-        const userLoggedIn = await SignToken(+user?.id);
+        const userLoggedIn = await SignToken(user?.id as number);
         token.userLogged = userLoggedIn;
-      } else {
+        token.userId=user.id
+      } else if(user?.email) {
         const existUser = await getUserSession(token.email!);
         const userLoggedIn = await SignToken(existUser.id);
         token.userLogged = userLoggedIn;
+        token.userId=existUser.id
       }
+      
       return token;
     },
     async session({ session, token }): Promise<any> {
+     
       if (token?.userLogged && token?.email) {
+        
         const existUser = await getUserSession(token.email!);
-        session.user.id = existUser.id as string;
+        session.user.id = existUser.id as number;
         session.user.verified = existUser.verified as boolean;
       } else if (token?.userId) {
-        session.isRegister.registeredId = token?.userId as string;
-        session.isRegister.value = true;
+        session.user.id= token?.userId as number;
       }
       session.token = token.userLogged as string;
       return session;
     },
 
-    async signIn({ user }: { user: User }): Promise<any> {
+    async signIn({ user }): Promise<any> {
       try {
         const data = {
           Email: user?.email,
@@ -106,6 +110,6 @@ export const authOptions: NextAuthOptions = {
 
 //create utility function
 export async function getCurrentUser() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions)
   return session;
 }
