@@ -19,3 +19,10 @@ export type Inputs = {
   errorMessage:string
   username:string
 }
+
+
+export type resetPasswordInputs={
+  pass:string
+  confirmPass:string 
+  errorMessage:string
+}

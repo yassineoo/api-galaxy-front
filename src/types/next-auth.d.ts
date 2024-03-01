@@ -11,8 +11,13 @@ declare module "next-auth" {
        image: string;
       // Custom fields
        id:string
+       verified:boolean
     };
     token:string,
+    isRegister:{
+      value:boolean,
+      registeredId:string
+    }
   }
   interface User {
     email:string 

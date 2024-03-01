@@ -1,14 +1,7 @@
-import { AuthProviderButton } from "@/components/login/AuthProviderButton"
-import { getCurrentUser } from "@/lib/session"
-export default async function Home(){
-  const session = await getCurrentUser()
+export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <AuthProviderButton provider={{
-      name: "google",
-      color: "bg-blue-500 text-white",
-      logo: "/icons/google.svg",
-    }} />
+      <h1>Hello world !!!</h1>
     </main>
-  )
+  );
 }

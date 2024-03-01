@@ -15,13 +15,7 @@ const RegisterPage = async () => {
       name: "github",
       color: "bg-gray-900 text-white",
       logo: "/icons/github.svg",
-    },
-
-    {
-      name: "facebook",
-      color: "bg-white border border-bla",
-      logo: "/icons/fb.svg",
-    },
+    }
   ];
 
   return (

@@ -1,3 +1,4 @@
+
 /*export function AuthProviderButton({ provider }: any) {
   return (
     <button
@@ -10,33 +11,23 @@
 }
 */
 // components/LoginForm.js
-import { AuthProviderButton } from "@/components/login/AuthProviderButton";
-import { AuthForm } from "@/components/login/AuthForm";
-import { Provider } from "@/types/common.types";
-import Link from "next/link";
-import { redirect } from 'next/navigation'
-import { getCurrentUser } from "@/lib/session";
+import { AuthProviderButton } from '@/components/login/AuthProviderButton';
+import { AuthForm } from '@/components/login/AuthForm';
+import { Provider } from '@/types/common.types';
+import Link from 'next/link';
 
 export default async function LoginPage() {
-
-
   const authProviders: Provider[] = [
     {
-      name: "google",
-      color: "bg-blue-500 text-white",
-      logo: "/icons/google.svg",
+      name: 'google',
+      color: 'bg-blue-500 text-white',
+      logo: '/icons/google.svg',
     },
     {
-      name: "github",
-      color: "bg-gray-900 text-white",
-      logo: "/icons/github.svg",
-    },
-
-    {
-      name: "facebook",
-      color: "bg-white border border-bla",
-      logo: "/icons/fb.svg",
-    },
+      name: 'github',
+      color: 'bg-gray-900 text-white',
+      logo: '/icons/github.svg',
+    }
   ];
 
   return (
@@ -59,7 +50,11 @@ export default async function LoginPage() {
         </div>
 
         <p className="mt-4 text-base mb-1">
-           haven't an account ?  <Link href={"/register"} className="text-blue-500 ml-3 underline"> register now</Link>
+          haven't an account ?{' '}
+          <Link href={'/register'} className="text-blue-500 ml-3 underline">
+            {' '}
+            register now
+          </Link>
         </p>
 
         <div className="flex items-center mb-3">
