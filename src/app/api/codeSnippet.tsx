@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
@@ -15,7 +15,6 @@ import {
   generateSwiftSnippet,
 } from "@/lib/codeGenerator";
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
-import { ParametersTypes } from "@/hooks/Endpoints/interfaces";
 
 const supportedLanguagesForAPIIntegration = [
   { label: "Node.js", value: "Node.js" },
@@ -40,15 +39,9 @@ const snippetExample = generateAxiosSnippet(
   { page: 1, limit: 10 }
 );
 
-const CodeSnippet = ({ codeString, language, selectedEndpoint }: any) => {
-  console.log("selected Endo=point", selectedEndpoint);
-
+const CodeSnippet = ({ codeString, language }: any) => {
   const [snippet, setSnippet] = React.useState(snippetExample);
-  const [framwork, setFramework] = React.useState("Node.js");
   const changeFramwork = (value: any) => {
-    setFramework(value);
-  };
-  useEffect(() => {
     // console.log(value);
     let fun: any = (
       endpointUrl: string,
@@ -60,7 +53,10 @@ const CodeSnippet = ({ codeString, language, selectedEndpoint }: any) => {
       return "Not implemented yet";
     };
 
-    switch (framwork.trim()) {
+    console.log("change to ", value);
+    console.log("test change to ", value == "Node.js");
+
+    switch (value.trim()) {
       case "Node.js":
         fun = generateAxiosSnippet;
         break;
@@ -104,43 +100,16 @@ const CodeSnippet = ({ codeString, language, selectedEndpoint }: any) => {
         break;
     }
 
-    const headersObject = selectedEndpoint?.Parameters?.filter(
-      (param: any) =>
-        param.ParameterType === ParametersTypes.HeaderParmater && param.Required
-    )?.reduce((acc: Record<string, string>, param: any) => {
-      acc[param.Key] = param.ExampleValue || ""; // Use ExampleValue as the header value, adjust as needed
-      return acc;
-    }, {});
-
-    const BodyObject = selectedEndpoint?.Parameters?.filter(
-      (param: any) =>
-        param.ParameterType === ParametersTypes.BodyParmater && param.Required
-    )?.reduce((acc: Record<string, string>, param: any) => {
-      acc[param.Key] = param.ExampleValue || ""; // Use ExampleValue as the header value, adjust as needed
-      return acc;
-    }, {});
-
-    const QueryObject = selectedEndpoint?.Parameters?.filter(
-      (param: any) =>
-        param.ParameterType === ParametersTypes.QueryParmater && param.Required
-    )?.reduce((acc: Record<string, string>, param: any) => {
-      acc[param.Key] = param.ExampleValue || ""; // Use ExampleValue as the header value, adjust as needed
-      return acc;
-    }, {});
-
     setSnippet(
       fun(
-        selectedEndpoint?.Url || "https://api.example.com/users",
-        selectedEndpoint?.Methode || "post",
-        {
-          ...headersObject,
-          "Content-Type": "application/json",
-        },
-        BodyObject,
-        QueryObject
+        "https://api.example.com/users",
+        "post",
+        { "Content-Type": "application/json" },
+        { name: "John Doe", age: 30 },
+        { page: 1, limit: 10 }
       )
     );
-  }, [framwork, selectedEndpoint]);
+  };
   return (
     <div className="w-full ml-2  flex flex-col justify-center h-screen">
       <div className="flex items-center gap-2">

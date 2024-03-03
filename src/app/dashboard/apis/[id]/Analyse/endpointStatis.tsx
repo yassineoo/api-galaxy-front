@@ -13,10 +13,11 @@ import {
   YAxis,
 } from "recharts";
 import { fakeData } from "./data";
-import { ChartFormater, replaceNullValues } from "@/lib/utils";
+
 import { useApiLogsStats } from "@/hooks/apiLogs/apiLogs.queries";
 import { timeFilter } from "@/utils/constants";
 import TimeFilterButtons from "./timeRange";
+import { ChartFormater } from "@/utils/chartFunctions";
 
 const Statis = ({ api, endpointsList }: any) => {
   const [slectedEndpointList, setSlectedEndpointList] = useState([]);
@@ -130,15 +131,22 @@ const LineChartComponent = ({ data }: any) => {
 
   const [totalCalls, totalErrors, totalLatency] = TotalData.reduce(
     (accumulator: any, item: any) => {
-      // Check if item has defined getUsers and createUsers objects
-      if (item?.getUsers && item?.createUsers) {
-        // Increment total calls
-        accumulator[0] += item.getUsers.Calls + item.createUsers.Calls;
-        // Increment total errors
-        accumulator[1] += item.getUsers.Errors + item.createUsers.Errors;
-        // Increment total latency
-        accumulator[2] += item.getUsers.Latency + item.createUsers.Latency;
-      }
+      // Check if item has defined dynamic properties
+      const properties = Object.keys(item).filter((key) => key !== "name");
+      properties.forEach((property) => {
+        if (item[property]?.Calls) {
+          // Increment total calls
+          accumulator[0] += item[property].Calls;
+        }
+        if (item[property]?.Errors) {
+          // Increment total errors
+          accumulator[1] += item[property].Errors;
+        }
+        if (item[property]?.Latency) {
+          // Increment total latency
+          accumulator[2] += item[property].Latency;
+        }
+      });
       return accumulator;
     },
     [0, 0, 0] // Initial values for totalCalls, totalErrors, totalLatency
@@ -158,18 +166,24 @@ const LineChartComponent = ({ data }: any) => {
   ]);
 
   useEffect(() => {
-    // Calculate total calls, average errors, and average latency
     const [totalCalls, totalErrors, totalLatency] = TotalData.reduce(
       (accumulator: any, item: any) => {
-        // Check if item has defined getUsers and createUsers objects
-        if (item?.getUsers && item?.createUsers) {
-          // Increment total calls
-          accumulator[0] += item.getUsers.Calls + item.createUsers.Calls;
-          // Increment total errors
-          accumulator[1] += item.getUsers.Errors + item.createUsers.Errors;
-          // Increment total latency
-          accumulator[2] += item.getUsers.Latency + item.createUsers.Latency;
-        }
+        // Check if item has defined dynamic properties
+        const properties = Object.keys(item).filter((key) => key !== "name");
+        properties.forEach((property) => {
+          if (item[property]?.Calls) {
+            // Increment total calls
+            accumulator[0] += item[property].Calls;
+          }
+          if (item[property]?.Errors) {
+            // Increment total errors
+            accumulator[1] += item[property].Errors;
+          }
+          if (item[property]?.Latency) {
+            // Increment total latency
+            accumulator[2] += item[property].Latency;
+          }
+        });
         return accumulator;
       },
       [0, 0, 0] // Initial values for totalCalls, totalErrors, totalLatency
@@ -177,7 +191,7 @@ const LineChartComponent = ({ data }: any) => {
 
     // Calculate average errors and average latency
     const averageErrors = totalErrors / TotalData.length;
-    const averageLatency = totalLatency / TotalData.length;
+    const averageLatency = totalLatency;
 
     // Update state with the calculated values
     setStatResult([totalCalls, averageErrors, averageLatency]);
