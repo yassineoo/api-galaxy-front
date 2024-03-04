@@ -5,7 +5,7 @@ import Link from "next/link";
 import { memo, useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-export default function Sidebar({ apiId }: any) {
+export default function Sidebar() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const pathname = usePathname();
 
@@ -15,13 +15,13 @@ export default function Sidebar({ apiId }: any) {
   let activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
   const maApisListCallback = useCallback(() => useApiByUserId(123), []);
   const maApisList = maApisListCallback();
-
-  if (activeItem != "apis") activeChildName = pathname;
-  console.log(
-    "pathname rendered again ========================= ",
-    pathname,
-    activeItem
-  );
+  let apiId = 0;
+  if (activeItem != "apis") {
+    activeChildName = pathname;
+  } else {
+    activeChildName = pathSegments[4];
+    apiId = Number(pathSegments[3]);
+  }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -174,6 +174,7 @@ const Menu = ({
               active={activeMenu == item.ID}
               onClick={handleMenuClick}
               isMenuOpen={isMenuOpen}
+              activeChildName={activeChildName}
             />
           ))}
     </div>
@@ -191,13 +192,6 @@ const RegularMenuItem = ({
 }: any) => {
   const isActive = active;
   const [activeChild, setActiveChild] = useState(activeChildName);
-  console.log(
-    activeChildName,
-    "acrive ",
-    active,
-    "activeChildName ======== ",
-    item.url
-  );
 
   return (
     <div className="flex flex-col items-start justify-start w-4/5">
