@@ -18,7 +18,7 @@ export function ApiConfigTabs({ api }: any) {
         <TabsTrigger value="Definitions">Definitions</TabsTrigger>
         <TabsTrigger value="Documentaion">Documentaion</TabsTrigger>
 
-        <TabsTrigger value="Endpoints">Endpoints</TabsTrigger>
+        <TabsTrigger value="Security">Security</TabsTrigger>
         <TabsTrigger value="Monetization">Monetization</TabsTrigger>
       </TabsList>
       <TabsContent

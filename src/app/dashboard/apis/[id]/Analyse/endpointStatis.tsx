@@ -368,7 +368,9 @@ const AnlyseButtonType = ({
     >
       <div className="text-md font-semibold">{type}</div>
       <p className="text-sm text-gray-400 ">{hint}</p>
-      <div className="text-sm text-gray-500">{number + unite} </div>
+      <div className="text-sm text-gray-500">
+        {(type == "Calls" ? number : number.toFixed(2)) + unite}{" "}
+      </div>
     </Button>
   );
 };
