@@ -158,8 +158,8 @@ const Menu = ({ isMenuOpen, apiId, activeItem, activeChildName }: any) => {
     activeOne?.name || "Dashboard"
   ); // 90 is the id of the dashboard
 
-  const handleMenuClick = (ID: number) => {
-    setActiveMenu(ID);
+  const handleMenuClick = (Name: string) => {
+    setActiveMenu(Name);
   };
 
   return (
@@ -197,7 +197,7 @@ const RegularMenuItem = ({
         className={`w-full flex items-center gap-2 py-3 cursor-pointer ${
           isActive ? "bg-slate-200 rounded-r-3xl text-black" : ""
         }`}
-        onClick={() => onClick(item.ID)}
+        onClick={() => onClick(item.name)}
       >
         <img
           className={`w-5 text-black ${isMenuOpen ? "ml-8" : "ml-4"} `}
@@ -246,106 +246,6 @@ const RegularMenuItem = ({
           })}
         </div>
       )}
-    </div>
-  );
-};
-
-const ApiMenuItem = ({
-  item,
-  active,
-  onClick,
-  isMenuOpen,
-  activeChildName,
-}: any) => {
-  const isActive = active;
-
-  // Assuming isApi should have some custom logic
-  item.icon = "/icons/api_icon.svg";
-  item.children = [
-    {
-      name: "Analyse",
-      active: activeChildName == "Analyse",
-      icon: "/icons/analytics.svg",
-    },
-    {
-      name: "configuration",
-      active: activeChildName == "configuration",
-      icon: "/icons/config.svg",
-    },
-    {
-      name: "Authorization",
-      active: activeChildName == "configuration",
-      icon: "/icons/auth.svg",
-    },
-  ];
-
-  const [activeChild, setActiveChild] = useState(activeChildName);
-  let url = `/dashboard/apis/${item.ID || 0}/Analyse`;
-
-  return (
-    <div className="flex flex-col items-start justify-start w-4/5">
-      <Link
-        href={url}
-        className={`w-full flex items-center gap-2 py-3 cursor-pointer ${
-          isActive ? "bg-orangePure rounded-r-3xl" : ""
-        }`}
-        onClick={() => onClick(item.ID)}
-      >
-        <img
-          className={`w-5 ${isMenuOpen ? "ml-8" : "ml-4"} `}
-          src={item.icon}
-        />
-
-        {isMenuOpen && <div>{item.name}</div>}
-        {item.children && isMenuOpen && (
-          <img className="ml-1 w-5" src="/icons/arrow.svg" />
-        )}
-      </Link>
-
-      {isActive && item.children && (
-        <div
-          className={`${
-            isMenuOpen ? "ml-8" : "ml-2"
-          } mr-4 mt-2 flex flex-col justify-start items-start w-full gap-2`}
-        >
-          {item.children.map((child: any) => {
-            const subUrl = `/dashboard/apis/${item.ID || 0}/${child.name}`;
-            return (
-              <Link
-                href={subUrl}
-                onClick={() => setActiveChild(child.name)}
-                className={`flex items-center gap-2 text-sm text-gray-400 ml-7 cursor-pointer ${
-                  isActive ? "text-white" : ""
-                } ${isMenuOpen ? "ml-7" : "ml-0"}`}
-              >
-                {child.icon && (
-                  <img
-                    className={`w-5 text-white p-2 ${
-                      activeChild === child.name
-                        ? "bg-orangePure w-9 border-1 border-orangePure rounded-xl"
-                        : "w-9 border-1"
-                    }`}
-                    src={child.icon}
-                  />
-                )}
-                {isMenuOpen && <div>{child.name}</div>}
-              </Link>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-};
-
-// ... (other components)
-
-const Separator = ({ text }: any) => {
-  return (
-    <div className="flex items-center my-5">
-      <div className="flex-grow border-t"></div>
-      <span className="mx-2 font-semibold uppercase">{text}</span>
-      <div className="flex-grow border-t"></div>
     </div>
   );
 };

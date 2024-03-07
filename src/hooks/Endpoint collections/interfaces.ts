@@ -1,14 +1,17 @@
 // interfaces.ts
 
-export interface EndpointsGroupCreation {
+export interface CollectionCreation {
   ApiId: string;
-  Group: string;
+  Name: string;
+  Image: string;
+
   Description: string;
 }
 
-export interface EndpointsGroup {
+export interface Collection {
   ID: string;
-  Group: string;
+  Name: string;
+  Image: string;
   Description: string;
   // Add other properties as needed
 }
