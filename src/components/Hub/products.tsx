@@ -39,7 +39,7 @@ export default function ProductsHub() {
 
   const apiList = useApiList({
     page,
-    limit: 5,
+    limit: 12,
   });
 
   useEffect(() => {

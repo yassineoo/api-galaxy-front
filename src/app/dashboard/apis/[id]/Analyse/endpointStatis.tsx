@@ -1,7 +1,7 @@
 import MultiSelect from "@/components/addNewApi/monitazation/object";
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
 import { Button } from "@/components/ui/button";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -12,10 +12,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { fakeData } from "./data";
 
 import { useApiLogsStats } from "@/hooks/apiLogs/apiLogs.queries";
-import { timeFilter } from "@/utils/constants";
 import TimeFilterButtons from "./timeRange";
 import { ChartFormater } from "@/utils/chartFunctions";
 
@@ -276,7 +274,7 @@ const LineChartComponent = ({ data }: any) => {
       </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
-          data={chartData.reverse()}
+          data={chartData}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           {/* Iterate over the endpoints and create Line components */}

@@ -11,7 +11,6 @@ import {
 import { useUpdateApi, useUpdateDocs } from "@/hooks/apis/api.Mutation";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-import { defaultText } from "@/app/apis/about";
 import { formats, modules } from "@/utils/reactQuill";
 import { ToastContainer, toast } from "react-toastify";
 

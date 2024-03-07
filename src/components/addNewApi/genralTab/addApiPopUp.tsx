@@ -46,10 +46,10 @@ export default function AddNewApiForm({ closeModal }: any) {
     try {
       const Data = {
         Name: name,
-        ProviderID: 21,
+        ProviderID: 123,
         ApiUrl: apiUrl,
         CategoryID: 1,
-        ImagePath: "path/image", // Use the fake URL for testing
+        ImagePath: "https://images.apilist.fun/jsonplaceholder_api.pn", // Use the fake URL for testing
         Keywords: keywords,
         Description: description,
       };

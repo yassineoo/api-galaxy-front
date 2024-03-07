@@ -39,7 +39,7 @@ const Header = () => {
         <IconDropdown icon={<span>⚙️</span>} />
 
         {/* Profile dropdown */}
-        <UserNav />
+
         <IconDropdown
           icon={
             <div className="ml-4 relative">
