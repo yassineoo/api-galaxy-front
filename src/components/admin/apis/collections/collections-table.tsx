@@ -27,7 +27,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function ApiTable<TData, TValue>({
+export function CollectionTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -47,7 +47,7 @@ export function ApiTable<TData, TValue>({
 
   return (
     <div>
-      <h2 className="font-bold m-4"> Api List</h2>
+      <h2 className="font-bold m-4"> Collection List</h2>
       <div className="rounded-md border bg-white dark:bg-transparent">
         <Table>
           <TableHeader>
