@@ -16,6 +16,7 @@ import AddNewEndpointDrawer from "./endpoints/addNewEndpointDrawer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EndpointsGroupsTable } from "./endpointsTable/endpoints-group-table";
 import { EndpointsGroupscolumns } from "./endpointsTable/endpointsGroupsColumns";
+import ImportEndpointModal from "./endpoints/importModal";
 
 export default function DefinitionTab({ api }: any) {
   const EndpointsList = useApiEndpointsList(api.ID);
@@ -34,6 +35,7 @@ export default function DefinitionTab({ api }: any) {
         <CardContent className="grid gap-4">
           <Search />
           <div className="flex gap-4 justify-end items-center">
+            <ImportEndpointModal apiID={api.ID} />
             <AddNewEndpointDrawer Label="Add New Endpoint" apiID={api.ID} />
             <CreateEndpointsGroupForm apiId={api.ID} />
           </div>

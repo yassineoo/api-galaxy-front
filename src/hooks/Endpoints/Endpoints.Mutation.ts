@@ -23,6 +23,23 @@ export const useCreateApiEndpoints = () => {
   });
 };
 
+export const useCreateExtractedApiEndpoints = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      console.log("data ============ ", data);
+
+      const response = await axios.post(`${ApiUrl}/endpoints/multi`, data); // Adjust the endpoint
+      return response.data;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["apiEndpointsList"] });
+    },
+  });
+};
+
 export const useUpdateApiEndpoints = () => {
   const queryClient = useQueryClient();
 
