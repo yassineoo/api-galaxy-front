@@ -26,6 +26,7 @@ import {
   DefaultParameters,
   extractPathParameters,
 } from "@/utils/endpoints.functions";
+import { LoadingButton } from "@/components/shared/loadingButton";
 
 const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
   const [parameters, setParameters] = useState<Parameter[]>(
@@ -267,9 +268,13 @@ const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
       </CardContent>
       <CardFooter className=" w-full  items-center flex justify-around py-8">
         {Colser}
-        <Button className="w-2/5 bg-blue-700" onClick={handleSubmit}>
-          {edit ? "Save modifcations" : "Create Endpoint"}
-        </Button>
+        {isPending || isUpdatePending ? (
+          <LoadingButton />
+        ) : (
+          <Button className="w-2/5 bg-blue-700" onClick={handleSubmit}>
+            {edit ? "Save modifcations" : "Create Endpoint"}
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

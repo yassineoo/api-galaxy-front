@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
@@ -39,10 +39,20 @@ const snippetExample = generateAxiosSnippet(
   { page: 1, limit: 10 }
 );
 
-const CodeSnippet = ({ codeString, language }: any) => {
+const CodeSnippet = ({
+  codeString,
+  language,
+  selectedEndpoint,
+  apiUrl,
+}: any) => {
   const [snippet, setSnippet] = React.useState(snippetExample);
+  const [selectedLanguage, setSelectedLanguage] = React.useState("Node.js");
   const changeFramwork = (value: any) => {
     // console.log(value);
+    setSelectedLanguage(value);
+  };
+
+  useEffect(() => {
     let fun: any = (
       endpointUrl: string,
       method: string,
@@ -53,10 +63,7 @@ const CodeSnippet = ({ codeString, language }: any) => {
       return "Not implemented yet";
     };
 
-    console.log("change to ", value);
-    console.log("test change to ", value == "Node.js");
-
-    switch (value.trim()) {
+    switch (selectedLanguage.trim()) {
       case "Node.js":
         fun = generateAxiosSnippet;
         break;
@@ -99,19 +106,57 @@ const CodeSnippet = ({ codeString, language }: any) => {
         fun = generateKotlinSnippet;
         break;
     }
+    console.log(selectedEndpoint);
 
-    setSnippet(
-      fun(
-        "https://api.example.com/users",
-        "post",
-        { "Content-Type": "application/json" },
-        { name: "John Doe", age: 30 },
-        { page: 1, limit: 10 }
-      )
-    );
-  };
+    if (selectedEndpoint) {
+      const { parameters } = selectedEndpoint;
+
+      // Filter parameters based on their types
+      const pathParameters = selectedEndpoint.Parameters.filter(
+        (param: any) => param.ParameterType === "PathParameter"
+      );
+      const queryParameters = selectedEndpoint.Parameters.filter(
+        (param: any) => param.ParameterType === "QueryParameter"
+      );
+      const bodyParameters = selectedEndpoint.Parameters.filter(
+        (param: any) => param.ParameterType === "BodyParameter"
+      );
+
+      // Map parameters to the desired format
+      const dynamicHeaders: any = {};
+      const dynamicBody: any = {};
+      const dynamicQuery: any = {};
+
+      pathParameters.forEach((param: any) => {
+        // Map path parameters
+        // You can customize this part based on your requirements
+        dynamicHeaders[param.Key] = param.ExampleValue || "";
+      });
+
+      queryParameters.forEach((param: any) => {
+        // Map query parameters
+        dynamicQuery[param.Key] = param.ExampleValue || "";
+      });
+
+      bodyParameters.forEach((param: any) => {
+        // Map body parameters
+        dynamicBody[param.Key] = param.ExampleValue || "";
+      });
+
+      setSnippet(
+        fun(
+          apiUrl + "/" + selectedEndpoint.Url ||
+            "https://api.example.com/users",
+          selectedEndpoint.Methode || "post",
+          dynamicHeaders,
+          dynamicBody,
+          dynamicQuery
+        )
+      );
+    }
+  }, [selectedLanguage, selectedEndpoint]);
   return (
-    <div className="w-full ml-2  flex flex-col justify-center h-screen">
+    <div className="w-full ml-2  flex flex-col justify-center h-screen  ">
       <div className="flex items-center gap-2">
         <SelectButton
           handleSelectionChange={changeFramwork}

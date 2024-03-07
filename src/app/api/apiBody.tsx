@@ -44,6 +44,7 @@ export function ApiTabs({ api }: any) {
     isPending,
     isSuccess,
   } = useSendRequest();
+  // States for each input field
 
   return (
     <>
@@ -68,15 +69,23 @@ export function ApiTabs({ api }: any) {
           )}
           <div className="w-full flex justify-center h-screen">
             {endpointList.isSuccess && (
-              <ParamterControler
-                setResquestResult={setResquestResult}
-                slectedApiUrl={api.ApiUrl}
-                sendRequest={sendRequest}
-                selectedNodeId={selectedNodeId}
-                endpointList={endpointList.data}
-              />
+              <>
+                {" "}
+                <ParamterControler
+                  setResquestResult={setResquestResult}
+                  slectedApiUrl={api.ApiUrl}
+                  sendRequest={sendRequest}
+                  selectedNodeId={selectedNodeId}
+                  endpointList={endpointList.data}
+                />
+                <CodeResult
+                  apiUrl={api.ApiUrl}
+                  resquestResult={resquestResult}
+                  selectedNodeId={selectedNodeId}
+                  endpointList={endpointList.data}
+                />
+              </>
             )}
-            <CodeResult resquestResult={resquestResult} />
           </div>
         </TabsContent>
         <TabsContent
@@ -105,7 +114,16 @@ export function ApiTabs({ api }: any) {
   );
 }
 
-export function CodeResult({ resquestResult }: any) {
+export function CodeResult({
+  resquestResult,
+  endpointList,
+  selectedNodeId,
+  apiUrl,
+}: any) {
+  // States for each input field
+  const selectedEndpoint = endpointList.find(
+    (endpoint: any) => endpoint.ID == selectedNodeId
+  );
   return (
     <Tabs defaultValue="CodeSnippet" className=" h-[760px] w-1/2 ">
       <TabsList className="my-2">
@@ -125,7 +143,12 @@ export function CodeResult({ resquestResult }: any) {
         className="w-full   bg-slate-900 flex flex-col justify-center "
       >
         <div className="m-0 pt-2   w-full flex justify-center ">
-          <CodeSnippet codeString={codeString} language="javascript" />
+          <CodeSnippet
+            apiUrl={apiUrl}
+            codeString={codeString}
+            language="javascript"
+            selectedEndpoint={selectedEndpoint}
+          />
         </div>
       </TabsContent>
     </Tabs>
@@ -140,8 +163,8 @@ const ParamterControler = ({
   endpointList,
 }: any) => {
   // States for each input field
-  const selectedEndpoint = endpointList.find(
-    (endpoint: any) => endpoint.ID == selectedNodeId
+  const selectedEndpoint = endpointList?.find(
+    (endpoint: any) => endpoint?.ID == selectedNodeId
   );
 
   const [url, setUrl] = useState(selectedEndpoint?.Url || "koko");

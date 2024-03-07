@@ -5,8 +5,8 @@ import DonutChartComponent from "../../../components/dashboard/mainPage/donutcha
 import { use } from "react";
 
 import Navbar from "../../../components/General use/navbar";
-import ApiHeader from "../apiHeader";
-import { ApiTabs } from "../apiBody";
+import ApiHeader from "../../api/apiHeader";
+import { ApiTabs } from "../../api/apiBody";
 import { useApiById } from "@/hooks/apis/api.queries";
 
 const DashboardPage = ({ params }: any) => {
