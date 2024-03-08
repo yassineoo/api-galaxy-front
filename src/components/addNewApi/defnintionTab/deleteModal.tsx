@@ -10,19 +10,17 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { useDeleteCollection } from "@/hooks/Endpoint collections/EndpointsCollection.Mutation";
 import { useDeleteApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
 
-export function AlertDialogDemo({ action, endpoint, name }: any) {
-  const {
-    mutateAsync: deleteEndpoint,
-    isError,
-    isPending,
-    error,
-  } = useDeleteApiEndpoints();
+export function AlertDialogDemo({ action, target, name }: any) {
+  const { mutateAsync: deleteEndpoint } = useDeleteApiEndpoints();
+  const { mutateAsync: deleteCollection } = useDeleteCollection();
 
   const handleDelete = async () => {
     try {
-      await deleteEndpoint(endpoint.ID);
+      if (target.Type === "Collection") await deleteCollection(target.ID);
+      else await deleteEndpoint(target.ID);
       console.log("done");
     } catch (error) {
       console.log(error);

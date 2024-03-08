@@ -12,14 +12,9 @@ export default function AdminSidebar() {
   // Extract the active item and child from the current route
   const pathSegments = pathname.split("/");
   const activeItem = pathSegments[2]; // Assuming the item is the third segment
-  let activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
-  let apiId = 0;
-  if (activeItem != "apis") {
-    activeChildName = pathname;
-  } else {
-    activeChildName = pathSegments[4];
-    apiId = Number(pathSegments[3]);
-  }
+  const activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
+
+  console.log("pathSegments", pathSegments);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -51,7 +46,6 @@ export default function AdminSidebar() {
       <Logo toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
       <Menu
         isMenuOpen={isMenuOpen}
-        apiId={apiId}
         activeItem={activeItem}
         activeChildName={activeChildName}
       />
@@ -72,31 +66,27 @@ const Logo = ({ toggleMenu, isMenuOpen }: any) => {
   );
 };
 
-const Menu = ({ isMenuOpen, apiId, activeItem, activeChildName }: any) => {
+const Menu = ({ isMenuOpen, activeItem, activeChildName }: any) => {
   const menuItems = [
     {
-      ID: 90,
       name: "Dashboard",
       icon: "/icons/icon_dashboard.svg",
       url: "/dashboard",
       active: true,
     },
     {
-      ID: 91,
       name: "Users",
       icon: "/icons/icon_business_time_solid.svg",
       url: "/dashboard/Users",
       active: false,
     },
     {
-      ID: 92,
       name: "Apis",
       icon: "/icons/icon_business_time_solid.svg",
-      url: "/dashboard/add-new-api",
+      url: "/dashboard/apis",
       active: false,
     },
     {
-      ID: 93,
       name: "Billing",
 
       icon: "/icons/icon_billing.svg",
@@ -124,8 +114,7 @@ const Menu = ({ isMenuOpen, apiId, activeItem, activeChildName }: any) => {
       ],
     },
     {
-      ID: 95,
-      name: "Billing",
+      name: "Content",
 
       icon: "/icons/icon_billing.svg",
       url: "/dashboard/billing/billing-information",
@@ -153,20 +142,23 @@ const Menu = ({ isMenuOpen, apiId, activeItem, activeChildName }: any) => {
     },
   ];
 
-  const activeOne = menuItems.find((item) => item.url.includes(activeItem));
+  const activeOne = menuItems.find((item) =>
+    item.url.toLowerCase().includes(activeItem)
+  );
   const [activeMenu, setActiveMenu] = useState<string>(
-    activeOne?.name || "Dashboard"
+    activeOne?.name || "dashboard"
   ); // 90 is the id of the dashboard
 
   const handleMenuClick = (Name: string) => {
     setActiveMenu(Name);
   };
 
+  console.log("activeOne ", activeOne);
+
   return (
     <div className="flex flex-col mt-6 text-sm">
       {menuItems.map((item) => (
         <RegularMenuItem
-          key={item.ID}
           item={item}
           active={activeMenu === item.name}
           onClick={handleMenuClick}

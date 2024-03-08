@@ -101,7 +101,7 @@ export function EndpointsGroupsTable<TData, TValue>({
                       edit
                       group={row.original}
                     />
-                    <AlertDialogDemo endpoint={row.original} name="group" />
+                    <AlertDialogDemo target={row.original} name="group" />
                   </TableCell>
                 </TableRow>
               ))

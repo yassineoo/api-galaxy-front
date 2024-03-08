@@ -17,11 +17,11 @@ import {
   useUpdateCollection,
 } from "@/hooks/Endpoint collections/EndpointsCollection.Mutation";
 
-const CreateEndpointsCollectionForm = ({ apiId, edit, collection }: any) => {
+const CreateCollectionForm = ({ apiId, edit, collection }: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const [collectionName, setCollectionName] = useState(
-    edit ? collection?.Collection : ""
+    edit ? collection?.Name : ""
   );
   const [collectionDescription, setCollectionDescription] = useState(
     edit ? collection?.Description : ""
@@ -180,4 +180,4 @@ const CreateEndpointsCollectionForm = ({ apiId, edit, collection }: any) => {
   );
 };
 
-export default CreateEndpointsCollectionForm;
+export default CreateCollectionForm;

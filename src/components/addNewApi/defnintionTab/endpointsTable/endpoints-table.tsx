@@ -126,7 +126,7 @@ export function EndpointsTable<TData, TValue>({
                       edit
                       endpoint={row.original}
                     />
-                    <AlertDialogDemo endpoint={row.original} name="endpoint" />
+                    <AlertDialogDemo target={row.original} name="endpoint" />
 
                     {/* Dropdown to select groups */}
                     {groups && (
@@ -161,27 +161,6 @@ export function EndpointsTable<TData, TValue>({
         totalPages={10}
         onPageChange={(page: any) => console.log(page)}
       />
-      {/*
-          <DataTablePagination table={table} />
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div>
-       */}
     </div>
   );
 }

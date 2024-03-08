@@ -40,12 +40,12 @@ export const useUpdateCollection = () => {
   });
 };
 
-export const useDeleteEndpointsCollection = () => {
+export const useDeleteCollection = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string) => {
-      await axios.delete(`/api-collections/${id}`); // Adjust the endpoint
+      await axios.delete(`${ApiUrl}/api-collections/${id}`); // Adjust the endpoint
     },
 
     onSuccess: () => {

@@ -19,6 +19,7 @@ import Statis from "./endpointStatis";
 import { error } from "console";
 import PaginationManual from "@/components/dashboard/billing/paginationManual";
 import { timeFilter } from "@/utils/constants";
+import { SkeletonTable } from "@/components/admin/apis/apis/apiSkeleton";
 
 const AddApiPage = ({ params }: any) => {
   const { id } = params;
@@ -50,7 +51,9 @@ const AddApiPage = ({ params }: any) => {
         </div>
       )}
       <div className="px-12 py-10 ">
-        {logs.isLoading && <p>loading ...</p>}
+        {logs.isLoading && (
+          <SkeletonTable name={"Logs List"} columns={Logscolumns} />
+        )}
         {logs.isSuccess && (
           <>
             <div className="flex justify-start gap-6 items-center">

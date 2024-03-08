@@ -1,4 +1,5 @@
 "use client";
+import { SkeletonTable } from "@/components/admin/apis/apis/apiSkeleton";
 import { CollectionTable } from "@/components/admin/apis/collections/collections-table";
 import { CollectionColumns } from "@/components/admin/apis/collections/collectionsColumns";
 import CreateEndpointsCollectionForm from "@/components/admin/apis/collections/endpointGroupCreateModal";
@@ -49,7 +50,9 @@ export default function DefinitionTab() {
                 <TabsTrigger value="Collection">Collection</TabsTrigger>
               </TabsList>
               <TabsContent value="Apis">
-                {ApiList.isLoading && <p>Loading...</p>}
+                {ApiList.isLoading && (
+                  <SkeletonTable name={"Api List"} columns={columns} />
+                )}
                 {ApiList.isSuccess && (
                   <ApiTable columns={columns} data={ApiList.data.data.apis} />
                 )}
@@ -60,7 +63,12 @@ export default function DefinitionTab() {
                 />
               </TabsContent>
               <TabsContent value="Collection">
-                {CollectionList.isLoading && <p>Loading...</p>}
+                {CollectionList.isLoading && (
+                  <SkeletonTable
+                    name={"Collection List"}
+                    columns={CollectionColumns}
+                  />
+                )}
                 {CollectionList.isSuccess && (
                   <CollectionTable
                     columns={CollectionColumns}

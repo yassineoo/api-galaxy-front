@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/table";
 
 import { useState } from "react";
+import { AlertDialogDemo } from "@/components/addNewApi/defnintionTab/deleteModal";
+import CreateCollectionForm from "./endpointGroupCreateModal";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -83,6 +85,16 @@ export function CollectionTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
+
+                  <TableCell className="flex justify-center gap-2 items-center">
+                    <CreateCollectionForm
+                      Label="Edit"
+                      variant
+                      edit
+                      collection={row.original}
+                    />
+                    <AlertDialogDemo target={row.original} name="Collection" />
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

@@ -69,11 +69,7 @@ const PlanObjectModal = ({
 
   const handleDeleteObject = () => {
     setObjectList((prev: any) => {
-      console.log(
-        "objectSelceted.ID %%%%%%%%%%%%%%%,",
-        objectSelceted.ID,
-        prev
-      );
+      console.log(objectSelceted.ID, prev);
 
       return prev.filter((item: any) => item.ID != objectSelceted.ID);
     });
