@@ -12,7 +12,7 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
-export const columns: ColumnDef<Collection>[] = [
+export const CollectionColumns: ColumnDef<Collection>[] = [
   {
     accessorKey: "Name",
     header: "Cllection Name",

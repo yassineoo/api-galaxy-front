@@ -33,7 +33,13 @@ export const columns: ColumnDef<ApiEntity>[] = [
   {
     accessorKey: "ImagePath",
     header: "Image",
-    cell: ({ row }) => <img src={row.getValue("ImagePath")} alt="API Image" />,
+    cell: ({ row }) => (
+      <img
+        className="w-8 h-8"
+        src={row.getValue("ImagePath")}
+        alt="API Image"
+      />
+    ),
   },
   {
     accessorKey: "CategoryID",

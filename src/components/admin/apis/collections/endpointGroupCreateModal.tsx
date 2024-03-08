@@ -1,3 +1,4 @@
+"use client";
 import React, { use, useEffect, useState } from "react";
 import Modal from "react-modal";
 import { Button } from "../../../ui/button";
