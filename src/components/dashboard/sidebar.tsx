@@ -46,9 +46,9 @@ export default function Sidebar() {
 
   return (
     <div
-      className={` bg-black text-white  pb-4 dark:bg-sidebar overflow-scroll dark:text-white sticky top-0 ${
-        isMenuOpen ? " w-1/4 " : " w-16 lg:w-[6%]  "
-      } h-full min-h-screen `}
+      className={`bg-black text-white  pb-4 dark:bg-sidebar overflow-scroll dark:text-white sticky top-0 transition-all duration-300 ${
+        isMenuOpen ? "w-1/4" : "w-16 lg:w-[6%] transform" // Use transform class for animation
+      } h-full min-h-screen`}
     >
       <Logo toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
       <Menu
@@ -64,7 +64,11 @@ export default function Sidebar() {
 
 const Logo = ({ toggleMenu, isMenuOpen }: any) => {
   return (
-    <div className={`flex items-center w-full  justify-between  mt-4 px-4 `}>
+    <div
+      className={`flex items-center w-full justify-between mt-4 px-4 ${
+        isMenuOpen ? "" : "transform"
+      }`}
+    >
       {isMenuOpen && <img className="w-16" src="/logos/logo.svg" />}
       <img
         className="cursor-pointer w-8"

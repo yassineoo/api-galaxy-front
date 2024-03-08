@@ -14,8 +14,6 @@ export default function AdminSidebar() {
   const activeItem = pathSegments[2]; // Assuming the item is the third segment
   const activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
 
-  console.log("pathSegments", pathSegments);
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -39,16 +37,21 @@ export default function AdminSidebar() {
 
   return (
     <div
-      className={` bg-blue-900 text-white  pb-4 dark:bg-blue-900 overflow-scroll dark:text-white sticky top-0 ${
-        isMenuOpen ? " w-1/4 " : " w-16 lg:w-[6%]  "
-      } h-full min-h-screen `}
+      className={`bg-blue-900 text-white pb-4 dark:bg-blue-950 overflow-scroll dark:text-white sticky top-0 transition-all duration-300 ${
+        isMenuOpen ? "w-1/4" : "w-16 lg:w-[6%] transform" // Use transform class for animation
+      } h-full min-h-screen`}
     >
       <Logo toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
+
       <Menu
         isMenuOpen={isMenuOpen}
         activeItem={activeItem}
         activeChildName={activeChildName}
       />
+
+      <div className="flex  w-full justify-center items-center text-bold    ">
+        Disconnect
+      </div>
     </div>
   );
 }
@@ -71,74 +74,35 @@ const Menu = ({ isMenuOpen, activeItem, activeChildName }: any) => {
     {
       name: "Dashboard",
       icon: "/icons/icon_dashboard.svg",
-      url: "/dashboard",
+      url: "/admin",
       active: true,
     },
     {
       name: "Users",
       icon: "/icons/icon_business_time_solid.svg",
-      url: "/dashboard/Users",
+      url: "/admin/users",
       active: false,
     },
     {
       name: "Apis",
       icon: "/icons/icon_business_time_solid.svg",
-      url: "/dashboard/apis",
+      url: "/admin/apis",
       active: false,
     },
-    {
-      name: "Billing",
 
-      icon: "/icons/icon_billing.svg",
-      url: "/dashboard/billing/billing-information",
-      active: false,
-      children: [
-        {
-          name: "Billing Information",
-          active: true,
-          icon: "/icons/credit-card.svg",
-          url: "/dashboard/billing/billing-information",
-        },
-        {
-          name: "Transaction history",
-          active: false,
-          icon: "/icons/transaction-history.svg",
-          url: "/dashboard/billing/transaction-history",
-        },
-        {
-          name: "Subscription",
-          active: false,
-          icon: "/icons/subscription.svg",
-          url: "/dashboard/billing/subscription",
-        },
-      ],
-    },
     {
       name: "Content",
 
       icon: "/icons/icon_billing.svg",
-      url: "/dashboard/billing/billing-information",
+      url: "/admin/content",
       active: false,
-      children: [
-        {
-          name: "Billing Information",
-          active: true,
-          icon: "/icons/credit-card.svg",
-          url: "/dashboard/billing/billing-information",
-        },
-        {
-          name: "Transaction history",
-          active: false,
-          icon: "/icons/transaction-history.svg",
-          url: "/dashboard/billing/transaction-history",
-        },
-        {
-          name: "Subscription",
-          active: false,
-          icon: "/icons/subscription.svg",
-          url: "/dashboard/billing/subscription",
-        },
-      ],
+    },
+    {
+      name: "Settings",
+
+      icon: "/icons/icon_billing.svg",
+      url: "/admin/settings",
+      active: false,
     },
   ];
 
@@ -146,7 +110,7 @@ const Menu = ({ isMenuOpen, activeItem, activeChildName }: any) => {
     item.url.toLowerCase().includes(activeItem)
   );
   const [activeMenu, setActiveMenu] = useState<string>(
-    activeOne?.name || "dashboard"
+    activeOne?.name || "Dashboard"
   ); // 90 is the id of the dashboard
 
   const handleMenuClick = (Name: string) => {
