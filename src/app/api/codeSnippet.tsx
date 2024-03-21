@@ -133,6 +133,8 @@ const CodeSnippet = ({
         dynamicHeaders[param.Key] = param.ExampleValue || "";
       });
 
+      dynamicHeaders["api-key"] = "sqkdqlsd-qskdqnsd-qskjdq-qskjdkq";
+
       queryParameters.forEach((param: any) => {
         // Map query parameters
         dynamicQuery[param.Key] = param.ExampleValue || "";

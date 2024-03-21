@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "react-toastify";
 
-const Logo = ({ toggleMenu, isMenuOpen }: any) => {
+const Logo = () => {
   return (
     <div
       className={`flex items-center w-32 gap-4 justify-between mt-4 px-4 ${"transform"}`}
