@@ -36,6 +36,7 @@ export function ApiTabs({ api }: any) {
   const endpointList = useApiEndpointsById(api.ID);
   const [selectedNodeId, setSelectedNodeId] = useState(100);
   const [resquestResult, setResquestResult] = useState();
+  const [defaultValue, setDefaultValue] = useState("CodeSnippet");
   console.log("selectedNodeId ", selectedNodeId);
 
   const {
@@ -72,6 +73,7 @@ export function ApiTabs({ api }: any) {
               <>
                 {" "}
                 <ParamterControler
+                  setDefaultValue={setDefaultValue}
                   setResquestResult={setResquestResult}
                   slectedApiUrl={api.ApiUrl}
                   sendRequest={sendRequest}
@@ -79,6 +81,7 @@ export function ApiTabs({ api }: any) {
                   endpointList={endpointList.data}
                 />
                 <CodeResult
+                  defaultValue={defaultValue}
                   apiUrl={api.ApiUrl}
                   resquestResult={resquestResult}
                   selectedNodeId={selectedNodeId}
@@ -119,16 +122,26 @@ export function CodeResult({
   endpointList,
   selectedNodeId,
   apiUrl,
+  defaultValue = "CodeSnippet",
 }: any) {
   // States for each input field
   const selectedEndpoint = endpointList.find(
     (endpoint: any) => endpoint.ID == selectedNodeId
   );
   return (
-    <Tabs defaultValue="CodeSnippet" className=" h-[760px] w-1/2 ">
+    <Tabs defaultValue={defaultValue} className=" h-[760px] w-1/2 ">
       <TabsList className="my-2">
         <TabsTrigger value="CodeSnippet">CodeSnippet</TabsTrigger>
-        <TabsTrigger value="Result">Result</TabsTrigger>
+        <TabsTrigger value="Result" className="relative">
+          <div
+            className={
+              defaultValue == "Result"
+                ? "w-4 h-4 rounded-full absolute -top-2 -right-2 bg-red-500 "
+                : ""
+            }
+          ></div>
+          Result
+        </TabsTrigger>
       </TabsList>
       <TabsContent
         value="Result"
@@ -161,6 +174,7 @@ const ParamterControler = ({
   sendRequest,
   selectedNodeId = 14,
   endpointList,
+  setDefaultValue,
 }: any) => {
   // States for each input field
   const selectedEndpoint = endpointList?.find(
@@ -229,6 +243,16 @@ const ParamterControler = ({
       };
       const response = await sendRequest(Data);
       setResquestResult(response);
+      setDefaultValue("Result");
+      console.log(
+        "reseult has chagnes =============================================="
+      );
+      console.log(
+        "reseult has chagnes =============================================="
+      );
+      console.log(
+        "reseult has chagnes =============================================="
+      );
 
       console.log("Request sent!", response);
 
@@ -246,6 +270,8 @@ const ParamterControler = ({
     setHeaderParams({});
     setQueryParams({});
     setPathParams({});
+    setDefaultValue("CodeSnippet");
+    setResquestResult("");
   };
 
   return (

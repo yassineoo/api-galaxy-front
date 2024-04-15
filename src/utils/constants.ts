@@ -1,4 +1,4 @@
-export const ApiUrl = "http://localhost:7000";
+export const ApiUrl = "http://localhost:8088";
 export const timeFilter = [
   { value: "7d", label: "last 7 days" },
   { value: "30d", label: "last 30 days" },
