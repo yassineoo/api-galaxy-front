@@ -20,6 +20,7 @@ import { ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useSendRequest } from "@/hooks/apis/api.Mutation";
 import CommentsContainer from "../test/discussion";
 import PrcingTabs from "@/components/addNewApi/monitazation/pricingCardsApi";
+import { ResizableDemo } from "./resizeable";
 const codeString = `
 const axios = require('axios');
 
@@ -70,24 +71,27 @@ export function ApiTabs({ api }: any) {
           )}
           <div className="w-full flex justify-center h-screen">
             {endpointList.isSuccess && (
-              <>
-                {" "}
-                <ParamterControler
-                  setDefaultValue={setDefaultValue}
-                  setResquestResult={setResquestResult}
-                  slectedApiUrl={api.ApiUrl}
-                  sendRequest={sendRequest}
-                  selectedNodeId={selectedNodeId}
-                  endpointList={endpointList.data}
-                />
-                <CodeResult
-                  defaultValue={defaultValue}
-                  apiUrl={api.ApiUrl}
-                  resquestResult={resquestResult}
-                  selectedNodeId={selectedNodeId}
-                  endpointList={endpointList.data}
-                />
-              </>
+              <ResizableDemo
+                componentOne={
+                  <ParamterControler
+                    setDefaultValue={setDefaultValue}
+                    setResquestResult={setResquestResult}
+                    slectedApiUrl={api.ApiUrl}
+                    sendRequest={sendRequest}
+                    selectedNodeId={selectedNodeId}
+                    endpointList={endpointList.data}
+                  />
+                }
+                componentTwo={
+                  <CodeResult
+                    defaultValue={defaultValue}
+                    apiUrl={api.ApiUrl}
+                    resquestResult={resquestResult}
+                    selectedNodeId={selectedNodeId}
+                    endpointList={endpointList.data}
+                  />
+                }
+              />
             )}
           </div>
         </TabsContent>
@@ -129,7 +133,7 @@ export function CodeResult({
     (endpoint: any) => endpoint.ID == selectedNodeId
   );
   return (
-    <Tabs defaultValue={defaultValue} className=" h-[760px] w-1/2 ">
+    <Tabs defaultValue={defaultValue} className=" h-[760px] ">
       <TabsList className="my-2">
         <TabsTrigger value="CodeSnippet">CodeSnippet</TabsTrigger>
         <TabsTrigger value="Result" className="relative">
@@ -275,7 +279,7 @@ const ParamterControler = ({
   };
 
   return (
-    <div className="flex flex-col w-1/2 mt-[56px]  border border-t  h-[595px]">
+    <div className="flex flex-col  mt-[56px]  border border-t  h-[595px]">
       <ParamsHeader
         selectedEndpoint={selectedEndpoint}
         isLoading={isLoading}

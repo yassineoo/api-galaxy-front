@@ -195,7 +195,7 @@ const CodeSnippet = ({
         </Button>
       </div>
       <SyntaxHighlighter
-        className="w-full flex-1  p-12 overflow-scroll"
+        className="w-1/3 flex-1  p-12 overflow-scroll"
         language={language}
         style={atomDark}
         wrapLines={true}
