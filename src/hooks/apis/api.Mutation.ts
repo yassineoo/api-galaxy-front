@@ -148,3 +148,40 @@ export const useSendRequest = () => {
     },
   });
 };
+
+interface HelthRequestData {
+  ApiID: number;
+  EndpointID: number;
+  Email?: string;
+}
+export const useHelthSendRequest = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (HelthRequestData: HelthRequestData) => {
+      const { ApiID, EndpointID } = HelthRequestData;
+
+      console.log("loog HelthRequestData", HelthRequestData);
+
+      const config: AxiosRequestConfig = {
+        //headers: updatedHeaders,
+        // params: Params,
+        withCredentials: true,
+      };
+
+      try {
+        const res = await axios.post(
+          `${ApiUrl}/services-test/`,
+          HelthRequestData,
+          config
+        );
+        console.log("loog HelthRequestData", res);
+
+        return res;
+      } catch (error) {
+        console.log("loog error", error);
+        return error;
+      }
+    },
+  });
+};

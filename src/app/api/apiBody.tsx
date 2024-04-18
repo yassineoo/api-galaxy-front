@@ -234,6 +234,12 @@ const ParamterControler = ({
   const handleSubmit = async () => {
     setIsLoading(true);
 
+    if (url?.includes("{")) {
+      alert("please fill all the path paramters");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       // Example: Make a request using the input values
       const Data = {

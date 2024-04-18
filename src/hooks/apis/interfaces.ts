@@ -20,6 +20,9 @@ export interface Api {
   Keywords: string;
   Description: string;
   // Add other properties as needed
+
+  HealthCheckEndpointId: number;
+  EmailNotifcation: string;
 }
 
 export interface ApiInput {

@@ -19,6 +19,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProductCard from "@/components/HubXs/productCard";
+import HealthForm from "./healthForm";
 
 export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields
@@ -29,13 +30,15 @@ export default function GenralApiInfoTab({ api }: any) {
   const [keywords, setKeywords] = useState(api.Keywords);
   const [description, setDescription] = useState(api.Description);
   const [Visibility, setVisibility] = useState(api.Visibility);
+  const [HealthCheckEndpointId, setHealthCheckEndpointId] = useState<number>(0);
+  const [EmailNotifcation, setEmailNotifcation] = useState("");
 
   // Create a ref for file input
   const fileInputRef = useRef<HTMLInputElement>(null);
   const apiCategoryListQuery = useApiCategoryList();
 
   const {
-    mutate: updateApi,
+    mutateAsync: updateApi,
     isError,
     isPending,
     error,
@@ -67,6 +70,8 @@ export default function GenralApiInfoTab({ api }: any) {
         Keywords: keywords,
         Description: description,
         Visibility: Visibility,
+        HealthCheckEndpointId,
+        EmailNotifcation,
       };
 
       await updateApi(Data);
@@ -223,6 +228,14 @@ export default function GenralApiInfoTab({ api }: any) {
                 </div>
               )}
             </div>
+
+            <HealthForm
+              apiID={api.ID}
+              setEmailNotifcation={setEmailNotifcation}
+              EmailNotifcation={EmailNotifcation}
+              HealthCheckEndpointId={HealthCheckEndpointId}
+              setHealthCheckEndpointId={setHealthCheckEndpointId}
+            />
           </div>
         </CardContent>
         <CardFooter className="w-full gap-4 m-auto  flex items-center justify-center">

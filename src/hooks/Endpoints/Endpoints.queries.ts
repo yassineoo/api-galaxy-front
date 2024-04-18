@@ -4,7 +4,7 @@ import { ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const useApiEndpointsList = (apiId: string) => {
+export const useApiEndpointsList = (apiId: number) => {
   return useQuery({
     queryKey: ["apiEndpointsList", apiId],
     queryFn: async () => {
@@ -14,7 +14,7 @@ export const useApiEndpointsList = (apiId: string) => {
   });
 };
 
-export const useApiEndpointsById = (apiId: string) => {
+export const useApiEndpointsById = (apiId: number) => {
   return useQuery({
     queryKey: ["apiEndpoints", apiId],
     queryFn: async () => {
