@@ -82,6 +82,7 @@ export default function ProductsHub() {
                   imagePath={card.ImagePath}
                   cardTitle={card.Name}
                   cardDescription={card.Description}
+                  liked={index % 2 === 0}
                 />
               ))}
           </div>

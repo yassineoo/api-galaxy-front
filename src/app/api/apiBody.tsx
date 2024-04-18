@@ -76,8 +76,8 @@ export function ApiTabs({ api }: any) {
                   <ParamterControler
                     setDefaultValue={setDefaultValue}
                     setResquestResult={setResquestResult}
-                    slectedApiUrl={api.ApiUrl}
                     sendRequest={sendRequest}
+                    ApiID={api.ID}
                     selectedNodeId={selectedNodeId}
                     endpointList={endpointList.data}
                   />
@@ -137,13 +137,12 @@ export function CodeResult({
       <TabsList className="my-2">
         <TabsTrigger value="CodeSnippet">CodeSnippet</TabsTrigger>
         <TabsTrigger value="Result" className="relative">
-          <div
-            className={
-              defaultValue == "Result"
-                ? "w-4 h-4 rounded-full absolute -top-2 -right-2 bg-red-500 "
-                : ""
-            }
-          ></div>
+          {defaultValue == "Result" && (
+            <span className=" flex h-3 w-3  absolute -top-2 -right-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+            </span>
+          )}
           Result
         </TabsTrigger>
       </TabsList>
@@ -174,7 +173,7 @@ export function CodeResult({
 
 const ParamterControler = ({
   setResquestResult,
-  slectedApiUrl,
+  ApiID,
   sendRequest,
   selectedNodeId = 14,
   endpointList,
@@ -238,14 +237,16 @@ const ParamterControler = ({
     try {
       // Example: Make a request using the input values
       const Data = {
+        ApiID: ApiID,
         Method: selectedEndpoint?.Methode,
-        URL: `${slectedApiUrl}/${url}`, // Use the updated url state
+        URL: `${url}`, // Use the updated url state
         Headers: headerParams,
         Params: queryParams,
         Data: bodyParams,
         EndpointID: selectedNodeId,
       };
       const response = await sendRequest(Data);
+      console.log("response");
       setResquestResult(response);
       setDefaultValue("Result");
       console.log(

@@ -1,7 +1,7 @@
 // apiMutations.ts
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { Api, ApiCreation } from "./interfaces";
 import { ApiUrl } from "@/utils/constants";
 
@@ -15,7 +15,7 @@ export const useCreateApi = () => {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["apiList"] });
+      queryClient.invalidateQueries({ queryKey: ["apiListkk"] });
     },
   });
 };
@@ -70,13 +70,81 @@ export const useUpdateDocs = () => {
   });
 };
 
+interface Data {
+  ApiID: number;
+  Method: string;
+  URL: string;
+  Headers: Record<string, string>;
+  Params: Record<string, any>;
+  Data: Record<string, any>;
+  EndpointID: number;
+}
+
 export const useSendRequest = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (RequestData: Api) => {
-      const response = await axios.post(`${ApiUrl}/send-request/`, RequestData); // Adjust the endpoint
-      return response.data;
+    mutationFn: async (RequestData: Data) => {
+      const { ApiID, URL, Headers, Params, Data, Method } = RequestData;
+
+      console.log("loog RequestData", RequestData);
+
+      // Add X-Endpoint-Key to the headers
+      const updatedHeaders = {
+        ...Headers,
+        "X-Endpoint-Key": RequestData.EndpointID.toString(),
+      };
+
+      const config: AxiosRequestConfig = {
+        headers: updatedHeaders,
+        params: Params,
+        withCredentials: true,
+      };
+
+      try {
+        switch (Method.toLowerCase()) {
+          case "get": {
+            console.log("loog RequestData", "get");
+
+            const res = await axios.get(
+              `${ApiUrl}/services/${ApiID}/${URL}`,
+              config
+            );
+            console.log("loog res", res);
+            return res;
+          }
+
+          case "post":
+            return await axios.post(
+              `${ApiUrl}/services/${ApiID}/${URL}`,
+              Data,
+              config
+            );
+
+          case "put":
+            return await axios.put(
+              `${ApiUrl}/services/${ApiID}/${URL}`,
+              Data,
+              config
+            );
+
+          case "delete":
+            return await axios.delete(
+              `${ApiUrl}/services/${ApiID}/${URL}`,
+
+              config
+            );
+
+          default:
+            return await axios.get(
+              `${ApiUrl}/services/${ApiID}/${URL}`,
+              config
+            );
+        }
+      } catch (error) {
+        console.log("loog error", error);
+        return error;
+      }
     },
   });
 };

@@ -36,7 +36,7 @@ const Result = ({ codeString, language }: any) => {
             wrapLines={true}
             showLineNumbers={true}
           >
-            {codeString?.RequestBody}
+            {codeString?.data}
           </SyntaxHighlighter>
         </TabsContent>
         <TabsContent value="Header">
@@ -48,7 +48,7 @@ const Result = ({ codeString, language }: any) => {
             wrapLines={true}
             showLineNumbers={true}
           >
-            {JSON.stringify(codeString?.RequestHeader, null, 2)}
+            {JSON.stringify(codeString?.hedears)}
           </SyntaxHighlighter>
         </TabsContent>
       </Tabs>

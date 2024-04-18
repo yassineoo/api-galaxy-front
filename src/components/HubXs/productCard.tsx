@@ -11,6 +11,7 @@ interface CardType {
   cardTitle: string;
   cardDescription: string;
   id: number;
+  liked?: boolean;
 }
 
 const ProductCard: FC<CardType> = ({
@@ -21,6 +22,7 @@ const ProductCard: FC<CardType> = ({
   imagePath,
   cardTitle,
   cardDescription,
+  liked = false,
 }) => {
   const router = useRouter();
 
@@ -43,15 +45,26 @@ const ProductCard: FC<CardType> = ({
           />
         </div>
         <div className="flex gap-1 ">
+          {liked ? (
+            <Image
+              className="md:w-7 md:h-7 hover:scale-110 cursor-pointer"
+              src={"/icons/icon_heart.png"}
+              alt="Card Image"
+              width={20}
+              height={20}
+            />
+          ) : (
+            <Image
+              className="md:w-7 md:h-7 hover:scale-110 cursor-pointer"
+              src={"/icons/icon_outline_heart.png"}
+              alt="Card Image"
+              width={20}
+              height={20}
+            />
+          )}
+
           <Image
-            className="md:w-7 md:h-7"
-            src={"/icons/heart.png"}
-            alt="Card Image"
-            width={20}
-            height={20}
-          />
-          <Image
-            className="md:w-7 md:h-7"
+            className="md:w-7 md:h-7 hover:animate-pulse cursor-pointer"
             src={"/icons/certified.svg"}
             alt="Card Image"
             width={20}
