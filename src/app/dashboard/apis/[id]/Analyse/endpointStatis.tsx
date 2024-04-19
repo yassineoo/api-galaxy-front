@@ -152,7 +152,7 @@ const LineChartComponent = ({ data }: any) => {
 
   // Calculate average errors and average latency
   const averageErrors = totalErrors / TotalData.length;
-  const averageLatency = totalLatency / TotalData.length;
+  const averageLatency = totalLatency / totalCalls;
 
   // Update state with the calculated values
 
@@ -189,7 +189,7 @@ const LineChartComponent = ({ data }: any) => {
 
     // Calculate average errors and average latency
     const averageErrors = totalErrors / TotalData.length;
-    const averageLatency = totalLatency;
+    const averageLatency = totalLatency / totalCalls;
 
     // Update state with the calculated values
     setStatResult([totalCalls, averageErrors, averageLatency]);

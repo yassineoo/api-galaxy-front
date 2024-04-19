@@ -30,12 +30,21 @@ export default function GenralApiInfoTab({ api }: any) {
   const [keywords, setKeywords] = useState(api.Keywords);
   const [description, setDescription] = useState(api.Description);
   const [Visibility, setVisibility] = useState(api.Visibility);
-  const [HealthCheckEndpointId, setHealthCheckEndpointId] = useState<number>(0);
-  const [EmailNotifcation, setEmailNotifcation] = useState("");
+  const [HealthCheckEndpointId, setHealthCheckEndpointId] = useState<number>(
+    api?.HealthCheck?.EndpointID || 0
+  );
+  const [EmailNotifcation, setEmailNotifcation] = useState(
+    api?.HealthCheck?.Email || ""
+  );
+  const [alertEnabled, setAlertEnabled] = useState(
+    api?.HealthCheck?.setAlertEnabled || false
+  );
 
   // Create a ref for file input
   const fileInputRef = useRef<HTMLInputElement>(null);
   const apiCategoryListQuery = useApiCategoryList();
+
+  console.log("api =========", api);
 
   const {
     mutateAsync: updateApi,
@@ -105,11 +114,16 @@ export default function GenralApiInfoTab({ api }: any) {
         </CardHeader>
         <CardContent className="grid gap-4 text-sm">
           <div className="grid gap-2">
-            <div className="flex justify-start gap-2">
-              <label htmlFor="Name" style={{ width: "30%" }}>
+            <div className="grid  grid-cols-4  gap-2">
+              <label
+                htmlFor="Name"
+                style={{ width: "30%" }}
+                className="col-span-1"
+              >
                 Name
               </label>
               <Input
+                className="col-span-3"
                 id="Name"
                 type="text"
                 placeholder="Google Translator"
@@ -117,28 +131,40 @@ export default function GenralApiInfoTab({ api }: any) {
                 onChange={(event) => setName(event.target.value)}
               />
             </div>
-            <div className="flex justify-start gap-2">
+            <div className=" grid grid-cols-4  gap-2">
               {apiCategoryListQuery.isSuccess && (
                 <>
-                  <label htmlFor="Name" style={{ width: "30%" }}>
+                  <label
+                    className="col-span-1"
+                    htmlFor="Name"
+                    style={{ width: "30%" }}
+                  >
                     Api Category
                   </label>
-                  <ApiCategorySelect
-                    name={api.CategoryName}
-                    items={apiCategoryListQuery.data.data}
-                    defaultValue={api.CategoryID}
-                    selectedOption={api.CategoryName}
-                    handleSelectionChange={setCategoryId}
-                  />
+
+                  <div className="col-span-3">
+                    <ApiCategorySelect
+                      name={api.CategoryName}
+                      items={apiCategoryListQuery.data.data}
+                      defaultValue={api.CategoryID}
+                      selectedOption={api.CategoryName}
+                      handleSelectionChange={setCategoryId}
+                    />
+                  </div>
                 </>
               )}
             </div>
 
-            <div className="flex justify-start gap-2">
-              <label htmlFor="ApiUrl" style={{ width: "30%" }}>
+            <div className="grid grid-cols-4 gap-2">
+              <label
+                className="col-span-1"
+                htmlFor="ApiUrl"
+                style={{ width: "30%" }}
+              >
                 API URL
               </label>
               <Input
+                className="col-span-3"
                 id="ApiUrl"
                 type="text"
                 placeholder="https://api.example.com"
@@ -146,11 +172,16 @@ export default function GenralApiInfoTab({ api }: any) {
                 onChange={(event) => setApiUrl(event.target.value)}
               />
             </div>
-            <div className="flex justify-start gap-2">
-              <label htmlFor="Image" style={{ width: "30%" }}>
+            <div className="grid grid-cols-4 gap-2">
+              <label
+                className="col-span-1"
+                htmlFor="Image"
+                style={{ width: "30%" }}
+              >
                 Image
               </label>
               <input
+                className="col-span-3"
                 ref={fileInputRef}
                 id="Image"
                 type="file"
@@ -200,36 +231,47 @@ export default function GenralApiInfoTab({ api }: any) {
               />
             </div>
 
-            <div className="flex flex-col justify-start gap-2">
-              <h3>API Project is Private</h3>
-              <div className="flex items-center justify-start gap-2">
-                It’s not visible on the Hub and new users can’t access it I
-                confirm that I own or have rights to publish this API according
-                to the Hub Terms of Service
+            <div className="flex justify-start gap-2  border-2 border-green-700 ">
+              <div className="h-full w-32 bg-green-400/10 flex justify-center items-center ">
+                <img
+                  src="/icons/icon_global.png"
+                  alt="global icon"
+                  className="w-8 h-8 ml-2 "
+                />
               </div>
+              <div className="flex flex-col justify-start gap-2  p-6">
+                <h3>API Project is Private</h3>
+                <div className="flex items-center justify-start gap-2">
+                  It’s not visible on the Hub and new users can’t access it I
+                  confirm that I own or have rights to publish this API
+                  according to the Hub Terms of Service
+                </div>
 
-              {!Visibility ? (
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="somthing"
-                    checked={Visibility}
-                    onClick={handleSwitchChange}
-                  />
-                  <Label htmlFor="airplane-mode">Public Api</Label>
-                </div>
-              ) : (
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="somthing"
-                    checked={Visibility}
-                    onClick={handleSwitchChange}
-                  />
-                  <Label htmlFor="airplane-mode">Private Api</Label>
-                </div>
-              )}
+                {!Visibility ? (
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="somthing"
+                      checked={Visibility}
+                      onClick={handleSwitchChange}
+                    />
+                    <Label htmlFor="airplane-mode">Public Api</Label>
+                  </div>
+                ) : (
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="somthing"
+                      checked={Visibility}
+                      onClick={handleSwitchChange}
+                    />
+                    <Label htmlFor="airplane-mode">Private Api</Label>
+                  </div>
+                )}
+              </div>
             </div>
 
             <HealthForm
+              alertEnabled={alertEnabled}
+              setAlertEnabled={setAlertEnabled}
               apiID={api.ID}
               setEmailNotifcation={setEmailNotifcation}
               EmailNotifcation={EmailNotifcation}

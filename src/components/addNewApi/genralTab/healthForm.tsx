@@ -19,8 +19,11 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
 import { useHelthSendRequest } from "@/hooks/apis/api.Mutation";
+import { Switch } from "@/components/ui/switch";
 
 export default function HealthForm({
+  alertEnabled,
+  setAlertEnabled,
   apiID,
   EmailNotifcation,
   setEmailNotifcation,
@@ -68,7 +71,7 @@ export default function HealthForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>API Health Check</CardTitle>
+        <CardTitle className="text-base">API Health Check</CardTitle>
         <CardDescription>
           Test your API endpoints and receive email alerts if any issues are
           detected.
@@ -125,16 +128,26 @@ export default function HealthForm({
             )}
           </div>
 
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              placeholder="Enter your email address"
-              type="email"
-              value={EmailNotifcation}
-              onChange={(e) => setEmailNotifcation(e.target.value)}
+          <div className="flex justify-start items-center gap-8">
+            <Label htmlFor="email">Email Notification</Label>
+            <Switch
+              checked={alertEnabled}
+              onCheckedChange={() => setAlertEnabled(!alertEnabled)}
             />
           </div>
+
+          {alertEnabled && (
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                placeholder="Enter your email address"
+                type="email"
+                value={EmailNotifcation}
+                onChange={(e) => setEmailNotifcation(e.target.value)}
+              />
+            </div>
+          )}
           <Button type="submit">Run Health Check</Button>
         </form>
       </CardContent>
