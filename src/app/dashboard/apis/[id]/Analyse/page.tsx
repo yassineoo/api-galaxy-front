@@ -20,6 +20,9 @@ import { error } from "console";
 import PaginationManual from "@/components/dashboard/billing/paginationManual";
 import { timeFilter } from "@/utils/constants";
 import { SkeletonTable } from "@/components/admin/apis/apis/apiSkeleton";
+import { HealthCheckTable } from "@/components/dashboard/analyse/healthCheckTable/apiHealthCheak-table";
+import { HealthCheckcolumns } from "@/components/dashboard/analyse/healthCheckTable/healthCheakColumns";
+import { useApiHealthCheakList } from "@/hooks/HealthCheak/apiHealthCheak.queries";
 
 const AddApiPage = ({ params }: any) => {
   const { id } = params;
@@ -29,6 +32,7 @@ const AddApiPage = ({ params }: any) => {
   const [page, setPage] = useState(1);
 
   const logs = useApiLogsList({ apiId: id, page, limit: 5 });
+  const HealthCheck = useApiHealthCheakList({ apiId: id, page, limit: 5 });
   const [logsFilter, setLogsFilter] = useState("");
 
   const changeLogsFilter = (value: any) => {
@@ -83,6 +87,35 @@ const AddApiPage = ({ params }: any) => {
         <PaginationManual
           currentPage={page}
           totalPages={logs?.data?.meta?.totalPages}
+          onPageChange={setPage}
+        />
+      </div>
+
+      <div className="px-12 py-10 ">
+        {HealthCheck.isLoading && (
+          <SkeletonTable
+            name={"HealthCheck List"}
+            columns={HealthCheckcolumns}
+          />
+        )}
+        {HealthCheck.isSuccess && (
+          <>
+            <div className="flex justify-start gap-6 items-center"></div>
+            <HealthCheckTable
+              columns={HealthCheckcolumns}
+              data={HealthCheck.data?.logs.map((log: any) => {
+                return {
+                  ...log,
+                };
+              })}
+            />
+          </>
+        )}
+
+        {HealthCheck.isError && <p>HealthCheck ERROR</p>}
+        <PaginationManual
+          currentPage={page}
+          totalPages={HealthCheck?.data?.meta?.totalPages}
           onPageChange={setPage}
         />
       </div>

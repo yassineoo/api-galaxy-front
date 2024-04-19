@@ -88,6 +88,7 @@ export default function HealthForm({
                 onValueChange={(value) => {
                   setSelectedEndpoint(Number(value));
                 }}
+                defaultValue={selectedEndpoint.toString()}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select an endpoint" />
