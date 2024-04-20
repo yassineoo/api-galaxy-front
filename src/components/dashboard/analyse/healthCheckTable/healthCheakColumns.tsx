@@ -5,26 +5,27 @@ import { ColumnDef } from "@tanstack/react-table";
 
 export const HealthCheckcolumns: ColumnDef<any>[] = [
   {
-    accessorKey: "Timestamp", // Access the nested Name property
-    header: "Time",
-    cell: ({ row }) => row.getValue("Timestamp"), // Access the nested Name property
+    accessorKey: "CheckedAt", // Access the nested Name property
+    header: "CheckedAt",
+    cell: ({ row }) => row.getValue("CheckedAt"), // Access the nested Name property
   },
 
-  {
-    accessorKey: "EndpointName", // Access the nested Endpoint property
-    header: "Endpoint",
-    cell: ({ row }) => row.getValue("EndpointName"), // Access the nested Name property
-  },
-
-  {
-    accessorKey: "Methode",
-    header: "Method",
-    cell: ({ row }) => row.getValue("Methode"),
-  },
   {
     accessorKey: "Status",
     header: "Status",
-    cell: ({ row }) => row.getValue("Status"),
+    cell: ({ row }) => {
+      row.getValue("Status") == "Success" ? (
+        <div className="flex items-center gap-2">
+          <span className="h-3 w-3 rounded-full bg-green-500" />
+          <span className="text-green-500 font-medium">Success</span>
+        </div>
+      ) : (
+        <div className="flex items-center gap-2">
+          <span className="h-3 w-3 rounded-full bg-red-500" />
+          <span className="text-red-500 font-medium">Failed</span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "ResponseTime",
