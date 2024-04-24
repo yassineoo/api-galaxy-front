@@ -13,6 +13,7 @@ interface buttonType {
 export default function LeftBarButton(buttonProp: buttonType) {
   return (
     <div
+      className="my-1"
       key={buttonProp.index}
       onClick={() => {
         buttonProp.setFilter(buttonProp.index);

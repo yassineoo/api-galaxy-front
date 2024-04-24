@@ -8,7 +8,7 @@ interface cardType {
 
 export default function CollectionCard(card: cardType) {
   return (
-    <div className="bg-white p-2 md:p-4 flex-1 rounded     hover:scale-105 transition-transform duration-300 ease-in-out cursor-pointer ">
+    <div className="bg-white m-6 md:p-4 flex-1 rounded     hover:scale-105 transition-transform duration-300 ease-in-out cursor-pointer ">
       <CldImage
         className="m-auto mb-4"
         src={card.imagePath}

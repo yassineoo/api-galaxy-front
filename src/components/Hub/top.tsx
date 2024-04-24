@@ -75,7 +75,7 @@ export function CarouselSize({ data }: any) {
       opts={{
         align: "center",
       }}
-      className="w-full "
+      className="w-full  "
     >
       <CarouselContent>
         {data.map((item: any, index: number) => (

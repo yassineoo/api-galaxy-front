@@ -62,6 +62,9 @@ dependencies:
   '@tanstack/react-table':
     specifier: ^8.10.7
     version: 8.10.7(react-dom@18.2.0)(react@18.2.0)
+  '@types/react-stars':
+    specifier: ^2.2.4
+    version: 2.2.4
   '@types/react-syntax-highlighter':
     specifier: ^15.5.10
     version: 15.5.10
@@ -137,6 +140,9 @@ dependencies:
   react-select:
     specifier: ^5.8.0
     version: 5.8.0(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+  react-stars:
+    specifier: ^2.2.5
+    version: 2.2.5
   react-syntax-highlighter:
     specifier: ^15.5.0
     version: 15.5.0(react@18.2.0)
@@ -1892,6 +1898,12 @@ packages:
     dependencies:
       '@types/react': 18.2.37
     dev: true
+
+  /@types/react-stars@2.2.4:
+    resolution: {integrity: sha512-7wZNmH28ZeDSkesOmpvenLOLJ3StRdHzAbbs+ZkLEOx75Qe8vUWl+qCGnJHdKr+HCF/BSZPvw7LF96Fl+fTUSw==}
+    dependencies:
+      '@types/react': 18.2.37
+    dev: false
 
   /@types/react-syntax-highlighter@15.5.10:
     resolution: {integrity: sha512-Vf8nNkGHnjwK37b2wDs92zJSAWS2Mb57NcYHgajCNssHeTNEixvjINnXJkKdY0V0/eLrYkPP1xDKvNmYIr4HIg==}
@@ -4609,6 +4621,10 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-transition-group: 2.9.0(react-dom@18.2.0)(react@18.2.0)
+    dev: false
+
+  /react-stars@2.2.5:
+    resolution: {integrity: sha512-O//KS6Z9RZnUOU/r+3+wxCzNalVn/wEWIcbAQFRV3dw8WbV+ys/kgcpBPijqTiNpHGrcwZdtb/7wF/UVem20CQ==}
     dev: false
 
   /react-style-singleton@2.2.1(@types/react@18.2.37)(react@18.2.0):

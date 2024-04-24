@@ -32,7 +32,7 @@ const ProductCard: FC<CardType> = ({
       onClick={() => {
         router.push(`/api/${id}`);
       }}
-      className="bg-white cursor-pointer border flex flex-col justify-around gap-2 border-black text-black text-body 
+      className="hover:scale-105  bg-white cursor-pointer border flex flex-col justify-around gap-2 border-black text-black text-body 
         shadow-md rounded-lg p-2 md:px-6 lg:w-56"
     >
       <div className="flex flex-row items-start justify-between">

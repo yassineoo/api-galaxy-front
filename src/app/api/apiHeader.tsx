@@ -1,5 +1,5 @@
 import { CldImage } from "next-cloudinary";
-
+import ReactStars from "react-stars";
 // components/ServiceCard.js
 const ApiHeader = ({ Name, Description, ImagePath }: any) => {
   return (
@@ -9,8 +9,8 @@ const ApiHeader = ({ Name, Description, ImagePath }: any) => {
           src={ImagePath}
           alt="Selected Image"
           className="mt-2"
-          width={200}
-          height={200}
+          width={50}
+          height={50}
         />
         <div className="text-blue-900 font-semibold">
           <h2> {Name} </h2>
@@ -20,7 +20,13 @@ const ApiHeader = ({ Name, Description, ImagePath }: any) => {
       <div className="flex items-center gap-4 mr-3">
         <div className="mr-4">
           <div className="text-md font-semibold text-gray-600">Rating</div>
-          <div className="text-yellow-400 text-lg">★★★☆☆</div>{" "}
+          <ReactStars
+            count={5}
+            size={24}
+            color2={"#ffd700"}
+            value={3}
+            edit={false}
+          />
           {/* Use actual stars or an SVG here */}
         </div>
         <div className="mr-4">

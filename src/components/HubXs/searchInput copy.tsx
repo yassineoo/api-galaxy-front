@@ -1,28 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Input } from "../ui/input";
 import Image from "next/image";
-import { useSearchApiList } from "@/hooks/apis/api.queries";
-import { CldImage } from "next-cloudinary";
-import { useRouter } from "next/navigation";
 
 export default function SearchApiInput() {
   const [searchTerm, setSearchTerm] = useState("");
-
-  const searchResults = useSearchApiList({ search: searchTerm });
-  const [filteredSuggestions, setFilteredSuggestions] = useState<any[]>([]); // State to store filtered suggestions
+  const [suggestions, setSuggestions] = useState([
+    "Suggestion 1",
+    "Suggestion 2",
+    "Suggestion 3",
+  ]);
+  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]); // State to store filtered suggestions
   const [showSuggestions, setShowSuggestions] = useState(false); // State to control suggestion visibility
 
   const handleSearchChange = (event: any) => {
     setSearchTerm(event.target.value);
-    // console.log("searchTerm", searchTerm, suggestions, searchResults.data);
-
     // Filter the suggestions based on the search term
-    /* 
-    const filteredSuggestions = suggestions?.filter((suggestion) =>
-      suggestion?.toLowerCase()?.includes(event.target.value.toLowerCase())
+    const filteredSuggestions = suggestions.filter((suggestion) =>
+      suggestion.toLowerCase().includes(event.target.value.toLowerCase())
     );
-    */
-    // setFilteredSuggestions(filteredSuggestions);
+    setFilteredSuggestions(filteredSuggestions);
     setShowSuggestions(filteredSuggestions.length > 0); // Show suggestions only if there are results
   };
   const inputRef = useRef(null);
@@ -32,16 +28,6 @@ export default function SearchApiInput() {
       setShowSuggestions(false);
     }
   };
-  useEffect(() => {
-    console.log(
-      "searchResults.isSuccess",
-      searchResults.isSuccess,
-      searchResults.data
-    );
-    if (searchResults.isSuccess) {
-      setFilteredSuggestions(searchResults.data.data.slice(0, 5));
-    }
-  }, [searchResults.isSuccess]);
 
   useEffect(() => {
     // Bind the click outside listener when the component mounts
@@ -50,8 +36,6 @@ export default function SearchApiInput() {
     // Cleanup function to remove the listener when unmounting
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
-
-  const router = useRouter();
 
   return (
     <div className="relative w-full max-w-md" ref={inputRef}>
@@ -79,30 +63,20 @@ export default function SearchApiInput() {
       >
         {/* Your close icon */}X
       </button>
-
       {true && ( // Conditionally render suggestions only when showSuggestions is true
         <div
           className={`absolute z-10 w-full mt-2 bg-white rounded-lg shadow-lg dark:bg-gray-800 suggestion-list ${
             showSuggestions ? "opacity-100 visible" : "opacity-0 invisible"
-          } transition-opacity duration-700 ease-in-out`}
+          } transition-opacity duration-300 ease-in-out`}
         >
           {" "}
           <ul className="py-1 text-sm text-gray-700 dark:text-gray-400">
             {filteredSuggestions.map((suggestion, index) => (
               <li
                 key={index}
-                className=" cursor-pointer flex justify-start items-center  gap-8 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-black"
-                onClick={() => {
-                  router.push(`/api/${suggestion.ID}`);
-                }}
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
-                <CldImage
-                  src={suggestion.ImagePath}
-                  alt="Card Image"
-                  width={45}
-                  height={45}
-                ></CldImage>
-                {suggestion.Name}
+                {suggestion}
               </li>
             ))}
           </ul>

@@ -53,7 +53,7 @@ export default function ProductsHub() {
   return (
     <>
       <div className="bg-white py-10  text-black flex">
-        <div className="ml-4 flex flex-col gap-2">
+        <div className="ml-4 flex flex-col gap-3">
           {ApiCategoryList.isLoading &&
             new Array(5).fill(0).map((_, index) => (
               <div key={index}>
@@ -74,7 +74,7 @@ export default function ProductsHub() {
             Discover more APIs
           </h1>
 
-          <div className="flex flex-wrap gap-2 p-2">
+          <div className="flex flex-wrap gap-3 p-2">
             {apiList.isLoading &&
               new Array(5).fill(0).map((_, index) => (
                 <div key={index} className="">
@@ -114,8 +114,9 @@ const CategoryList = ({ categories, filter, setFilter }: any) => {
 
   return (
     <div>
+      <h4 className="font-bold mb-4 mt-2">Categories</h4>
       {categories?.data?.map((category: any, index: any) => (
-        <div key={index}>
+        <div key={index} className="">
           <LeftBarButton
             filter={filter}
             setFilter={setFilter}
