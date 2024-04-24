@@ -2,6 +2,8 @@
 import { useState, FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchApiList } from "@/hooks/apis/api.queries";
+import SearchApiInput from "./searchInput";
 
 interface Links {
   apiHub: string;
@@ -32,20 +34,8 @@ const Navbar: FC<Links> = ({
           />
         </div>
 
-        <div className="relative">
-          <input
-            className="border  rounded-md p-2 pl-10 w-10/12 md:w-80 text-sm md:text-base"
-            type="text"
-            placeholder="Search"
-          />
-          <Image
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 "
-            src="/assets/magnifying-glass.png"
-            alt="API GALAXY"
-            width={20}
-            height={20}
-            priority
-          />
+        <div>
+          <SearchApiInput />
         </div>
 
         <div
@@ -116,3 +106,9 @@ const Navbar: FC<Links> = ({
 };
 
 export default Navbar;
+
+const SearchInput = () => {
+  const [search, setSearch] = useState("");
+  const List = useSearchApiList(search);
+  return <p>j</p>;
+};

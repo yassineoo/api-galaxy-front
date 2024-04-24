@@ -17,6 +17,19 @@ export const useApiList = ({ page, limit, filter, search }: any) => {
     },
   });
 };
+export const useSearchApiList = ({ search }: any) => {
+  return useQuery({
+    queryKey: ["apiListSearch", search],
+    queryFn: async () => {
+      console.log("logged from api quety : ", search);
+
+      const response = await axios.get(`${ApiUrl}/apis/search`, {
+        params: { search }, // Add query parameters
+      });
+      return response.data;
+    },
+  });
+};
 
 export const useApiById = (apiId: string) => {
   return useQuery({
