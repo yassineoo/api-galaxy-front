@@ -5,12 +5,14 @@ import ProductCard from "../HubXs/productCard";
 import { useApiList } from "@/hooks/apis/api.queries";
 import { useEffect, useState } from "react";
 import PaginationManual from "../dashboard/billing/paginationManual";
+import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
+import { Search } from "../shared/search";
 
 const buttons = [
   {
     iconPath: "/assets/hub_assets/layers.svg",
     buttonText: "Sports",
-    option: true,
+    option: false,
   },
   {
     iconPath: "/assets/hub_assets/dollar-sign.svg",
@@ -36,31 +38,26 @@ const buttons = [
 
 export default function ProductsHub() {
   const [page, setPage] = useState(1);
+  const [fliter, setFilter] = useState("");
+  const [search, setSearch] = useState("");
 
   const apiList = useApiList({
     page,
     limit: 12,
+    fliter,
+    search,
   });
-
-  useEffect(() => {
-    console.log(apiList.error);
-  }, [apiList.isError]);
-  useEffect(() => {
-    console.log(apiList.data);
-  }, [apiList.data]);
+  const ApiCategoryList = useApiCategoryList();
 
   return (
     <>
       <div className="bg-white py-10  text-black flex">
         <div className="ml-4 flex flex-col gap-2">
-          {buttons.map((button, index) => (
-            <LeftBarButton
-              key={index}
-              iconPath={button.iconPath}
-              buttonText={button.buttonText}
-              option={button.option}
-            />
-          ))}
+          {ApiCategoryList.isLoading && <p>Loading ...</p>}
+          {ApiCategoryList.isError && <p>ApiCategoryList.Error</p>}
+          {ApiCategoryList.isSuccess && (
+            <CategoryList categories={ApiCategoryList?.data} />
+          )}
         </div>
         <div className="relative left-8">
           <h1 className="text-black text-title text-xl md:text-3xl font-bold">
@@ -96,3 +93,20 @@ export default function ProductsHub() {
     </>
   );
 }
+
+const CategoryList = ({ categories }: any) => {
+  console.log("categories", categories);
+
+  return (
+    <div>
+      {categories?.data?.map((category: any, index: any) => (
+        <LeftBarButton
+          key={index}
+          iconPath={buttons[index].iconPath}
+          buttonText={category.CategoryName}
+          option={buttons[index].option}
+        />
+      ))}
+    </div>
+  );
+};

@@ -125,31 +125,17 @@ const App = () => {
   return (
     <div>
       <h1>OpenAPI Extractor</h1>
-      <input type="file" accept=".yaml,.yml" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload File</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {apiData && (
-        <ul>
-          {mapToEndpointsDto().map((endpoint) => (
-            <li key={endpoint.Url + endpoint.Methode}>
-              <b>
-                {endpoint.Methode} {endpoint.Url}
-              </b>
-              {endpoint.Parameters.length > 0 && (
-                <ul>
-                  {endpoint.Parameters.map((param) => (
-                    <li key={param.Key}>
-                      - {param.Key} ({param.ValueType}):{" "}
-                      {param.Required ? "Required" : "Optional"} (
-                      {param.ParameterType})
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+
+      <div className="relative">
+        <input
+          type="text"
+          className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+        />
+
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <img className="w-5 h-5 text-gray-400" src="/icons/auth.svg" />
+        </div>
+      </div>
     </div>
   );
 };

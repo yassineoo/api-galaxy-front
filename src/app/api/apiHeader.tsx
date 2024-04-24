@@ -1,12 +1,16 @@
+import { CldImage } from "next-cloudinary";
+
 // components/ServiceCard.js
 const ApiHeader = ({ Name, Description, ImagePath }: any) => {
   return (
     <div className="w_full flex items-center justify-between  bg-white p-2 shadow-md">
       <div className="flex items-center ml-8 gap-2">
-        <img
-          src={ImagePath} // Replace with your logo path
-          alt="Google Translator Logo"
-          className="h-8 w-8 mr-2" // Adjust height and width as needed
+        <CldImage
+          src={ImagePath}
+          alt="Selected Image"
+          className="mt-2"
+          width={200}
+          height={200}
         />
         <div className="text-blue-900 font-semibold">
           <h2> {Name} </h2>

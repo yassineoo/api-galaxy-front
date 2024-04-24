@@ -46,7 +46,7 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`bg-black text-white  pb-4 dark:bg-sidebar overflow-scroll dark:text-white sticky top-0 transition-all duration-300 ${
+      className={`bg-black text-white  pb-4 dark:bg-sidebar  dark:text-white sticky top-0 transition-all duration-300 ${
         isMenuOpen ? "w-1/4" : "w-16 lg:w-[6%] transform" // Use transform class for animation
       } h-full min-h-screen`}
     >
@@ -161,26 +161,28 @@ const Menu = ({
       ))}
       {isMenuOpen && <Separator text="MY apis" />}
       {isMenuOpen && maApisList.isLoading && <div>Loading...</div>}
-      {isMenuOpen &&
-        maApisList.isSuccess &&
-        maApisList.data.data
-          .map((api: any) => {
-            return {
-              ID: api.ID,
-              name: api.Name,
-              active: api.ID == apiId,
-            };
-          })
-          .map((item: any) => (
-            <ApiMenuItem
-              key={item.ID}
-              item={item}
-              active={activeMenu == item.ID}
-              onClick={handleMenuClick}
-              isMenuOpen={isMenuOpen}
-              activeChildName={activeChildName}
-            />
-          ))}
+      <div className="flex flex-col items-start justify-start  h-64 overflow-scroll">
+        {isMenuOpen &&
+          maApisList.isSuccess &&
+          maApisList.data.data
+            .map((api: any) => {
+              return {
+                ID: api.ID,
+                name: api.Name,
+                active: api.ID == apiId,
+              };
+            })
+            .map((item: any) => (
+              <ApiMenuItem
+                key={item.ID}
+                item={item}
+                active={activeMenu == item.ID}
+                onClick={handleMenuClick}
+                isMenuOpen={isMenuOpen}
+                activeChildName={activeChildName}
+              />
+            ))}
+      </div>
     </div>
   );
 };
@@ -299,13 +301,13 @@ const ApiMenuItem = ({
         onClick={() => onClick(item.ID)}
       >
         <img
-          className={`w-5 ${isMenuOpen ? "ml-8" : "ml-4"} `}
+          className={`w-5 ${isMenuOpen ? "ml-4" : "ml-4"} `}
           src={item.icon}
         />
 
         {isMenuOpen && <div>{item.name}</div>}
         {item.children && isMenuOpen && (
-          <img className="ml-1 w-5" src="/icons/arrow.svg" />
+          <img className="ml-1 w-3" src="/icons/arrow.svg" />
         )}
       </Link>
 

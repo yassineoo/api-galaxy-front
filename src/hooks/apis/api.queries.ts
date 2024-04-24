@@ -4,14 +4,14 @@ import { ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const useApiList = ({ page, limit }: any) => {
+export const useApiList = ({ page, limit, filter, search }: any) => {
   return useQuery({
-    queryKey: ["apiList", page, limit],
+    queryKey: ["apiList", page, limit, filter, search],
     queryFn: async () => {
-      console.log("logged from api quety : ", page, limit);
+      console.log("logged from api quety : ", page, limit, filter, search);
 
       const response = await axios.get(`${ApiUrl}/apis`, {
-        params: { page, limit }, // Add query parameters
+        params: { page, limit, filter, search }, // Add query parameters
       });
       return response.data;
     },

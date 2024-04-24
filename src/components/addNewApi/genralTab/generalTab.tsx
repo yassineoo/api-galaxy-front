@@ -20,7 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProductCard from "@/components/HubXs/productCard";
 import HealthForm from "./healthForm";
-
+import { CldImage, CldUploadWidget } from "next-cloudinary";
 export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields
   const [name, setName] = useState(api.Name);
@@ -41,7 +41,7 @@ export default function GenralApiInfoTab({ api }: any) {
   );
 
   // Create a ref for file input
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLButtonElement>(null);
   const apiCategoryListQuery = useApiCategoryList();
 
   console.log("api =========", api);
@@ -155,44 +155,38 @@ export default function GenralApiInfoTab({ api }: any) {
               )}
             </div>
 
-            <div className="grid grid-cols-4 gap-2">
-              <label
-                className="col-span-1"
-                htmlFor="ApiUrl"
-                style={{ width: "30%" }}
-              >
-                API URL
-              </label>
-              <Input
-                className="col-span-3"
-                id="ApiUrl"
-                type="text"
-                placeholder="https://api.example.com"
-                value={apiUrl}
-                onChange={(event) => setApiUrl(event.target.value)}
-              />
-            </div>
-            <div className="grid grid-cols-4 gap-2">
-              <label
-                className="col-span-1"
-                htmlFor="Image"
-                style={{ width: "30%" }}
-              >
+            <div className="flex justify-start gap-2">
+              <label htmlFor="Image" style={{ width: "25%" }}>
                 Image
               </label>
-              <input
-                className="col-span-3"
-                ref={fileInputRef}
-                id="Image"
-                type="file"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-              />
+              <CldUploadWidget
+                // Add this line
+
+                uploadPreset="Pfe_Uplaod"
+                onSuccess={(results) => {
+                  console.log("Public ID", results?.info?.public_id);
+                  setImage(results?.info?.public_id);
+                }}
+              >
+                {({ open }) => {
+                  return (
+                    <Button
+                      ref={fileInputRef}
+                      className="hidden"
+                      onClick={() => open()}
+                    >
+                      Upload an Image
+                    </Button>
+                  );
+                }}
+              </CldUploadWidget>
               {image ? (
-                <img
+                <CldImage
                   src={image}
                   alt="Selected Image"
                   className="mt-2"
+                  width={200}
+                  height={200}
                   style={{ maxWidth: "200px", cursor: "pointer" }}
                   onClick={handleImagePlaceholderClick} // Add this line
                 />
@@ -206,6 +200,7 @@ export default function GenralApiInfoTab({ api }: any) {
                 />
               )}
             </div>
+
             <div className="flex justify-start gap-2">
               <label htmlFor="Keywords" style={{ width: "30%" }}>
                 Keywords
@@ -321,6 +316,7 @@ export default function GenralApiInfoTab({ api }: any) {
           </Button>
         </CardFooter>
       </Card>
+
       <ProductCard
         id={api.ID}
         averageRating={api.averageRating}

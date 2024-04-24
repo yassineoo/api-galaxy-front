@@ -2,6 +2,7 @@ import Image from "next/image";
 import { FC } from "react";
 
 import { useRouter } from "next/navigation";
+import { CldImage } from "next-cloudinary";
 
 interface CardType {
   averageRating?: number;
@@ -36,7 +37,7 @@ const ProductCard: FC<CardType> = ({
     >
       <div className="flex flex-row items-start justify-between">
         <div className="h-15 w-15">
-          <Image
+          <CldImage
             className="md:w-14 md:h-14"
             src={imagePath}
             alt="Card Image"

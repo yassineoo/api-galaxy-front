@@ -15,6 +15,7 @@ import { useCreateApi } from "@/hooks/apis/api.Mutation";
 import { toast } from "react-toastify";
 
 import { useRouter } from "next/navigation";
+import { CldImage, CldUploadWidget } from "next-cloudinary";
 
 export default function AddNewApiForm({ closeModal }: any) {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function AddNewApiForm({ closeModal }: any) {
   const [description, setDescription] = useState("");
 
   // Create a ref for file input
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLButtonElement>(null);
 
   const {
     mutateAsync: createApi,
@@ -37,10 +38,6 @@ export default function AddNewApiForm({ closeModal }: any) {
     isSuccess,
   } = useCreateApi();
 
-  const handleImageChange = (event: any) => {
-    const file = event.target.files[0];
-    setImage(file ? URL.createObjectURL(file) : ""); // Use a fake URL for testing
-  };
   // Handle form submission
   const handleSubmit = async () => {
     try {
@@ -119,18 +116,34 @@ export default function AddNewApiForm({ closeModal }: any) {
             <label htmlFor="Image" style={{ width: "25%" }}>
               Image
             </label>
-            <input
-              ref={fileInputRef}
-              id="Image"
-              type="file"
-              onChange={handleImageChange}
-              style={{ display: "none" }}
-            />
+            <CldUploadWidget
+              // Add this line
+
+              uploadPreset="Pfe_Uplaod"
+              onSuccess={(results) => {
+                console.log("Public ID", results?.info?.public_id);
+                setImage(results?.info?.public_id);
+              }}
+            >
+              {({ open }) => {
+                return (
+                  <Button
+                    ref={fileInputRef}
+                    className="hidden"
+                    onClick={() => open()}
+                  >
+                    Upload an Image
+                  </Button>
+                );
+              }}
+            </CldUploadWidget>
             {image ? (
-              <img
+              <CldImage
                 src={image}
                 alt="Selected Image"
                 className="mt-2"
+                width={200}
+                height={200}
                 style={{ maxWidth: "200px", cursor: "pointer" }}
                 onClick={handleImagePlaceholderClick} // Add this line
               />
