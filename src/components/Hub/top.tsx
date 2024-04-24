@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useCollectionList } from "@/hooks/Endpoint collections/EndpointsCollection.queries";
 import Image from "next/image";
 
 const items = [
@@ -48,20 +49,27 @@ const items = [
 ];
 
 export default function TopCollection() {
+  const ColllectionList = useCollectionList();
   return (
     <div className="bg-mainColor">
       <h1 className="text-white text-center text-2xl md:text-4xl font-bold py-6">
         Top Collection
       </h1>
 
-      <div className="flex p-4 gap-4 md:w-5/6 m-auto  flex-wrap">
-        <CarouselSize />
-      </div>
+      {ColllectionList.isLoading && <p>Loading .. </p>}
+      {ColllectionList.isError && <p>Error .. </p>}
+      {ColllectionList.isSuccess && (
+        <div className="flex p-4 gap-4 md:w-5/6 m-auto  flex-wrap">
+          <CarouselSize data={ColllectionList.data} />
+        </div>
+      )}
     </div>
   );
 }
 
-export function CarouselSize() {
+export function CarouselSize({ data }: any) {
+  console.log("data", data);
+
   return (
     <Carousel
       opts={{
@@ -70,12 +78,12 @@ export function CarouselSize() {
       className="w-full "
     >
       <CarouselContent>
-        {items.map((item, index) => (
+        {data.map((item: any, index: number) => (
           <CarouselItem className="basis-1/5" key={index}>
             <CollectionCard
               key={index}
               imagePath={item.ImagePath}
-              cardTitle={item.Title}
+              cardTitle={item.Name}
             />
           </CarouselItem>
         ))}

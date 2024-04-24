@@ -1,3 +1,4 @@
+import { CldImage } from "next-cloudinary";
 import Image from "next/image";
 
 interface cardType {
@@ -8,7 +9,7 @@ interface cardType {
 export default function CollectionCard(card: cardType) {
   return (
     <div className="bg-white p-2 md:p-4 flex-1 rounded     hover:scale-105 transition-transform duration-300 ease-in-out cursor-pointer ">
-      <Image
+      <CldImage
         className="m-auto mb-4"
         src={card.imagePath}
         alt="API GALAXY"
