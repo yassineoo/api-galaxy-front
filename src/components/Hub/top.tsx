@@ -71,7 +71,7 @@ export function CarouselSize() {
     >
       <CarouselContent>
         {items.map((item, index) => (
-          <CarouselItem className="basis-1/5">
+          <CarouselItem className="basis-1/5" key={index}>
             <CollectionCard
               key={index}
               imagePath={item.ImagePath}

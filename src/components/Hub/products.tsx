@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
-import LeftBarButton from "../HubXs/leftBarButton";
+import LeftBarButton, { LeftBarBarSkeleton } from "../HubXs/leftBarButton";
 import ProductCard from "../HubXs/productCard";
 import { useApiList } from "@/hooks/apis/api.queries";
 import { useEffect, useState } from "react";
 import PaginationManual from "../dashboard/billing/paginationManual";
 import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
 import { Search } from "../shared/search";
+import CardSkeleton from "../HubXs/skeleton";
 
 const buttons = [
   {
@@ -38,13 +39,13 @@ const buttons = [
 
 export default function ProductsHub() {
   const [page, setPage] = useState(1);
-  const [fliter, setFilter] = useState("");
+  const [filter, setFilter] = useState(0);
   const [search, setSearch] = useState("");
 
   const apiList = useApiList({
     page,
     limit: 12,
-    fliter,
+    filter,
     search,
   });
   const ApiCategoryList = useApiCategoryList();
@@ -53,10 +54,19 @@ export default function ProductsHub() {
     <>
       <div className="bg-white py-10  text-black flex">
         <div className="ml-4 flex flex-col gap-2">
-          {ApiCategoryList.isLoading && <p>Loading ...</p>}
+          {ApiCategoryList.isLoading &&
+            new Array(5).fill(0).map((_, index) => (
+              <div key={index}>
+                <LeftBarBarSkeleton />
+              </div>
+            ))}
           {ApiCategoryList.isError && <p>ApiCategoryList.Error</p>}
           {ApiCategoryList.isSuccess && (
-            <CategoryList categories={ApiCategoryList?.data} />
+            <CategoryList
+              setFilter={setFilter}
+              filter={filter}
+              categories={ApiCategoryList?.data}
+            />
           )}
         </div>
         <div className="relative left-8">
@@ -65,7 +75,12 @@ export default function ProductsHub() {
           </h1>
 
           <div className="flex flex-wrap gap-2 p-2">
-            {apiList.isLoading && <p>Loading ...</p>}
+            {apiList.isLoading &&
+              new Array(5).fill(0).map((_, index) => (
+                <div key={index} className="">
+                  <CardSkeleton />
+                </div>
+              ))}
             {apiList.isError && <p>apiList.Error</p>}
 
             {apiList.isSuccess &&
@@ -94,18 +109,23 @@ export default function ProductsHub() {
   );
 }
 
-const CategoryList = ({ categories }: any) => {
+const CategoryList = ({ categories, filter, setFilter }: any) => {
   console.log("categories", categories);
 
   return (
     <div>
       {categories?.data?.map((category: any, index: any) => (
-        <LeftBarButton
-          key={index}
-          iconPath={buttons[index].iconPath}
-          buttonText={category.CategoryName}
-          option={buttons[index].option}
-        />
+        <div key={index}>
+          <LeftBarButton
+            filter={filter}
+            setFilter={setFilter}
+            key={index}
+            iconPath={buttons[index].iconPath}
+            buttonText={category.CategoryName}
+            option={buttons[index].option}
+            index={category.ID}
+          />
+        </div>
       ))}
     </div>
   );
