@@ -7,12 +7,14 @@ import Footer from "@/components/Vetrine/footer";
 export default function HubPage() {
   return (
     <>
-      <div className="bg-white">
-        <Navbar />
-        <HeroHub />
-        <ProductsHub />
-        <TopCollection />
-        <Footer />
+      <div>
+        <div className="bg-white">
+          <Navbar />
+          <HeroHub />
+          <ProductsHub />
+          <TopCollection />
+          <Footer />
+        </div>
       </div>
     </>
   );

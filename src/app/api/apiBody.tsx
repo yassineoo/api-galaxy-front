@@ -21,6 +21,7 @@ import { useSendRequest } from "@/hooks/apis/api.Mutation";
 import CommentsContainer from "../test/discussion";
 import PrcingTabs from "@/components/addNewApi/monitazation/pricingCardsApi";
 import { ResizableDemo } from "./resizeable";
+import ReviewsTab from "../test/reviews";
 const codeString = `
 const axios = require('axios');
 
@@ -50,8 +51,8 @@ export function ApiTabs({ api }: any) {
 
   return (
     <>
-      <Tabs defaultValue="endpoints">
-        <TabsList className="grid  grid-cols-4 w-1/3  ml-8 my-2">
+      <Tabs defaultValue="discussion">
+        <TabsList className="grid  grid-cols-4 w-2/3  md:w-1/2  lg:w-1/3  ml-8 my-2">
           <TabsTrigger value="endpoints">Endpoints</TabsTrigger>
           <TabsTrigger value="about">About</TabsTrigger>
           <TabsTrigger value="discussion">Discussion</TabsTrigger>
@@ -105,7 +106,7 @@ export function ApiTabs({ api }: any) {
           value="discussion"
           className="  flex justify-center items-start"
         >
-          <CommentsContainer />
+          <ReviewsTab />
         </TabsContent>
         <TabsContent
           value="pricing"

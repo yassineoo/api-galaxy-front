@@ -22,6 +22,23 @@ export const useApiHealthCheakList = (data: any) => {
   });
 };
 
+export const useApiHealthCheakStats = (data: any) => {
+  return useQuery({
+    queryKey: ["ApiHealthCheckstats", data.apiIDs],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${ApiUrl}/apis-healthcheck/health-stats`,
+        {
+          params: { apiIds: data.apiIDs }, // Add query parameters
+        }
+      ); // Adjust the endpoint
+      // console.log("response from logs", response.data);
+      // console.log("type  response from logs", typeof response.data);
+
+      return response.data;
+    },
+  });
+};
 export const useApiLogsStatss = (endpointIds: number[]) => {
   return useQuery({
     queryKey: ["ApiLogsStats", endpointIds], // Adjust the queryKey

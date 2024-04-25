@@ -13,7 +13,7 @@ import { SelectButtonColor } from "@/components/dashboard/mainPage/filterGroupCo
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@/components/ui/tabs";
 import PathParameters from "./pathParmeter";
-import { FormContext } from "./parameterContext";
+import { FormContext, useFormContext } from "./parameterContext";
 import { Parameter, ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import StandardParameter from "./standardParameter";
 import { Button } from "@/components/ui/button";
@@ -21,12 +21,21 @@ import {
   useCreateApiEndpoints,
   useUpdateApiEndpoints,
 } from "@/hooks/Endpoints/Endpoints.Mutation";
-import { randomBytes } from "crypto";
 import {
   DefaultParameters,
   extractPathParameters,
 } from "@/utils/endpoints.functions";
 import { LoadingButton } from "@/components/shared/loadingButton";
+import { Select } from "@radix-ui/react-select";
+import {
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import CodeMirror from "@uiw/react-codemirror";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 
 const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
   const [parameters, setParameters] = useState<Parameter[]>(
@@ -150,6 +159,8 @@ const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
     updateEndpoint,
     createEndpoint,
   ]);
+
+  const [apiType, setApiType] = useState<string>("JSON"); // ["REST", "GraphQL"
   return (
     <Card className="w-full text-sm pb-32 relative border-none ">
       <CardContent>
@@ -258,9 +269,37 @@ const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
                 value="Body"
                 className="w-full  flex flex-col justify-center items-start px-8 "
               >
-                <StandardParameter
-                  parameterType={ParametersTypes.BodyParmater}
-                />
+                <Select
+                  defaultValue={"JSON"}
+                  onValueChange={(value) => {
+                    //   handleSelectionChange(value);
+                    setApiType(value);
+                  }}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder={"JSON"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {
+                      //  items?.map((item: any) => (
+                    }
+                    <SelectItem value={"GraphQL"}>
+                      GraphQL
+                      {/* Use the specific property here */}
+                    </SelectItem>
+                    <SelectItem value={"JSON"}>
+                      JSON
+                      {/* Use the specific property here */}
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                {apiType == "GraphQL" ? (
+                  <QueryInput />
+                ) : (
+                  <StandardParameter
+                    parameterType={ParametersTypes.BodyParmater}
+                  />
+                )}
               </TabsContent>
             </Tabs>
           </div>
@@ -281,3 +320,65 @@ const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
 };
 
 export default AddEndpointsForm;
+
+const QueryInput = () => {
+  const [code, setCode] = useState<string>(
+    `query ExampleQuery { 
+      company { 
+          ceo 
+       }
+      roadster { 
+          apoapsis_au
+        }
+       }`
+  );
+  const { standardParameters, setStandardParameters } = useFormContext();
+
+  const handleAddParameter = () => {
+    const oldParameter = standardParameters.find(
+      (p) =>
+        p.parameterType === ParametersTypes.BodyParmater &&
+        p.valueType == "GraphQL"
+    );
+    if (oldParameter) {
+      const newParameter = {
+        ...oldParameter,
+        exampleValue: code,
+      };
+      setStandardParameters([
+        ...standardParameters.filter(
+          (p) =>
+            p.parameterType !== ParametersTypes.BodyParmater ||
+            p.valueType !== "GraphQL"
+        ),
+        newParameter,
+      ]);
+      return;
+    }
+    const newParameter: Parameter = {
+      id: Math.floor(Math.random() * 100000 + 1),
+      key: "query",
+      exampleValue: code,
+      parameterType: ParametersTypes.BodyParmater,
+      valueType: "GraphQL",
+      required: false,
+    };
+    setStandardParameters([...standardParameters, newParameter]);
+  };
+  return (
+    <div className="w-full ">
+      <h4 className="font-semibold py-4">Example Query:</h4>
+      <CodeMirror
+        value={code}
+        onChange={(val) => {
+          setCode(val);
+        }}
+        minHeight="150px"
+        theme={vscodeDark}
+      />
+      <Button className="my-4" onClick={() => handleAddParameter()}>
+        Add Query
+      </Button>
+    </div>
+  );
+};

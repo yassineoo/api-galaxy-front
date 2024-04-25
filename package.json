@@ -30,6 +30,8 @@
     "@tanstack/react-table": "^8.10.7",
     "@types/react-stars": "^2.2.4",
     "@types/react-syntax-highlighter": "^15.5.10",
+    "@uiw/codemirror-theme-vscode": "^4.21.25",
+    "@uiw/react-codemirror": "^4.21.25",
     "axios": "^1.6.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

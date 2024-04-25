@@ -8,6 +8,7 @@ import PaginationManual from "../dashboard/billing/paginationManual";
 import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
 import { Search } from "../shared/search";
 import CardSkeleton from "../HubXs/skeleton";
+import { useApiHealthCheakStats } from "@/hooks/HealthCheak/apiHealthCheak.queries";
 
 const buttons = [
   {
@@ -41,6 +42,9 @@ export default function ProductsHub() {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState(0);
   const [search, setSearch] = useState("");
+  const [apis, setApis] = useState([]);
+
+  const [ids, setIds] = useState([1]);
 
   const apiList = useApiList({
     page,
@@ -49,6 +53,38 @@ export default function ProductsHub() {
     search,
   });
   const ApiCategoryList = useApiCategoryList();
+  const apiHealthStats = useApiHealthCheakStats({ apiIDs: ids });
+
+  useEffect(() => {
+    if (apiList.isSuccess) {
+      setApis(apiList.data.data.apis);
+      setIds(apiList.data.data.apis.map((api: any) => api.ID));
+    }
+  }, [apiList.isSuccess]);
+
+  useEffect(() => {
+    if (apiHealthStats.isSuccess) {
+      setApis((prev: any) => {
+        return prev.map((api: any) => {
+          const stat = apiHealthStats?.data?.find(
+            (health: any) => health.ApiID === api.ID
+          );
+          console.log("stat", stat, apiHealthStats?.data, api.ID);
+
+          return {
+            ...api,
+            Availability: stat?.Availability * 100,
+            Latency: stat?.AverageResponseTime,
+            Rating: 2,
+          };
+        });
+      });
+    }
+  }, [apiHealthStats.isSuccess]);
+
+  useEffect(() => {
+    console.log("apissss", apis);
+  }, [apis]);
 
   return (
     <>
@@ -73,6 +109,9 @@ export default function ProductsHub() {
           <h1 className="text-black text-title text-xl md:text-3xl font-bold">
             Discover more APIs
           </h1>
+          {apiHealthStats.isSuccess && <Testo data={apiHealthStats.data} />}
+          {apiHealthStats.isLoading && <p>Loading apiHealthStats.isLoading</p>}
+          {apiHealthStats.isError && <p>Eroro : apiHealthStats.Error</p>}
 
           <div className="flex flex-wrap gap-3 p-2">
             {apiList.isLoading &&
@@ -84,13 +123,13 @@ export default function ProductsHub() {
             {apiList.isError && <p>apiList.Error</p>}
 
             {apiList.isSuccess &&
-              apiList?.data?.data?.apis?.map((card: any, index: any) => (
+              apis?.map((card: any, index: any) => (
                 <ProductCard
                   id={card.ID}
                   key={index}
-                  averageRating={321}
-                  latency={12}
-                  availability={42}
+                  averageRating={3}
+                  latency={card.Latency}
+                  availability={card.Availability}
                   imagePath={card.ImagePath}
                   cardTitle={card.Name}
                   cardDescription={card.Description}
@@ -128,6 +167,16 @@ const CategoryList = ({ categories, filter, setFilter }: any) => {
           />
         </div>
       ))}
+    </div>
+  );
+};
+
+const Testo = ({ data }: any) => {
+  console.log("dataStat", data);
+
+  return (
+    <div>
+      <h1>Testo</h1>
     </div>
   );
 };

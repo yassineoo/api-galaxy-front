@@ -46,7 +46,7 @@ export default function AddNewApiForm({ closeModal }: any) {
         ProviderID: 123,
         ApiUrl: apiUrl,
         CategoryID: 1,
-        ImagePath: "https://images.apilist.fun/jsonplaceholder_api.pn", // Use the fake URL for testing
+        ImagePath: image, // Use the fake URL for testing
         Keywords: keywords,
         Description: description,
       };
