@@ -27,14 +27,16 @@ const Result = ({ codeString, language }: any) => {
         </TabsContent>
 
         <TabsContent value="Header">
-          <ReactJson
-            src={JSON.parse(JSON.stringify(codeString?.headers) || "{}")}
-            theme="ocean"
-            displayDataTypes={false}
-            name={false}
-            enableClipboard={false}
-            displayObjectSize={false}
-          />
+          <div className="overflow-scroll mb-16">
+            <ReactJson
+              src={JSON.parse(JSON.stringify(codeString?.headers) || "{}")}
+              theme="ocean"
+              displayDataTypes={false}
+              name={false}
+              enableClipboard={false}
+              displayObjectSize={false}
+            />
+          </div>
         </TabsContent>
       </Tabs>
     </div>

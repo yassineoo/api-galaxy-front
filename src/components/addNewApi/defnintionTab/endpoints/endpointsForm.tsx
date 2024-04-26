@@ -160,7 +160,13 @@ const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
     createEndpoint,
   ]);
 
-  const [apiType, setApiType] = useState<string>("JSON"); // ["REST", "GraphQL"
+  const isGraphql = endpoint?.Parameters?.find(
+    (p: any) => p.ValueType === "GraphQL"
+  );
+
+  const [apiType, setApiType] = useState<string>(
+    isGraphql ? "GraphQL" : "JSON"
+  ); // ["REST", "GraphQL"
   return (
     <Card className="w-full text-sm pb-32 relative border-none ">
       <CardContent>
@@ -270,7 +276,7 @@ const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
                 className="w-full  flex flex-col justify-center items-start px-8 "
               >
                 <Select
-                  defaultValue={"JSON"}
+                  defaultValue={apiType}
                   onValueChange={(value) => {
                     //   handleSelectionChange(value);
                     setApiType(value);
@@ -294,7 +300,7 @@ const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
                   </SelectContent>
                 </Select>
                 {apiType == "GraphQL" ? (
-                  <QueryInput />
+                  <QueryInput valueCode={isGraphql?.ExampleValue} />
                 ) : (
                   <StandardParameter
                     parameterType={ParametersTypes.BodyParmater}
@@ -321,22 +327,13 @@ const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
 
 export default AddEndpointsForm;
 
-const QueryInput = () => {
-  const [code, setCode] = useState<string>(
-    `query ExampleQuery { 
-      company { 
-          ceo 
-       }
-      roadster { 
-          apoapsis_au
-        }
-       }`
-  );
+const QueryInput = ({ valueCode }: any) => {
+  const [code, setCode] = useState<string>(valueCode);
   const { standardParameters, setStandardParameters } = useFormContext();
 
   const handleAddParameter = () => {
     const oldParameter = standardParameters.find(
-      (p) =>
+      (p: any) =>
         p.parameterType === ParametersTypes.BodyParmater &&
         p.valueType == "GraphQL"
     );
@@ -347,7 +344,7 @@ const QueryInput = () => {
       };
       setStandardParameters([
         ...standardParameters.filter(
-          (p) =>
+          (p: any) =>
             p.parameterType !== ParametersTypes.BodyParmater ||
             p.valueType !== "GraphQL"
         ),

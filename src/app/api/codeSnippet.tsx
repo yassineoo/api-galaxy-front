@@ -144,12 +144,15 @@ const CodeSnippet = ({
         // Map body parameters
         dynamicBody[param.Key] = param.ExampleValue || "";
       });
-
       setSnippet(
         fun(
-          apiUrl + "/" + selectedEndpoint.Url ||
-            "https://api.example.com/users",
-          selectedEndpoint.Methode || "post",
+          apiUrl +
+            (apiUrl.charAt(apiUrl.length - 1) === "/" ||
+            selectedEndpoint.Url.charAt(0) === "/"
+              ? ""
+              : "/") +
+            selectedEndpoint.Url || "",
+          selectedEndpoint.Methode || "",
           dynamicHeaders,
           dynamicBody,
           dynamicQuery
@@ -194,15 +197,17 @@ const CodeSnippet = ({
           </svg>
         </Button>
       </div>
-      <SyntaxHighlighter
-        className="w-full flex-1  p-12 overflow-scroll"
-        language={language}
-        style={atomDark}
-        wrapLines={true}
-        showLineNumbers={true}
-      >
-        {snippet}
-      </SyntaxHighlighter>
+      <div className="overflow-scroll mb-16">
+        <SyntaxHighlighter
+          className="w-full flex-1  p-12 "
+          language={language}
+          style={atomDark}
+          wrapLines={true}
+          showLineNumbers={true}
+        >
+          {snippet}
+        </SyntaxHighlighter>
+      </div>
     </div>
   );
 };
