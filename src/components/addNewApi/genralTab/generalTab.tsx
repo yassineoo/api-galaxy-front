@@ -115,11 +115,7 @@ export default function GenralApiInfoTab({ api }: any) {
         <CardContent className="grid gap-4 text-sm">
           <div className="grid gap-2">
             <div className="grid  grid-cols-4  gap-2">
-              <label
-                htmlFor="Name"
-                style={{ width: "30%" }}
-                className="col-span-1"
-              >
+              <label htmlFor="Name" className="col-span-1">
                 Name
               </label>
               <Input
@@ -129,6 +125,19 @@ export default function GenralApiInfoTab({ api }: any) {
                 placeholder="Google Translator"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
+              />
+            </div>
+            <div className="grid  grid-cols-4  gap-2">
+              <label htmlFor="Name" className="col-span-1">
+                Api Url
+              </label>
+              <Input
+                className="col-span-3"
+                id="Name"
+                type="text"
+                placeholder="https://api.google.com"
+                value={apiUrl}
+                onChange={(event) => setApiUrl(event.target.value)}
               />
             </div>
             <div className=" grid grid-cols-4  gap-2">

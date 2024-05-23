@@ -2,6 +2,7 @@
 import { useState, FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Links {
   services: string;
@@ -31,11 +32,16 @@ const handleClick = (
 
 const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const router = useRouter();
   return (
     <div className=" bg-mainColor flex justify-between items-top p-1 pl-6">
       <nav className="flex items-top p-2 justify-start flex-wrap">
-        <div className="flex items-center flex-shrink-0 text-white mr-6">
+        <div
+          className="flex items-center flex-shrink-0 text-white mr-6 cursor-pointer"
+          onClick={() => {
+            router.push(`/hub`);
+          }}
+        >
           {/* SVG Logo */}
           <Image
             src="/logos/logo-blue-bg.svg"

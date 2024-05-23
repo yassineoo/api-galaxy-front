@@ -137,7 +137,7 @@ export function CodeResult({
     (endpoint: any) => endpoint.ID == selectedNodeId
   );
   return (
-    <Tabs defaultValue={defaultValue} className=" h-[760px] ">
+    <Tabs defaultValue={defaultValue} className=" h-screen ">
       <TabsList className="my-2">
         <TabsTrigger value="CodeSnippet">CodeSnippet</TabsTrigger>
         <TabsTrigger value="Result" className="relative">

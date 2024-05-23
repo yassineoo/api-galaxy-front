@@ -109,7 +109,6 @@ export default function ProductsHub() {
           <h1 className="text-black text-title text-xl md:text-3xl font-bold">
             Discover more APIs
           </h1>
-          {apiHealthStats.isSuccess && <Testo data={apiHealthStats.data} />}
           {apiHealthStats.isLoading && <p>Loading apiHealthStats.isLoading</p>}
           {apiHealthStats.isError && <p>Eroro : apiHealthStats.Error</p>}
 
@@ -120,7 +119,7 @@ export default function ProductsHub() {
                   <CardSkeleton />
                 </div>
               ))}
-            {apiList.isError && <p>apiList.Error</p>}
+            {apiList.isError && <p>apiList.Error </p>}
 
             {apiList.isSuccess &&
               apis?.map((card: any, index: any) => (
@@ -167,16 +166,6 @@ const CategoryList = ({ categories, filter, setFilter }: any) => {
           />
         </div>
       ))}
-    </div>
-  );
-};
-
-const Testo = ({ data }: any) => {
-  console.log("dataStat", data);
-
-  return (
-    <div>
-      <h1>Testo</h1>
     </div>
   );
 };

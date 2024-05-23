@@ -130,7 +130,7 @@ const ParamterControler = ({
   };
 
   return (
-    <div className="flex flex-col  mt-[56px]  border border-t  h-[595px]">
+    <div className="flex flex-col   border border-t h-full  ">
       <ParamsHeader
         selectedEndpoint={selectedEndpoint}
         isLoading={isLoading}
@@ -199,7 +199,7 @@ const QueryInput = ({ parameters, state, setState }: any) => {
           // setState(`${val.toString().replace(/\n/g, "")}`);
           setState((prevState: any) => ({
             ...prevState,
-            ["query"]: val.toString().replace(/\n/g, ""),
+            ["query"]: val,
           }));
         }}
         minHeight="20px"
@@ -325,12 +325,16 @@ const ParamsHeader = ({
   handleSubmit,
 }: any) => {
   return (
-    <div className="w-full py-1  px-2 flex justify-between items-center bg-gray-100 dark:bg-slate-900 dark:text-white">
-      <h2 className="text-lg  font-semibold">{`${selectedEndpoint?.Methode}${
-        selectedEndpoint?.Url?.charAt(0) === "/"
-          ? selectedEndpoint?.Url
-          : "/" + selectedEndpoint?.Url
-      }`}</h2>
+    <div className="w-full py-1  h-[60px]  px-2 flex justify-between items-center  dark:bg-slate-900 dark:text-white">
+      <h2 className="text-lg  font-semibold">
+        {selectedEndpoint?.Methode
+          ? `${selectedEndpoint?.Methode}${
+              selectedEndpoint?.Url?.charAt(0) === "/"
+                ? selectedEndpoint?.Url
+                : "/" + selectedEndpoint?.Url
+            }`
+          : "Select an endpoint from the graph"}
+      </h2>
       <div className="flex gap-2">
         <Button className="" onClick={handleReset}>
           Reset

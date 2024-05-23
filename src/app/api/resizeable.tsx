@@ -8,7 +8,7 @@ export function ResizableDemo({ componentOne, componentTwo }: any) {
   return (
     <ResizablePanelGroup
       direction="horizontal"
-      className="w-full rounded-lg border"
+      className="w-full rounded-lg border h-screen overflow-hidden"
     >
       <ResizablePanel defaultSize={50}>{componentOne}</ResizablePanel>
       <ResizableHandle />

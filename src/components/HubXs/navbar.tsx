@@ -13,10 +13,10 @@ interface Links {
 }
 
 const Navbar: FC<Links> = ({
-  apiHub = "s",
-  docs = "s",
+  apiHub = "hub",
+  docs = "docs",
   ListApi = "s",
-  myApis = "s",
+  myApis = "dashboard",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
