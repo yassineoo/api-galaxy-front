@@ -12,9 +12,6 @@ const AddNewEndpointModal = ({
   edit,
 }: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  console.log("endpoint00000000000@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-  console.log(endpoint);
-  console.log("endpoint00000000000@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
   useEffect(() => {
     Modal.setAppElement("body"); // Set the app element to the body element
