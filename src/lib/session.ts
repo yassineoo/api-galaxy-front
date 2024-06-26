@@ -55,6 +55,7 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user }) {
+      console.log("hello",user)
       if (user && user.id) {
         const userLoggedIn = await SignToken(user?.id as number);
         token.userLogged = userLoggedIn;
@@ -69,6 +70,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }): Promise<any> {
+      console.log("hello from session")
       if (token?.userLogged && token?.email) {
         const existUser = await getUserSession(token.email!);
         session.user.id = existUser.id as number;
