@@ -33,9 +33,11 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req): Promise<any> {
         const isRegister = Boolean(credentials?.username);
         const data = {
-          Email: credentials?.email,
-          password: credentials?.password,
+          email: credentials?.email || "",
+          password: credentials?.password || "",
+          Username: credentials?.username,
         } as UserData;
+
         if (isRegister) {
           data.Username = credentials?.username;
         }
@@ -55,6 +57,8 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user }) {
+      console.log("jwt", token, user);
+
       if (user && user.id) {
         const userLoggedIn = await SignToken(user?.id as number);
         token.userLogged = userLoggedIn;
@@ -69,6 +73,8 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }): Promise<any> {
+      console.log("session", session, token);
+
       if (token?.userLogged && token?.email) {
         const existUser = await getUserSession(token.email!);
         session.user.id = existUser.id as number;
@@ -80,13 +86,15 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
 
-    async signIn({ user }): Promise<any> {
+    async signIn({ user, account }): Promise<any> {
       try {
         const data = {
           Email: user?.email,
           Username: user?.name,
+          Image: user.image,
         };
         let res;
+
         if (typeof user == "object" && !user?.csrfToken && !user.id) {
           res = await oauthUser(data);
 

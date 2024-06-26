@@ -1,45 +1,49 @@
-import axios from 'axios';
-import { getSession, signIn } from 'next-auth/react';
-import { Inputs, resetPasswordInputs } from '@/types/common.types';
-import { UseFormSetError } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
+import axios from "axios";
+import { getSession, signIn } from "next-auth/react";
+import { Inputs, resetPasswordInputs } from "@/types/common.types";
+import { UseFormSetError } from "react-hook-form";
+import { Dispatch, SetStateAction } from "react";
 
 export const placeholderApi = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: "http://localhost:5000",
 });
 
 export type UserData = {
-  Email: string;
+  email: string;
   password: string;
   Username?: string;
 };
+class ApiError extends Error {
+  statusCode: number;
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.statusCode = Number(statusCode) || 500;
+  }
+}
 
 export const authUser = async (data: UserData, isRegister: boolean) => {
   try {
     const res = await placeholderApi.post(
-      `${isRegister ? '/register' : '/login'}`,
+      `${isRegister ? "/register" : "/login"}`,
       JSON.stringify(data),
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
-    if (res.status == 200) {
-      return res.data;
-    } else {
-      return res.data.message;
-    }
+
+    return res.data;
   } catch (error: any) {
-    return false;
+    throw error;
   }
 };
 
 export const oauthUser = async (data: any) => {
   try {
-    const res = await placeholderApi.post('/oauth', JSON.stringify(data), {
+    const res = await placeholderApi.post("/oauth", JSON.stringify(data), {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -54,11 +58,11 @@ export const oauthUser = async (data: any) => {
 export const getUserSession = async (email: string) => {
   try {
     const res = await placeholderApi.post(
-      '/session',
+      "/session",
       JSON.stringify({ email }),
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -72,24 +76,21 @@ export const getUserSession = async (email: string) => {
 
 export const verifyEmail = async (data: any, type: string) => {
   try {
-    const session = await getSession()
-    if (type == 'confirmRegistration') {
-      const res = await placeholderApi.get(`/verifyEmail/${data}`, {
-        headers: {
-          Authorization: `Bearer ${session?.token}`,
-        },
-      });
+    if (type == "confirmRegistration") {
+      const session = await getSession();
+
+      const res = await placeholderApi.post(`/verifyEmail/${data}`, {});
       if (res.status == 200) {
         return true;
       }
       return false;
     } else {
       const res = await placeholderApi.post(
-        '/verifyEmail',
+        "/verifyEmail",
         JSON.stringify({ email: data.email }),
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       );
@@ -108,18 +109,18 @@ export const resetPassword = async (
   try {
     const session = await getSession();
     const res = await placeholderApi.patch(
-      '/resetPassword',
+      "/resetPassword",
       JSON.stringify({ ...data }),
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${session?.token}`,
         },
       }
     );
     return res;
   } catch (error: any) {
-    setError('errorMessage', {
+    setError("errorMessage", {
       message: error?.message,
     });
   }
@@ -131,19 +132,19 @@ export const authenticate = async (
   setSuccess: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
-    const res = await signIn('credentials', {
+    const res = await signIn("credentials", {
       ...data,
       redirect: false,
     });
     if (res?.ok) {
       setSuccess(true);
     } else {
-      setError('errorMessage', {
+      setError("errorMessage", {
         message: res?.error!,
       });
     }
   } catch (error: any) {
-    setError('errorMessage', {
+    setError("errorMessage", {
       message: error?.message,
     });
   }
