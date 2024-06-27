@@ -5,6 +5,7 @@ import React from "react";
 import { Label } from "recharts";
 import { DemoPaymentMethod } from "./paymentForm";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { BreadcrumbWithCustomSeparator } from "../breadcrumb";
 
 const BillingForm = () => {
   const [page, setPage] = React.useState("paymentMethode");
@@ -12,6 +13,7 @@ const BillingForm = () => {
   return (
     <div className="flex  w-full flex-col  items-center  justify-start  h-screen min-h-screen bg-gray-100 dark:bg-transparent">
       <div className=" w-full ml-4 mt-4">
+        <BreadcrumbWithCustomSeparator />
         <h1 className="text-xl font-bold">Billing Information</h1>
       </div>
       <div

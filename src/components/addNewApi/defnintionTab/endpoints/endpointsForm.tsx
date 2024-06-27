@@ -1,12 +1,5 @@
 import { use, useCallback, useRef, useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../../../ui/card";
+import { Card, CardContent, CardFooter } from "../../../ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { SelectButtonColor } from "@/components/dashboard/mainPage/filterGroupColor";
@@ -247,7 +240,13 @@ const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
                 </TabsTrigger>
                 <TabsTrigger value="Query">Query</TabsTrigger>
                 <TabsTrigger value="Headers">Headers</TabsTrigger>
-                <TabsTrigger value="Body">Body</TabsTrigger>
+                {endpointMethod == "GET" ? (
+                  <TabsTrigger value="Body" disabled>
+                    Body
+                  </TabsTrigger>
+                ) : (
+                  <TabsTrigger value="Body">Body</TabsTrigger>
+                )}
               </TabsList>
               <TabsContent
                 value="Path-Parematers"

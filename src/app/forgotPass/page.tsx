@@ -1,10 +1,22 @@
 "use client";
 import { verifyEmail } from "@/actions/auth";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-const page = () => {
+import { Label } from "recharts";
+
+const ForgotPasswordPage = () => {
   const { push } = useRouter();
   const [email, setEmail] = useState("");
   const {
@@ -23,50 +35,47 @@ const page = () => {
       if (res) push("/confirmMail");
     });
   };
+
   return (
-    <>
-      <div className="container w-full mx-auto bg-white min-h-screen">
-        {/* verify my password */}
-        <form
-          onSubmit={handleSubmit(onsubmit)}
-          className="absolute top-[6rem] right-[50%] translate-x-[50%] shadow-xl rounded-3xl flex flex-col items-center max-w-sm w-full p-4"
-        >
-          {/* your logo */}
-          <div className="border-2 border-black border-dashed h-20 w-20 rounded-full" />
-          <h3 className="font-Lora font-bold mt-4 mb-8 text-black">
-            Forgot your password ?
-          </h3>
-          <p className="text-center text-black">
-            Enter your e-mail and follow the instructions to reset your
-            password.
-          </p>
-          <input
-            type="email"
-            value={email}
-            {...register("email", {
-              required: "email is required",
-            })}
-            onChange={(e) => setEmail(e.target.value)}
-            className={`my-4 w-5/6 px-4 py-2 rounded-md outline-none border border-slate-500`}
-            placeholder="email"
-          />
-          <span className="text-red-500">{errors.email?.message}</span>
-
-          <button
-            type="submit"
-            className="my-4 py-3 bg-goldColor w-5/6 text-black mb-5 font-semibold rounded-md"
-          >
-            Continuer
-          </button>
-
-          {/* retour */}
-          <Link href={"/login"} className="underline text-seconadryColor mb-5">
-            retour
+    <div className="flex h-screen w-full items-center justify-center bg-gray-100 dark:bg-gray-950">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold">Forgot Password</CardTitle>
+          <CardDescription>
+            Enter your email address below and we'll send you instructions to
+            reset your password.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="email">Email</label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                value={email}
+                {...register("email", {
+                  required: "email is required",
+                })}
+                onChange={(e) => setEmail(e.target.value)}
+                className="p-2 my-2 outline-none rounded-lg w-full border border-slate-500"
+              />
+              <span className="text-red-500">{errors.email?.message}</span>
+            </div>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Loading..." : "Reset Password"}
+            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="text-center text-sm">
+          <Link href="/login" className="underline" prefetch={false}>
+            Back to login
           </Link>
-        </form>
-      </div>
-    </>
+        </CardFooter>
+      </Card>
+    </div>
   );
 };
 
-export default page;
+export default ForgotPasswordPage;

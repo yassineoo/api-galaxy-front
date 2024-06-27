@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Provider } from "./provider";
+import { SessionProvider, getSession } from "next-auth/react";
+import Providers from "./Providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -11,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {
@@ -25,7 +27,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <Providers>
             {children}
+            </Providers>
           </ThemeProvider>
         </Provider>
       </body>

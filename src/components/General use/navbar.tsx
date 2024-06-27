@@ -3,6 +3,7 @@ import { useState, FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface Links {
   services: string;
@@ -33,6 +34,8 @@ const handleClick = (
 const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const {data : session} = useSession()
+  console.log(session)
   return (
     <div className=" bg-mainColor flex justify-between items-top p-1 pl-6">
       <nav className="flex items-top p-2 justify-start flex-wrap">
@@ -97,7 +100,7 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
           Login
         </Link>
         <Link
-          href="/signup"
+          href="/register"
           className="px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
         >
           Sign Up

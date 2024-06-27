@@ -6,20 +6,18 @@ declare module "next-auth" {
    */
   
   interface Session {
-    user: {
        name: string;
        email: string;
        image: string;
       // Custom fields
-       id:number
+       userId:number
        verified:boolean
-    };
     token:string
   }
   interface User {
     email:string 
     username:string
-    id:number
+    userId:number
     image:string 
     token:string 
     expiry:string

@@ -2,14 +2,13 @@
 
 import type { AppProps } from "next/app";
 import "./globals.css";
-
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps}: AppProps) {
   const client = new QueryClient();
   // const [client] = useState(new QueryClient());
 
@@ -23,3 +22,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default MyApp;
+
+
+

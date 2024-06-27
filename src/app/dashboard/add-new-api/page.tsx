@@ -14,7 +14,12 @@ const AddApiPage = ({ params }: any) => {
   return (
     <div className="w-full h-full overflow-scroll">
       <Header />
-      <div className="flex w-full h-full justify-center items-center">
+      <div className="flex w-full h-full justify-center items-center flex-col pt-8 gap-8">
+        <img
+          src="/images/create-api.jpg"
+          alt="create api"
+          className="w-96 h-80 "
+        />
         <AddNewApiModal />
       </div>
     </div>

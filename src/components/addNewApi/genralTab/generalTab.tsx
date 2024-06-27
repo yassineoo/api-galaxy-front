@@ -21,6 +21,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ProductCard from "@/components/HubXs/productCard";
 import HealthForm from "./healthForm";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
+import { useRouter } from "next/navigation";
 export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields
   const [name, setName] = useState(api.Name);
@@ -101,6 +102,7 @@ export default function GenralApiInfoTab({ api }: any) {
     setVisibility((prev: any) => !prev);
   };
 
+  const router = useRouter();
   return (
     <div className="flex justify-start items-start gap-4 w-full ">
       <ToastContainer className="z-40" />
@@ -325,16 +327,24 @@ export default function GenralApiInfoTab({ api }: any) {
           </Button>
         </CardFooter>
       </Card>
-
-      <ProductCard
-        id={api.ID}
-        averageRating={api.averageRating}
-        latency={api.latency}
-        availability={api.availability}
-        imagePath={image}
-        cardTitle={name}
-        cardDescription={description}
-      />
+      <div className="flex flex-col justify-start items-center gap-8">
+        <ProductCard
+          id={api.ID}
+          averageRating={api.averageRating}
+          latency={api.latency}
+          availability={api.availability}
+          imagePath={image}
+          cardTitle={name}
+          cardDescription={description}
+        />
+        <Button
+          onClick={() => {
+            window.open(`/api/${api.ID}`, "_blank");
+          }}
+        >
+          View in the Hub
+        </Button>
+      </div>
     </div>
   );
 }
