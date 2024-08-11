@@ -5,7 +5,7 @@ import { UseFormSetError } from "react-hook-form";
 import { Dispatch, SetStateAction } from "react";
 
 export const placeholderApi = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: " http://localhost:5000/auth",
 });
 
 export type UserData = {
@@ -32,10 +32,10 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
         },
       }
     );
-    if(res.data?.message){
-      throw new Error(res.data.message)
-    }else{
-      return res.data
+    if (res.data?.message) {
+      throw new Error(res.data.message);
+    } else {
+      return res.data;
     }
   } catch (error: any) {
     throw error;
@@ -49,7 +49,7 @@ export const oauthUser = async (data: any) => {
         "Content-Type": "application/json",
       },
     });
-    return res
+    return res;
   } catch (error) {
     return false;
   }
@@ -132,19 +132,19 @@ export const authenticate = async (
   setSuccess: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
-    const res = await signIn('credentials', {
+    const res = await signIn("credentials", {
       ...data,
       redirect: false,
     });
     if (res?.ok) {
       setSuccess(true);
     } else {
-      setError('errorMessage', {
+      setError("errorMessage", {
         message: res?.error!,
       });
     }
   } catch (error: any) {
-    setError('errorMessage', {
+    setError("errorMessage", {
       message: error?.message,
     });
   }

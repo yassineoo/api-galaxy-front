@@ -55,10 +55,6 @@ export default function GenralApiInfoTab({ api }: any) {
     isSuccess,
   } = useUpdateApi();
 
-  const handleImageChange = (event: any) => {
-    const file = event.target.files[0];
-    setImage(file ? URL.createObjectURL(file) : ""); // Use a fake URL for testing
-  };
   useEffect(() => {
     if (isError) {
       toast.error("Error saving the modification try agian !");

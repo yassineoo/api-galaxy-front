@@ -10,15 +10,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { useSession } from "next-auth/react";
 
 export function UserNav() {
+  const { data: session, status } = useSession();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="/images/login_bg_gateway.jpg" alt="@shadcn" />
-            <AvatarFallback>avatar</AvatarFallback>
+            <AvatarImage src={session?.user?.image || ""} alt="User Avatar" />
+            <AvatarFallback>
+              {session?.user?.name || "User Avatar"}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

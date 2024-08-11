@@ -1,9 +1,10 @@
 "use client";
+
 import { useState, FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 interface Links {
   services: string;
@@ -34,10 +35,11 @@ const handleClick = (
 const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const {data : session} = useSession()
-  console.log(session)
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated";
+
   return (
-    <div className=" bg-mainColor flex justify-between items-top p-1 pl-6">
+    <div className="bg-mainColor flex justify-between items-top p-1 pl-6">
       <nav className="flex items-top p-2 justify-start flex-wrap">
         <div
           className="flex items-center flex-shrink-0 text-white mr-6 cursor-pointer"
@@ -96,19 +98,48 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
         </div>
       </nav>
       <div className="space-x-2 pt-2 flex justify-start items-baseline font-body pr-4 text-xs sm:text-base">
-        <Link href="/login" className="px-3 py-2 rounded hover:bg-deepBlue">
-          Login
-        </Link>
-        <Link
-          href="/register"
-          className="px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
-        >
-          Sign Up
-        </Link>
+        {isAuthenticated ? (
+          <>
+            <div className="flex items-center space-x-2">
+              {session?.user?.image && (
+                <Image
+                  src={session.user.image}
+                  //src="/logos/logo-blue-bg.svg"
+                  alt={session.user.name || "User Avatar"}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              )}
+              <span className="text-white">{session?.user?.name}</span>
+              <button
+                onClick={() => signOut()}
+                className="px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
+              >
+                Sign Out
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <Link
+              href="/login"
+              className="px-3 py-2 rounded hover:bg-deepBlue text-white"
+            >
+              Login
+            </Link>
+            <Link
+              href="/register"
+              className="px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
+            >
+              Sign Up
+            </Link>
+          </>
+        )}
         <div className="lg:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className=" px-3 py-2 hover:text-white hover:border-white relative top-1"
+            className="px-3 py-2 hover:text-white hover:border-white relative top-1"
           >
             <svg
               className="fill-current h-5 w-4"

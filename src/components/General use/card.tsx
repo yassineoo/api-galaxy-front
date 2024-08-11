@@ -3,14 +3,14 @@ import { FC } from "react";
 
 interface CardVetrineType {
   imagePath: string;
-  cardVetrineTitle: string;
-  cardVetrineDescription: string;
+  cardTitle: string;
+  cardDescription: string;
 }
 
 const CardVetrine: FC<CardVetrineType> = ({
   imagePath,
-  cardVetrineTitle,
-  cardVetrineDescription,
+  cardTitle,
+  cardDescription,
 }) => {
   return (
     <div
@@ -20,8 +20,8 @@ const CardVetrine: FC<CardVetrineType> = ({
       <div className="h-15 w-15">
         <Image src={imagePath} alt="CardVetrine Image" width={40} height={40} />
       </div>
-      <h2 className="font-medium text-center">{cardVetrineTitle}</h2>
-      <p className="font-light text-base">{cardVetrineDescription}</p>
+      <h2 className="font-medium text-center">{cardTitle}</h2>
+      <p className="font-light text-base">{cardDescription}</p>
     </div>
   );
 };

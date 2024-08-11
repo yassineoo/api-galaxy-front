@@ -36,6 +36,7 @@ const Navbar: FC<Links> = ({
         </div>
 
         <div>
+          {/* Assuming SearchApiInput is a component imported elsewhere */}
           <SearchApiInput />
         </div>
 
@@ -49,12 +50,11 @@ const Navbar: FC<Links> = ({
               href={apiHub || ""}
               className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-mainColor"
             >
-              {" "}
-              API Hub{" "}
+              API Hub
             </Link>
             <Link
               href={docs || ""}
-              className="block mt-4 lg:inline-block lg:mt-0 mr-4  hover:text-mainColor"
+              className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-mainColor"
             >
               Docs
             </Link>
@@ -73,7 +73,7 @@ const Navbar: FC<Links> = ({
           </div>
         </div>
       </nav>
-      <div className="space-x-2 flex flex-row justify-start items-center line font-body  text-xs sm:text-base">
+      <div className="space-x-2 flex flex-row justify-start items-center line font-body text-xs sm:text-base">
         <Link
           href="/login"
           className=" px-2 py-2 inline-block rounded text-center md:rounded-lg md:px-6 bg-mainColor hover:bg-deepBlue"
@@ -89,7 +89,7 @@ const Navbar: FC<Links> = ({
         <div className="lg:hidden relative bottom-1">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className=" px-2 py-2 hover:text-white hover:border-white relative top-1"
+            className="px-2 py-2 hover:text-white hover:border-white relative top-1"
           >
             <svg
               className="fill-black h-5 w-4"
@@ -107,9 +107,3 @@ const Navbar: FC<Links> = ({
 };
 
 export default Navbar;
-
-const SearchInput = () => {
-  const [search, setSearch] = useState("");
-  const List = useSearchApiList(search);
-  return <p>j</p>;
-};

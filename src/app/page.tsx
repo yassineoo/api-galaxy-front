@@ -1,5 +1,5 @@
 // VetrinePage.tsx
-"use client"
+"use client";
 import AboutUs from "@/components/General use/aboutUs";
 import Hero from "@/components/General use/hero";
 import Navbar from "@/components/General use/navbar";
@@ -8,17 +8,17 @@ import Plans from "@/components/Vetrine/plans";
 import Reviews from "@/components/Vetrine/reviews";
 import { useSession } from "next-auth/react";
 export default function VetrinePage() {
-  const {data : session,status} = useSession() 
+  const { data: session, status } = useSession();
   return (
     <>
       <div>
         <Navbar services="2" about="3" pricing="4" contacts="6" />
-        <Hero id="1" />
-        <SellingCards id="2" />
-        <AboutUs id="3" />
-        <Plans id="4" />
-        <Reviews id="5" />
+        <Hero />
+        <SellingCards />
 
+        <AboutUs />
+        <Plans />
+        <Reviews />
         <footer />
       </div>
     </>

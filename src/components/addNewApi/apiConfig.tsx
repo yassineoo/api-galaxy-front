@@ -6,6 +6,7 @@ import AddEndpointsForm from "./defnintionTab/endpoints/endpointsForm";
 import DocsTab from "./docs/docsTab";
 import MonetizationTab from "./monitazation/monetizationTab";
 import { useApiPlanList } from "@/hooks/plans/plans.queries";
+import VersionSeloctor from "./genralTab/versionSelector";
 
 export function ApiConfigTabs({ api }: any) {
   console.log(api);
@@ -13,13 +14,14 @@ export function ApiConfigTabs({ api }: any) {
 
   return (
     <Tabs defaultValue="General">
-      <TabsList className="grid  grid-cols-5 w-2/3  ml-8 my-2">
+      <TabsList className="grid  grid-cols-7 w-2/3  ml-8 my-2">
         <TabsTrigger value="General">General</TabsTrigger>
         <TabsTrigger value="Definitions">Definitions</TabsTrigger>
         <TabsTrigger value="Documentaion">Documentaion</TabsTrigger>
 
         <TabsTrigger value="Security">Security</TabsTrigger>
         <TabsTrigger value="Monetization">Monetization</TabsTrigger>
+        <VersionSeloctor />
       </TabsList>
       <TabsContent
         value="General"
