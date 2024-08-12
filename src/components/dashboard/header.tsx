@@ -40,7 +40,6 @@ const Header = () => {
       {/* Dropdown toggle button */}
 
       {/* Add your icons here */}
-      <UserNav />
       <div className="flex items-center justify-center gap-2">
         <ModeToggle />
         <Notifications />

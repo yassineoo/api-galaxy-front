@@ -53,8 +53,14 @@ export default function ProductsHub() {
     search,
   });
   const ApiCategoryList = useApiCategoryList();
-  const apiHealthStats = useApiHealthCheakStats({ apiIDs: ids });
+  //const apiHealthStats = useApiHealthCheakStats({ apiIDs: ids });
 
+  const apiHealthStats = {
+    data: [],
+    isLoading: true,
+    isError: false,
+    isSuccess: false,
+  };
   useEffect(() => {
     if (apiList.isSuccess) {
       setApis(apiList.data.data.apis);
@@ -63,7 +69,7 @@ export default function ProductsHub() {
   }, [apiList.isSuccess]);
 
   useEffect(() => {
-    if (apiHealthStats.isSuccess) {
+    if (apiHealthStats?.isSuccess) {
       setApis((prev: any) => {
         return prev.map((api: any) => {
           const stat = apiHealthStats?.data?.find(
@@ -73,14 +79,14 @@ export default function ProductsHub() {
 
           return {
             ...api,
-            Availability: stat?.Availability * 100,
-            Latency: stat?.AverageResponseTime,
+            Availability: (stat?.Availability || 0) * 100,
+            Latency: stat?.AverageResponseTime || 0,
             Rating: 2,
           };
         });
       });
     }
-  }, [apiHealthStats.isSuccess]);
+  }, [apiHealthStats?.isSuccess]);
 
   useEffect(() => {
     console.log("apissss", apis);

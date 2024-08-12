@@ -32,7 +32,7 @@ const AddApiPage = ({ params }: any) => {
   const [page, setPage] = useState(1);
 
   const logs = useApiLogsList({ apiId: id, page, limit: 5 });
-  const HealthCheck = useApiHealthCheakList({ apiId: id, page, limit: 5 });
+  const HealthCheck = { data: null, isLoading: true, isError: false };
   const [logsFilter, setLogsFilter] = useState("");
 
   const changeLogsFilter = (value: any) => {
@@ -92,18 +92,18 @@ const AddApiPage = ({ params }: any) => {
       </div>
 
       <div className="px-12 py-10 ">
-        {HealthCheck.isLoading && (
+        {HealthCheck?.isLoading && (
           <SkeletonTable
             name={"HealthCheck List"}
             columns={HealthCheckcolumns}
           />
         )}
-        {HealthCheck.isSuccess && (
+        {HealthCheck?.isSuccess && (
           <>
             <div className="flex justify-start gap-6 items-center"></div>
             <HealthCheckTable
               columns={HealthCheckcolumns}
-              data={HealthCheck.data?.logs.map((log: any) => {
+              data={HealthCheck?.data?.logs.map((log: any) => {
                 return {
                   ...log,
                 };
@@ -112,7 +112,7 @@ const AddApiPage = ({ params }: any) => {
           </>
         )}
 
-        {HealthCheck.isError && <p>HealthCheck ERROR</p>}
+        {HealthCheck?.isError && <p>HealthCheck ERROR</p>}
         <PaginationManual
           currentPage={page}
           totalPages={HealthCheck?.data?.meta?.totalPages}

@@ -8,7 +8,8 @@ export const useApiCategoryList = () => {
   return useQuery({
     queryKey: ["apiCategoryList"],
     queryFn: async () => {
-      const response = await axios.get(`${ApiUrl}/categories`); // Adjust the endpoint
+      const ApiUrlo = "http://localhost:5000";
+      const response = await axios.get(`${ApiUrlo}/apis-service/categories`); // Adjust the endpoint
       return response.data;
     },
   });

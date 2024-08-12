@@ -8,11 +8,14 @@ export const useApiList = ({ page, limit, filter, search }: any) => {
   return useQuery({
     queryKey: ["apiList", page, limit, filter, search],
     queryFn: async () => {
-      console.log("logged from api quety : ", page, limit, filter, search);
+      console.log("apiUrl : ", `${ApiUrl}/apis`);
+      //  axios.defaults.baseURL = "http://localhost:5000";
 
-      const response = await axios.get(`${ApiUrl}/apis`, {
-        params: { page, limit, filter, search }, // Add query parameters
+      const response = await axios.get(`/apis-service/apis`, {
+        params: { page, limit, filter, search },
       });
+      console.log("response from api quety : ", response.data);
+
       return response.data;
     },
   });

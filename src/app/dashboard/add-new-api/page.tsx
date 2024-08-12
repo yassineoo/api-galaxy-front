@@ -10,7 +10,7 @@ import AddNewApiModal from "@/components/addNewApi/genralTab/addNewApiModal";
 
 const AddApiPage = ({ params }: any) => {
   const { id } = params;
-  const apiSelceted = useApiById(id);
+  //const apiSelceted = useApiById(id);
   return (
     <div className="w-full h-full overflow-scroll">
       <Header />

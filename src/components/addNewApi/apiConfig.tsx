@@ -14,7 +14,7 @@ export function ApiConfigTabs({ api }: any) {
 
   return (
     <Tabs defaultValue="General">
-      <TabsList className="grid  grid-cols-7 w-2/3  ml-8 my-2">
+      <TabsList className="grid  grid-cols-7 w-4/5  ml-8 my-2">
         <TabsTrigger value="General">General</TabsTrigger>
         <TabsTrigger value="Definitions">Definitions</TabsTrigger>
         <TabsTrigger value="Documentaion">Documentaion</TabsTrigger>
