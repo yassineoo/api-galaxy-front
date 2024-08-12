@@ -15,6 +15,8 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Notifications from "./notification";
+import Settings from "./settings";
 
 const Header = () => {
   // State to manage dropdown visibility
@@ -41,15 +43,16 @@ const Header = () => {
       <UserNav />
       <div className="flex items-center justify-center gap-2">
         <ModeToggle />
-        <IconDropdown icon={<span>🔔</span>} />
-        <IconDropdown icon={<span>⚙️</span>} />
+        <Notifications />
+        <Settings />
 
         {/* Profile dropdown */}
 
         <IconDropdown
           userId={session?.userId}
           icon={
-            <div className="ml-4 relative">
+            <div className="ml-4 relative flex justify-center items-center gap-6">
+              {session?.user?.name}
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
                   <AvatarImage

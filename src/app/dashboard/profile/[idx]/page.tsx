@@ -1,13 +1,29 @@
 "use client";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { useSession } from "next-auth/react";
 import Header from "@/components/dashboard/header";
+import { use, useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function ProfilePage({ params }: any) {
   const { data: session, status } = useSession();
+  // State to handle the edit mode and name input
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState(session?.user?.name || "");
+
+  useEffect(() => {
+    setName(session?.user?.name || "");
+  }, [session?.user?.name]);
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+  const handleSave = () => {
+    // Logic to save the updated name (e.g., send it to the server)
+    setIsEditing(false);
+  };
   const { idx } = params;
 
   const isAuthenticated = idx == session?.userId;
@@ -40,15 +56,44 @@ export default function ProfilePage({ params }: any) {
                 </div>
               </div>
               <div className="bg-background rounded-b-lg p-6 pt-20">
-                <div className="flex items-center justify-between">
-                  <div className="text-2xl font-bold">
-                    {" "}
-                    {session?.user?.name}
-                  </div>
-                  <Button variant="ghost" size="icon">
-                    <FilePenIcon className="w-5 h-5" />
-                    <span className="sr-only">Edit profile</span>
-                  </Button>
+                <div className="flex items-center gap-6">
+                  {isEditing ? (
+                    <div className="flex items-center gap-4">
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={handleNameChange}
+                        className="text-2xl font-bold border p-2 rounded"
+                      />
+                      <Button
+                        className="py-2 px-8"
+                        size="icon"
+                        onClick={handleSave}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        className="py-2 px-8"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsEditing(false)}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-4">
+                      <div className="text-2xl font-bold">{name}</div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsEditing(true)}
+                      >
+                        <FilePenIcon className="w-5 h-5" />
+                        <span className="sr-only">Edit profile</span>
+                      </Button>
+                    </div>
+                  )}
                 </div>
                 <Tabs defaultValue="published" className="mt-4">
                   <TabsList>
