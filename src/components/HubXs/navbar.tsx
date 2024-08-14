@@ -14,7 +14,7 @@ interface Links {
 
 const Navbar: FC<Links> = ({
   apiHub = "hub",
-  docs = "docs",
+  docs = "https://api-galaxy-docs.vercel.app/",
   ListApi = "s",
   myApis = "dashboard",
 }) => {

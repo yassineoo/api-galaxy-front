@@ -39,10 +39,10 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
   const isAuthenticated = status === "authenticated";
 
   return (
-    <div className="bg-mainColor flex justify-between items-top p-1 pl-6">
+    <div className="navbarGradient  flex justify-between items-top p-1 pl-6">
       <nav className="flex items-top p-2 justify-start flex-wrap">
         <div
-          className="flex items-center flex-shrink-0 text-white mr-6 cursor-pointer"
+          className="navbar-logo flex items-center flex-shrink-0 text-white mr-6 cursor-pointer"
           onClick={() => {
             router.push(`/hub`);
           }}
@@ -69,28 +69,28 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
             <a
               href={`#${services}`}
               onClick={(e) => handleClick(e, services)}
-              className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"
+              className="block navbar-link mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"
             >
               Services
             </a>
             <a
               href={`#${about}`}
               onClick={(e) => handleClick(e, about)}
-              className="block mt-4 lg:inline-block lg:mt-0 mr-4  hover:text-white"
+              className="navbar-link block mt-4 lg:inline-block lg:mt-0 mr-4  hover:text-white"
             >
               About
             </a>
             <a
               href={`#${pricing}`}
               onClick={(e) => handleClick(e, pricing)}
-              className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"
+              className="navbar-link block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"
             >
               Pricing
             </a>
             <a
               href={`#${contacts}`}
               onClick={(e) => handleClick(e, contacts)}
-              className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"
+              className="navbar-link block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"
             >
               Contacts
             </a>
@@ -114,7 +114,7 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
               <span className="text-white">{session?.user?.name}</span>
               <button
                 onClick={() => signOut()}
-                className="px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
+                className="navbar-button px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
               >
                 Sign Out
               </button>
@@ -124,13 +124,13 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
           <>
             <Link
               href="/login"
-              className="px-3 py-2 rounded hover:bg-deepBlue text-white"
+              className="login navbar-button px-3 py-2 rounded hover:bg-deepBlue text-white"
             >
               Login
             </Link>
             <Link
               href="/register"
-              className="px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
+              className="signup navbar-button px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
             >
               Sign Up
             </Link>

@@ -3,6 +3,7 @@
 import { ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { placeholderApis } from "../apisCategory/apiCategory.queries";
 
 export const useApiList = ({ page, limit, filter, search }: any) => {
   return useQuery({
@@ -11,7 +12,7 @@ export const useApiList = ({ page, limit, filter, search }: any) => {
       console.log("apiUrl : ", `${ApiUrl}/apis`);
       //  axios.defaults.baseURL = "http://localhost:5000";
 
-      const response = await axios.get(`/apis-service/apis`, {
+      const response = await placeholderApis.get(`/apis/`, {
         params: { page, limit, filter, search },
       });
       console.log("response from api quety : ", response.data);
