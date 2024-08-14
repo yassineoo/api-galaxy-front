@@ -26,13 +26,13 @@ const sellingData = [
 export default function SellingCards(): JSX.Element {
   return (
     <>
-      <div className="bg-white p-6">
-        <h1 className="mt-4 mb-12 text-black text-center text-2xl md:text-3xl font-title font-semibold">
+      <div className="bg-gradient-to-b from-blue-300 to-white p-8 sm:p-12 md:p-16">
+        <h1 className="mt-4 mb-12 text-black text-center text-3xl md:text-4xl font-title font-bold tracking-wide">
           Create & Sell&nbsp;
-          <span className="text-goldColor">your</span>
-          &nbsp;Api
+          <span className="text-goldColor font-extrabold">your</span>
+          &nbsp;API
         </h1>
-        <div className="flex flex-col justify-center gap-10 md:flex-row md:p-2 md:pt-1">
+        <div className="flex flex-col justify-center gap-12 md:flex-row md:gap-8 md:p-4 md:pt-2">
           {sellingData.map((card, index) => (
             <Card
               key={index}
