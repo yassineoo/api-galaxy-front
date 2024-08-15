@@ -27,7 +27,7 @@ const whyChooseUs = [
 export default function AboutUs(): JSX.Element {
   return (
     <>
-      <div className="bg-gradient-to-r from-mainColor via-sky-700 to-blue-600 relative p-4 px-6 text-white flex flex-col items-center">
+      <div className="bg-gradient-to-r   from-white  to-blue-300 text-black  relative p-4 px-6 flex flex-col items-center">
         <div className="z-20 text-center max-w-3xl">
           <h1 className="mb-6 text-4xl md:text-5xl font-bold font-title">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500">
@@ -36,9 +36,9 @@ export default function AboutUs(): JSX.Element {
           </h1>
           <div className="flex flex-col items-center md:flex-row md:items-start justify-center">
             <div className="max-w-xl">
-              <h2 className="mb-4 font-title font-medium text-2xl md:text-3xl">
+              <h2 className="mb-4 font-title font-medium text-2xl md:text-3xl text-mainColor">
                 Welcome to{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-800 to-blue-500">
                   API Galaxy
                 </span>
               </h2>
@@ -52,7 +52,7 @@ export default function AboutUs(): JSX.Element {
             </div>
             <Image
               className="md:w-60 md:h-60 mt-6 md:mt-0  "
-              src="/logos/logo-white-infsec.svg"
+              src="/logos/logo.svg"
               alt="API Galaxy Logo"
               width={160}
               height={160}
@@ -62,7 +62,7 @@ export default function AboutUs(): JSX.Element {
         <div className="z-20 py-8 md:py-12 lg:py-16">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orangePure to-orange-300">
                 Why Choose Us
               </span>
             </h2>
@@ -70,10 +70,10 @@ export default function AboutUs(): JSX.Element {
               {whyChooseUs.map((item, index) => (
                 <div
                   key={index}
-                  className="bg-white text-black p-6 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300"
+                  className="bg-gradient-to-r from-orange-50 to-orange-300  text-black p-6 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300"
                 >
                   <h3 className="text-xl font-bold mb-2">
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400  to-blue-700">
                       {item.title}
                     </span>
                   </h3>

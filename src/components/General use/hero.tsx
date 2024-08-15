@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Hero(): JSX.Element {
   return (
-    <div className="bg-gradient-to-r from-mainColor via-sky-500 to-blue-600 text-white flex justify-between items-center border-b p-6 sm:p-10">
+    <div className="bg-gradient-to-r from-slate-300  to-white text-black flex justify-between items-center border-b p-6 sm:p-10">
       <div className="max-w-lg">
         <h1 className="font-title font-bold text-4xl sm:text-5xl">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500">
@@ -21,7 +21,7 @@ export default function Hero(): JSX.Element {
           <Link href="/hub" passHref>
             <button
               type="button"
-              className="bg-gradient-to-r from-white to-gray-300 text-blue-800 font-semibold py-3 px-6 rounded shadow-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
+              className="bg-gradient-to-r from-mainColor to-blue-400 text-white font-semibold py-3 px-6 rounded shadow-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
             >
               Start Browsing
             </button>
@@ -29,7 +29,7 @@ export default function Hero(): JSX.Element {
           <Link href="/provider" passHref>
             <button
               type="button"
-              className="bg-transparent text-white font-semibold py-3 px-6 rounded border border-white hover:bg-white hover:text-blue-800 shadow-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
+              className="bg-transparent text-black font-semibold py-3 px-6 rounded border border-white hover:bg-white hover:text-blue-800 shadow-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
             >
               Become a Provider
             </button>

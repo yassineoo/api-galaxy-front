@@ -38,7 +38,7 @@ export default function Plans(id: any): JSX.Element {
   return (
     <div
       id={id.id}
-      className="bg-gradient-to-r from-gray-900 to-gray-800 py-16 flex justify-center items-center flex-col md:flex-row gap-8 text-white"
+      className="bg-gradient-to-r from-slate-300  to-white text-black py-16 flex justify-center items-center flex-col md:flex-row gap-8 "
     >
       {plans.map((plan, index) => (
         <div
