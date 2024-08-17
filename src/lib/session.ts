@@ -81,9 +81,9 @@ export const authOptions: NextAuthOptions = {
           console.log(res);
           console.log("res =================================================");
 
-          if (!res.data?.message) {
-            token.backendToken = res.data.token;
-            token.userId = res.data.userId;
+          if (!res?.data?.message) {
+            token.backendToken = res?.data.token;
+            token.userId = res?.data.userId;
           }
         } else {
           token.backendToken = user.token;
