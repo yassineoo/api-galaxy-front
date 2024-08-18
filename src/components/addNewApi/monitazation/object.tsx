@@ -1,17 +1,18 @@
+import { SelectOptions } from "@/app/dashboard/apis/[id]/Analyse/interfaces";
 import React, { useState } from "react";
-import Select from "react-select";
+import Select, { MultiValue } from "react-select";
 
 export const SelectMulti = () => {
-  const options = [
+  const options: SelectOptions = [
     { value: 14, label: "getClients" },
     { value: 12, label: "getUserd" },
     { value: 13, label: "getAdmins" },
     // Add more options as needed
   ];
 
-  const [selectedValues, setSelectedValues] = useState([]);
+  const [selectedValues, setSelectedValues] = useState<SelectOptions>([]);
 
-  const handleSelectChange = (selectedOptions: any) => {
+  const handleSelectChange = (selectedOptions: SelectOptions) => {
     setSelectedValues(selectedOptions);
   };
 
@@ -27,7 +28,15 @@ export const SelectMulti = () => {
   );
 };
 
-const MultiSelect = ({ options, selectedValues, onChange }: any) => {
+const MultiSelect = ({
+  options,
+  selectedValues,
+  onChange,
+}: {
+  options: SelectOptions;
+  selectedValues: SelectOptions;
+  onChange: (selectOption: SelectOptions) => void;
+}) => {
   return (
     <Select
       isMulti

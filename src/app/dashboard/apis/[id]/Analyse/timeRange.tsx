@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { timeFilter } from "@/utils/constants";
+import { TimeRangeFilter } from "./interfaces";
 
 function TimeFilterButton({
   value,
@@ -27,7 +28,7 @@ export default function TimeFilterButtons({
   name,
 }: {
   timeSelected: string;
-  setTimeSelected: any;
+  setTimeSelected: (value: TimeRangeFilter) => void;
   name: string;
 }) {
   return (

@@ -5,8 +5,12 @@ export const ApiAuth = "http://localhost:5000/auth";
 // when use it directly
 //export const ApiUrl = "http://localhost:8000";
 //export const ApiAuth = "http://localhost:7000";
+import { TimeRangeFilter } from "@/app/dashboard/apis/[id]/Analyse/interfaces";
 
-export const timeFilter = [
+export const timeFilter: {
+  value: TimeRangeFilter;
+  label: string;
+}[] = [
   { value: "7d", label: "last 7 days" },
   { value: "30d", label: "last 30 days" },
   { value: "90d", label: "last 90 days" },

@@ -15,7 +15,11 @@ import { useCreateApi } from "@/hooks/apis/api.Mutation";
 import { toast } from "react-toastify";
 
 import { useRouter } from "next/navigation";
-import { CldImage, CldUploadWidget } from "next-cloudinary";
+import {
+  CldImage,
+  CldUploadWidget,
+  CloudinaryUploadWidgetInfo,
+} from "next-cloudinary";
 
 export default function AddNewApiForm({ closeModal }: any) {
   const router = useRouter();
@@ -121,8 +125,9 @@ export default function AddNewApiForm({ closeModal }: any) {
 
               uploadPreset="Pfe_Uplaod"
               onSuccess={(results) => {
+                if (typeof results.info === "string") return;
                 console.log("Public ID", results?.info?.public_id);
-                setImage(results?.info?.public_id);
+                setImage(results?.info?.public_id as string);
               }}
             >
               {({ open }) => {
