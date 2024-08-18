@@ -1,8 +1,10 @@
 // when using an api gateway
 export const ApiUrl = "http://localhost:5000/apis-service";
+export const ApiAuth = "http://localhost:5000/auth";
 
 // when use it directly
 //export const ApiUrl = "http://localhost:8000";
+//export const ApiAuth = "http://localhost:7000";
 
 export const timeFilter = [
   { value: "7d", label: "last 7 days" },
