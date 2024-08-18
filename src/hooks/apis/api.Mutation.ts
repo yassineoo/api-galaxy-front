@@ -11,6 +11,7 @@ export const useCreateApi = () => {
   return useMutation({
     mutationFn: async (apiData: ApiCreation) => {
       const response = await axios.post(`${ApiUrl}/apis`, apiData); // Adjust the endpoint
+      console.log({ response });
       return response.data;
     },
 

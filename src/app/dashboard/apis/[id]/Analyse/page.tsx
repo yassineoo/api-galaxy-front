@@ -24,17 +24,16 @@ import { HealthCheckTable } from "@/components/dashboard/analyse/healthCheckTabl
 import { HealthCheckcolumns } from "@/components/dashboard/analyse/healthCheckTable/healthCheakColumns";
 import { useApiHealthCheakList } from "@/hooks/HealthCheak/apiHealthCheak.queries";
 
-const AddApiPage = ({ params }: any) => {
-  const { id } = params;
-  const apiSelceted = useApiById(id);
+const AnalysePage = ({ params }: { params: { id: string } }) => {
+  const id = Number(params.id);
+  const apiSelected = useApiById(id);
   const endpointsList = useApiEndpointsList(id);
-  //const logs = useApiLogsList(id);
+  // if (endpointsList.isSuccess) console.log(endpointsList.data);
   const [page, setPage] = useState(1);
 
   const logs = useApiLogsList({ apiId: id, page, limit: 5 });
   const HealthCheck = { data: null, isLoading: true, isError: false };
   const [logsFilter, setLogsFilter] = useState("");
-
   const changeLogsFilter = (value: any) => {
     setLogsFilter(value);
   };
@@ -43,14 +42,14 @@ const AddApiPage = ({ params }: any) => {
     <div className="bg-dashboardBg dark:bg-transparent flex h-full flex-col ">
       <Header />
 
-      {apiSelceted.isLoading && <LoadingPage />}
-      {apiSelceted.isError && <NotFoundPage />}
-      {apiSelceted.isSuccess && (
-        <div className="w-full flex-col">
+      {apiSelected.isLoading && <LoadingPage />}
+      {apiSelected.isError && <NotFoundPage />}
+      {apiSelected.isSuccess && (
+        <div className="w-full flex-col ">
           {endpointsList.isLoading && <p>loading ...</p>}
 
           {endpointsList.isSuccess && (
-            <Statis api={apiSelceted.data} endpointsList={endpointsList.data} />
+            <Statis api={apiSelected.data} endpointsList={endpointsList.data} />
           )}
         </div>
       )}
@@ -70,7 +69,7 @@ const AddApiPage = ({ params }: any) => {
                 items={timeFilter}
               />
             </div>
-            <LogsTable
+            {/* <LogsTable
               columns={Logscolumns}
               data={logs.data?.logs.map((log: any) => {
                 return {
@@ -79,16 +78,16 @@ const AddApiPage = ({ params }: any) => {
                   EndpointName: log.Endpoint?.Name,
                 };
               })}
-            />
+            /> */}
           </>
         )}
 
         {logs.isError && <p>logs ERROR</p>}
-        <PaginationManual
+        {/* <PaginationManual
           currentPage={page}
           totalPages={logs?.data?.meta?.totalPages}
           onPageChange={setPage}
-        />
+        /> */}
       </div>
 
       <div className="px-12 py-10 ">
@@ -98,7 +97,8 @@ const AddApiPage = ({ params }: any) => {
             columns={HealthCheckcolumns}
           />
         )}
-        {HealthCheck?.isSuccess && (
+        {/* TODO */}
+        {/* {HealthCheck?.isSuccess && (
           <>
             <div className="flex justify-start gap-6 items-center"></div>
             <HealthCheckTable
@@ -110,20 +110,21 @@ const AddApiPage = ({ params }: any) => {
               })}
             />
           </>
-        )}
+        )} */}
 
         {HealthCheck?.isError && <p>HealthCheck ERROR</p>}
-        <PaginationManual
+        {/* TODO */}
+        {/* <PaginationManual
           currentPage={page}
           totalPages={HealthCheck?.data?.meta?.totalPages}
           onPageChange={setPage}
-        />
+        /> */}
       </div>
     </div>
   );
 };
 
-export default AddApiPage;
+export default AnalysePage;
 
 /*
 
