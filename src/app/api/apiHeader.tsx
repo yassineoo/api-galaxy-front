@@ -1,6 +1,5 @@
 import { CldImage } from "next-cloudinary";
 import ReactStars from "react-stars";
-// components/ServiceCard.js
 
 const ApiHeader = ({
   Name,
@@ -11,22 +10,30 @@ const ApiHeader = ({
   Availability,
 }: any) => {
   return (
-    <div className="w_full flex items-center justify-between  bg-white p-2 shadow-md">
-      <div className="flex items-center ml-8 gap-2">
-        <CldImage
-          src={ImagePath}
-          alt="Selected Image"
-          className="mt-2"
-          width={50}
-          height={50}
-        />
-        <div className="text-blue-900 font-semibold">
-          <h2> {Name} </h2>
-          <p className="text-sm text-gray-600">{Description}</p>
+    <div className="w-full flex items-center justify-between bg-gradient-to-r from-blue-50 via-white to-blue-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+      <div className="flex items-center gap-6">
+        <div className="relative w-16 h-16">
+          <CldImage
+            src={ImagePath}
+            alt="API Image"
+            className="rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300 ease-in-out"
+            width={64}
+            height={64}
+          />
+          <div className="absolute top-0 left-0 w-full h-full rounded-full bg-blue-900 opacity-10 hover:opacity-0 transition-opacity duration-300 ease-in-out"></div>
+        </div>
+        <div>
+          <h2 className="text-2xl font-bold text-blue-900 hover:text-blue-700 transition-colors duration-300 ease-in-out">
+            {Name}
+          </h2>
+          <p className="text-sm text-gray-600 hover:text-gray-800 transition-colors duration-300 ease-in-out">
+            {Description}
+          </p>
         </div>
       </div>
-      <div className="flex items-center gap-4 mr-3">
-        <div className="mr-4">
+
+      <div className="flex items-center gap-8">
+        <div className="text-center">
           <div className="text-md font-semibold text-gray-600">Rating</div>
           <ReactStars
             count={5}
@@ -35,17 +42,16 @@ const ApiHeader = ({
             value={Rating}
             edit={false}
           />
-          {/* Use actual stars or an SVG here */}
         </div>
-        <div className="mr-4">
+        <div className="text-center">
           <div className="text-md font-semibold text-gray-600">Latency</div>
-          <div className="text-blue-900 text-lg">{Latency} ms</div>
+          <div className="text-blue-900 text-lg font-bold">{Latency} ms</div>
         </div>
-        <div>
+        <div className="text-center">
           <div className="text-md font-semibold text-gray-600">
             Service Level
           </div>
-          <div className="text-blue-900 text-lg">{Availability}%</div>
+          <div className="text-blue-900 text-lg font-bold">{Availability}%</div>
         </div>
       </div>
     </div>

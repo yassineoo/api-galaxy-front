@@ -41,6 +41,7 @@ const DashboardPage = ({ params }: any) => {
             Rating={0}
             Latency={apiLogsStats?.AverageResponseTime}
             Availability={apiLogsStats?.Availability * 100}
+            api={apiSelceted.data}
           />
           <ApiTabs api={apiSelceted.data} />
         </>

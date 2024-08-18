@@ -5,7 +5,7 @@ import { UseFormSetError } from "react-hook-form";
 import { Dispatch, SetStateAction } from "react";
 
 export const placeholderApi = axios.create({
-  baseURL: " http://localhost:5000/auth",
+  baseURL: "http://localhost:5000/auth",
 });
 
 export type UserData = {
@@ -49,8 +49,15 @@ export const oauthUser = async (data: any) => {
         "Content-Type": "application/json",
       },
     });
+    console.log("rsersesrsesres ============}}}}}}}}}}}}}}}");
+
+    console.log(res);
+
     return res;
   } catch (error) {
+    console.log("error ============}}}}}}}}}}}}}}}");
+    console.log(error);
+
     return false;
   }
 };

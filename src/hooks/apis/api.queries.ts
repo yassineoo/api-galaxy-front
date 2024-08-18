@@ -5,6 +5,8 @@ import { API_URLO, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 
+import { placeholderApis } from "../apisCategory/apiCategory.queries";
+
 export const useApiList = ({ page = 1, limit = 10, filter = 0, search = "" }: any) => {
   return useQuery<Api[]>({
     queryKey: ["apiList", page, limit, filter, search],
@@ -13,10 +15,10 @@ export const useApiList = ({ page = 1, limit = 10, filter = 0, search = "" }: an
         console.log("apiUrl : ", `${ApiUrl}/apis`);
         //  axios.defaults.baseURL = "http://localhost:5000";
 
-        const response = await axios.get(`${API_URLO}/apis-service/apis`, {
-          params: { page, limit, filter, search },
-        });
-        console.log("response from api quety : ", response.data);
+      const response = await placeholderApis.get(`/apis/`, {
+        params: { page, limit, filter, search },
+      });
+      console.log("response from api quety : ", response.data);
 
         return response.data;
       } catch (error) {

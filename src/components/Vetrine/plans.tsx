@@ -38,16 +38,52 @@ export default function Plans(id: any): JSX.Element {
   return (
     <div
       id={id.id}
-      className="bg-white text-black py-8 md:p-8 flex justify-center items-center flex-col md:flex-row gap-8 text-body "
+      className="bg-gradient-to-r from-slate-300  to-white text-black py-16 flex justify-center items-center flex-col md:flex-row gap-8 "
     >
       {plans.map((plan, index) => (
-        <PricingCard
+        <div
           key={index}
-          cardTitle={plan.cardTitle}
-          cardPrice={plan.cardPrice}
-          cardFeatures={plan.cardFeatures}
-          cardBenefits={plan.cardBenefits}
-        />
+          className="w-full max-w-xs p-4 h-2/3 flex flex-col justify-between rounded-xl bg-white shadow-xl text-black transform hover:scale-105 transition-transform duration-300"
+        >
+          <div>
+            <h2 className="text-2xl font-bold mb-4 text-center">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
+                {plan.cardTitle}
+              </span>
+            </h2>
+            <p className="text-3xl font-extrabold text-center mb-6 text-green-500">
+              {plan.cardPrice}
+            </p>
+            <ul className="mb-6 space-y-2">
+              {plan.cardFeatures.map((feature, i) => (
+                <li
+                  key={i}
+                  className="flex items-center gap-2 text-base font-medium text-gray-800"
+                >
+                  <span className="bg-green-500 rounded-full w-2 h-2 block"></span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="border-t border-gray-200 pt-4">
+            <h3 className="text-lg font-semibold mb-2 text-center text-purple-500">
+              Key Benefits
+            </h3>
+            <ul className="space-y-1">
+              {plan.cardBenefits.map((benefit, j) => (
+                <li key={j} className="text-sm text-gray-700">
+                  {benefit}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex justify-center mt-4">
+            <button className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-full shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300">
+              Get Started
+            </button>
+          </div>
+        </div>
       ))}
     </div>
   );

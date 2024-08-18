@@ -15,3 +15,4 @@ export const timeFilter: {
     { value: "12h", label: "last 12 hours" },
     { value: "24h", label: "last 24 hours" },
   ];
+
