@@ -7,5 +7,5 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*"], // Protect all routes under /dashboard
+  matcher: ["/admin/:path*"], // Protect all routes under /dashboard, ("/dashboard/:path*")
 };
