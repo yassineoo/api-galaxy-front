@@ -10,12 +10,12 @@ export const useCreateApi = () => {
 
   return useMutation({
     mutationFn: async (apiData: ApiCreation) => {
-      const response = await axios.post(`${ApiUrl}/apis`, apiData); // Adjust the endpoint
+      const response = await axios.post(`${ApiUrl}/apis`, apiData);
       return response.data;
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["apiListkk"] });
+      queryClient.invalidateQueries({ queryKey: ["apiList"] });
     },
   });
 };

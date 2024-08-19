@@ -13,7 +13,7 @@ export default function Sidebar() {
   const pathSegments = pathname.split("/");
   const activeItem = pathSegments[2]; // Assuming the item is the third segment
   let activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
-  const maApisListCallback = useCallback(() => useApiByUserId(123), []);
+  const maApisListCallback = useCallback(() => useApiByUserId(1), []);
   const maApisList = maApisListCallback();
   let apiId = 0;
   if (activeItem != "apis") {
@@ -164,7 +164,7 @@ const Menu = ({
       <div className="flex flex-col items-start justify-start  h-64 overflow-scroll">
         {isMenuOpen &&
           maApisList.isSuccess &&
-          maApisList.data.data
+          maApisList.data
             .map((api: any) => {
               return {
                 ID: api.ID,

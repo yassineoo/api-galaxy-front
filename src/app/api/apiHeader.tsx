@@ -10,6 +10,8 @@ const ApiHeader = ({
   Latency,
   Availability,
 }: any) => {
+
+  console.log("starts ",Rating)
   return (
     <div className="w_full flex items-center justify-between  bg-white p-2 shadow-md">
       <div className="flex items-center ml-8 gap-2">
@@ -33,7 +35,7 @@ const ApiHeader = ({
             size={24}
             color2={"#ffd700"}
             value={Rating}
-            edit={false}
+            edit={true}
           />
           {/* Use actual stars or an SVG here */}
         </div>

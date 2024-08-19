@@ -1,32 +1,30 @@
 "use client";
 import Head from "next/head";
-import LineChartComponent from "../../../components/dashboard/linechart";
-import DonutChartComponent from "../../../components/dashboard/mainPage/donutchart";
-import { use } from "react";
-
 import Navbar from "../../../components/General use/navbar";
 import ApiHeader from "../../api/apiHeader";
 import { ApiTabs } from "../../api/apiBody";
-import { useApiById } from "@/hooks/apis/api.queries";
+import { useApiById, useAPIRating } from "@/hooks/apis/api.queries";
+import { useEffect, useState } from "react";
 
 const DashboardPage = ({ params }: any) => {
   const { id } = params;
-  const apiSelceted = useApiById(id);
+  const apiSelected = useApiById(id);
   return (
     <div className=" ">
       <Head>
         <title>Dashboard</title>
       </Head>
       <Navbar services="2" about="3" pricing="4" contacts="6" />
-      {apiSelceted.isLoading && <p>Loading ... </p>}
-      {apiSelceted.isSuccess && (
+      {apiSelected.isLoading && <p>Loading ... </p>}
+      {apiSelected.isSuccess && (
         <>
           <ApiHeader
-            Name={apiSelceted.data.Name}
-            Description={apiSelceted.data.Description}
-            ImagePath={apiSelceted.data.ImagePath}
+            Name={apiSelected.data.Name}
+            Description={apiSelected.data.Description}
+            ImagePath={apiSelected.data.ImagePath}
+            Rating={apiSelected.data.Rating}
           />
-          <ApiTabs api={apiSelceted.data} />
+          <ApiTabs api={apiSelected.data} />
         </>
       )}
     </div>

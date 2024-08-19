@@ -8,6 +8,9 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function MyApp({ Component, pageProps}: AppProps) {
   const client = new QueryClient();
   // const [client] = useState(new QueryClient());
@@ -16,6 +19,7 @@ function MyApp({ Component, pageProps}: AppProps) {
     <>
       <QueryClientProvider client={client}>
         <Component {...pageProps} />
+        <ToastContainer />
       </QueryClientProvider>
     </>
   );

@@ -59,7 +59,7 @@
     "react-select": "^5.8.0",
     "react-stars": "^2.2.5",
     "react-syntax-highlighter": "^15.5.0",
-    "react-toastify": "^10.0.4",
+    "react-toastify": "^10.0.5",
     "reactflow": "^11.10.1",
     "recharts": "^2.10.1",
     "tailwind-merge": "^2.0.0",

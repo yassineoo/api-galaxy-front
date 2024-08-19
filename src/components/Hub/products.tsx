@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import LeftBarButton, { LeftBarBarSkeleton } from "../HubXs/leftBarButton";
 import ProductCard from "../HubXs/productCard";
 import { useApiList } from "@/hooks/apis/api.queries";
@@ -9,6 +8,7 @@ import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
 import { Search } from "../shared/search";
 import CardSkeleton from "../HubXs/skeleton";
 import { useApiHealthCheakStats } from "@/hooks/HealthCheak/apiHealthCheak.queries";
+import { useSession } from "next-auth/react";
 
 const buttons = [
   {
@@ -43,18 +43,19 @@ export default function ProductsHub() {
   const [filter, setFilter] = useState(0);
   const [search, setSearch] = useState("");
   const [apis, setApis] = useState([]);
-
   const [ids, setIds] = useState([1]);
-
+  const {status,data:user} = useSession()
   const apiList = useApiList({
     page,
     limit: 12,
     filter,
     search,
+    userId : user?.userId
   });
+
+  
   const ApiCategoryList = useApiCategoryList();
   //const apiHealthStats = useApiHealthCheakStats({ apiIDs: ids });
-
   const apiHealthStats = {
     data: [],
     isLoading: true,
@@ -62,9 +63,9 @@ export default function ProductsHub() {
     isSuccess: false,
   };
   useEffect(() => {
-    if (apiList.isSuccess) {
-      setApis(apiList.data.data.apis);
-      setIds(apiList.data.data.apis.map((api: any) => api.ID));
+    if (apiList. isSuccess) {
+      setApis(apiList.data);
+      setIds(apiList.data.map((api: any) => api.ID));
     }
   }, [apiList.isSuccess]);
 
@@ -86,12 +87,12 @@ export default function ProductsHub() {
         });
       });
     }
-  }, [apiHealthStats?.isSuccess]);
-
+  }, [apiHealthStats.isSuccess]);
+/*
   useEffect(() => {
     console.log("apissss", apis);
   }, [apis]);
-
+*/
   return (
     <>
       <div className="bg-white py-10  text-black flex">
@@ -125,20 +126,22 @@ export default function ProductsHub() {
                   <CardSkeleton />
                 </div>
               ))}
-            {apiList.isError && <p>apiList.Error </p>}
 
             {apiList.isSuccess &&
               apis?.map((card: any, index: any) => (
                 <ProductCard
-                  id={card.ID}
-                  key={index}
-                  averageRating={3}
-                  latency={card.Latency}
-                  availability={card.Availability}
-                  imagePath={card.ImagePath}
-                  cardTitle={card.Name}
-                  cardDescription={card.Description}
-                  liked={index % 2 === 0}
+                key={index}
+                  userId={user?.userId}
+                  cardData={{
+                    id:card.id,
+                    averageRating:3,
+                    latency:card.Latency,
+                    availability:card.status,
+                    imagePath:card.image_path,
+                    cardTitle:card.name,
+                    cardDescription:card.description,
+                    liked:card.isLiked
+                  }}
                 />
               ))}
           </div>

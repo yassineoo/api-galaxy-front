@@ -89,17 +89,14 @@ const Menu = ({ isMenuOpen, activeItem, activeChildName }: any) => {
       url: "/admin/apis",
       active: false,
     },
-
     {
-      name: "Content",
-
+      name: "Reports",
       icon: "/icons/icon_billing.svg",
-      url: "/admin/content",
+      url: "/admin/reports",
       active: false,
     },
     {
       name: "Settings",
-
       icon: "/icons/icon_billing.svg",
       url: "/admin/settings",
       active: false,
@@ -116,9 +113,6 @@ const Menu = ({ isMenuOpen, activeItem, activeChildName }: any) => {
   const handleMenuClick = (Name: string) => {
     setActiveMenu(Name);
   };
-
-  console.log("activeOne ", activeOne);
-
   return (
     <div className="flex flex-col mt-6 text-sm">
       {menuItems.map((item) => (
