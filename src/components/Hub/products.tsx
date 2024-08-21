@@ -44,16 +44,15 @@ export default function ProductsHub() {
   const [search, setSearch] = useState("");
   const [apis, setApis] = useState([]);
   const [ids, setIds] = useState([1]);
-  const {status,data:user} = useSession()
+  const { status, data: user } = useSession();
   const apiList = useApiList({
     page,
     limit: 12,
     filter,
     search,
-    userId : user?.userId
+    userId: user?.userId || 1,
   });
 
-  
   const ApiCategoryList = useApiCategoryList();
   //const apiHealthStats = useApiHealthCheakStats({ apiIDs: ids });
   const apiHealthStats = {
@@ -63,7 +62,7 @@ export default function ProductsHub() {
     isSuccess: false,
   };
   useEffect(() => {
-    if (apiList. isSuccess) {
+    if (apiList.isSuccess) {
       setApis(apiList.data);
       setIds(apiList.data.map((api: any) => api.ID));
     }
@@ -80,15 +79,15 @@ export default function ProductsHub() {
 
           return {
             ...api,
-            Availability: (stat?.Availability || 0) * 100,
-            Latency: stat?.AverageResponseTime || 0,
+            Availability: (2 || 0) * 100,
+            Latency: 5 || 0,
             Rating: 2,
           };
         });
       });
     }
   }, [apiHealthStats.isSuccess]);
-/*
+  /*
   useEffect(() => {
     console.log("apissss", apis);
   }, [apis]);
@@ -130,17 +129,17 @@ export default function ProductsHub() {
             {apiList.isSuccess &&
               apis?.map((card: any, index: any) => (
                 <ProductCard
-                key={index}
+                  key={index}
                   userId={user?.userId}
                   cardData={{
-                    id:card.id,
-                    averageRating:3,
-                    latency:card.Latency,
-                    availability:card.status,
-                    imagePath:card.image_path,
-                    cardTitle:card.name,
-                    cardDescription:card.description,
-                    liked:card.isLiked
+                    id: card.id,
+                    averageRating: 3,
+                    latency: card.Latency,
+                    availability: card.status,
+                    imagePath: card.image_path,
+                    cardTitle: card.name,
+                    cardDescription: card.description,
+                    liked: card.isLiked,
                   }}
                 />
               ))}

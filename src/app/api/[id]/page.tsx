@@ -7,31 +7,31 @@ import { useEffect, useState } from "react";
 import Navbar from "../../../components/General use/navbar";
 import ApiHeader from "../apiHeader";
 import { ApiTabs } from "../apiBody";
-import { useApiById,useAPIRating } from "@/hooks/apis/api.queries";
+import { useApiById, useAPIRating } from "@/hooks/apis/api.queries";
 import { useApiHealthCheakStats } from "@/hooks/HealthCheak/apiHealthCheak.queries";
 import { useSession } from "next-auth/react";
 
 const DashboardPage = ({ params }: any) => {
   const { id } = params;
-  const {data:session} = useSession()
+  const { data: session } = useSession();
   const apiSelected = useApiById(id);
   const apiHealthStats = useApiHealthCheakStats({ apiIDs: [id] });
 
   const [apiLogsStats, setApiLogsStats] = useState<any>();
 
-  const [apiRate,setApiRate]=useState(0)
-  console.log(apiSelected.data,"hello")
-  const apiRating = useAPIRating(Number(id))
-  useEffect(()=>{
-      if(apiRating.isSuccess){
-        setApiRate(Number(apiRating.data.rating))
-      }
-  },[apiRating.isFetched,apiRating.isFetching])
-  useEffect(()=>{
-    if(apiSelected.isSuccess){
-        setApiRate(Number(apiSelected.data.Rating))
+  const [apiRate, setApiRate] = useState(0);
+  console.log(apiSelected.data, "hello");
+  const apiRating = useAPIRating(Number(id));
+  useEffect(() => {
+    if (apiRating.isSuccess) {
+      setApiRate(Number(apiRating.data.rating));
     }
-},[apiSelected.isSuccess])
+  }, [apiRating.isFetched, apiRating.isFetching]);
+  useEffect(() => {
+    if (apiSelected.isSuccess) {
+      setApiRate(Number(apiSelected.data.Rating));
+    }
+  }, [apiSelected.isSuccess]);
   useEffect(() => {
     if (apiHealthStats.isSuccess) {
       console.log("apiHealthStats", apiHealthStats.data[0]);
@@ -56,9 +56,13 @@ const DashboardPage = ({ params }: any) => {
             Rating={apiRate.toFixed(1)}
             Latency={apiLogsStats?.AverageResponseTime}
             Availability={apiLogsStats?.Availability * 100}
-            api={apiSelceted.data}
+            api={apiSelected.data}
           />
-          <ApiTabs api={apiSelected.data} api_id = {id} user_id ={session?.userId} />
+          <ApiTabs
+            api={apiSelected.data}
+            api_id={id}
+            user_id={session?.userId}
+          />
         </>
       )}
     </div>

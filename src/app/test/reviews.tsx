@@ -26,49 +26,7 @@ export default function ReviewsTab() {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const { data } = useSession();
-  const [comments, setComments] = useState<any>([
-    /*{
-      apiId: 1,
-      rating: 5,
-      review: "Absolutely fantastic API! It made my job so much easier.",
-      name: "Sarah Johnson",
-      imagePath: "/path/to/image3.jpg",
-      reviewedAt: "2022-04-20",
-    },
-    {
-      apiId: 2,
-      rating: 5,
-      review:
-        "This API exceeded my expectations. Seamless integration and great performance.",
-      name: "Michael Anderson",
-      imagePath: "/path/to/image4.jpg",
-      reviewedAt: "2024-04-21",
-    },
-    {
-      apiId: 3,
-      rating: 4,
-      review: "Very reliable API. Has been a crucial part of our project.",
-      name: "Emily Wilson",
-      imagePath: "/path/to/image5.jpg",
-      reviewedAt: "2023-04-22",
-    },
-    {
-      apiId: 4,
-      rating: 5,
-      review: "Excellent documentation and support. Kudos to the team!",
-      name: "David Thompson",
-      imagePath: "/path/to/image6.jpg",
-      reviewedAt: "2020-04-23",
-    },
-    {
-      apiId: 5,
-      rating: 4,
-      review: "Highly recommended API. It simplified complex tasks for us.",
-      name: "Olivia Parker",
-      imagePath: "/path/to/image7.jpg",
-      reviewedAt: "2022-04-24",
-    },*/
-  ]);
+  const [comments, setComments] = useState<any>([]);
   const apiReviews = useApiReviews({
     api_id: id,
   });
@@ -88,12 +46,17 @@ export default function ReviewsTab() {
 
   const handleReportSubmit = async (reason: string, description: string) => {
     // Submit the report to your API
-    const response = await reportAnComment(reason,description,selectedComment as string,data?.userId as number)
+    const response = await reportAnComment(
+      reason,
+      description,
+      selectedComment as string,
+      data?.userId as number
+    );
     //console.log(response)
-    if(response){
-    toast.success(`Reported comment ${selectedComment} for ${reason}.`);
+    if (response) {
+      toast.success(`Reported comment ${selectedComment} for ${reason}.`);
     }
-    setIsDialogOpen(false)
+    setIsDialogOpen(false);
   };
 
   // create review mutation
@@ -133,15 +96,17 @@ export default function ReviewsTab() {
 
   return (
     <div className="flex flex-col w-2/3 ">
-      <div className="px-4 py-6 md:px-6 md:py-12">
-        <div className=" mx-auto w-full  ">
-          <h2 className="mb-6 text-2xl font-bold">Api Reviews</h2>
+      <div className="px-4 py-6 md:px-6 md:py-12 bg-white shadow-lg rounded-lg">
+        <div className="mx-auto w-full">
+          <h2 className="mb-6 text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+            API Reviews
+          </h2>
           <div className="space-y-6">
             {/* Check for comments loading */}
             {apiReviews.isLoading ? (
               <ReviewSkeleton />
             ) : apiReviews.isError ? (
-              <p>Error fetching reviews</p>
+              <p className="text-red-500">Error fetching reviews</p>
             ) : (
               comments.map((comment: Comment, index: number) => (
                 <ReviewComponent
@@ -154,9 +119,11 @@ export default function ReviewsTab() {
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 px-4 py-6 md:px-6 md:py-12 dark:bg-gray-950">
+      <div className="bg-gray-100 px-4 py-6 md:px-6 md:py-12 dark:bg-gray-950 mt-6 rounded-lg shadow-lg">
         <div className="prose prose-gray mx-auto max-w-4xl dark:prose-invert">
-          <h2 className="mb-6 text-2xl font-bold">Write a Review</h2>
+          <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-gray-200">
+            Write a Review
+          </h2>
           <form className="space-y-4" onSubmit={submitReview}>
             <div>
               <label
@@ -173,9 +140,9 @@ export default function ReviewsTab() {
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                   setComment(e.target?.value)
                 }
+                placeholder="Share your experience..."
               />
             </div>
-            {/* Add ReactStars component for star rating */}
             <ReactStars
               count={5}
               size={24}
@@ -210,45 +177,54 @@ const ReviewComponent = ({
   report: (commentId: string) => void;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  console.log("comment ---", comment);
+
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="flex items-start gap-4 w-full relative mb-6"
+      className="flex items-start gap-4 w-full relative mb-6 p-4 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out bg-white dark:bg-gray-900"
     >
-      {/* Replace this with actual image
-                    
-                    */}
-      {comment.imagePath ? (
-        <div className="h-10 w-10 shrink-0 rounded-full bg-gray-200 dark:bg-gray-800">
-          <Image src={comment.imagePath} alt={comment.comment} />
-        </div>
-      ) : (
-        <div className="h-10 w-10 shrink-0 rounded-full bg-gray-200 dark:bg-gray-800" />
-      )}
+      {/* User Image */}
+      <div className="h-10 w-10 shrink-0 rounded-full bg-gray-200 dark:bg-gray-800 overflow-hidden">
+        {comment.imagePath ? (
+          <Image
+            src={comment.imagePath}
+            alt={comment.comment}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="h-full w-full bg-gray-200 dark:bg-gray-800"></div>
+        )}
+      </div>
 
-      <div className="flex-1 space-y-1">
+      <div className="flex-1 space-y-2">
         <div className="flex items-center justify-between">
-          <h4 className="font-bold underline">{comment.name}</h4>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            {formatDistanceToNow(new Date(comment.date_rated), {
-              addSuffix: true,
-            })}
+          <h4 className="font-semibold text-lg text-gray-800 dark:text-gray-200">
+            {comment.name}
+          </h4>
+          <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+            <span>
+              {formatDistanceToNow(new Date(comment.date_rated), {
+                addSuffix: true,
+              })}
+            </span>
             <ReactStars
               count={5}
-              size={24}
+              size={20}
               color2={"#ffd700"}
               value={Number(comment.rating)}
               edit={false}
             />
-          </span>
+          </div>
         </div>
-        <p>{comment.comment}</p>
+        <p className="text-gray-700 dark:text-gray-300">{comment.comment}</p>
       </div>
+
       {isHovered && (
         <button
-          className="cursor-pointer absolute bottom-0 right-16 text-slate-600 text-sm hover:underline"
-          onClick={()=>report(comment.id)}
+          className="cursor-pointer absolute bottom-2 right-4 text-indigo-600 text-sm hover:underline"
+          onClick={() => report(comment.id)}
         >
           Report
         </button>
@@ -271,24 +247,27 @@ const ReportDialog = ({
 
   const handleSubmit = () => {
     onSubmit(reason, description);
-    setDescription("")
-    setReason("")
-    onClose(); 
-    // Close the dialog after submission
+    setDescription("");
+    setReason("");
+    onClose();
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-[#00000030] flex items-center justify-center">
-      <div className="bg-white p-6 max-w-lg w-full rounded-r-md">
-        <h3 className="font-bold text-slate-700 my-3">Report Comment</h3>
-        <div className="mb-4">
-          <label className="block">Reason</label>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white dark:bg-gray-900 p-6 max-w-lg w-full rounded-lg shadow-xl">
+        <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-200 mb-6">
+          Report Comment
+        </h3>
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Reason
+          </label>
           <select
             value={reason}
             onChange={(e) => setReason(e.target.value)}
-            className="w-full"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300"
           >
             <option value="">Select a reason</option>
             <option value="spam">Spam</option>
@@ -297,23 +276,31 @@ const ReportDialog = ({
             <option value="other">Other</option>
           </select>
         </div>
-        <div className="w-full">
-          <label>Description (optional)</label>
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Description (optional)
+          </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-3 outline-none border border-slate-500"
-            rows={6}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300"
+            rows={5}
             placeholder="Provide additional details..."
           />
         </div>
-        <div className="flex justify-between">
-        <button onClick={handleSubmit} className="bg-blue-500 text-white p-1 hover:bg-blue-400">
-          submit
-        </button>
-        <button onClick={onClose} className="text-white bg-orange-400 hover:bg-orange-500 p-1">
-          cancel
-        </button>
+        <div className="flex justify-end space-x-4">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-all ease-in-out duration-200"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit}
+            className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all ease-in-out duration-200"
+          >
+            Submit
+          </button>
         </div>
       </div>
     </div>
