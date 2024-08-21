@@ -47,42 +47,48 @@ const Header = () => {
 
         {/* Profile dropdown */}
 
-        <IconDropdown
-          userId={session?.userId}
-          icon={
-            <div className="ml-4 relative flex justify-center items-center gap-6">
-              {session?.user?.name}
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage
-                    src={session?.user?.image || ""}
-                    alt="User Avatar"
-                  />
-                  <AvatarFallback>
-                    {session?.user?.name || "User Avatar"}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
-            </div>
-          }
-        />
+        <IconDropdown session={session}>
+          {/* <div className="ml-4 relative flex justify-center items-center gap-6">
+            {session?.user?.name}
+            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Avatar className="h-8 w-8">
+                <AvatarImage
+                  src={session?.user?.image || ""}
+                  alt="User Avatar"
+                />
+                <AvatarFallback>
+                  {session?.user?.name || "User Avatar"}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          </div> */}
+        </IconDropdown>
       </div>
     </header>
   );
 };
 
-const IconDropdown = ({ icon, userId }: any) => {
+const IconDropdown = ({ session }: any) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger> {icon} </DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
+        <div className="ml-4 relative flex justify-center items-center gap-6">
+          {session?.user?.name}
+          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={session?.user?.image || ""} alt="User Avatar" />
+              <AvatarFallback>
+                {session?.user?.name || "User Avatar"}
+              </AvatarFallback>
+            </Avatar>
+          </Button>
+        </div>
+      </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          {" "}
-          <Link href={`/dashboard/profile/${userId}`} passHref>
-            Profile{" "}
-          </Link>
+        <DropdownMenuItem asChild>
+          <Link href={`/dashboard/profile/${session?.userId}`}>Profile </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>Billing</DropdownMenuItem>
         <DropdownMenuItem>Team</DropdownMenuItem>
