@@ -1,7 +1,9 @@
 // apiQueries.ts
 
-import { ApiUrl } from "@/utils/constants";
+import { Api } from "@/app/dashboard/apis/[id]/Analyse/api.interface";
+import { API_URLO, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
+
 import axios from "axios";
 import {getUserApis,getUserFollowings} from "@/actions/api"
 import { basedApiUrl, getAPIRating } from "@/actions/api";
@@ -44,6 +46,7 @@ export const useApiListForAdmin = ({ page, limit, filter, search,adminId }: any)
 
 export const useSearchApiList = ({ search }: any) => {
   return useQuery({
+
     queryKey: ["apiListSearch", search],
     queryFn: async () => {
       console.log("logged from api quety : ", search);
@@ -51,17 +54,17 @@ export const useSearchApiList = ({ search }: any) => {
       const response = await axios.get(`${ApiUrl}/apis/search`, {
         params: { search }, // Add query parameters
       });
-      return response.data;
+      console.log(response.data)
+      return (response.data as { data: Api[] }).data;
     },
   });
 };
 
-export const useApiById = (apiId: string) => {
-  return useQuery({
+export const useApiById = (apiId: number) => {
+  return useQuery<Api>({
     queryKey: ["api", apiId],
     queryFn: async () => {
       const response = await axios.get(`${ApiUrl}/apis/${apiId}`); // Adjust the endpoint
-      console.log(response.data);
 
       return response.data;
     },
@@ -69,7 +72,7 @@ export const useApiById = (apiId: string) => {
 };
 
 export const useApiByUserId = (userId: number) => {
-  return useQuery({
+  return useQuery<Api[]>({
     queryKey: ["myApis", userId],
     queryFn: async () => {
       //const response = await axios.get(`${ApiUrl}/apis/user-apis/${userId}`); // Adjust the endpoint
@@ -78,6 +81,7 @@ export const useApiByUserId = (userId: number) => {
     },
   });
 };
+
 
 export const useFollowingApis = (userId: number) => {
   return useQuery({
@@ -99,3 +103,4 @@ export const useAPIRating =(api_id:number)=>{
     },
   });
 }
+

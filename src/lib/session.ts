@@ -69,11 +69,13 @@ export const authOptions: NextAuthOptions = {
             Email: user?.email,
             Username: user?.name,
           });
+
           //console.log("response =================================================");
           //console.log(res)
           if (!res.data?.message) {
             token.backendToken = res.data.token;
             token.userId = res.data.userId;
+
           }
         } else {
           token.backendToken = user.token;

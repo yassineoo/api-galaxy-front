@@ -11,7 +11,7 @@ export default function RootLayout({
     <div className="bg-dashboardBg dark:bg-transparent flex ">
       <Sidebar />
 
-      <div className="w-full h-full overflow-scroll">{children}</div>
+      <div className="w-full h-full overflow-y-auto">{children}</div>
     </div>
   );
 }

@@ -56,6 +56,7 @@ const DashboardPage = ({ params }: any) => {
             Rating={apiRate.toFixed(1)}
             Latency={apiLogsStats?.AverageResponseTime}
             Availability={apiLogsStats?.Availability * 100}
+            api={apiSelceted.data}
           />
           <ApiTabs api={apiSelected.data} api_id = {id} user_id ={session?.userId} />
         </>

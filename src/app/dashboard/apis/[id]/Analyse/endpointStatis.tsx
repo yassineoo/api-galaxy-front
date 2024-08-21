@@ -13,35 +13,50 @@ import {
   YAxis,
 } from "recharts";
 
-import { useApiLogsStats } from "@/hooks/apiLogs/apiLogs.queries";
+import { useEndpointsLogsStats } from "@/hooks/apiLogs/apiLogs.queries";
 import TimeFilterButtons from "./timeRange";
 import { ChartFormater } from "@/utils/chartFunctions";
+import { Endpoint } from "./endpoints.interface";
+import { Api } from "./api.interface";
+import {
+  LogStat,
+  SelectOption,
+  SelectOptions,
+  TimeRangeFilter,
+} from "./interfaces";
+import { Loader2 } from "lucide-react";
+import { ChartData } from "./data";
 
-const Statis = ({ api, endpointsList }: any) => {
-  const [slectedEndpointList, setSlectedEndpointList] = useState([]);
+const Statis = ({
+  api,
+  endpointsList,
+}: {
+  api: Api;
+  endpointsList: Endpoint[];
+}) => {
+  const [selectedEndpointList, setSlectedEndpointList] =
+    useState<SelectOptions>([]);
 
-  const handleSelectChange = (selectedOptions: any) => {
+  const handleSelectChange = (selectedOptions: SelectOptions) => {
     setSlectedEndpointList(selectedOptions);
   };
-  const options = endpointsList.map((item: any) => {
+
+  const options: SelectOptions = endpointsList.map((item) => {
     return { value: item.ID, label: item.Name };
   });
-  const [timeRnageFilter, setTimeRnageFilter] = useState("7d");
 
-  const changeTimeRangeFilter = (value: any) => {
-    setTimeRnageFilter(value);
-  };
+  const [timeRnageFilter, setTimeRnageFilter] = useState<TimeRangeFilter>("7d");
 
   // selected Endpoints
 
-  useEffect(() => {}, [slectedEndpointList]);
+  useEffect(() => {}, [selectedEndpointList]);
   return (
     <div className=" w-full ">
       <h2 className="px-12 text-lg font-bold py-2  ">{api.Name} </h2>
       <div className="px-12 py-2">
         <MultiSelect
           options={options}
-          selectedValues={slectedEndpointList}
+          selectedValues={selectedEndpointList}
           onChange={handleSelectChange}
         />
         <div className="flex justify-start items-center mb-1">
@@ -53,7 +68,7 @@ const Statis = ({ api, endpointsList }: any) => {
         </div>
 
         <LineWrapper
-          slectedEndpointList={slectedEndpointList}
+          selectedEndpointList={selectedEndpointList}
           endpointsList={endpointsList}
           timeRnageFilter={timeRnageFilter}
         />
@@ -80,42 +95,58 @@ const Filter = ({ items, changeFilter, name }: any) => {
 };
 
 const LineWrapper = ({
-  slectedEndpointList,
+  selectedEndpointList,
   endpointsList,
   timeRnageFilter,
-}: any) => {
+}: {
+  selectedEndpointList: SelectOptions;
+  endpointsList: Endpoint[];
+  timeRnageFilter: TimeRangeFilter;
+}) => {
   const stat =
-    slectedEndpointList.length > 0
-      ? useApiLogsStats({
-          endpointIds: slectedEndpointList.map((Element: any) =>
-            Number(Element.value)
+    selectedEndpointList?.length > 0
+      ? useEndpointsLogsStats({
+          endpointIds: selectedEndpointList.map((option: SelectOption) =>
+            Number(option.value)
           ),
           timeFilter: timeRnageFilter,
         })
       : null;
 
+  console.log({ stat });
   return (
     <>
       {stat === null && <EmptyLineChartComponent />}
-      {stat?.isLoading && <p>loading ...</p>}
+      {stat?.isLoading && (
+        <div className="w-full h-[300px] grid place-content-center">
+          <Loader2 className="size-10 animate-spin" />
+        </div>
+      )}
       {stat?.isSuccess && (
         <LineChartComponent
           data={ChartFormater(stat.data, endpointsList)}
-          slectedEndpointList={slectedEndpointList}
+          // selectedEndpointList={selectedEndpointList}
         />
       )}
+
+      {stat?.isError && <EmptyLineChartComponent />}
     </>
   );
 };
 
-const LineChartComponent = ({ data }: any) => {
+const LineChartComponent = ({
+  data,
+}: {
+  data: ChartData[];
+  // selectedEndpointList: SelectOptions;
+}) => {
   const [TotalData, setTotalData] = useState(data);
 
   const [chartData, setChartData] = useState(
-    TotalData.map((item: any) => {
+    TotalData.map((item) => {
       const endpointData: any = {};
       Object.keys(item).forEach((key) => {
-        if (key !== "name") {
+        if (key !== "name" && typeof item[key] !== "string") {
           endpointData[key] = item[key]?.Calls || 0;
         }
       });
@@ -128,19 +159,19 @@ const LineChartComponent = ({ data }: any) => {
   );
 
   const [totalCalls, totalErrors, totalLatency] = TotalData.reduce(
-    (accumulator: any, item: any) => {
+    (accumulator, item) => {
       // Check if item has defined dynamic properties
       const properties = Object.keys(item).filter((key) => key !== "name");
       properties.forEach((property) => {
-        if (item[property]?.Calls) {
+        if (typeof item[property] !== "string" && item[property]?.Calls) {
           // Increment total calls
           accumulator[0] += item[property].Calls;
         }
-        if (item[property]?.Errors) {
+        if (typeof item[property] !== "string" && item[property]?.Errors) {
           // Increment total errors
           accumulator[1] += item[property].Errors;
         }
-        if (item[property]?.Latency) {
+        if (typeof item[property] !== "string" && item[property]?.Latency) {
           // Increment total latency
           accumulator[2] += item[property].Latency;
         }
@@ -197,10 +228,10 @@ const LineChartComponent = ({ data }: any) => {
   useEffect(() => {
     let data;
     if (metrics === "Calls") {
-      data = TotalData.map((item: any) => {
+      data = TotalData.map((item) => {
         const endpointData: any = {};
         Object.keys(item).forEach((key) => {
-          if (key !== "name") {
+          if (key !== "name" && typeof item[key] !== "string") {
             endpointData[key] = item[key]?.Calls || 0;
           }
         });
@@ -212,10 +243,10 @@ const LineChartComponent = ({ data }: any) => {
       });
     }
     if (metrics === "Errors") {
-      data = TotalData.map((item: any) => {
+      data = TotalData.map((item) => {
         const endpointData: any = {};
         Object.keys(item).forEach((key) => {
-          if (key !== "name") {
+          if (key !== "name" && typeof item[key] !== "string") {
             endpointData[key] = item[key]?.Errors || 0;
           }
         });
@@ -227,10 +258,10 @@ const LineChartComponent = ({ data }: any) => {
       });
     }
     if (metrics === "Latency") {
-      data = TotalData.map((item: any) => {
+      data = TotalData.map((item) => {
         const endpointData: any = {};
         Object.keys(item).forEach((key) => {
-          if (key !== "name") {
+          if (key !== "name" && typeof item[key] !== "string") {
             endpointData[key] = item[key]?.Latency || 0;
           }
         });

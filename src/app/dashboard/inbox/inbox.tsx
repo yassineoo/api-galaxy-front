@@ -5,47 +5,47 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default function Inbox() {
-  const [chats, setChats] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      avatar: "/images/1.png",
-      messages: [
-        {
-          id: 1,
-          content: "Hey, how's it going?",
-          timestamp: "2:30 PM",
-          sentByCurrentUser: false,
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      avatar: "/images/36.png",
-      messages: [
-        {
-          id: 1,
-          content: "Did you see the new design?",
-          timestamp: "1:45 PM",
-          sentByCurrentUser: false,
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "Sarah Johnson",
-      avatar: "/images/boy.png",
-      messages: [
-        {
-          id: 1,
-          content: "Let's discuss the project",
-          timestamp: "12:30 PM",
-          sentByCurrentUser: false,
-        },
-      ],
-    },
-  ]);
+  // const [chats, setChats] = useState([
+  //   {
+  //     id: 1,
+  //     name: "John Doe",
+  //     avatar: "/images/1.png",
+  //     messages: [
+  //       {
+  //         id: 1,
+  //         content: "Hey, how's it going?",
+  //         timestamp: "2:30 PM",
+  //         sentByCurrentUser: false,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Jane Smith",
+  //     avatar: "/images/36.png",
+  //     messages: [
+  //       {
+  //         id: 1,
+  //         content: "Did you see the new design?",
+  //         timestamp: "1:45 PM",
+  //         sentByCurrentUser: false,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Sarah Johnson",
+  //     avatar: "/images/boy.png",
+  //     messages: [
+  //       {
+  //         id: 1,
+  //         content: "Let's discuss the project",
+  //         timestamp: "12:30 PM",
+  //         sentByCurrentUser: false,
+  //       },
+  //     ],
+  //   },
+  // ]);
 
   const [selectedChatId, setSelectedChatId] = useState(1);
   const [newMessage, setNewMessage] = useState("");

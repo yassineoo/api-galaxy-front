@@ -12,12 +12,13 @@ import { useApiEndpointsById } from "@/hooks/Endpoints/Endpoints.queries";
 import { ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useSendRequest } from "@/hooks/apis/api.Mutation";
 import CommentsContainer from "../test/discussion";
-import PrcingTabs from "@/components/addNewApi/monitazation/pricingCardsApi";
 import { ResizableDemo } from "./resizeable";
 import ReviewsTab from "../test/reviews";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import ParamterControler from "./paramterController";
+import ProviderInfo from "./providerInfo";
+import PrcingTabs from "@/components/addNewApi/monitazation/pricingCardsApi";
 const codeString = `
 const axios = require('axios');
 
@@ -46,12 +47,33 @@ export function ApiTabs({ api,api_id,user_id }: any) {
   return (
     <>
       <Tabs defaultValue="endpoints">
-        <TabsList className="grid  grid-cols-5 w-2/3  md:w-1/2  lg:w-1/3  ml-8 my-2">
-          <TabsTrigger value="endpoints">Endpoints</TabsTrigger>
-          <TabsTrigger value="about">About</TabsTrigger>
-          <TabsTrigger value="discussion">Reviews</TabsTrigger>
-          <TabsTrigger value="pricing">Pricing</TabsTrigger>
-          <TabsTrigger value="report">Report</TabsTrigger>
+
+        <TabsList className="grid grid-cols-4 w-2/3 md:w-1/2 lg:w-1/3 ml-8 my-2 items-center">
+          <TabsTrigger
+            value="endpoints"
+            className="text-blue-900 font-semibold border-b-2 border-transparent hover:border-blue-900 hover:bg-blue-50 py-2 transition-colors duration-300 ease-in-out focus:border-blue-900 focus:bg-blue-100 focus:outline-none"
+          >
+            Endpoints
+          </TabsTrigger>
+          <TabsTrigger
+            value="about"
+            className="text-blue-900 font-semibold border-b-2 border-transparent hover:border-blue-900 hover:bg-blue-50 py-2 transition-colors duration-300 ease-in-out focus:border-blue-900 focus:bg-blue-100 focus:outline-none"
+          >
+            About
+          </TabsTrigger>
+          <TabsTrigger
+            value="discussion"
+            className="text-blue-900 font-semibold border-b-2 border-transparent hover:border-blue-900 hover:bg-blue-50 py-2 transition-colors duration-300 ease-in-out focus:border-blue-900 focus:bg-blue-100 focus:outline-none"
+          >
+            Discussion
+          </TabsTrigger>
+          <TabsTrigger
+            value="pricing"
+            className="text-blue-900 font-semibold border-b-2 border-transparent hover:border-blue-900 hover:bg-blue-50 py-2 transition-colors duration-300 ease-in-out focus:border-blue-900 focus:bg-blue-100 focus:outline-none"
+          >
+            Pricing
+          </TabsTrigger>
+
         </TabsList>
         <TabsContent
           value="endpoints"
@@ -59,11 +81,14 @@ export function ApiTabs({ api,api_id,user_id }: any) {
         >
           {endpointList.isLoading && <div>Loading...</div>}
           {endpointList.isSuccess && (
-            <ApiDocsGraph
-              selectedNodeId={selectedNodeId}
-              endpointsList={endpointList.data}
-              setSelectedNodeId={setSelectedNodeId}
-            />
+            <div className="flex w-full gap-10">
+              <ApiDocsGraph
+                selectedNodeId={selectedNodeId}
+                endpointsList={endpointList.data}
+                setSelectedNodeId={setSelectedNodeId}
+              />
+              <ProviderInfo />
+            </div>
           )}
           <div className="w-full flex justify-center h-screen">
             {endpointList.isSuccess && (
@@ -116,7 +141,7 @@ export function ApiTabs({ api,api_id,user_id }: any) {
           <Report userId = {user_id} api_id={api_id} />
         </TabsContent>
       </Tabs>
-      <section className="mt-28">
+      <section className="">
         <Footer />
       </section>
     </>

@@ -1,4 +1,4 @@
-export const fakeData = [
+export const fakeData: ChartData[] = [
   {
     name: "Monday",
     getUsers: {
@@ -65,3 +65,14 @@ export const fakeData = [
     },
   },
 ];
+
+export interface ChartData {
+  name: string;
+  [x: string]:
+    | {
+        Calls: number;
+        Errors: number;
+        Latency: number;
+      }
+    | string;
+}

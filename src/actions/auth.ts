@@ -3,9 +3,12 @@ import { getSession, signIn } from "next-auth/react";
 import { Inputs, resetPasswordInputs } from "@/types/common.types";
 import { UseFormSetError } from "react-hook-form";
 import { Dispatch, SetStateAction } from "react";
+import { ApiAuth } from "@/utils/constants";
 
 export const placeholderApi = axios.create({
-  baseURL: "http://localhost:7000/",
+
+  baseURL: ApiAuth,
+
 });
 
 export type UserData = {
