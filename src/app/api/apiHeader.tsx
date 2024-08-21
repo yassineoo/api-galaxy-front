@@ -9,6 +9,8 @@ const ApiHeader = ({
   Latency,
   Availability,
 }: any) => {
+
+  console.log("starts ",Rating)
   return (
     <div className="w-full flex items-center justify-between bg-gradient-to-r from-blue-50 via-white to-blue-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
       <div className="flex items-center gap-6">
@@ -40,7 +42,7 @@ const ApiHeader = ({
             size={24}
             color2={"#ffd700"}
             value={Rating}
-            edit={false}
+            edit={true}
           />
         </div>
         <div className="text-center">

@@ -6,7 +6,9 @@ import { Dispatch, SetStateAction } from "react";
 import { ApiAuth } from "@/utils/constants";
 
 export const placeholderApi = axios.create({
+
   baseURL: ApiAuth,
+
 });
 
 export type UserData = {
@@ -45,6 +47,7 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
 
 export const oauthUser = async (data: any) => {
   try {
+    console.log("called in oauth")
     const res = await placeholderApi.post("/oauth", JSON.stringify(data), {
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +55,7 @@ export const oauthUser = async (data: any) => {
     });
     console.log("rsersesrsesres ============}}}}}}}}}}}}}}}");
 
-    console.log(res);
+    console.log("response from backend"+res);
 
     return res;
   } catch (error) {

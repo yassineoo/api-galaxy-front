@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 export const placeholderApis = axios.create({
-  baseURL: "http://localhost:8000/",
+  baseURL: "http://localhost:8000",
 });
 
 export const useApiCategoryList = () => {
@@ -13,6 +13,7 @@ export const useApiCategoryList = () => {
     queryKey: ["apiCategoryList"],
     queryFn: async () => {
       const response = await placeholderApis.get(`/categoriesk`); // Adjust the endpoint
+      console.log("api categoriee list", response.data)
       return response.data;
     },
   });

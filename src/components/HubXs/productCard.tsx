@@ -1,10 +1,12 @@
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { CldImage } from "next-cloudinary";
+import { disLikeAnAPI, likeAnAPI } from "@/actions/api";
 
 interface CardType {
+  cardData:{
   averageRating?: number;
   latency?: number;
   availability?: number;
@@ -13,9 +15,12 @@ interface CardType {
   cardDescription: string;
   id: number;
   liked?: boolean;
+  },
+  userId : number | undefined
 }
 
 const ProductCard: FC<CardType> = ({
+  cardData:{
   id,
   averageRating,
   latency,
@@ -24,9 +29,35 @@ const ProductCard: FC<CardType> = ({
   cardTitle,
   cardDescription,
   liked = false,
+    },
+    userId
 }) => {
   const router = useRouter();
-
+  const [isLiked,setIsLiked]=useState(liked)
+  let timeout:any;
+  const likeEvent = (event: React.MouseEvent<HTMLImageElement>)=>{
+    event.stopPropagation()
+    setIsLiked(prev => !prev)
+    if(timeout){
+      clearTimeout(timeout)
+    }
+    timeout = setTimeout(async ()=>{
+      try {
+        // send Request to server to like/dislike
+      if(!isLiked){
+        // like the api 
+        console.log("like")
+        await likeAnAPI(userId as number,id)
+      }else{
+        // dislike the api
+        console.log("dislikne")
+        await disLikeAnAPI(userId as number ,id)
+      }
+      } catch (error) {
+        // use react toastify
+      }
+    },2000)
+  }
   return (
     <div
       onClick={() => {
@@ -46,13 +77,14 @@ const ProductCard: FC<CardType> = ({
           />
         </div>
         <div className="flex gap-1 ">
-          {liked ? (
+          {isLiked ? (
             <Image
               className="md:w-7 md:h-7 hover:scale-110 cursor-pointer"
               src={"/icons/icon_heart.png"}
               alt="Card Image"
               width={20}
               height={20}
+              onClick={likeEvent}
             />
           ) : (
             <Image
@@ -61,6 +93,7 @@ const ProductCard: FC<CardType> = ({
               alt="Card Image"
               width={20}
               height={20}
+              onClick={likeEvent}
             />
           )}
 

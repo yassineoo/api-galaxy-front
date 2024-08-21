@@ -61,29 +61,21 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         console.log("user =================================================");
-        console.log("user =================================================");
-        console.log("user =================================================");
-        console.log("user =================================================");
         console.log(user);
         console.log("user =================================================");
-        console.log("user =================================================");
-        console.log("user =================================================");
-
         //first call ---> user sign In
         if (user?.name) {
           const res = await oauthUser({
             Email: user?.email,
             Username: user?.name,
           });
-          console.log("res =================================================");
-          console.log("res =================================================");
-          console.log("res =================================================");
-          console.log(res);
-          console.log("res =================================================");
 
-          if (!res?.data?.message) {
-            token.backendToken = res?.data.token;
-            token.userId = res?.data.userId;
+          //console.log("response =================================================");
+          //console.log(res)
+          if (!res.data?.message) {
+            token.backendToken = res.data.token;
+            token.userId = res.data.userId;
+
           }
         } else {
           token.backendToken = user.token;
@@ -96,6 +88,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }): Promise<any> {
       // Add the backend token to the session object
+      //console.log(token)
       session.token = token.backendToken as string;
       session.userId = token.userId as number;
       return session;

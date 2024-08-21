@@ -1,20 +1,13 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CodeSnippet from "./codeSnippet";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@radix-ui/react-accordion";
-import { Button } from "@/components/ui/button";
 import ApiDocsGraph from "./apiDoc";
 import { Input } from "@/components/ui/input";
 import Result from "./result";
 import { useEffect, useState } from "react";
 import About from "./about";
 import Footer from "../../components/Vetrine/footer";
-
+import { Report } from "./Report";
 import { useApiEndpointsById } from "@/hooks/Endpoints/Endpoints.queries";
 import { ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useSendRequest } from "@/hooks/apis/api.Mutation";
@@ -38,13 +31,11 @@ axios.get('https://yourapi.com/endpoint')
     });
 `;
 
-export function ApiTabs({ api }: any) {
+export function ApiTabs({ api,api_id,user_id }: any) {
   const endpointList = useApiEndpointsById(api.ID);
   const [selectedNodeId, setSelectedNodeId] = useState(100);
   const [resquestResult, setResquestResult] = useState();
   const [defaultValue, setDefaultValue] = useState("CodeSnippet");
-  console.log("selectedNodeId ", selectedNodeId);
-
   const {
     mutateAsync: sendRequest,
     isError,
@@ -56,6 +47,7 @@ export function ApiTabs({ api }: any) {
   return (
     <>
       <Tabs defaultValue="endpoints">
+
         <TabsList className="grid grid-cols-4 w-2/3 md:w-1/2 lg:w-1/3 ml-8 my-2 items-center">
           <TabsTrigger
             value="endpoints"
@@ -81,6 +73,7 @@ export function ApiTabs({ api }: any) {
           >
             Pricing
           </TabsTrigger>
+
         </TabsList>
         <TabsContent
           value="endpoints"
@@ -125,13 +118,13 @@ export function ApiTabs({ api }: any) {
         </TabsContent>
         <TabsContent
           value="about"
-          className="w-full   flex flex-col justify-start mx-12 items-start "
+          className="w-full flex flex-col justify-start mx-12 items-start"
         >
           <About apiDocs={api.ApiDocs} />
         </TabsContent>
         <TabsContent
           value="discussion"
-          className="  flex justify-center items-start"
+          className="flex justify-center items-start"
         >
           <ReviewsTab />
         </TabsContent>
@@ -140,6 +133,12 @@ export function ApiTabs({ api }: any) {
           className="w-full bg-gray-100   flex justify-center items-start "
         >
           <PrcingTabs api={api} />
+        </TabsContent>
+        <TabsContent
+          value="report"
+          className="w-full flex flex-col justify-start mx-12 items-start"
+        >
+          <Report userId = {user_id} api_id={api_id} />
         </TabsContent>
       </Tabs>
       <section className="">

@@ -1,5 +1,3 @@
-import { Inter } from "next/font/google";
-import Sidebar from "@/components/dashboard/sidebar";
 import AdminSidebar from "@/components/admin/adminSidebar";
 
 export default function RootLayout({

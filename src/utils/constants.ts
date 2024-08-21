@@ -1,4 +1,6 @@
 // when using an api gateway
+
+
 export const ApiUrl = "http://localhost:5000/apis-service";
 export const ApiAuth = "http://localhost:5000/auth";
 
@@ -6,6 +8,7 @@ export const ApiAuth = "http://localhost:5000/auth";
 //export const ApiUrl = "http://localhost:8000";
 //export const ApiAuth = "http://localhost:7000";
 import { TimeRangeFilter } from "@/app/dashboard/apis/[id]/Analyse/interfaces";
+
 
 export const timeFilter: {
   value: TimeRangeFilter;

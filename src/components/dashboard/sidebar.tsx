@@ -66,8 +66,10 @@ export default function Sidebar() {
   const pathSegments = pathname.split("/");
   const activeItem = pathSegments[2]; // Assuming the item is the third segment
   let activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
-  // const maApisListCallback = useCallback(() => useApiByUserId(1), []);
-  const maApisList = useApiByUserId(1); //maApisListCallback();
+
+  const maApisListCallback = useCallback(() => useApiByUserId(1), []);
+  const maApisList = maApisListCallback();
+
   let apiId = 0;
   if (activeItem != "apis") {
     activeChildName = pathname;

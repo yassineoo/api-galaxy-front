@@ -6,13 +6,20 @@ import { useSession } from "next-auth/react";
 import Header from "@/components/dashboard/header";
 import { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { getUserApis, getUserFollowings } from "@/actions/api";
+import { useApiById, useApiByUserId, useFollowingApis } from "@/hooks/apis/api.queries";
+import ReviewSkeleton from "@/components/HubXs/ReviewSkeleton";
 
 export default function ProfilePage({ params }: any) {
   const { data: session, status } = useSession();
-  // State to handle the edit mode and name input
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(session?.user?.name || "");
+  
+  const myApis = useApiByUserId(session?.userId as number)
 
+  const myFollowingApis= useFollowingApis(session?.userId as number)
+  
+  
   useEffect(() => {
     setName(session?.user?.name || "");
   }, [session?.user?.name]);
@@ -102,11 +109,15 @@ export default function ProfilePage({ params }: any) {
                   </TabsList>
                   <TabsContent value="published" className="mt-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-                      <Card>
+
+                      {
+                        myApis.isLoading ? <ReviewSkeleton /> : (
+                          !myApis.data.length ? <p>no published api</p> : myApis.data.map((api:any,index:number) => (
+                            <Card key={index}>
                         <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">API 1</div>
+                          <div className="text-lg font-semibold">{api.name}</div>
                           <div className="text-muted-foreground">
-                            Description of API 1
+                           {api.description}
                           </div>
                           <div className="flex items-center gap-2 text-sm">
                             <CodeIcon className="w-4 h-4" />
@@ -114,94 +125,34 @@ export default function ProfilePage({ params }: any) {
                           </div>
                         </CardContent>
                       </Card>
-                      <Card>
-                        <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">API 2</div>
-                          <div className="text-muted-foreground">
-                            Description of API 2
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <CodeIcon className="w-4 h-4" />
-                            <span>456 calls</span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">API 3</div>
-                          <div className="text-muted-foreground">
-                            Description of API 3
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <CodeIcon className="w-4 h-4" />
-                            <span>789 calls</span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">API 4</div>
-                          <div className="text-muted-foreground">
-                            Description of API 4
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <CodeIcon className="w-4 h-4" />
-                            <span>321 calls</span>
-                          </div>
-                        </CardContent>
-                      </Card>
+                          ))
+                        )
+                      }
+                      
+
                     </div>
                   </TabsContent>
                   <TabsContent value="following">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-                      <Card>
+                    {
+                        myFollowingApis.isLoading ? <ReviewSkeleton /> : (
+                          !myFollowingApis.data.length ? <p>no published api</p> : myFollowingApis.data.map((api:any,index:number) => (
+                            <Card key={index}>
                         <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">API 5</div>
+                          <div className="text-lg font-semibold">{api.api.name}</div>
                           <div className="text-muted-foreground">
-                            Description of API 5
+                           {api.api.description}
                           </div>
                           <div className="flex items-center gap-2 text-sm">
                             <CodeIcon className="w-4 h-4" />
-                            <span>654 calls</span>
+                            <span>123 calls</span>
                           </div>
                         </CardContent>
                       </Card>
-                      <Card>
-                        <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">API 6</div>
-                          <div className="text-muted-foreground">
-                            Description of API 6
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <CodeIcon className="w-4 h-4" />
-                            <span>987 calls</span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">API 7</div>
-                          <div className="text-muted-foreground">
-                            Description of API 7
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <CodeIcon className="w-4 h-4" />
-                            <span>159 calls</span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">API 8</div>
-                          <div className="text-muted-foreground">
-                            Description of API 8
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <CodeIcon className="w-4 h-4" />
-                            <span>753 calls</span>
-                          </div>
-                        </CardContent>
-                      </Card>
+                          ))
+                        )
+                      }
+                      
                     </div>
                   </TabsContent>
                 </Tabs>
