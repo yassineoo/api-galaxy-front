@@ -23,7 +23,7 @@ export default function SearchApiInput() {
     );
     */
     // setFilteredSuggestions(filteredSuggestions);
-    setShowSuggestions(filteredSuggestions.length > 0); // Show suggestions only if there are results
+    setShowSuggestions(filteredSuggestions?.length > 0); // Show suggestions only if there are results
   };
   const inputRef = useRef(null);
 
@@ -39,7 +39,7 @@ export default function SearchApiInput() {
       searchResults.data
     );
     if (searchResults.isSuccess) {
-      setFilteredSuggestions(searchResults.data.data.slice(0, 5));
+      setFilteredSuggestions(searchResults?.data?.data?.slice(0, 5));
     }
   }, [searchResults.isSuccess]);
 
@@ -88,7 +88,7 @@ export default function SearchApiInput() {
         >
           {" "}
           <ul className="py-1 text-sm text-gray-700 dark:text-gray-400">
-            {filteredSuggestions.map((suggestion, index) => (
+            {filteredSuggestions?.map((suggestion, index) => (
               <li
                 key={index}
                 className=" cursor-pointer flex justify-start items-center  gap-8 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-black"

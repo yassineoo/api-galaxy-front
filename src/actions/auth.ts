@@ -3,9 +3,12 @@ import { getSession, signIn } from "next-auth/react";
 import { Inputs, resetPasswordInputs } from "@/types/common.types";
 import { UseFormSetError } from "react-hook-form";
 import { Dispatch, SetStateAction } from "react";
+import { ApiAuth } from "@/utils/constants";
 
 export const placeholderApi = axios.create({
-  baseURL: " http://localhost:5000/auth",
+
+  baseURL: ApiAuth,
+
 });
 
 export type UserData = {
@@ -44,13 +47,21 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
 
 export const oauthUser = async (data: any) => {
   try {
+    console.log("called in oauth")
     const res = await placeholderApi.post("/oauth", JSON.stringify(data), {
       headers: {
         "Content-Type": "application/json",
       },
     });
+    console.log("rsersesrsesres ============}}}}}}}}}}}}}}}");
+
+    console.log("response from backend"+res);
+
     return res;
   } catch (error) {
+    console.log("error ============}}}}}}}}}}}}}}}");
+    console.log(error);
+
     return false;
   }
 };

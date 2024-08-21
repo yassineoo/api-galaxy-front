@@ -78,3 +78,50 @@
 .ql-container.ql-snow {
   border: none !important;
 }
+
+.navbarGradient {
+  background: linear-gradient(135deg, #0056b3, #007fff, #66b2ff);
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.navbar-logo img {
+  margin-right: 8px;
+}
+
+.navbar-logo span {
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.navbar-link:hover,
+.navbar-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: background-color 0.3s ease-in-out;
+  padding: 0.5rem 1rem;
+}
+
+.navbar-button {
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.login {
+  background: linear-gradient(135deg, #004e8c, #007fff);
+  color: white;
+}
+
+.signup {
+  background: linear-gradient(135deg, #ffd700, #ffb700);
+  color: #004e8c;
+}
+
+.signup:hover {
+  background: linear-gradient(135deg, #ffb700, #ffd700);
+  color: #003366;
+}

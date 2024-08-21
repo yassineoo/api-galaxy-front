@@ -1,29 +1,51 @@
 // apiQueries.ts
 
 import { Api } from "@/app/dashboard/apis/[id]/Analyse/api.interface";
-import { API_URLO, ApiUrl } from "@/utils/constants";
+import { ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
 
-export const useApiList = ({ page = 1, limit = 10, filter = 0, search = "" }: any) => {
-  return useQuery<Api[]>({
+import axios from "axios";
+import { getUserApis, getUserFollowings } from "@/actions/api";
+import { basedApiUrl, getAPIRating } from "@/actions/api";
+export const useApiList = ({ page, limit, filter, search, userId }: any) => {
+  //const userData = await getCurrentUser()
+  //console.log("helll",userData)
+  return useQuery({
     queryKey: ["apiList", page, limit, filter, search],
     queryFn: async () => {
       try {
-        console.log("apiUrl : ", `${ApiUrl}/apis`);
-        //  axios.defaults.baseURL = "http://localhost:5000";
-
-        const response = await axios.get(`${API_URLO}/apis-service/apis`, {
-          params: { page, limit, filter, search },
-        });
-        console.log("response from api quety : ", response.data);
-
+        const response = await basedApiUrl.get(
+          `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}`
+        );
+        //console.log("response from api query : ", response.data);
         return response.data;
-      } catch (error) {
-        console.log({ error })
-        if (error instanceof AxiosError) throw new Error(error.response?.data.message)
-        if (error instanceof Error) throw new Error(error.message)
-        else throw new Error("Internal Server Error")
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    },
+  });
+};
+
+export const useApiListForAdmin = ({
+  page,
+  limit,
+  filter,
+  search,
+  adminId,
+}: any) => {
+  //const userData = await getCurrentUser()
+  //console.log("helll",userData)
+  return useQuery({
+    queryKey: ["apiListAdmin", page, limit, filter, search],
+    queryFn: async () => {
+      try {
+        const response = await basedApiUrl.get(
+          `/userApi/admin/${adminId}?limit=${limit}&page=${page}&search=${search}`
+        );
+        //console.log("response from api query : ", response.data);
+        return response.data;
+      } catch (error: any) {
+        console.log(error.message);
       }
     },
   });
@@ -37,7 +59,7 @@ export const useSearchApiList = ({ search }: { search: string }) => {
       const response = await axios.get(`${ApiUrl}/apis/search`, {
         params: { search }, // Add query parameters
       });
-      console.log(response.data)
+      console.log(response.data);
       return (response.data as { data: Api[] }).data;
     },
   });
@@ -47,8 +69,6 @@ export const useApiById = (apiId: number) => {
   return useQuery<Api>({
     queryKey: ["api", apiId],
     queryFn: async () => {
-      console.log("function excuted getting apis by id");
-
       const response = await axios.get(`${ApiUrl}/apis/${apiId}`); // Adjust the endpoint
 
       return response.data;
@@ -60,10 +80,30 @@ export const useApiByUserId = (userId: number) => {
   return useQuery<Api[]>({
     queryKey: ["myApis", userId],
     queryFn: async () => {
-      const response = await axios.get(`${ApiUrl}/apis/user-apis/${userId}`); // Adjust the endpoint
+      //const response = await axios.get(`${ApiUrl}/apis/user-apis/${userId}`); // Adjust the endpoint
+      const data = await getUserApis(userId);
+      return data;
+    },
+  });
+};
 
-      console.log({ response })
-      return response.data.data;
+export const useFollowingApis = (userId: number) => {
+  return useQuery({
+    queryKey: ["myFollowings", userId],
+    queryFn: async () => {
+      //const response = await axios.get(`${ApiUrl}/apis/user-apis/${userId}`); // Adjust the endpoint
+      const data = await getUserFollowings(userId);
+      return data;
+    },
+  });
+};
+
+export const useAPIRating = (api_id: number) => {
+  return useQuery({
+    queryKey: ["apiRating", api_id],
+    queryFn: async () => {
+      const response = await getAPIRating(api_id);
+      return response;
     },
   });
 };

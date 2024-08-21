@@ -1,6 +1,6 @@
 // app/apis/columns.tsx
 import { Button } from "@/components/ui/button";
-import { CldImage } from "next-cloudinary";
+import {deleteReview} from "@/actions/api"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +11,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export type ApiEntity = {
   providerID: number;
@@ -22,42 +23,38 @@ export type ApiEntity = {
 
 export const columns: ColumnDef<ApiEntity>[] = [
   {
-    accessorKey: "name",
-    header: "API Name",
-    cell: ({ row }) => row.getValue("name"),
+    accessorKey: "reason",
+    header: "Reason",
+    cell: ({ row }) => row.getValue("reason")
   },
   {
-    accessorKey: "provider_id",
-    header: "Provider ID",
-    cell: ({ row }) => row.getValue("provider_id"),
+    accessorKey: "description",
+    header: "Description",
+    cell: ({ row }) => row.getValue("description"),
   },
   {
-    accessorKey: "image_path",
-    header: "Image",
-    cell: ({ row }) => (
-      <CldImage
-        src={`${row.getValue("image_path")}`}
-        width={20}
-        height={20}
-        alt="API Image"
-      />
-    ),
+    accessorKey: "comment",
+    header: "Review",
+    cell: ({ row }) => row.getValue("comment"),
   },
   {
-    accessorKey: "category_id",
-    header: "Category ID",
-    cell: ({ row }) => row.getValue("category_id"),
+    accessorKey: "username",
+    header: "Author",
+    cell: ({ row }) => row.getValue("username"),
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => row.getValue("status"),
+    accessorKey: "id",
+    header: "Id",
+    cell: ({ row }) => row.getValue("id"),
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const api = row.original;
-
+        const query= useQueryClient()
+        const deleteReviewReport=(id:number)=>{
+                    deleteReview(id)
+                    query.invalidateQueries({queryKey:["reviewReportsList"]})
+        }
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -71,16 +68,7 @@ export const columns: ColumnDef<ApiEntity>[] = [
             className="bg-gray-300 shadow-lg p-2 cursor-pointer space-y-2"
           >
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(api.providerID.toString())
-              }
-            >
-              Copy Provider ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View API Details</DropdownMenuItem>
-            <DropdownMenuItem>Edit API</DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>deleteReviewReport(row.getValue("id"))}>delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -20,7 +20,7 @@ export interface Api {
   Keywords: string;
   Description: string;
   // Add other properties as needed
-
+  Rating: number;
   HealthCheckEndpointId: number;
   EmailNotifcation: string;
 }

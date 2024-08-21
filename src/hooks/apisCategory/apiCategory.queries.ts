@@ -4,12 +4,16 @@ import { ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
+export const placeholderApis = axios.create({
+  baseURL: "http://localhost:8000",
+});
+
 export const useApiCategoryList = () => {
   return useQuery({
     queryKey: ["apiCategoryList"],
     queryFn: async () => {
-      const ApiUrlo = "http://localhost:5000";
-      const response = await axios.get(`${ApiUrlo}/apis-service/categories`); // Adjust the endpoint
+      const response = await placeholderApis.get(`/categoriesk`); // Adjust the endpoint
+      console.log("api categoriee list", response.data)
       return response.data;
     },
   });
