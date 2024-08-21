@@ -50,9 +50,8 @@ export const useApiListForAdmin = ({
     },
   });
 };
-
-export const useSearchApiList = ({ search }: any) => {
-  return useQuery({
+export const useSearchApiList = ({ search }: { search: string }) => {
+  return useQuery<Api[]>({
     queryKey: ["apiListSearch", search],
     queryFn: async () => {
       console.log("logged from api quety : ", search);
@@ -108,3 +107,5 @@ export const useAPIRating = (api_id: number) => {
     },
   });
 };
+
+// export function useApi
