@@ -2,7 +2,8 @@
 
 export const ApiUrl = "http://localhost:5000/apis-service";
 export const ApiAuth = "http://localhost:5000/auth";
-export const ApiServiceUrl = "http://localhost:5000/user-service";
+export const ApiUsersUrl = "http://localhost:5000/user-service";
+export const ApiStatUrl = "http://localhost:5000/stats-service";
 // when use it directly
 //export const ApiUrl = "http://localhost:8000";
 //export const ApiAuth = "http://localhost:7000";
