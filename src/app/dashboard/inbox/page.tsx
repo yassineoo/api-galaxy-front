@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { RingLoader } from "react-spinners";
 import { useEffect, useState } from "react";
 
+
 export async function getUserChatrooms(
   userId: number,
   search: string
@@ -28,6 +29,7 @@ export async function getUserChatrooms(
 }
 
 export default function InboxPage({
+
   searchParams: { search, userId },
 }: {
   searchParams: { search: string; userId: string };
@@ -62,6 +64,7 @@ export default function InboxPage({
 
   return (
     <Inbox chats={chatrooms} userId={Number(session?.userId)}>
+
       <div className="w-full grid place-content-center">
         No chat selected yet
       </div>

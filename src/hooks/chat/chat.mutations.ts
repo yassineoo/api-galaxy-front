@@ -41,3 +41,4 @@ export function useCreateMessageMutation(chatId: number) {
     },
   });
 }
+

@@ -8,7 +8,9 @@ import { cn } from "@/lib/utils";
 import { Chat } from "./chat.interface";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
+
 import { RingLoader } from "react-spinners";
+
 
 function SearchIcon(props: any) {
   return (
@@ -39,11 +41,13 @@ export function ChatsList({
 }) {
   const params = useParams();
   const chatId = params.chatId as string;
+
   const searchParams = useSearchParams();
   const search = searchParams.get("search") ?? "";
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
+
   const [selectedChatId, setSelectedChatId] = useState<number | undefined>(
     chatId && chats.map((chat) => chat.id).includes(parseInt(chatId))
       ? parseInt(chatId)
@@ -63,12 +67,14 @@ export function ChatsList({
 
   return (
     <div className="w-56 min-w-56 md:w-72 md:min-w-72 overflow-y-auto overflow-x-hidden">
+
       <div className="space-y-2 p-4 w-full">
         {chatrooms.map((chat) => {
           const otherMember: Chat["users"][0] = chat.users.filter(
             (u) => u.id !== userId
           )[0];
           return (
+
             <div
               key={chat.id}
               className={`flex items-center gap-3 rounded-md p-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 cursor-pointer ${
@@ -113,6 +119,7 @@ export function ChatsList({
                 </>
               )}
             </div>
+
           );
         })}
       </div>
@@ -125,11 +132,14 @@ export function ChatListSearch() {
   const router = useRouter();
 
   async function handleSearch() {
+
     if (!inputRef.current) return;
     router.replace(
       `/dashboard/inbox?search=${inputRef.current?.value.toLowerCase()}`
     );
+
   }
+
 
   return (
     <div className="border-b border-gray-200 dark:border-gray-800 p-4 ">

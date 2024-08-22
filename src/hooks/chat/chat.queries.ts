@@ -71,3 +71,4 @@ export function useChatsQuery(userId: number = 1, search: string) {
     },
   });
 }
+

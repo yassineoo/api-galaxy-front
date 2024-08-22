@@ -12,7 +12,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useCreateMessageMutation } from "@/hooks/chat/chat.mutations";
 import { format } from "date-fns";
 import { BeatLoader } from "react-spinners";
+
 import { ApiUsersUrl } from "@/utils/constants";
+
 
 export default function Chatroom({ chat }: { chat: ChatWithMessages }) {
   const [io, setIo] = useState<Socket | null>(null);
@@ -55,7 +57,9 @@ export default function Chatroom({ chat }: { chat: ChatWithMessages }) {
   });
 
   useEffect(() => {
+
     const connection = client("http://localhost:7002");
+
     connection?.emit("connect_user", { userId: user.id });
     setIo(connection);
 
@@ -110,7 +114,9 @@ export default function Chatroom({ chat }: { chat: ChatWithMessages }) {
     setMessage(e.target.value);
     if (!typing) {
       setTyping(true);
+
       io?.emit("user_is_typing", {
+
         userId: user.id,
         otherMemberId: otherMember.id,
       });
@@ -122,7 +128,9 @@ export default function Chatroom({ chat }: { chat: ChatWithMessages }) {
       const timeNow = new Date().getTime();
       const timeDiff = timeNow - lastTypingTime;
       if (timeDiff >= timerLength && typing) {
+
         io?.emit("user_is_not_typing", {
+
           userId: user.id,
           otherMemberId: otherMember.id,
         });
@@ -160,7 +168,9 @@ export default function Chatroom({ chat }: { chat: ChatWithMessages }) {
                     <UserProfilePicture user={otherMember} />
                   )}
                   <div
+
                     className={`rounded-lg p-3 max-w-72 w-2/3 break-words  ${
+
                       messageSentByCurrentUser
                         ? "bg-blue-500 text-white"
                         : "bg-gray-200 dark:bg-gray-800"
