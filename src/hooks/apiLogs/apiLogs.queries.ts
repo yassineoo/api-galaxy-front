@@ -1,8 +1,11 @@
 // apiQueries.ts
 
 import { ChartData } from "@/app/dashboard/apis/[id]/Analyse/data";
-import { LogStat, TimeRangeFilter } from "@/app/dashboard/apis/[id]/Analyse/interfaces";
-import { ApiUrl, stats_api_url } from "@/utils/constants";
+import {
+  LogStat,
+  TimeRangeFilter,
+} from "@/app/dashboard/apis/[id]/Analyse/interfaces";
+import { ApiStatUrl, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 
@@ -41,7 +44,13 @@ export const useApiLogsStatss = (endpointIds: number[]) => {
   });
 };
 
-export const useEndpointsLogsStats = ({ endpointIds, timeFilter }: { endpointIds: number[], timeFilter: TimeRangeFilter }) => {
+export const useEndpointsLogsStats = ({
+  endpointIds,
+  timeFilter,
+}: {
+  endpointIds: number[];
+  timeFilter: TimeRangeFilter;
+}) => {
   return useQuery<ChartData[]>({
     queryKey: ["EndpointsLogsStats", endpointIds, timeFilter], // Adjust the queryKey
     queryFn: async () => {
@@ -56,52 +65,55 @@ export const useEndpointsLogsStats = ({ endpointIds, timeFilter }: { endpointIds
       // });
       try {
         const response = await axios.post(
-          `${stats_api_url}/stats/endpoints?duration=${timeFilter}`,
+          `${ApiStatUrl}/stats/endpoints?duration=${timeFilter}`,
           { endpoint_ids: endpointIds }
-        )
+        );
         // /endpoints
-        console.log({ endpointIds })
-        console.log({ data: response.data })
+        console.log({ endpointIds });
+        console.log({ data: response.data });
         console.log("response from logs stat", response.data);
         console.log("type response from logs stat", typeof response.data);
 
         return response.data;
-      }
-      catch (e) {
+      } catch (e) {
         if (e instanceof AxiosError) {
-          console.log(e.response?.data)
-          throw e
+          console.log(e.response?.data);
+          throw e;
         }
       }
       //body: { duration: timeFilter, endpointIds }
-
     },
   });
 };
 
-export function useApisStatsQuery({ apiIds, timeFilter }: { apiIds: number[], timeFilter: TimeRangeFilter }) {
+export function useApisStatsQuery({
+  apiIds,
+  timeFilter,
+}: {
+  apiIds: number[];
+  timeFilter: TimeRangeFilter;
+}) {
   return useQuery<ChartData[]>({
     queryKey: ["ApiLogsStats", apiIds, timeFilter],
     queryFn: async () => {
       try {
         const response = await axios.post(
-          `${stats_api_url}/stats/apis?duration=${timeFilter}`,
+          `${ApiStatUrl}/stats/apis?duration=${timeFilter}`,
           { api_ids: apiIds }
-        )
+        );
         // /endpoints
-        console.log({ apiIds })
-        console.log({ data: response.data })
+        console.log({ apiIds });
+        console.log({ data: response.data });
         // console.log("response from logs stat", response.data);
         // console.log("type response from logs stat", typeof response.data);
 
         return response.data;
-      }
-      catch (e) {
+      } catch (e) {
         if (e instanceof AxiosError) {
-          console.log(e.response?.data)
-          throw e
+          console.log(e.response?.data);
+          throw e;
         }
       }
-    }
-  })
+    },
+  });
 }

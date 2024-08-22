@@ -1,9 +1,9 @@
 import axios from "axios";
 
 import { reviewCreation } from "@/hooks/reviews/interfaces";
-import { ApiServiceUrl } from "@/utils/constants";
+import { ApiUsersUrl } from "@/utils/constants";
 export const basedApiUrl = axios.create({
-  baseURL: ApiServiceUrl,
+  baseURL: ApiUsersUrl,
 });
 export const likeAnAPI = async (user_id: number, api_id: number) => {
   try {
