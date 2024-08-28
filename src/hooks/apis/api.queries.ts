@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { getUserApis, getUserFollowings } from "@/actions/api";
 import { basedApiUrl, getAPIRating } from "@/actions/api";
+import { getInactiveAPI } from "@/actions/admin";
 export const useApiList = ({ page, limit, filter, search, userId }: any) => {
   //const userData = await getCurrentUser()
   //console.log("helll",userData)
@@ -108,4 +109,13 @@ export const useAPIRating = (api_id: number) => {
   });
 };
 
+export const useInactiveAPI=()=>{
+  return useQuery({
+    queryKey:["inactiveAPI"],
+    queryFn:async() => {
+      const response = await getInactiveAPI()
+      return response
+    }
+  })
+}
 // export function useApi
