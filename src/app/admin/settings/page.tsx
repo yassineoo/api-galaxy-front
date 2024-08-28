@@ -196,7 +196,7 @@ export default function Settings() {
               {success4 && (
                   <span className="block text-green-500 font-semibold">your api has been successufully published </span>
                 )}
-              <Button onClick={publishanAPI}>update</Button>
+              <Button onClick={publishanAPI}>publish</Button>
             </div>
           </CardContent>
         </Card>
