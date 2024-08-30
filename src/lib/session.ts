@@ -60,10 +60,6 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        console.log("user =================================================");
-        console.log(user);
-        console.log("user =================================================");
-        //first call ---> user sign In
         if (user?.name) {
           const res = await oauthUser({
             Email: user?.email,

@@ -47,21 +47,14 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
 
 export const oauthUser = async (data: any) => {
   try {
-    console.log("called in oauth")
+    //console.log("called in oauth")
     const res = await placeholderApi.post("/oauth", JSON.stringify(data), {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    console.log("rsersesrsesres ============}}}}}}}}}}}}}}}");
-
-    console.log("response from backend"+res);
-
     return res;
   } catch (error) {
-    console.log("error ============}}}}}}}}}}}}}}}");
-    console.log(error);
-
     return false;
   }
 };
@@ -108,7 +101,7 @@ export const verifyEmail = async (data: any, type: string) => {
       return res.data;
     }
   } catch (error) {
-    console.log(error);
+   // console.log(error);
     return false;
   }
 };

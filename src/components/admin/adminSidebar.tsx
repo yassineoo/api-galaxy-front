@@ -49,7 +49,7 @@ export default function AdminSidebar() {
         activeChildName={activeChildName}
       />
 
-      <div className="flex  w-full justify-center items-center text-bold    ">
+      <div className="absolute bottom-10 w-full text-center font-bold hover:underline">
         Disconnect
       </div>
     </div>
