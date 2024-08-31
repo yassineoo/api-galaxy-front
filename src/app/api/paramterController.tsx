@@ -140,7 +140,7 @@ const ParamterControler = ({
       {/* ... */}
       <Accordion
         type="multiple"
-        className="overflow-scroll w-full py-4 bg-[#14073D] h-full text-white"
+        className="overflow-scroll w-full py-4 bg-[#0f172a] h-full text-white"
       >
         <p className=" p-4 w-full text-white">
           {selectedEndpoint?.Description || "No description available"}

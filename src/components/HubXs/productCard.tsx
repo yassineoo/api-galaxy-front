@@ -6,21 +6,20 @@ import { CldImage } from "next-cloudinary";
 import { disLikeAnAPI, likeAnAPI } from "@/actions/api";
 
 interface CardType {
-  cardData:{
-  averageRating?: number;
-  latency?: number;
-  availability?: number;
-  imagePath: string;
-  cardTitle: string;
-  cardDescription: string;
-  id: number;
-  liked?: boolean;
-  },
-  userId : number | undefined
+  cardData: {
+    averageRating?: number;
+    latency?: number;
+    availability?: number;
+    imagePath: string;
+    cardTitle: string;
+    cardDescription: string;
+    id: number;
+    liked?: boolean;
+  };
+  userId: number | undefined;
 }
 
-const ProductCard: FC<CardType> = ({
-  cardData:{
+const ProductCard = ({
   id,
   averageRating,
   latency,
@@ -29,35 +28,35 @@ const ProductCard: FC<CardType> = ({
   cardTitle,
   cardDescription,
   liked = false,
-    },
-    userId
-}) => {
+
+  userId,
+}: any) => {
   const router = useRouter();
-  const [isLiked,setIsLiked]=useState(liked)
-  let timeout:any;
-  const likeEvent = (event: React.MouseEvent<HTMLImageElement>)=>{
-    event.stopPropagation()
-    setIsLiked(prev => !prev)
-    if(timeout){
-      clearTimeout(timeout)
+  const [isLiked, setIsLiked] = useState(liked);
+  let timeout: any;
+  const likeEvent = (event: React.MouseEvent<HTMLImageElement>) => {
+    event.stopPropagation();
+    setIsLiked((prev: any) => !prev);
+    if (timeout) {
+      clearTimeout(timeout);
     }
-    timeout = setTimeout(async ()=>{
+    timeout = setTimeout(async () => {
       try {
         // send Request to server to like/dislike
-      if(!isLiked){
-        // like the api 
-        console.log("like")
-        await likeAnAPI(userId as number,id)
-      }else{
-        // dislike the api
-        console.log("dislikne")
-        await disLikeAnAPI(userId as number ,id)
-      }
+        if (!isLiked) {
+          // like the api
+          console.log("like");
+          await likeAnAPI(userId as number, id);
+        } else {
+          // dislike the api
+          console.log("dislikne");
+          await disLikeAnAPI(userId as number, id);
+        }
       } catch (error) {
         // use react toastify
       }
-    },2000)
-  }
+    }, 2000);
+  };
   return (
     <div
       onClick={() => {
