@@ -5,9 +5,7 @@ import { useApiList } from "@/hooks/apis/api.queries";
 import { useEffect, useState } from "react";
 import PaginationManual from "../dashboard/billing/paginationManual";
 import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
-import { Search } from "../shared/search";
 import CardSkeleton from "../HubXs/skeleton";
-import { useApiHealthCheakStats } from "@/hooks/HealthCheak/apiHealthCheak.queries";
 import { useSession } from "next-auth/react";
 
 const buttons = [
@@ -15,6 +13,46 @@ const buttons = [
     iconPath: "/assets/hub_assets/layers.svg",
     buttonText: "Sports",
     option: false,
+  },
+  {
+    iconPath: "/assets/hub_assets/dollar-sign.svg",
+    buttonText: "Low price",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/credit-card.svg",
+    buttonText: "Price range",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/user.svg",
+    buttonText: "Creators",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/camera.svg",
+    buttonText: "Photography",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/dollar-sign.svg",
+    buttonText: "Low price",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/credit-card.svg",
+    buttonText: "Price range",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/user.svg",
+    buttonText: "Creators",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/camera.svg",
+    buttonText: "Photography",
+    option: true,
   },
   {
     iconPath: "/assets/hub_assets/dollar-sign.svg",
@@ -92,6 +130,10 @@ export default function ProductsHub() {
     console.log("apissss", apis);
   }, [apis]);
 */
+
+  useEffect(() => {
+    console.log("filterrrrrr", filter);
+  }, [filter]);
   return (
     <>
       <div className="bg-white py-10  text-black flex">
@@ -115,8 +157,6 @@ export default function ProductsHub() {
           <h1 className="text-black text-title text-xl md:text-3xl font-bold">
             Discover more APIs
           </h1>
-          {apiHealthStats.isLoading && <p>Loading apiHealthStats.isLoading</p>}
-          {apiHealthStats.isError && <p>Eroro : apiHealthStats.Error</p>}
 
           <div className="flex flex-wrap gap-3 p-2">
             {apiList.isLoading &&
@@ -156,21 +196,21 @@ export default function ProductsHub() {
 }
 
 const CategoryList = ({ categories, filter, setFilter }: any) => {
-  console.log("categories", categories);
+  console.log("categoriesss", categories, categories?.length);
 
   return (
     <div>
       <h4 className="font-bold mb-4 mt-2">Categories</h4>
-      {categories?.data?.map((category: any, index: any) => (
+      {categories?.map((category: any, index: any) => (
         <div key={index} className="">
           <LeftBarButton
             filter={filter}
             setFilter={setFilter}
             key={index}
             iconPath={buttons[index].iconPath}
-            buttonText={category.CategoryName}
+            buttonText={category.category_name}
             option={buttons[index].option}
-            index={category.ID}
+            index={category.id}
           />
         </div>
       ))}

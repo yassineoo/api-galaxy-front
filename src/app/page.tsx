@@ -12,7 +12,7 @@ export default function VetrinePage() {
   const { data: session, status } = useSession();
   return (
     <>
-      <div>
+      <div className="overflow-y-scroll ">
         <Navbar services="2" about="3" pricing="4" contacts="6" />
         <Hero />
         <SellingCards />

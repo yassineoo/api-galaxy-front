@@ -2,9 +2,10 @@
 "use client";
 import { useApiByUserId } from "@/hooks/apis/api.queries";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Input } from "../ui/input";
 
 const menuItems = [
   {
@@ -69,6 +70,7 @@ export default function Sidebar() {
 
   const maApisListCallback = useCallback(() => useApiByUserId(1), []);
   const maApisList = maApisListCallback();
+  console.log("maApisList-------", maApisList.data);
 
   let apiId = 0;
   if (activeItem != "apis") {
@@ -142,13 +144,19 @@ const Menu = ({
   activeChildName,
 }: any) => {
   const activeOne = menuItems.find((item) => item.url.includes(activeItem));
-  const [activeMenu, setActiveMenu] = useState<number>(
-    apiId || activeOne?.ID || 90
-  ); // 90 is the id of the dashboard
+  const [activeMenu, setActiveMenu] = useState(apiId || activeOne?.ID || 90);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleMenuClick = (ID: number) => {
+  const handleMenuClick = (ID: any) => {
     setActiveMenu(ID);
   };
+
+  const filteredApis = useMemo(() => {
+    if (!maApisList.isSuccess || !maApisList.data) return [];
+    return maApisList.data.filter((api: any) =>
+      api.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [maApisList.data, maApisList.isSuccess, searchTerm]);
 
   return (
     <div className="flex flex-col mt-6 text-sm">
@@ -162,29 +170,38 @@ const Menu = ({
           activeChildName={activeChildName}
         />
       ))}
-      {isMenuOpen && <Separator text="MY apis" />}
-      {isMenuOpen && maApisList.isLoading && <div>Loading...</div>}
-      <div className="flex flex-col items-start justify-start h-80  overflow-y-auto overflow-x-hidden">
+      {isMenuOpen && <Separator text="MY APIs" />}
+      {isMenuOpen && (
+        <div className="px-4 mt-2 mb-4 text-black">
+          <Input
+            type="text"
+            placeholder="Search APIs..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full"
+          />
+        </div>
+      )}
+      {isMenuOpen && maApisList.isLoading && (
+        <div className="px-4">Loading...</div>
+      )}
+      <div className="flex flex-col items-start justify-start h-80 overflow-y-auto overflow-x-hidden">
         {isMenuOpen &&
           maApisList.isSuccess &&
-          maApisList.data
-            .map((api: any) => {
-              return {
-                ID: api.ID,
-                name: api.Name,
-                active: api.ID == apiId,
-              };
-            })
-            .map((item: any) => (
-              <ApiMenuItem
-                key={item.ID}
-                item={item}
-                active={activeMenu == item.ID}
-                onClick={handleMenuClick}
-                isMenuOpen={isMenuOpen}
-                activeChildName={activeChildName}
-              />
-            ))}
+          filteredApis.map((api: any) => (
+            <ApiMenuItem
+              key={api.id}
+              item={{
+                ID: api.id,
+                name: api.name,
+                active: api.id == apiId,
+              }}
+              active={activeMenu == api.id}
+              onClick={handleMenuClick}
+              isMenuOpen={isMenuOpen}
+              activeChildName={activeChildName}
+            />
+          ))}
       </div>
     </div>
   );
