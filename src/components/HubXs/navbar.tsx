@@ -6,14 +6,7 @@ import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import SearchApiInput from "./searchInput";
 
-interface Links {
-  apiHub: string;
-  docs: string;
-  ListApi: string;
-  myApis: string;
-}
-
-const Navbar: FC<Links> = ({
+const Navbar = ({
   apiHub = "hub",
   docs = "https://api-galaxy-docs.vercel.app/",
   ListApi = "s",

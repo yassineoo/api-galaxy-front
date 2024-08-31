@@ -28,7 +28,7 @@ export default function SearchApiInput() {
   const inputRef = useRef(null);
 
   const handleClickOutside = (event: any) => {
-    if (inputRef.current && !inputRef.current.contains(event.target)) {
+    if (inputRef.current && !(inputRef.current as any).contains(event.target)) {
       setShowSuggestions(false);
     }
   };

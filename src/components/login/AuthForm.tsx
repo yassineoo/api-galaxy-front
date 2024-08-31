@@ -33,7 +33,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
 
   useEffect(() => {
     if (success && type === "register") setShwoModal(true);
-    if (success && type === "login") push("/");
+    if (success && type === "login") push("/hub");
   }, [success, type, push]);
 
   const togglePasswordVisibility = () => {
