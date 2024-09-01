@@ -11,10 +11,12 @@ import { getCurrentUser } from "@/lib/session";
 
 export default function VetrinePage() {
   return (
+
     <div>
       <Navbar services="2" about="3" pricing="4" contacts="6" />
       <Hero />
       <SellingCards />
+=
 
       <AboutUs />
       <Plans />

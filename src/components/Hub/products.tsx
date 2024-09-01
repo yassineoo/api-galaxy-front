@@ -36,6 +36,46 @@ const buttons = [
     buttonText: "Photography",
     option: true,
   },
+  {
+    iconPath: "/assets/hub_assets/dollar-sign.svg",
+    buttonText: "Low price",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/credit-card.svg",
+    buttonText: "Price range",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/user.svg",
+    buttonText: "Creators",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/camera.svg",
+    buttonText: "Photography",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/dollar-sign.svg",
+    buttonText: "Low price",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/credit-card.svg",
+    buttonText: "Price range",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/user.svg",
+    buttonText: "Creators",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/camera.svg",
+    buttonText: "Photography",
+    option: true,
+  },
 ];
 
 export default function ProductsHub() {
@@ -94,6 +134,10 @@ export default function ProductsHub() {
     console.log("apissss", apis);
   }, [apis]);
 */
+
+  useEffect(() => {
+    console.log("filterrrrrr", filter);
+  }, [filter]);
   return (
     <>
       <div className="bg-white py-10  text-black flex">
@@ -117,8 +161,6 @@ export default function ProductsHub() {
           <h1 className="text-black text-title text-xl md:text-3xl font-bold">
             Discover more APIs
           </h1>
-          {apiHealthStats.isLoading && <p>Loading apiHealthStats.isLoading</p>}
-          {apiHealthStats.isError && <p>Eroro : apiHealthStats.Error</p>}
 
           <div className="flex flex-wrap gap-3 p-2">
             {apiList.isLoading &&
@@ -158,7 +200,7 @@ export default function ProductsHub() {
 }
 
 const CategoryList = ({ categories, filter, setFilter }: any) => {
-  console.log("categories", categories);
+  console.log("categoriesss", categories, categories?.length);
 
   return (
     <div>
