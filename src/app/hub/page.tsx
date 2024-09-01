@@ -5,10 +5,11 @@ import ProductsHub from "../../components/Hub/products";
 import TopCollection from "../../components/Hub/top";
 import Footer from "@/components/Vetrine/footer";
 import { useSession } from "next-auth/react";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function HubPage() {
-  const { data: session } = useSession();
-  console.log(session);
+  const { session } = useAuthSession();
+  console.log({ session });
   return (
     <>
       <div>

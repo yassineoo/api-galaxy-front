@@ -57,8 +57,9 @@ import {
   YAxis,
 } from "recharts";
 import { useApisStatsQuery } from "@/hooks/apiLogs/apiLogs.queries";
-import {useRouter} from "next/navigation"
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useAuthSession } from "@/components/auth-provider";
 // function useGetApis(){
 //   return useQuery({
 //     queryKey:["apis"],
@@ -115,11 +116,16 @@ export default function DashboardPage() {
     MultiValue<SelectedApi>
   >([]);
 
-  const router = useRouter()
-  const {data:session,status} = useSession()
+  const router = useRouter();
+  const { session,isAuthenticated } = useAuthSession();
   useEffect(() => {
-    const isVerified = localStorage.getItem("isVerified")
-    if (status === "authenticated" && session && session.twoFactorEnabled && isVerified!="true") {
+    const isVerified = localStorage.getItem("isVerified");
+    if (
+      isAuthenticated &&
+      session &&
+      session.twoFactorEnabled &&
+      isVerified != "true"
+    ) {
       router.push("/verifyOTP");
     }
   }, [session, status]);

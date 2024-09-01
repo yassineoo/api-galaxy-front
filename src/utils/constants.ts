@@ -3,14 +3,12 @@
 export const ApiUrl = "http://localhost:5000/apis-service";
 
 export const ApiAuth = "http://localhost:5000/auth";
-//export const ApiAuth = "http://localhost:7000";
 
 export const ApiUsersUrl = "http://localhost:5000/user-service";
 //export const ApiUsersUrl = "http://localhost:7002";
 export const ApiStatUrl = "http://localhost:5000/stats-service";
 // when use it directly
 //export const ApiUrl = "http://localhost:8000";
-//export const ApiAuth = "http://localhost:7000";
 import { TimeRangeFilter } from "@/app/dashboard/apis/[id]/Analyse/interfaces";
 
 export const timeFilter: {

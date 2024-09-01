@@ -39,7 +39,6 @@ export default async function page({
   params: { chatId: string };
   searchParams: { search: string };
 }) {
-  // const { data: session } = useSession();
   const {session} = useAuthSession()
   console.log("session", session?.userId);
 

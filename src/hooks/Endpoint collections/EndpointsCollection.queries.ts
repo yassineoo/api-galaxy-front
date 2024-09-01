@@ -3,7 +3,6 @@
 import { ApiAuth, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 
 export const useCollectionList = ({ authToken }: { authToken: string }) => {
   return useQuery({
