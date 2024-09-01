@@ -7,19 +7,25 @@ import Header from "@/components/dashboard/header";
 import { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { getUserApis, getUserFollowings } from "@/actions/api";
-import { useApiById, useApiByUserId, useFollowingApis } from "@/hooks/apis/api.queries";
+import {
+  useApiById,
+  useApiByUserId,
+  useFollowingApis,
+} from "@/hooks/apis/api.queries";
 import ReviewSkeleton from "@/components/HubXs/ReviewSkeleton";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function ProfilePage({ params }: any) {
-  const { data: session, status } = useSession();
+  const { session } = useAuthSession();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(session?.user?.name || "");
-  
-  const myApis = useApiByUserId(session?.userId as number)
 
+  //console.log("session",session)
+  const myApis = useApiByUserId(session?.userId as number)
   const myFollowingApis= useFollowingApis(session?.userId as number)
   
   
+
   useEffect(() => {
     setName(session?.user?.name || "");
   }, [session?.user?.name]);
@@ -43,7 +49,7 @@ export default function ProfilePage({ params }: any) {
 
             <div className="w-full max-w-4xl mx-auto mt-10">
               <div className="overflow-visible relative h-48 bg-gradient-to-r from-[#1877F2] to-[#2196F3] rounded-t-lg">
-                <img
+                <Image
                   src="/images/cover.jpeg"
                   alt="Cover image"
                   width="1024"
@@ -110,9 +116,10 @@ export default function ProfilePage({ params }: any) {
                   <TabsContent value="published" className="mt-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
 
+
                       {
                         myApis.isLoading ? <ReviewSkeleton /> : (
-                          !myApis.data.length ? <p>no published api</p> : myApis.data.map((api:any,index:number) => (
+                          (myApis.isSuccess && myApis.data.length) ? myApis.data.map((api:any,index:number) => (
                             <Card key={index}>
                         <CardContent className="flex flex-col gap-2">
                           <div className="text-lg font-semibold">{api.name}</div>
@@ -125,18 +132,20 @@ export default function ProfilePage({ params }: any) {
                           </div>
                         </CardContent>
                       </Card>
-                          ))
+                          )) :  <p>no published api</p>
                         )
                       }
                       
+
 
                     </div>
                   </TabsContent>
                   <TabsContent value="following">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+
                     {
                         myFollowingApis.isLoading ? <ReviewSkeleton /> : (
-                          !myFollowingApis.data.length ? <p>no published api</p> : myFollowingApis.data.map((api:any,index:number) => (
+                         (myFollowingApis.isSuccess && myFollowingApis.data.length) ? myFollowingApis.data.map((api:any,index:number) => (
                             <Card key={index}>
                         <CardContent className="flex flex-col gap-2">
                           <div className="text-lg font-semibold">{api.api.name}</div>
@@ -149,13 +158,17 @@ export default function ProfilePage({ params }: any) {
                           </div>
                         </CardContent>
                       </Card>
-                          ))
+                          )) : <p>no published api</p>
                         )
                       }
                       
+
                     </div>
                   </TabsContent>
                 </Tabs>
+
+                {/* add two factors button */}
+                <ProfileTwoFactor userId = {idx} />
               </div>
             </div>
           </div>
@@ -208,4 +221,62 @@ function FilePenIcon(props: any) {
       <path d="M10.4 12.6a2 2 0 1 1 3 3L8 21l-4 1 1-4Z" />
     </svg>
   );
+}
+
+
+import Image from "next/image";
+import { activeTwoFactorAuthentification } from "@/actions/auth";
+import { Shield, Loader2 } from "lucide-react"
+
+function ProfileTwoFactor({
+  userId,isVerified
+}:{
+  userId : string,
+  isVerified:boolean
+}) {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleActivate2FA = async () => {
+    setIsLoading(true)
+    try {
+      // Simulate API call with a delay
+      await activeTwoFactorAuthentification(userId)
+      // You might want to update some state or context to reflect that 2FA is now active
+    } catch (error) {
+      console.error("Failed to activate 2FA:", error)
+      // Handle error (e.g., show an error message to the user)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <div className="mt-6 p-4 bg-white rounded-lg shadow">
+      <h2 className="text-lg font-semibold mb-4">Security</h2>
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="font-medium">Two-Factor Authentication</h3>
+          <p className="text-sm text-muted-foreground">Add an extra layer of security to your account</p>
+        </div>
+        <Button 
+          onClick={handleActivate2FA} 
+          variant="outline" 
+          className="ml-4"
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Activating...
+            </>
+          ) : (
+            <>
+              <Shield className="mr-2 h-4 w-4" />
+              {isVerified ? "Disable 2FA" : "Activate 2FA"}
+            </>
+          )}
+        </Button>
+      </div>
+    </div>
+  )
 }

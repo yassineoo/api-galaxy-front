@@ -1,5 +1,6 @@
 "use client";
 import { authenticate } from "@/actions/auth";
+import { validatePassword } from "@/utils/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Inputs } from "@/types/common.types";
 import { useEffect, useState } from "react";
@@ -10,30 +11,46 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { Errors } from "@/types/common.types";
 
 export function AuthForm({ type = "login" }: { type: string }) {
   const { push } = useRouter();
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
   const [showModal, setShwoModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMismatch, setPasswordMismatch] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [erreurs, setErreurs] = useState<Errors>({});
+  
+  const [data,setData] = useState<any>({
+    email:"",
+    password:""
+  })
+  const onsubmit = async (e:any) => {
+    e.preventDefault()
+    setIsLoading(true); // Set loading state to true at the start
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    authenticate(data, setError, setSuccess);
+    const validationErrors = type === "register" ? validatePassword(data.password, confirmPassword) : {};
+    if (Object.keys(validationErrors).length > 0) {
+      setErreurs(validationErrors);
+      setIsLoading(false); // Stop loading if validation fails
+      return;
+    }
+
+    try {
+      await authenticate(data,setError, setSuccess);
+      setIsLoading(false); // Stop loading after successful authentication
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false); // Stop loading even if an error occurs
+    }
   };
 
   useEffect(() => {
     if (success && type === "register") setShwoModal(true);
-    if (success && type === "login") push("/hub");
+    if (success && type === "login") push("/dashboard");
   }, [success, type, push]);
 
   const togglePasswordVisibility = () => {
@@ -45,8 +62,8 @@ export function AuthForm({ type = "login" }: { type: string }) {
       <Card className="w-full max-w-md">
         <CardContent className="space-y-4">
           <form
-            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-4 text-black items-center p-5 py-10"
+            onSubmit={onsubmit}
           >
             <div className="w-full">
               <Label className="text-sm font-semibold" htmlFor="email">
@@ -56,11 +73,11 @@ export function AuthForm({ type = "login" }: { type: string }) {
                   type="email"
                   className="p-2 my-2 "
                   placeholder="m@example.com"
-                  {...register("email", {
-                    required: "Email is required",
-                  })}
+                 onChange={(e)=>setData({
+                  ...data,
+                  email:e.target.value
+                 })}
                 />
-                <span className="text-red-500">{errors.email?.message}</span>
               </Label>
             </div>
             {type == "register" && (
@@ -72,14 +89,12 @@ export function AuthForm({ type = "login" }: { type: string }) {
                       className="p-2 my-2 "
                       type={"text"}
                       placeholder="username"
-                      {...register("username", {
-                        required: "Username is required",
-                      })}
+                      onChange={(e)=>setData({
+                        ...data,
+                        username:e.target.value
+                       })}
                     />
                   </div>
-                  <span className="text-red-500">
-                    {errors.username?.message}
-                  </span>
                 </Label>
               </div>
             )}
@@ -93,8 +108,9 @@ export function AuthForm({ type = "login" }: { type: string }) {
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     className="p-2 my-2 "
-                    {...register("password", {
-                      required: "Password is required",
+                    onChange={(e)=>setData({
+                      ...data,
+                      password:e.target.value
                     })}
                   />
                   <button
@@ -119,7 +135,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
                     )}
                   </button>
                 </div>
-                <span className="text-red-500">{errors.password?.message}</span>
+                {erreurs.password && <p style={{ color: 'red' }}>{erreurs.password}</p>}
               </Label>
             </div>
             {type == "register" && (
@@ -133,14 +149,10 @@ export function AuthForm({ type = "login" }: { type: string }) {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
-                  {passwordMismatch && (
-                    <span className="text-red-500">Passwords do not match</span>
-                  )}
+                  {erreurs.confirmPassword  && <p style={{ color: 'red' }}>{erreurs.confirmPassword }</p>}
                 </Label>
               </div>
             )}
-
-            <span className="text-red-500">{errors.errorMessage?.message}</span>
             {type == "login" && (
               <span className="self-start text-sm">
                 you forgot password ?{" "}
@@ -150,12 +162,14 @@ export function AuthForm({ type = "login" }: { type: string }) {
               </span>
             )}
             <Button
-              type="submit"
               className="w-full text-center py-2  rounded-md font-semibold"
-              // disabled={isLoading}
+
+              type="submit"
+
             >
               {isLoading ? "Loading..." : type}
             </Button>
+            {error && <span className="text-red-500">{error}</span>}
           </form>
         </CardContent>
       </Card>

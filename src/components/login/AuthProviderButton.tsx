@@ -15,7 +15,7 @@ export function WelcomeSection({ type, welcome = "Welcome back !" }: any) {
           className="flex items-center justify-center gap-2"
         >
           <ChromeIcon className="h-5 w-5" />
-          Login with Google
+            {type == "register" ? "Sign up with Google" : "Login with Google"}
         </Button>
         {/* <Button
           onClick={() => signIn("github")}
@@ -23,8 +23,10 @@ export function WelcomeSection({ type, welcome = "Welcome back !" }: any) {
           className="flex items-center justify-center gap-2 bg-black text-white"
         >
           <GithubIcon className="h-5 w-5" />
+
           Login with GitHub
         </Button> */}
+
       </div>
 
       {type == "register" ? (
@@ -36,7 +38,7 @@ export function WelcomeSection({ type, welcome = "Welcome back !" }: any) {
         </p>
       ) : (
         <p className="mt-4 text-base mb-1">
-          Don't Have an account ?{" "}
+          {"Don't Have an account ?"}{" "}
           <Link href="/register" className="text-blue-500 ml-3 underline">
             Sign up
           </Link>

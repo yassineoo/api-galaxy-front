@@ -24,7 +24,7 @@ class ApiError extends Error {
 
 export const authUser = async (data: UserData, isRegister: boolean) => {
   try {
-    console.log({ data })
+    console.log({ data });
     const res = await placeholderApi.post(
       isRegister ? "/register" : "/login",
       {
@@ -34,35 +34,41 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
       },
       {
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       }
     );
-    console.log({ res })
-
-    return res.data;
+    return res;
   } catch (error: any) {
-    console.log({ error })
-    throw error;
+    if (error.response) {
+      console.error("Server Error:", error.response.data);
+      throw new ApiError(error.response.data.message, error.response.status);
+    } else if (error.request) {
+      console.error("Network Error:", error.message);
+      throw new ApiError("Network error, please try again later.", 503);
+    } else {
+      console.error("Error:", error.message);
+      throw new ApiError(error.message || "An unexpected error occurred", 500);
+    }
   }
 };
 
-export const oauthUser = async (data: { Email: string, Username: string }) => {
+export const oauthUser = async (data: { Email: string; Username: string }) => {
   try {
     //console.log("called in oauth")
-    const res = await placeholderApi.post("/oauth",
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const res = await placeholderApi.post("/oauth", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("response from oauth", res);
+
     return res;
   } catch (error) {
-    console.log({ OAUTH_ERROR: error })
+    console.log({ OAUTH_ERROR: error });
     return {
-      data: {}
-    }
+      data: {},
+    };
   }
 };
 
@@ -88,8 +94,6 @@ export const getUserSession = async (email: string) => {
 export const verifyEmail = async (data: any, type: string) => {
   try {
     if (type == "confirmRegistration") {
-      const session = await getSession();
-
       const res = await placeholderApi.post(`/verifyEmail/${data}`, {});
       if (res.status == 200) {
         return true;
@@ -138,28 +142,51 @@ export const resetPassword = async (
 };
 
 export const authenticate = async (
-  data: Inputs,
-  setError: UseFormSetError<Inputs>,
+  data: any,
+  setError: Dispatch<SetStateAction<string>>,
   setSuccess: Dispatch<SetStateAction<boolean>>
 ) => {
+  console.log(data);
+  const res = await signIn("credentials", {
+    ...data,
+    redirect: false,
+  });
+
+  if (res?.error) {
+    // Handle error here
+    setError(res.error);
+  } else {
+    // Handle success here
+    setSuccess(true);
+  }
+};
+
+// activate two factor authentification:
+export const activeTwoFactorAuthentification = async (id: any) => {
   try {
-    const res = await signIn("credentials", {
-      ...data,
-      redirect: false,
-    });
-    if (res?.ok) {
-      setSuccess(true);
-    }
-    else {
-      console.log({ res })
-      setError("errorMessage", {
-        message: res?.error!,
-      });
-    }
-  } catch (error: any) {
-    console.log({ error })
-    setError("errorMessage", {
-      message: error?.message,
-    });
+    const res = await placeholderApi.put(`/activate-two-factors/${id}`);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// activate two factor authentification:
+export const verifyOTP = async (id: any, otp: string) => {
+  try {
+    const res = await placeholderApi.post(
+      `/verifyOTP`,
+      JSON.stringify({
+        userId: id,
+        otp,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
   }
 };

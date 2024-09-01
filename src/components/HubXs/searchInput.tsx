@@ -6,12 +6,18 @@ import { CldImage } from "next-cloudinary";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
+import { useAuthSession } from "../auth-provider";
+
 export default function SearchApiInput() {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
+  const { session } = useAuthSession();
 
-
+  const searchResults = useSearchApiList({
+    search: searchTerm,
+    authToken: session?.token ?? "",
+  });
 
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef(null);
@@ -21,8 +27,7 @@ export default function SearchApiInput() {
     data: filteredSuggestions,
     isLoading,
     refetch,
-  } = useSearchApiList({ search: searchTerm , authToken: session?.token ?? "" });
-
+  } = useSearchApiList({ search: searchTerm, authToken: session?.token ?? "" });
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -37,10 +42,8 @@ export default function SearchApiInput() {
   };
 
   useEffect(() => {
-
     setShowSuggestions(searchTerm.length > 0);
   }, [searchTerm, filteredSuggestions]);
-
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -106,7 +109,6 @@ export default function SearchApiInput() {
               Not Found
             </div>
           )}
-
         </div>
       )}
     </div>

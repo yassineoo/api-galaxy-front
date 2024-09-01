@@ -5,7 +5,7 @@ import { ApiUsersUrl } from "@/utils/constants";
 import { useSession } from "next-auth/react";
 import { RingLoader } from "react-spinners";
 import { useEffect, useState } from "react";
-
+import { useAuthSession } from "@/components/auth-provider";
 
 export async function getUserChatrooms(
   userId: number,
@@ -29,12 +29,11 @@ export async function getUserChatrooms(
 }
 
 export default function InboxPage({
-
   searchParams: { search, userId },
 }: {
   searchParams: { search: string; userId: string };
 }) {
-  const { data: session } = useSession();
+  const { session } = useAuthSession();
   const [chatrooms, setChatrooms] = useState<Chat[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,7 +63,6 @@ export default function InboxPage({
 
   return (
     <Inbox chats={chatrooms} userId={Number(session?.userId)}>
-
       <div className="w-full grid place-content-center">
         No chat selected yet
       </div>

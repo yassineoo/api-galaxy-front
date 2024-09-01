@@ -1,11 +1,16 @@
 import axios from "axios";
 
 import { reviewCreation } from "@/hooks/reviews/interfaces";
-import { ApiUsersUrl } from "@/utils/constants";
+
+import { ApiUrl, ApiUsersUrl } from "@/utils/constants";
 import useAuth from "@/hooks/useAuth";
-import { useSession } from "next-auth/react";
+import { useAuthSession } from "@/components/auth-provider";
+
 export const basedApiUrl = axios.create({
   baseURL: ApiUsersUrl,
+});
+export const baseApiUrl = axios.create({
+  baseURL: ApiUrl,
 });
 export const likeAnAPI = async (user_id: number, api_id: number) => {
   try {
@@ -47,7 +52,9 @@ export const getAPIReviews = async (api_id: number) => {
 export const addAnAPIReview = async (reviewData: reviewCreation) => {
   const { data: auth, isSuccess } = useAuth();
   if (isSuccess) console.log({ auth });
-  const { data: session } = useSession()
+
+  const { session, isAuthenticated } = useAuthSession();
+
   try {
     console.log(reviewData);
     const success = await basedApiUrl.post(
@@ -59,7 +66,8 @@ export const addAnAPIReview = async (reviewData: reviewCreation) => {
       },
       {
         headers: {
-          "Authorization": `Bearer ${session?.userId ? auth : ""}`,
+          Authorization: `Bearer ${isAuthenticated ? session.token : ""}`,
+
           "Content-Type": "application/json",
         },
       }

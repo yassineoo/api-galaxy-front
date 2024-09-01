@@ -1,24 +1,56 @@
 // apiQueries.ts
 
 import { Api } from "@/app/dashboard/apis/[id]/Analyse/api.interface";
-import { ApiUrl } from "@/utils/constants";
+import { ApiAuth, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 
 import axios from "axios";
-import { getUserApis, getUserFollowings } from "@/actions/api";
+import { baseApiUrl, getUserApis, getUserFollowings } from "@/actions/api";
 import { basedApiUrl, getAPIRating } from "@/actions/api";
 import { getInactiveAPI } from "@/actions/admin";
 import { useSession } from "next-auth/react";
-export const useApiList = ({ page, limit, filter, search, userId }: any) => {
+
+export const useApiList = ({
+  page,
+  limit,
+  filter,
+  search,
+  userId,
+  authToken,
+}: any) => {
   //const userData = await getCurrentUser()
   //console.log("helll",userData)
   return useQuery({
-    queryKey: ["apiList", page, limit, filter, search ?? undefined],
+    queryKey: ["apiList", page, limit, filter, search ?? ""],
     queryFn: async () => {
       try {
-        const response = await basedApiUrl.get(
-          `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}`
-        );
+        let response;
+        console.log("logged token datasss : ", authToken);
+
+        if (!authToken) {
+          response = await axios.get(
+            `http://localhost:5000/apis-service/apis/?limit=12&page=1&search=&filter=0`
+          );
+          console.log("logged token data : ", response.data.data.apis);
+
+          const mappedApis = response.data.data.apis.map((api: any) => ({
+            id: api.ID,
+            name: api.Name,
+            imagePath: api.ImagePath,
+            description: api.Description,
+            status: api.Status,
+          }));
+
+          return mappedApis;
+        } else
+          response = await basedApiUrl.get(
+            `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}`,
+            {
+              headers: { Authorization: `Bearer ${authToken?.token}` },
+            }
+          );
+        // return [];
+
         //console.log("response from api query : ", response.data);
         return response.data;
       } catch (error: any) {
@@ -52,25 +84,29 @@ export const useApiListForAdmin = ({
     },
   });
 };
-export const useSearchApiList = ({ search, authToken }: { search: string, authToken: string }) => {
+
+export const useSearchApiList = ({
+  search,
+  authToken,
+}: {
+  search: string;
+  authToken: string;
+}) => {
   return useQuery<Api[]>({
     queryKey: ["apiListSearch", search ?? undefined],
     queryFn: async () => {
       console.log("logged from api quety : ", search);
 
       try {
-        const response = await axios.get(
-          `${ApiUrl}/apis/search`,
-          {
-            params: { search },
-            headers: { Authorization: `Bearer ${authToken}` }
-          },
-        );
+        const response = await axios.get(`${ApiUrl}/apis/search`, {
+          params: { search },
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
         console.log(response.data);
         return (response.data as { data: Api[] }).data;
       } catch (e) {
-        console.log({ e })
-        return []
+        console.log({ e });
+        return [];
       }
     },
   });
@@ -125,11 +161,10 @@ export const useInactiveAPI = () => {
   return useQuery({
     queryKey: ["inactiveAPI"],
     queryFn: async () => {
-
-      const response = await getInactiveAPI()
-      return response
-    }
-  })
-}
+      const response = await getInactiveAPI();
+      return response;
+    },
+  });
+};
 
 // export function useApi

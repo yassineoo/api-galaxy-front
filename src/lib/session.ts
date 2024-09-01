@@ -4,8 +4,6 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialProvider from "next-auth/providers/credentials";
 import { UserData, authUser, oauthUser } from "@/actions/auth";
 import { SERVER_ENV } from "./env";
-import { AxiosError } from "axios";
-import { setAuthToken } from "./get-auth-token";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -40,24 +38,16 @@ export const authOptions: NextAuthOptions = {
         }
         try {
           const res = await authUser(data, isRegister);
-          await setAuthToken(res.token)
-          res.backendToken = res.token
-          return {
-            email: data.email,
-            username: data.username,
-            backendToken: res.token,
-            image: "",
-            ...res,
-            token: res.token,
-          };
-        } catch (error) {
-          console.log({ error })
-          if (error instanceof AxiosError) {
-            if ("errors" in error.response?.data) throw new Error(error.response?.data.errors)
-            if ("message" in error.response?.data) throw error.response?.data
-            throw error.response?.data
-          }
-          throw new Error("Wrong Credentials")
+
+          console.log("response", res);
+          return res.data;
+        } catch (error: any) {
+          const errorMessage =
+            error.response?.data?.message || "Authentication failed";
+          console.log("Authorization Error:", errorMessage);
+
+          // Throw a new error with the message
+          throw new Error(errorMessage);
         }
       },
     }),
@@ -76,42 +66,52 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user, session, ...props }) {
-      console.log({ token, user, session, props })
+      console.log({ token, user, session, props });
       if (user) {
         if (user?.name) {
+          //console.log("awchahooo")
           const res = await oauthUser({
             Email: user?.email,
             Username: user?.name,
           });
+          console.log("responsessss", res);
 
-          //console.log("response =================================================");
-          //console.log(res)
-          if (!res || !res.data?.message) {
+          if (!res.data?.message) {
             token.backendToken = res.data.token;
             token.userId = res.data.userId;
-
+            token.twoFactorEnabled = res.data.twoFactorEnabled;
+            token.is2faAuthenticated = !res.data.twoFactorEnabled;
           }
         } else {
           token.token = user.token;
           token.backendToken = user.token;
           token.userId = user.userId;
+          token.name = user.name ?? user.username;
+          token.twoFactorEnabled = user.twoFactorEnabled;
+          token.is2faAuthenticated = !user.twoFactorEnabled;
         }
+        // Add two-factor authentication status to the toke
+        token.isVerified = false;
       } else {
+        console.log("hi from else");
         // subsequent calls so the token object has already the needed values
       }
       return token;
     },
     async session({ session, token, ...props }): Promise<any> {
-      console.log({ session, token, ...props })
+      // l
+      console.log({ session, token, ...props });
       // Add the backend token to the session object
-      //console.log(token)
-      session.token = token.token as string
+      // console.log("token", token);
       session.token = token.backendToken as string;
+
       session.userId = token.userId as number;
+      session.twoFactorEnabled = token.twoFactorEnabled as boolean;
+      session.isVerified = token.isVerified as boolean;
       return session;
     },
-    async redirect(params) {
-      return params.baseUrl;
+    async redirect({ url, baseUrl }) {
+      return `${baseUrl}/dashboard`;
     },
   },
   pages: {
