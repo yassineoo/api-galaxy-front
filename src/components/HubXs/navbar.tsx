@@ -10,17 +10,16 @@ import { clearAuthToken } from "@/lib/get-auth-token";
 
 import { useAuthSession } from "../auth-provider";
 
-
 const Navbar = ({
   apiHub = "hub",
   docs = "https://api-galaxy-docs.vercel.app/",
   ListApi = "s",
   myApis = "dashboard",
 }) => {
-  
   const [isOpen, setIsOpen] = useState(false);
   // const { data: session, status } = useSession();
-  const { session,isAuthenticated } = useAuthSession();
+  const { session, isAuthenticated } = useAuthSession();
+  console.log("logged token datasssfffff : ", session);
 
   // const isAuthenticated = status === "authenticated";
 

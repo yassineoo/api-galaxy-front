@@ -3,7 +3,7 @@ import { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialProvider from "next-auth/providers/credentials";
 import { UserData, authUser, oauthUser } from "@/actions/auth";
-
+import { SERVER_ENV } from "./env";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -39,15 +39,15 @@ export const authOptions: NextAuthOptions = {
         try {
           const res = await authUser(data, isRegister);
 
-          console.log("response",res)
+          console.log("response", res);
           return res.data;
-        } catch (error:any) {
-          const errorMessage = error.response?.data?.message || "Authentication failed";
+        } catch (error: any) {
+          const errorMessage =
+            error.response?.data?.message || "Authentication failed";
           console.log("Authorization Error:", errorMessage);
 
-    // Throw a new error with the message
-    throw new Error(errorMessage);
-
+          // Throw a new error with the message
+          throw new Error(errorMessage);
         }
       },
     }),
@@ -66,7 +66,7 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user, session, ...props }) {
-      console.log({ token, user, session, props })
+      console.log({ token, user, session, props });
       if (user) {
         if (user?.name) {
           //console.log("awchahooo")
@@ -74,9 +74,9 @@ export const authOptions: NextAuthOptions = {
             Email: user?.email,
             Username: user?.name,
           });
+          console.log("responsessss", res);
 
           if (!res.data?.message) {
-
             token.backendToken = res.data.token;
             token.userId = res.data.userId;
             token.twoFactorEnabled = res.data.twoFactorEnabled;
@@ -86,22 +86,23 @@ export const authOptions: NextAuthOptions = {
           token.token = user.token;
           token.backendToken = user.token;
           token.userId = user.userId;
-          token.name=user.name ?? user.username
+          token.name = user.name ?? user.username;
           token.twoFactorEnabled = user.twoFactorEnabled;
           token.is2faAuthenticated = !user.twoFactorEnabled;
         }
         // Add two-factor authentication status to the toke
-      token.isVerified = false
+        token.isVerified = false;
       } else {
-        console.log("hi from else")
+        console.log("hi from else");
         // subsequent calls so the token object has already the needed values
       }
       return token;
     },
     async session({ session, token, ...props }): Promise<any> {
-      console.log({ session, token, ...props })
+      // l
+      console.log({ session, token, ...props });
       // Add the backend token to the session object
-      console.log('token',token)
+      // console.log("token", token);
       session.token = token.backendToken as string;
 
       session.userId = token.userId as number;
@@ -111,7 +112,7 @@ export const authOptions: NextAuthOptions = {
     },
     async redirect({ url, baseUrl }) {
       return `${baseUrl}/dashboard`;
-    }
+    },
   },
   pages: {
     signIn: "/login",

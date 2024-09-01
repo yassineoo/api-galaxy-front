@@ -6,9 +6,7 @@ import { Dispatch, SetStateAction } from "react";
 import { ApiAuth } from "@/utils/constants";
 
 export const placeholderApi = axios.create({
-
   baseURL: ApiAuth,
-
 });
 
 export type UserData = {
@@ -26,7 +24,7 @@ class ApiError extends Error {
 
 export const authUser = async (data: UserData, isRegister: boolean) => {
   try {
-    console.log({ data })
+    console.log({ data });
     const res = await placeholderApi.post(
       isRegister ? "/register" : "/login",
       {
@@ -36,35 +34,35 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
       },
       {
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       }
     );
 
-    return res
+    return res;
   } catch (error: any) {
-    console.log("hi",error.reponse.data)
+    console.log("hi", error.reponse.data);
 
     throw error;
   }
 };
 
-export const oauthUser = async (data: { Email: string, Username: string }) => {
+export const oauthUser = async (data: { Email: string; Username: string }) => {
   try {
     //console.log("called in oauth")
-    const res = await placeholderApi.post("/oauth",
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const res = await placeholderApi.post("/oauth", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("response from oauth", res);
+
     return res;
   } catch (error) {
-    console.log({ OAUTH_ERROR: error })
+    console.log({ OAUTH_ERROR: error });
     return {
-      data: {}
-    }
+      data: {},
+    };
   }
 };
 
@@ -142,46 +140,47 @@ export const authenticate = async (
   setError: Dispatch<SetStateAction<string>>,
   setSuccess: Dispatch<SetStateAction<boolean>>
 ) => {
-  console.log(data)
-    const res = await signIn("credentials", {
-      ...data,
-      redirect: false,
-    });
+  console.log(data);
+  const res = await signIn("credentials", {
+    ...data,
+    redirect: false,
+  });
 
-    if (res?.error) {
-      // Handle error here
-    setError(res.error)
-    } else {
-      // Handle success here
-      setSuccess(true);
-    }
-
+  if (res?.error) {
+    // Handle error here
+    setError(res.error);
+  } else {
+    // Handle success here
+    setSuccess(true);
+  }
 };
 
-
 // activate two factor authentification:
-export const activeTwoFactorAuthentification = async(id:any)=>{
-  try{
-    const res = await placeholderApi.put(`/activate-two-factors/${id}`)
-  }catch(error){
-    console.log(error)
+export const activeTwoFactorAuthentification = async (id: any) => {
+  try {
+    const res = await placeholderApi.put(`/activate-two-factors/${id}`);
+  } catch (error) {
+    console.log(error);
   }
-}
-
+};
 
 // activate two factor authentification:
-export const verifyOTP = async(id:any,otp:string)=>{
-  try{
-    const res = await placeholderApi.post(`/verifyOTP`,JSON.stringify({
-      userId: id,
-      otp
-    }),{
-      headers:{
-        "Content-Type":"application/json"
+export const verifyOTP = async (id: any, otp: string) => {
+  try {
+    const res = await placeholderApi.post(
+      `/verifyOTP`,
+      JSON.stringify({
+        userId: id,
+        otp,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    })
-    return res.data
-  }catch(error){
-    throw error
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
   }
-}
+};

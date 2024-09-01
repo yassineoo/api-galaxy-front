@@ -11,7 +11,6 @@ import useAuth from "@/hooks/useAuth";
 
 import { useAuthSession } from "../auth-provider";
 
-
 const buttons = [
   {
     iconPath: "/assets/hub_assets/layers.svg",
@@ -89,7 +88,6 @@ export default function ProductsHub() {
 
   const { session } = useAuthSession();
 
-
   const apiList = useApiList({
     page,
     limit: 12,
@@ -97,7 +95,7 @@ export default function ProductsHub() {
     search,
     userId: session?.userId || 1,
 
-
+    authToken: session,
   });
 
   const ApiCategoryList = useApiCategoryList();

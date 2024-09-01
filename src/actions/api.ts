@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { reviewCreation } from "@/hooks/reviews/interfaces";
 
-import { ApiUsersUrl } from "@/utils/constants";
+import { ApiUrl, ApiUsersUrl } from "@/utils/constants";
 import useAuth from "@/hooks/useAuth";
 import { useAuthSession } from "@/components/auth-provider";
 
@@ -53,8 +53,7 @@ export const addAnAPIReview = async (reviewData: reviewCreation) => {
   const { data: auth, isSuccess } = useAuth();
   if (isSuccess) console.log({ auth });
 
-  const { session, isAuthenticated } = useAuthSession()
-
+  const { session, isAuthenticated } = useAuthSession();
 
   try {
     console.log(reviewData);
@@ -67,8 +66,7 @@ export const addAnAPIReview = async (reviewData: reviewCreation) => {
       },
       {
         headers: {
-
-          "Authorization": `Bearer ${isAuthenticated ? session.token : ""}`,
+          Authorization: `Bearer ${isAuthenticated ? session.token : ""}`,
 
           "Content-Type": "application/json",
         },

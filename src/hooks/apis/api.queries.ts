@@ -10,24 +10,30 @@ import { basedApiUrl, getAPIRating } from "@/actions/api";
 import { getInactiveAPI } from "@/actions/admin";
 import { useSession } from "next-auth/react";
 
-export const useApiList = ({ page, limit, filter, search, userId }: any) => {
-
+export const useApiList = ({
+  page,
+  limit,
+  filter,
+  search,
+  userId,
+  authToken,
+}: any) => {
   //const userData = await getCurrentUser()
-  const { data: session } = useSession();
   //console.log("helll",userData)
   return useQuery({
-
     queryKey: ["apiList", page, limit, filter, search ?? ""],
     queryFn: async () => {
       try {
         let response;
+        console.log("logged token datasss : ", authToken);
+
         if (!authToken) {
           response = await axios.get(
             `http://localhost:5000/apis-service/apis/?limit=12&page=1&search=&filter=0`
           );
           console.log("logged token data : ", response.data.data.apis);
 
-          const mappedApis = response.data.data.apis.map((api) => ({
+          const mappedApis = response.data.data.apis.map((api: any) => ({
             id: api.ID,
             name: api.Name,
             imagePath: api.ImagePath,
@@ -43,7 +49,7 @@ export const useApiList = ({ page, limit, filter, search, userId }: any) => {
               headers: { Authorization: `Bearer ${authToken?.token}` },
             }
           );
-        return [];
+        // return [];
 
         //console.log("response from api query : ", response.data);
         return response.data;
@@ -79,28 +85,28 @@ export const useApiListForAdmin = ({
   });
 };
 
-export const useSearchApiList = ({ search, authToken }: { search: string, authToken: string }) => {
-
+export const useSearchApiList = ({
+  search,
+  authToken,
+}: {
+  search: string;
+  authToken: string;
+}) => {
   return useQuery<Api[]>({
     queryKey: ["apiListSearch", search ?? undefined],
     queryFn: async () => {
       console.log("logged from api quety : ", search);
 
       try {
-
-        const response = await axios.get(
-          `${ApiUrl}/apis/search`,
-          {
-            params: { search },
-            headers: { Authorization: `Bearer ${authToken}` }
-          },
-        );
+        const response = await axios.get(`${ApiUrl}/apis/search`, {
+          params: { search },
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
         console.log(response.data);
         return (response.data as { data: Api[] }).data;
       } catch (e) {
-        console.log({ e })
-        return []
-
+        console.log({ e });
+        return [];
       }
     },
   });
@@ -155,13 +161,10 @@ export const useInactiveAPI = () => {
   return useQuery({
     queryKey: ["inactiveAPI"],
     queryFn: async () => {
-
-
-      const response = await getInactiveAPI()
-      return response
-    }
-  })
-}
-
+      const response = await getInactiveAPI();
+      return response;
+    },
+  });
+};
 
 // export function useApi
