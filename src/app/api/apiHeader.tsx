@@ -26,11 +26,16 @@ const ApiHeader = ({
         </div>
       </div>
       <div className="flex items-center gap-4 mr-3">
+        <div className="flex justify-center ">
+          <button className="text-md font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 px-6 py-3 rounded-3xl shadow-lg transform hover:scale-105 transition-transform duration-300">
+            Subscribe
+          </button>
+        </div>
         <div className="mr-4">
-          <div className="text-md font-semibold text-gray-600">Rating</div>
+          <div className="text-md mb-0 font-semibold text-gray-600">Rating</div>
           <ReactStars
             count={5}
-            size={24}
+            size={20}
             color2={"#ffd700"}
             value={Rating}
             edit={false}

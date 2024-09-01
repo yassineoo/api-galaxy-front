@@ -132,7 +132,7 @@ const Menu = ({
           name: "Subscription",
           active: false,
           icon: "/icons/subscription.svg",
-          url: "/dashboard/billing/subscription",
+          url: "/dashboard/billing/subscribers",
         },
       ],
     },
