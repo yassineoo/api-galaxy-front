@@ -9,11 +9,13 @@ import ApiHeader from "../apiHeader";
 import { ApiTabs } from "../apiBody";
 import { useApiById, useAPIRating } from "@/hooks/apis/api.queries";
 import { useApiHealthCheakStats } from "@/hooks/HealthCheak/apiHealthCheak.queries";
-import { useSession } from "next-auth/react";
+import { useAuthSession } from "@/components/auth-provider";
+// import { useSession } from "next-auth/react";
 
 const DashboardPage = ({ params }: any) => {
   const { id } = params;
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
+  const { session } = useAuthSession();
   const apiSelected = useApiById(id);
   const apiHealthStats = useApiHealthCheakStats({ apiIDs: [id] });
 
@@ -29,7 +31,7 @@ const DashboardPage = ({ params }: any) => {
   }, [apiRating.isFetched, apiRating.isFetching]);
   useEffect(() => {
     if (apiSelected.isSuccess) {
-      setApiRate(Number(apiSelected.data.Rating));
+      setApiRate(Number(apiSelected.data.ApiRatings));
     }
   }, [apiSelected.isSuccess]);
   useEffect(() => {

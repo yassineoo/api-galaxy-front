@@ -11,10 +11,12 @@ import {
 } from "@/app/dashboard/inbox/chat.interface";
 import { ApiUsersUrl } from "@/utils/constants";
 import { useSession } from "next-auth/react";
+import { useAuthSession } from "@/components/auth-provider";
 
 export function useCreateMessageMutation(chatId: number) {
   const queryClient = useQueryClient();
-  const {data:session} = useSession()
+  // const {data:session} = useSession()
+  const { session } = useAuthSession();
 
   return useMutation({
     mutationKey: ["create-message", `chat-${chatId}`],

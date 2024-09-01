@@ -5,10 +5,13 @@ import { useSearchApiList } from "@/hooks/apis/api.queries";
 import { CldImage } from "next-cloudinary";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useAuthSession } from "../auth-provider";
 
 export default function SearchApiInput() {
   const [searchTerm, setSearchTerm] = useState("");
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
+  const { session } = useAuthSession();
+
   const searchResults = useSearchApiList({
     search: searchTerm,
     authToken: session?.token ?? "",

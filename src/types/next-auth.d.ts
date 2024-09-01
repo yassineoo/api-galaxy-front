@@ -22,7 +22,7 @@ declare module "next-auth" {
     image: string
     token: string
     expiry: string
-    backednToken: string
+    backendToken: string
   }
   interface JWT {
     token: string

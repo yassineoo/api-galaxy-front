@@ -13,9 +13,11 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function () {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
+  // const {session} = useAuthSession()
   return (
     <Card className="w-full max-w-sm border-0 shadow">
       <CardHeader className="bg-primary text-primary-foreground px-6 py-4">

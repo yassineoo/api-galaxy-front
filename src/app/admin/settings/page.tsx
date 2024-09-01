@@ -27,7 +27,8 @@ import {
   updateTermsAndConditions,
   publishAnAPI
 } from "@/actions/admin";
-import { useSession } from "next-auth/react";
+import { useAuthSession } from "@/components/auth-provider";
+// import { useSession } from "next-auth/react";
 
 export default function Settings() {
   const InactiveAPIS = useInactiveAPI();
@@ -41,13 +42,14 @@ export default function Settings() {
   const [loading, setLoading] = useState(true);
   const [selected,setSelected] = useState("")
   const [success4,setSuccess4] = useState(false)
-  const { data } = useSession();
+  // const { data: session } = useSession();
+  const {session} = useAuthSession()
   // handle earning update
   const handleEarning = async () => {
     try {
       await updateEarning_pourcentage(
         earningPercentage,
-        data?.userId as number
+        session?.userId as number
       );
       setSuccess1(true);
       setTimeout(() => setSuccess1(false), 2000);
@@ -59,7 +61,7 @@ export default function Settings() {
     try {
       await updateTermsAndConditions(
         termsAndConditions,
-        data?.userId as number
+        session?.userId as number
       );
       setSuccess2(true);
       setTimeout(() => setSuccess2(false), 2000);
@@ -69,7 +71,7 @@ export default function Settings() {
   // handle privacy and policy update
   const handlePrivacyAndPolicy = async () => {
     try {
-      await updatePrivacyAndPolicy(privacyAndPolicy, data?.userId as number);
+      await updatePrivacyAndPolicy(privacyAndPolicy, session?.userId as number);
       setSuccess3(true);
       setTimeout(() => setSuccess3(false), 2000);
     } catch (e) {}

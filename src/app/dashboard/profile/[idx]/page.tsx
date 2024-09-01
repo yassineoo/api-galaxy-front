@@ -7,19 +7,23 @@ import Header from "@/components/dashboard/header";
 import { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { getUserApis, getUserFollowings } from "@/actions/api";
-import { useApiById, useApiByUserId, useFollowingApis } from "@/hooks/apis/api.queries";
+import {
+  useApiById,
+  useApiByUserId,
+  useFollowingApis,
+} from "@/hooks/apis/api.queries";
 import ReviewSkeleton from "@/components/HubXs/ReviewSkeleton";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function ProfilePage({ params }: any) {
-  const { data: session, status } = useSession();
+  const { session } = useAuthSession();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(session?.user?.name || "");
-  
-  const myApis = useApiByUserId(session?.userId as number)
 
-  const myFollowingApis= useFollowingApis(session?.userId as number)
-  
-  
+  const myApis = useApiByUserId(session?.userId as number);
+
+  const myFollowingApis = useFollowingApis(session?.userId as number);
+
   useEffect(() => {
     setName(session?.user?.name || "");
   }, [session?.user?.name]);
@@ -109,50 +113,54 @@ export default function ProfilePage({ params }: any) {
                   </TabsList>
                   <TabsContent value="published" className="mt-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-
-                      {
-                        myApis.isLoading ? <ReviewSkeleton /> : (
-                          !myApis.data.length ? <p>no published api</p> : myApis.data.map((api:any,index:number) => (
-                            <Card key={index}>
-                        <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">{api.name}</div>
-                          <div className="text-muted-foreground">
-                           {api.description}
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <CodeIcon className="w-4 h-4" />
-                            <span>123 calls</span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                          ))
-                        )
-                      }
-                      
-
+                      {myApis.isLoading ? (
+                        <ReviewSkeleton />
+                      ) : !myApis.data.length ? (
+                        <p>no published api</p>
+                      ) : (
+                        myApis.data.map((api: any, index: number) => (
+                          <Card key={index}>
+                            <CardContent className="flex flex-col gap-2">
+                              <div className="text-lg font-semibold">
+                                {api.name}
+                              </div>
+                              <div className="text-muted-foreground">
+                                {api.description}
+                              </div>
+                              <div className="flex items-center gap-2 text-sm">
+                                <CodeIcon className="w-4 h-4" />
+                                <span>123 calls</span>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))
+                      )}
                     </div>
                   </TabsContent>
                   <TabsContent value="following">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-                    {
-                        myFollowingApis.isLoading ? <ReviewSkeleton /> : (
-                          !myFollowingApis.data.length ? <p>no published api</p> : myFollowingApis.data.map((api:any,index:number) => (
-                            <Card key={index}>
-                        <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">{api.api.name}</div>
-                          <div className="text-muted-foreground">
-                           {api.api.description}
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <CodeIcon className="w-4 h-4" />
-                            <span>123 calls</span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                          ))
-                        )
-                      }
-                      
+                      {myFollowingApis.isLoading ? (
+                        <ReviewSkeleton />
+                      ) : !myFollowingApis.data.length ? (
+                        <p>no published api</p>
+                      ) : (
+                        myFollowingApis.data.map((api: any, index: number) => (
+                          <Card key={index}>
+                            <CardContent className="flex flex-col gap-2">
+                              <div className="text-lg font-semibold">
+                                {api.api.name}
+                              </div>
+                              <div className="text-muted-foreground">
+                                {api.api.description}
+                              </div>
+                              <div className="flex items-center gap-2 text-sm">
+                                <CodeIcon className="w-4 h-4" />
+                                <span>123 calls</span>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))
+                      )}
                     </div>
                   </TabsContent>
                 </Tabs>
