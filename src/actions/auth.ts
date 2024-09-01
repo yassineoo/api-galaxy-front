@@ -6,9 +6,7 @@ import { Dispatch, SetStateAction } from "react";
 import { ApiAuth } from "@/utils/constants";
 
 export const placeholderApi = axios.create({
-
   baseURL: ApiAuth,
-
 });
 
 export type UserData = {
@@ -26,36 +24,45 @@ class ApiError extends Error {
 
 export const authUser = async (data: UserData, isRegister: boolean) => {
   try {
+    console.log({ data })
     const res = await placeholderApi.post(
-      `${isRegister ? "/register" : "/login"}`,
-      JSON.stringify(data),
+      isRegister ? "/register" : "/login",
+      {
+        email: data.email,
+        password: data.password,
+        username: data.username,
+      },
       {
         headers: {
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       }
     );
-    if (res.data?.message) {
-      throw new Error(res.data.message);
-    } else {
-      return res.data;
-    }
+    console.log({ res })
+
+    return res.data;
   } catch (error: any) {
+    console.log({ error })
     throw error;
   }
 };
 
-export const oauthUser = async (data: any) => {
+export const oauthUser = async (data: { Email: string, Username: string }) => {
   try {
     //console.log("called in oauth")
-    const res = await placeholderApi.post("/oauth", JSON.stringify(data), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await placeholderApi.post("/oauth",
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     return res;
   } catch (error) {
-    return false;
+    console.log({ OAUTH_ERROR: error })
+    return {
+      data: {}
+    }
   }
 };
 
@@ -101,7 +108,7 @@ export const verifyEmail = async (data: any, type: string) => {
       return res.data;
     }
   } catch (error) {
-   // console.log(error);
+    // console.log(error);
     return false;
   }
 };
@@ -142,12 +149,15 @@ export const authenticate = async (
     });
     if (res?.ok) {
       setSuccess(true);
-    } else {
+    }
+    else {
+      console.log({ res })
       setError("errorMessage", {
         message: res?.error!,
       });
     }
   } catch (error: any) {
+    console.log({ error })
     setError("errorMessage", {
       message: error?.message,
     });

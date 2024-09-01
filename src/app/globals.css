@@ -98,6 +98,10 @@
   letter-spacing: 1px;
 }
 
+
+.navbar-link{
+  padding: 0.5rem 1rem;
+}
 .navbar-link:hover,
 .navbar-button:hover {
   background-color: rgba(255, 255, 255, 0.2);
@@ -124,4 +128,19 @@
 .signup:hover {
   background: linear-gradient(135deg, #ffb700, #ffd700);
   color: #003366;
+}
+
+
+input::-webkit-clear-button {
+  display: none;
+}
+
+/* Hide the clear button in Firefox */
+input::-moz-clear-button {
+  display: none;
+}
+
+/* Hide the clear button in Edge */
+input::-ms-clear {
+  display: none;
 }

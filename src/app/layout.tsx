@@ -19,12 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          inter.className,
-          "h-screen overflow-y-hidden"
-        )}
-      >
+      <body className={cn(inter.className, "h-screen overflow-y-auto")}>
         <Provider>
           <ThemeProvider
             attribute="class"

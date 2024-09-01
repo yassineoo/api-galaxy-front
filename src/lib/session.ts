@@ -2,14 +2,16 @@ import { getServerSession } from "next-auth/next";
 import { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialProvider from "next-auth/providers/credentials";
-import { UserData, authUser, getUserSession, oauthUser } from "@/actions/auth";
+import { UserData, authUser, oauthUser } from "@/actions/auth";
+import { SERVER_ENV } from "./env";
+import { AxiosError } from "axios";
+import { setAuthToken } from "./get-auth-token";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId:
-        "324751400836-30maqup4crb42q245kj56p3knn576jvd.apps.googleusercontent.com",
-      clientSecret: "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",
+      clientId: SERVER_ENV.GOOGLE_CLIENT_ID,
+      clientSecret: SERVER_ENV.GOOGLE_CLIENT_SECRET,
     }),
     CredentialProvider({
       name: "credentials",
@@ -27,7 +29,7 @@ export const authOptions: NextAuthOptions = {
           label: "username",
         },
       },
-      async authorize(credentials, req): Promise<any> {
+      async authorize(credentials): Promise<any> {
         const isRegister = Boolean(credentials?.username);
         const data = {
           email: credentials?.email,
@@ -38,9 +40,24 @@ export const authOptions: NextAuthOptions = {
         }
         try {
           const res = await authUser(data, isRegister);
-          return res;
+          await setAuthToken(res.token)
+          res.backendToken = res.token
+          return {
+            email: data.email,
+            username: data.username,
+            backendToken: res.token,
+            image: "",
+            ...res,
+            token: res.token,
+          };
         } catch (error) {
-          console.log("error happened");
+          console.log({ error })
+          if (error instanceof AxiosError) {
+            if ("errors" in error.response?.data) throw new Error(error.response?.data.errors)
+            if ("message" in error.response?.data) throw error.response?.data
+            throw error.response?.data
+          }
+          throw new Error("Wrong Credentials")
         }
       },
     }),
@@ -58,7 +75,8 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, session, ...props }) {
+      console.log({ token, user, session, props })
       if (user) {
         if (user?.name) {
           const res = await oauthUser({
@@ -68,12 +86,13 @@ export const authOptions: NextAuthOptions = {
 
           //console.log("response =================================================");
           //console.log(res)
-          if (!res.data?.message) {
+          if (!res || !res.data?.message) {
             token.backendToken = res.data.token;
             token.userId = res.data.userId;
 
           }
         } else {
+          token.token = user.token;
           token.backendToken = user.token;
           token.userId = user.userId;
         }
@@ -82,9 +101,11 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    async session({ session, token }): Promise<any> {
+    async session({ session, token, ...props }): Promise<any> {
+      console.log({ session, token, ...props })
       // Add the backend token to the session object
       //console.log(token)
+      session.token = token.token as string
       session.token = token.backendToken as string;
       session.userId = token.userId as number;
       return session;

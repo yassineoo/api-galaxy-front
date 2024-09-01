@@ -17,14 +17,14 @@ export function WelcomeSection({ type, welcome = "Welcome back !" }: any) {
           <ChromeIcon className="h-5 w-5" />
           Login with Google
         </Button>
-        <Button
+        {/* <Button
           onClick={() => signIn("github")}
           variant="outline"
           className="flex items-center justify-center gap-2 bg-black text-white"
         >
           <GithubIcon className="h-5 w-5" />
           Login with GitHub
-        </Button>
+        </Button> */}
       </div>
 
       {type == "register" ? (

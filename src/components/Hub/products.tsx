@@ -5,10 +5,9 @@ import { useApiList } from "@/hooks/apis/api.queries";
 import { useEffect, useState } from "react";
 import PaginationManual from "../dashboard/billing/paginationManual";
 import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
-import { Search } from "../shared/search";
 import CardSkeleton from "../HubXs/skeleton";
-import { useApiHealthCheakStats } from "@/hooks/HealthCheak/apiHealthCheak.queries";
 import { useSession } from "next-auth/react";
+import useAuth from "@/hooks/useAuth";
 
 const buttons = [
   {
@@ -44,13 +43,15 @@ export default function ProductsHub() {
   const [search, setSearch] = useState("");
   const [apis, setApis] = useState([]);
   const [ids, setIds] = useState([1]);
-  const { status, data: user } = useSession();
+  const { status, data: session } = useSession();
+  if (status !== "loading") console.log({ session });
+
   const apiList = useApiList({
     page,
     limit: 12,
     filter,
     search,
-    userId: user?.userId || 1,
+    userId: session?.userId || 1,
   });
 
   const ApiCategoryList = useApiCategoryList();
@@ -68,25 +69,26 @@ export default function ProductsHub() {
     }
   }, [apiList.isSuccess]);
 
-  useEffect(() => {
-    if (apiHealthStats?.isSuccess) {
-      setApis((prev: any) => {
-        return prev.map((api: any) => {
-          const stat = apiHealthStats?.data?.find(
-            (health: any) => health.ApiID === api.ID
-          );
-          console.log("stat", stat, apiHealthStats?.data, api.ID);
+  // TODO
+  // useEffect(() => {
+  //   if (apiHealthStats?.isSuccess) {
+  //     setApis((prev: any) => {
+  //       return prev.map((api: any) => {
+  //         const stat = apiHealthStats?.data?.find(
+  //           (health: any) => health.ApiID === api.ID
+  //         );
+  //         console.log("stat", stat, apiHealthStats?.data, api.ID);
 
-          return {
-            ...api,
-            Availability: (2 || 0) * 100,
-            Latency: 5 || 0,
-            Rating: 2,
-          };
-        });
-      });
-    }
-  }, [apiHealthStats.isSuccess]);
+  //         return {
+  //           ...api,
+  //           Availability: (2 || 0) * 100,
+  //           Latency: 5 || 0,
+  //           Rating: 2,
+  //         };
+  //       });
+  //     });
+  //   }
+  // }, [apiHealthStats.isSuccess]);
   /*
   useEffect(() => {
     console.log("apissss", apis);
@@ -130,7 +132,7 @@ export default function ProductsHub() {
               apis?.map((card: any, index: any) => (
                 <ProductCard
                   key={index}
-                  userId={user?.userId}
+                  userId={session?.userId}
                   cardData={{
                     id: card.id,
                     averageRating: 3,

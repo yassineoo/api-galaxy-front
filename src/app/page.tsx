@@ -10,6 +10,7 @@ import Reviews from "@/components/Vetrine/reviews";
 import { useSession } from "next-auth/react";
 export default function VetrinePage() {
   const { data: session, status } = useSession();
+  console.log({ session });
   return (
     <>
       <div>
