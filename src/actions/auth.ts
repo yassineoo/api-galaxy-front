@@ -56,7 +56,7 @@ export const oauthUser = async (data: { Email: string; Username: string }) => {
       },
     });
     console.log("response from oauth", res);
-
+    console.log({ res })
     return res;
   } catch (error) {
     console.log({ OAUTH_ERROR: error });

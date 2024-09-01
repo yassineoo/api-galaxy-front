@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addAnAPIReview } from "@/actions/api";
 import { reviewCreation } from "./interfaces";
-import { useSession } from "next-auth/react";
 
 import { useAuthSession } from "@/components/auth-provider";
 export const useCreateApi = () => {

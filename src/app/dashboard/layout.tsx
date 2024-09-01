@@ -1,16 +1,14 @@
-"use client"
 import Sidebar from "@/components/dashboard/sidebar";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { getCurrentUser } from "@/lib/session";
+import { redirect } from "next/navigation";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const {data:session,status} = useSession()
- 
+  const session = await getCurrentUser();
+  if (!session) redirect("/login");
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex ">
       <Sidebar />
