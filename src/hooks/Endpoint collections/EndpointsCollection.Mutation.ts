@@ -7,9 +7,13 @@ import { ApiUrl } from "@/utils/constants";
 import { Collection, CollectionCreation } from "./interfaces";
 import { useSession } from "next-auth/react";
 
+import { useAuthSession } from "@/components/auth-provider";
+
 export const useCreateCollection = () => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
+  const { session } = useAuthSession();
+
   return useMutation({
     mutationFn: async (data: CollectionCreation) => {
       const response = await axios.post(
@@ -28,7 +32,10 @@ export const useCreateCollection = () => {
 
 export const useUpdateCollection = () => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession()
+
+  // const { data: session } = useSession()
+  const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (apiData: Collection) => {
@@ -49,7 +56,10 @@ export const useUpdateCollection = () => {
 
 export const useDeleteCollection = () => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession()
+
+  // const { data: session } = useSession()
+  const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (id: string) => {

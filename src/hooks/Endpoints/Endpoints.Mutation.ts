@@ -7,9 +7,13 @@ import { ApiUrl } from "@/utils/constants";
 import { ApiEndpoints } from "./interfaces";
 import { useSession } from "next-auth/react";
 
+import { useAuthSession } from "@/components/auth-provider";
+
 export const useCreateApiEndpoints = () => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
+  const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (data: any) => {
@@ -31,7 +35,10 @@ export const useCreateApiEndpoints = () => {
 
 export const useCreateExtractedApiEndpoints = () => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession()
+
+  // const { data: session } = useSession()
+  const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (data: any) => {
@@ -53,7 +60,10 @@ export const useCreateExtractedApiEndpoints = () => {
 
 export const useUpdateApiEndpoints = () => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession()
+
+  // const { data: session } = useSession()
+  const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (apiData: Partial<ApiEndpoints>) => {
@@ -74,7 +84,10 @@ export const useUpdateApiEndpoints = () => {
 
 export const useDeleteApiEndpoints = () => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession()
+
+  // const { data: session } = useSession()
+  const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (id: string) => {

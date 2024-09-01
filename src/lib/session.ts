@@ -42,6 +42,7 @@ export const authOptions: NextAuthOptions = {
           const res = await authUser(data, isRegister);
           await setAuthToken(res.token)
           res.backendToken = res.token
+
           return {
             email: data.email,
             username: data.username,
@@ -53,8 +54,16 @@ export const authOptions: NextAuthOptions = {
         } catch (error) {
           console.log({ error })
           if (error instanceof AxiosError) {
-            if ("errors" in error.response?.data) throw new Error(error.response?.data.errors)
-            if ("message" in error.response?.data) throw error.response?.data
+
+            if ("errors" in error?.response?.data) {
+              console.log(error?.response?.data?.errors)
+              throw new Error(error?.response?.data?.errors)
+            }
+            if ("message" in error?.response?.data) {
+              console.log(error?.response?.data)
+              throw error?.response?.data
+            }
+
             throw error.response?.data
           }
           throw new Error("Wrong Credentials")
@@ -106,7 +115,9 @@ export const authOptions: NextAuthOptions = {
       // Add the backend token to the session object
       //console.log(token)
       session.token = token.token as string
-      session.token = token.backendToken as string;
+
+      session.token = (token.backendToken as { token: string }).token;
+
       session.userId = token.userId as number;
       return session;
     },

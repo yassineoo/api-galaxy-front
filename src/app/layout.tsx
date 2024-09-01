@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Provider } from "./provider";
 import Providers from "./Providers";
 import { cn } from "@/lib/utils";
+import AuthProvider from "@/components/auth-provider";
+import AuthProviderWrapper from "@/components/auth-provider.wrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,7 +21,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+
+      <body className={cn(inter.className, "h-screen overflow-y-auto")}>
+
       <body>
+
         <Provider>
           <ThemeProvider
             attribute="class"
@@ -27,7 +33,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Providers>{children}</Providers>
+            <Providers>
+              <AuthProviderWrapper>{children}</AuthProviderWrapper>
+            </Providers>
           </ThemeProvider>
         </Provider>
       </body>

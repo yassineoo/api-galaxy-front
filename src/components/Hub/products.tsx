@@ -9,6 +9,9 @@ import CardSkeleton from "../HubXs/skeleton";
 import { useSession } from "next-auth/react";
 import useAuth from "@/hooks/useAuth";
 
+import { useAuthSession } from "../auth-provider";
+
+
 const buttons = [
   {
     iconPath: "/assets/hub_assets/layers.svg",
@@ -83,8 +86,9 @@ export default function ProductsHub() {
   const [search, setSearch] = useState("");
   const [apis, setApis] = useState([]);
   const [ids, setIds] = useState([1]);
-  const { status, data: session } = useSession();
-  if (status !== "loading") console.log({ session });
+
+  const { session } = useAuthSession();
+
 
   const apiList = useApiList({
     page,
@@ -92,7 +96,8 @@ export default function ProductsHub() {
     filter,
     search,
     userId: session?.userId || 1,
-    authToken: session?.token ?? "",
+
+
   });
 
   const ApiCategoryList = useApiCategoryList();
@@ -154,7 +159,7 @@ export default function ProductsHub() {
             <CategoryList
               setFilter={setFilter}
               filter={filter}
-              categories={ApiCategoryList?.data}
+              categories={ApiCategoryList.data}
             />
           )}
         </div>
@@ -172,19 +177,19 @@ export default function ProductsHub() {
               ))}
 
             {apiList.isSuccess &&
-              apis?.map((card: any, index: any) => (
+              apis?.map((api: any, index: any) => (
                 <ProductCard
                   key={index}
                   userId={session?.userId}
                   cardData={{
-                    id: card.id,
+                    id: api.id,
                     averageRating: 3,
-                    latency: card.Latency,
-                    availability: card.status,
-                    imagePath: card.image_path,
-                    cardTitle: card.name,
-                    cardDescription: card.description,
-                    liked: card.isLiked,
+                    latency: api.Latency,
+                    availability: api.status,
+                    imagePath: api.image_path,
+                    cardTitle: api.name,
+                    cardDescription: api.description,
+                    liked: api.isLiked,
                   }}
                 />
               ))}
