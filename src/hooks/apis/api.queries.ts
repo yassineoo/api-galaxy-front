@@ -17,7 +17,7 @@ export const useApiList = ({ page, limit, filter, search, userId }: any) => {
     queryFn: async () => {
       try {
         const response = await basedApiUrl.get(
-          `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}`
+          `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}`
         );
         //console.log("response from api query : ", response.data);
         return response.data;
@@ -88,11 +88,13 @@ export const useApiById = (apiId: number) => {
 };
 
 export const useApiByUserId = (userId: number) => {
-  return useQuery<Api[]>({
+  return useQuery<any[]>({
     queryKey: ["myApis", userId],
     queryFn: async () => {
       //const response = await axios.get(`${ApiUrl}/apis/user-apis/${userId}`); // Adjust the endpoint
       const data = await getUserApis(userId);
+      console.log("data from api users : ", data);
+
       return data;
     },
   });
@@ -123,9 +125,11 @@ export const useInactiveAPI = () => {
   return useQuery({
     queryKey: ["inactiveAPI"],
     queryFn: async () => {
+
       const response = await getInactiveAPI()
       return response
     }
   })
 }
+
 // export function useApi

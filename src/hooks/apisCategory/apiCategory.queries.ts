@@ -1,12 +1,18 @@
 // apiQueries.ts
 
+
 import { ApiAuth, ApiUrl } from "@/utils/constants";
+
+import { basedApiUrl } from "@/actions/api";
+
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
 
 export const placeholderApis = axios.create({
-  baseURL: "http://localhost:5000/auth"//"http://localhost:5000/apis-services",
+
+  baseURL: "http://localhost:9000",
+
 });
 
 export const useApiCategoryList = () => {
@@ -14,8 +20,9 @@ export const useApiCategoryList = () => {
   return useQuery({
     queryKey: ["apiCategoryList"],
     queryFn: async () => {
+
       try {
-        const response = await placeholderApis.get(
+        const response =  await basedApiUrl.get(`/userApi/categories`,
           "/categories",//`/categoriesk`,
           { headers: { Authorization: `Bearer ${session?.token}` } }
         ); // Adjust the endpoint
@@ -27,6 +34,7 @@ export const useApiCategoryList = () => {
         if (e instanceof AxiosError) console.log({ e: e.response?.data })
         return []
       }
+
     },
   });
 };
