@@ -11,9 +11,6 @@ export default function SearchApiInput() {
 
   const { data: session, status } = useSession();
 
-  const [filteredSuggestions, setFilteredSuggestions] = useState<any[]>([]); // State to store filtered suggestions
-
-
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef(null);
   const router = useRouter();
@@ -22,8 +19,7 @@ export default function SearchApiInput() {
     data: filteredSuggestions,
     isLoading,
     refetch,
-  } = useSearchApiList({ search: searchTerm , authToken: session?.token ?? "" });
-
+  } = useSearchApiList({ search: searchTerm, authToken: session?.token ?? "" });
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -38,10 +34,8 @@ export default function SearchApiInput() {
   };
 
   useEffect(() => {
-
     setShowSuggestions(searchTerm.length > 0);
   }, [searchTerm, filteredSuggestions]);
-
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -107,7 +101,6 @@ export default function SearchApiInput() {
               Not Found
             </div>
           )}
-
         </div>
       )}
     </div>

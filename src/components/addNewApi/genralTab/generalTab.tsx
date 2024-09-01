@@ -172,7 +172,10 @@ export default function GenralApiInfoTab({ api }: any) {
 
                 uploadPreset="Pfe_Uplaod"
                 onSuccess={(results) => {
-                  console.log("Public ID", results?.info?.public_id);
+                  console.log(
+                    "Public ID",
+                    (results?.info as unknown)?.public_id
+                  );
                   setImage(results?.info?.public_id);
                 }}
               >
