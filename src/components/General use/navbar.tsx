@@ -10,7 +10,6 @@ import { useMutation } from "@tanstack/react-query";
 
 import { useAuthSession } from "../auth-provider";
 
-
 interface Links {
   services: string;
   about: string;
@@ -43,13 +42,13 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated";
-  const signOutUser = async()=>{
-    const isVerified = localStorage.getItem("isVerified")
-    if(isVerified){
-      localStorage.removeItem("isVerified")
+  const signOutUser = async () => {
+    const isVerified = localStorage.getItem("isVerified");
+    if (isVerified) {
+      localStorage.removeItem("isVerified");
     }
-    signOut().then(()=>router.push("/login"))
-  }
+    signOut().then(() => router.push("/login"));
+  };
 
   return (
     <div className="navbarGradient  flex justify-between items-center p-1 px-6">
@@ -124,10 +123,10 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
               )}
               <span className="text-white">{session?.user?.name}</span>
 
-              <a href={"/"}
-                onClick={signOutUser}
+              <a
+                href={"/"}
+                onClick={() => signOutUser()}
                 className="navbar-button px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
-
               >
                 Sign Out
               </a>

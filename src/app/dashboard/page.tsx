@@ -117,18 +117,20 @@ export default function DashboardPage() {
   >([]);
 
   const router = useRouter();
-  const { session,isAuthenticated } = useAuthSession();
+  const { session, isAuthenticated } = useAuthSession();
   useEffect(() => {
     const isVerified = localStorage.getItem("isVerified");
-    if (
-      isAuthenticated &&
-      session &&
-      session.twoFactorEnabled &&
-      isVerified != "true"
-    ) {
+    console.log(
+      "isVerified",
+      isVerified,
+      session?.twoFactorEnabled,
+      isAuthenticated
+    );
+
+    if (isAuthenticated && session && session.twoFactorEnabled && !isVerified) {
       router.push("/verifyOTP");
     }
-  }, [session, status]);
+  }, [session]);
   const { data: apiList, status: apiListLoadingStatus } = useApiByUserId(1);
   let options: SelectOptions = [];
   if (apiListLoadingStatus === "success") {
