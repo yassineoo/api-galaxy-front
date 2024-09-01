@@ -2,6 +2,8 @@ import axios from "axios";
 
 import { reviewCreation } from "@/hooks/reviews/interfaces";
 import { ApiUsersUrl } from "@/utils/constants";
+import useAuth from "@/hooks/useAuth";
+import { useSession } from "next-auth/react";
 export const basedApiUrl = axios.create({
   baseURL: ApiUsersUrl,
 });
@@ -43,6 +45,9 @@ export const getAPIReviews = async (api_id: number) => {
 
 // add a Review
 export const addAnAPIReview = async (reviewData: reviewCreation) => {
+  const { data: auth, isSuccess } = useAuth();
+  if (isSuccess) console.log({ auth });
+  const { data: session } = useSession()
   try {
     console.log(reviewData);
     const success = await basedApiUrl.post(
@@ -54,6 +59,7 @@ export const addAnAPIReview = async (reviewData: reviewCreation) => {
       },
       {
         headers: {
+          "Authorization": `Bearer ${session?.userId ? auth : ""}`,
           "Content-Type": "application/json",
         },
       }

@@ -8,11 +8,12 @@ import axios from "axios";
 import { getUserApis, getUserFollowings } from "@/actions/api";
 import { basedApiUrl, getAPIRating } from "@/actions/api";
 import { getInactiveAPI } from "@/actions/admin";
+import { useSession } from "next-auth/react";
 export const useApiList = ({ page, limit, filter, search, userId }: any) => {
   //const userData = await getCurrentUser()
   //console.log("helll",userData)
   return useQuery({
-    queryKey: ["apiList", page, limit, filter, search],
+    queryKey: ["apiList", page, limit, filter, search ?? undefined],
     queryFn: async () => {
       try {
         const response = await basedApiUrl.get(
@@ -37,7 +38,7 @@ export const useApiListForAdmin = ({
   //const userData = await getCurrentUser()
   //console.log("helll",userData)
   return useQuery({
-    queryKey: ["apiListAdmin", page, limit, filter, search],
+    queryKey: ["apiListAdmin", page, limit, filter, search ?? undefined],
     queryFn: async () => {
       try {
         const response = await basedApiUrl.get(
@@ -51,17 +52,26 @@ export const useApiListForAdmin = ({
     },
   });
 };
-export const useSearchApiList = ({ search }: { search: string }) => {
+export const useSearchApiList = ({ search, authToken }: { search: string, authToken: string }) => {
   return useQuery<Api[]>({
-    queryKey: ["apiListSearch", search],
+    queryKey: ["apiListSearch", search ?? undefined],
     queryFn: async () => {
       console.log("logged from api quety : ", search);
 
-      const response = await axios.get(`${ApiUrl}/apis/search`, {
-        params: { search }, // Add query parameters
-      });
-      console.log(response.data);
-      return (response.data as { data: Api[] }).data;
+      try {
+        const response = await axios.get(
+          `${ApiUrl}/apis/search`,
+          {
+            params: { search },
+            headers: { Authorization: `Bearer ${authToken}` }
+          },
+        );
+        console.log(response.data);
+        return (response.data as { data: Api[] }).data;
+      } catch (e) {
+        console.log({ e })
+        return []
+      }
     },
   });
 };
@@ -115,9 +125,11 @@ export const useInactiveAPI = () => {
   return useQuery({
     queryKey: ["inactiveAPI"],
     queryFn: async () => {
-      const response = await getInactiveAPI();
-      return response;
-    },
-  });
-};
+
+      const response = await getInactiveAPI()
+      return response
+    }
+  })
+}
+
 // export function useApi

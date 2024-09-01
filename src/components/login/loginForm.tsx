@@ -6,8 +6,8 @@ export function LoginForm() {
       <div className="flex w-full sm:w-2/3 md:w-1/2 lg:w-3/5  flex-col items-start">
         <label className="text-xs text-gray-500 mb-2"> Email</label>
         <input
-          type="text"
-          placeholder="Username"
+          type="email"
+          placeholder="Email"
           className="border p-2 rounded-lg  w-full"
         />
       </div>

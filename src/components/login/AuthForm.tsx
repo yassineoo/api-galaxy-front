@@ -152,7 +152,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
             <Button
               type="submit"
               className="w-full text-center py-2  rounded-md font-semibold"
-              disabled={isLoading}
+              // disabled={isLoading}
             >
               {isLoading ? "Loading..." : type}
             </Button>

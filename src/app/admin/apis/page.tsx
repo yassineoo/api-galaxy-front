@@ -20,13 +20,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCollectionList } from "@/hooks/Endpoint collections/EndpointsCollection.queries";
 import { useApiListForAdmin } from "@/hooks/apis/api.queries";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function DefinitionTab() {
   const [page, setPage] = useState(1);
-  const adminId = 1
-  const ApiList = useApiListForAdmin({ page, limit: 8 ,search : "", adminId });
-
-  const CollectionList = useCollectionList();
+  const adminId = 1;
+  const ApiList = useApiListForAdmin({ page, limit: 8, search: "", adminId });
+  const { data: session } = useSession();
+  const CollectionList = useCollectionList({ authToken: session?.token ?? "" });
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
       <Header />

@@ -3,12 +3,6 @@
  * @see https://v0.dev/t/TaoVJjmMmIb
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Provider } from "@/types/common.types";
-import { signIn } from "next-auth/react";
 import { WelcomeSection } from "@/components/login/AuthProviderButton";
 import { AuthForm } from "@/components/login/AuthForm";
 

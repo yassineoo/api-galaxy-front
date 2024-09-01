@@ -10,15 +10,19 @@ import {
   ChatWithMessages,
 } from "@/app/dashboard/inbox/chat.interface";
 import { ApiUsersUrl } from "@/utils/constants";
+import { useSession } from "next-auth/react";
 
 export function useCreateMessageMutation(chatId: number) {
   const queryClient = useQueryClient();
+  const {data:session} = useSession()
+
   return useMutation({
     mutationKey: ["create-message", `chat-${chatId}`],
     mutationFn: async (input: { senderId: number; content: string }) => {
       const res = await axios.post(
         `${ApiUsersUrl}/chatrooms/${chatId}/messages`,
-        input
+        input,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
       );
 
       const data = res.data;

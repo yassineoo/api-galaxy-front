@@ -1,15 +1,26 @@
 // apiQueries.ts
 
-import { ApiUrl } from "@/utils/constants";
+import { ApiAuth, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
-export const useCollectionList = () => {
+export const useCollectionList = ({ authToken }: { authToken: string }) => {
   return useQuery({
     queryKey: ["CollectionList"],
     queryFn: async () => {
-      const response = await axios.get(`${ApiUrl}/api-collections/`); // Adjust the endpoint
-      return response.data;
+      try {
+        const response = await axios.get(
+          // `${ApiUrl}/api-collections/`,
+          `${ApiAuth}/api-collections/`,
+          // { headers: { Authorization: `Bearer ${authToken}` } }
+        ); // Adjust the endpoint
+        console.log({ response })
+        return response.data;
+      }
+      catch (error) {
+        console.log({ error })
+      }
     },
   });
 };

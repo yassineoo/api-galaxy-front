@@ -1,10 +1,14 @@
+"use client";
 import Navbar from "@/components/HubXs/navbar";
 import HeroHub from "../../components/Hub/hero";
 import ProductsHub from "../../components/Hub/products";
 import TopCollection from "../../components/Hub/top";
 import Footer from "@/components/Vetrine/footer";
+import { useSession } from "next-auth/react";
 
 export default function HubPage() {
+  const { data: session } = useSession();
+  console.log(session);
   return (
     <>
       <div>
