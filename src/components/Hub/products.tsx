@@ -2,7 +2,7 @@
 import LeftBarButton, { LeftBarBarSkeleton } from "../HubXs/leftBarButton";
 import ProductCard from "../HubXs/productCard";
 import { useApiList } from "@/hooks/apis/api.queries";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import PaginationManual from "../dashboard/billing/paginationManual";
 import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
 import CardSkeleton from "../HubXs/skeleton";
@@ -113,6 +113,11 @@ export default function ProductsHub() {
     }
   }, [apiList.isSuccess]);
 
+  useEffect(() => {
+    console.log("logged apissss", apis);
+    console.log("logged apissss data", apiList.data);
+  }, [apis]);
+
   // TODO
   // useEffect(() => {
   //   if (apiHealthStats?.isSuccess) {
@@ -175,7 +180,7 @@ export default function ProductsHub() {
               ))}
 
             {apiList.isSuccess &&
-              apis?.map((api: any, index: any) => (
+              apiList.data?.map((api: any, index: any) => (
                 <ProductCard
                   key={index}
                   userId={session?.userId}
