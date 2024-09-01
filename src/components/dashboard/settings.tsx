@@ -16,8 +16,11 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
+import Link from "next/link";
+import { useAuthSession } from "../auth-provider";
 
 export default function Settings() {
+  const { session } = useAuthSession();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -39,7 +42,12 @@ export default function Settings() {
                   <UserIcon className="h-5 w-5" />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm font-medium">Profile</p>
+                  <Link
+                    className="text-sm font-medium"
+                    href={`/dashboard/profile/${session?.userId || 5}`}
+                  >
+                    Profile
+                  </Link>
                   <p className="text-sm text-muted-foreground">
                     Update your profile information
                   </p>

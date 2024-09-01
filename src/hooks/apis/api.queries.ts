@@ -40,6 +40,7 @@ export const useApiList = ({
             description: api.Description,
             status: api.Status,
           }));
+          console.log("mapped apis : ", mappedApis);
 
           return mappedApis;
         } else
@@ -50,6 +51,7 @@ export const useApiList = ({
             }
           );
         // return [];
+        console.log("mapped apis 2 : ", response.data);
 
         //console.log("response from api query : ", response.data);
         return response.data;
@@ -87,7 +89,6 @@ export const useApiListForAdmin = ({
 
 export const useSearchApiList = ({
   search,
-  authToken,
 }: {
   search: string;
   authToken: string;
@@ -100,7 +101,6 @@ export const useSearchApiList = ({
       try {
         const response = await axios.get(`${ApiUrl}/apis/search`, {
           params: { search },
-          headers: { Authorization: `Bearer ${authToken}` },
         });
         console.log(response.data);
         return (response.data as { data: Api[] }).data;

@@ -13,11 +13,12 @@ import {
 import { UserNav } from "./usernav";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import Notifications from "./notification";
 import Settings from "./settings";
 import { useAuthSession } from "../auth-provider";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   // State to manage dropdown visibility
@@ -27,7 +28,7 @@ const Header = () => {
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
-  const {  session } = useAuthSession();
+  const { session } = useAuthSession();
 
   return (
     <header className="bg-white w-full  dark:bg-slate-900  p-4 flex justify-between 2xl:justify-around items-center">
@@ -70,6 +71,14 @@ const Header = () => {
 };
 
 const IconDropdown = ({ session }: any) => {
+  const router = useRouter();
+  const signOutUser = async () => {
+    const isVerified = localStorage.getItem("isVerified");
+    if (isVerified) {
+      localStorage.removeItem("isVerified");
+    }
+    signOut().then(() => router.push("/login"));
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -92,8 +101,11 @@ const IconDropdown = ({ session }: any) => {
           <Link href={`/dashboard/profile/${session?.userId}`}>Profile </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
         <DropdownMenuItem>Subscription</DropdownMenuItem>
+        <DropdownMenuItem>
+          {" "}
+          <span onClick={() => signOutUser()}>Log out</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

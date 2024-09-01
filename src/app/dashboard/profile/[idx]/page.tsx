@@ -17,14 +17,14 @@ import { useAuthSession } from "@/components/auth-provider";
 
 export default function ProfilePage({ params }: any) {
   const { session } = useAuthSession();
+  console.log("session", session);
+
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(session?.user?.name || "");
 
   //console.log("session",session)
-  const myApis = useApiByUserId(session?.userId as number)
-  const myFollowingApis= useFollowingApis(session?.userId as number)
-  
-  
+  const myApis = useApiByUserId(session?.userId as number);
+  const myFollowingApis = useFollowingApis(session?.userId as number);
 
   useEffect(() => {
     setName(session?.user?.name || "");
@@ -115,60 +115,64 @@ export default function ProfilePage({ params }: any) {
                   </TabsList>
                   <TabsContent value="published" className="mt-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-
-
-                      {
-                        myApis.isLoading ? <ReviewSkeleton /> : (
-                          (myApis.isSuccess && myApis.data.length) ? myApis.data.map((api:any,index:number) => (
-                            <Card key={index}>
-                        <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">{api.name}</div>
-                          <div className="text-muted-foreground">
-                           {api.description}
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <CodeIcon className="w-4 h-4" />
-                            <span>123 calls</span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                          )) :  <p>no published api</p>
-                        )
-                      }
-                      
-
-
+                      {myApis.isLoading ? (
+                        <ReviewSkeleton />
+                      ) : myApis.isSuccess && myApis.data.length ? (
+                        myApis.data.map((api: any, index: number) => (
+                          <Card key={index}>
+                            <CardContent className="flex flex-col gap-2">
+                              <div className="text-lg font-semibold">
+                                {api.name}
+                              </div>
+                              <div className="text-muted-foreground">
+                                {api.description}
+                              </div>
+                              <div className="flex items-center gap-2 text-sm">
+                                <CodeIcon className="w-4 h-4" />
+                                <span>123 calls</span>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))
+                      ) : (
+                        <p>no published api</p>
+                      )}
                     </div>
                   </TabsContent>
                   <TabsContent value="following">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-
-                    {
-                        myFollowingApis.isLoading ? <ReviewSkeleton /> : (
-                         (myFollowingApis.isSuccess && myFollowingApis.data.length) ? myFollowingApis.data.map((api:any,index:number) => (
-                            <Card key={index}>
-                        <CardContent className="flex flex-col gap-2">
-                          <div className="text-lg font-semibold">{api.api.name}</div>
-                          <div className="text-muted-foreground">
-                           {api.api.description}
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <CodeIcon className="w-4 h-4" />
-                            <span>123 calls</span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                          )) : <p>no published api</p>
-                        )
-                      }
-                      
-
+                      {myFollowingApis.isLoading ? (
+                        <ReviewSkeleton />
+                      ) : myFollowingApis.isSuccess &&
+                        myFollowingApis.data.length ? (
+                        myFollowingApis.data.map((api: any, index: number) => (
+                          <Card key={index}>
+                            <CardContent className="flex flex-col gap-2">
+                              <div className="text-lg font-semibold">
+                                {api.api.name}
+                              </div>
+                              <div className="text-muted-foreground">
+                                {api.api.description}
+                              </div>
+                              <div className="flex items-center gap-2 text-sm">
+                                <CodeIcon className="w-4 h-4" />
+                                <span>123 calls</span>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))
+                      ) : (
+                        <p>no published api</p>
+                      )}
                     </div>
                   </TabsContent>
                 </Tabs>
 
                 {/* add two factors button */}
-                <ProfileTwoFactor userId = {idx} />
+                <ProfileTwoFactor
+                  isVerified={session?.twoFactorEnabled || false}
+                  userId={idx}
+                />
               </div>
             </div>
           </div>
@@ -223,32 +227,32 @@ function FilePenIcon(props: any) {
   );
 }
 
-
 import Image from "next/image";
 import { activeTwoFactorAuthentification } from "@/actions/auth";
-import { Shield, Loader2 } from "lucide-react"
+import { Shield, Loader2 } from "lucide-react";
 
 function ProfileTwoFactor({
-  userId,isVerified
-}:{
-  userId : string,
-  isVerified:boolean
+  userId,
+  isVerified,
+}: {
+  userId: string;
+  isVerified: boolean;
 }) {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleActivate2FA = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       // Simulate API call with a delay
-      await activeTwoFactorAuthentification(userId)
+      await activeTwoFactorAuthentification(userId);
       // You might want to update some state or context to reflect that 2FA is now active
     } catch (error) {
-      console.error("Failed to activate 2FA:", error)
+      console.error("Failed to activate 2FA:", error);
       // Handle error (e.g., show an error message to the user)
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="mt-6 p-4 bg-white rounded-lg shadow">
@@ -256,11 +260,13 @@ function ProfileTwoFactor({
       <div className="flex items-center justify-between">
         <div>
           <h3 className="font-medium">Two-Factor Authentication</h3>
-          <p className="text-sm text-muted-foreground">Add an extra layer of security to your account</p>
+          <p className="text-sm text-muted-foreground">
+            Add an extra layer of security to your account
+          </p>
         </div>
-        <Button 
-          onClick={handleActivate2FA} 
-          variant="outline" 
+        <Button
+          onClick={handleActivate2FA}
+          variant="outline"
           className="ml-4"
           disabled={isLoading}
         >
@@ -278,5 +284,5 @@ function ProfileTwoFactor({
         </Button>
       </div>
     </div>
-  )
+  );
 }

@@ -160,7 +160,7 @@ const Menu = ({
 
   return (
     <div className="flex flex-col mt-6 text-sm">
-      {menuItems.map((item) => (
+      {menuItems.map((item: any) => (
         <RegularMenuItem
           key={item.ID}
           item={item}
@@ -172,7 +172,7 @@ const Menu = ({
       ))}
       {isMenuOpen && <Separator text="MY APIs" />}
       {isMenuOpen && (
-        <div className="px-4 mt-2 mb-4 text-black">
+        <div className="px-4 mt-2 mb-4">
           <Input
             type="text"
             placeholder="Search APIs..."

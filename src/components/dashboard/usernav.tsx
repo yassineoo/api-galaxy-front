@@ -10,12 +10,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useAuthSession } from "../auth-provider";
 
 export function UserNav() {
   // const { data: session, status } = useSession();
-  const {session} = useAuthSession()
+  const { session } = useAuthSession();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -55,7 +55,8 @@ export function UserNav() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          Log out
+          <span onClick={() => signOut()}>Log out</span>
+
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

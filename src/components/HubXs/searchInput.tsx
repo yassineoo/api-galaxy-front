@@ -4,21 +4,9 @@ import Image from "next/image";
 import { useSearchApiList } from "@/hooks/apis/api.queries";
 import { CldImage } from "next-cloudinary";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-
-import { useAuthSession } from "../auth-provider";
 
 export default function SearchApiInput() {
   const [searchTerm, setSearchTerm] = useState("");
-
-  // const { data: session, status } = useSession();
-  const { session } = useAuthSession();
-
-  const searchResults = useSearchApiList({
-    search: searchTerm,
-    authToken: session?.token ?? "",
-  });
-
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef(null);
   const router = useRouter();
@@ -27,7 +15,7 @@ export default function SearchApiInput() {
     data: filteredSuggestions,
     isLoading,
     refetch,
-  } = useSearchApiList({ search: searchTerm, authToken: session?.token ?? "" });
+  } = useSearchApiList({ search: searchTerm });
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -51,8 +39,8 @@ export default function SearchApiInput() {
   }, []);
 
   return (
-    <div className="relative w-full max-w-md flex items-center" ref={inputRef}>
-      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none w-full">
+    <div className="relative w-full max-w-md" ref={inputRef}>
+      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
         <Image
           src="/assets/magnifying-glass.png"
           alt="API GALAXY"
@@ -62,14 +50,13 @@ export default function SearchApiInput() {
         />
       </div>
       <Input
-        className="block flex-1 p-4 pl-10 pr-6 text-sm bg-gray-50 text-gray-900 border border-gray-300 rounded-lg   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
+        className="block w-full p-4 pl-10 pr-12 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         id="search"
         placeholder="Search..."
         type="search"
         value={searchTerm}
         onChange={handleSearchChange}
       />
-
       <button
         className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
         type="button"

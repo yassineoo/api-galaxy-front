@@ -6,26 +6,25 @@ declare module "next-auth" {
    */
 
   interface Session {
-
-       name: string;
-       email: string;
-       image: string;
-      // Custom fields
-       userId:number
-       verified:boolean
-    token:string
-    twoFactorEnabled:boolean
-    isVerified : boolean
+    name: string;
+    email: string;
+    image: string;
+    // Custom fields
+    userId: number;
+    verified: boolean;
+    token: string;
+    twoFactorEnabled: boolean;
+    // isVerified: boolean;
+    is2faAuthenticated: boolean;
+    //isVerified: false;
   }
   interface User {
-    email:string 
-    username:string
-    userId:number
-    image:string 
-    token:string 
-    expiry:string
-    twoFactorEnabled:boolean
-
+    email: string;
+    username: string;
+    userId: number;
+    image: string;
+    token: string;
+    expiry: string;
+    twoFactorEnabled: boolean;
   }
-
 }

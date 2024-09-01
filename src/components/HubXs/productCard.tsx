@@ -20,16 +20,17 @@ interface CardType {
 }
 
 const ProductCard = ({
-  id,
-  averageRating,
-  latency,
-  availability,
-  imagePath,
-  cardTitle,
-  cardDescription,
-  liked = false,
-
   userId,
+  cardData: {
+    id,
+    averageRating,
+    latency,
+    availability,
+    imagePath,
+    cardTitle,
+    cardDescription,
+    liked = false,
+  },
 }: any) => {
   const router = useRouter();
   const [isLiked, setIsLiked] = useState(liked);
