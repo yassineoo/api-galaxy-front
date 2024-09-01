@@ -218,9 +218,10 @@ import { activeTwoFactorAuthentification } from "@/actions/auth";
 import { Shield, Loader2 } from "lucide-react"
 
 function ProfileTwoFactor({
-  userId
+  userId,isVerified
 }:{
-  userId : string
+  userId : string,
+  isVerified:boolean
 }) {
   const [isLoading, setIsLoading] = useState(false)
 
@@ -260,7 +261,7 @@ function ProfileTwoFactor({
           ) : (
             <>
               <Shield className="mr-2 h-4 w-4" />
-              Activate 2FA
+              {isVerified ? "Disable 2FA" : "Activate 2FA"}
             </>
           )}
         </Button>

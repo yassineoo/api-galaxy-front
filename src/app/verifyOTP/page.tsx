@@ -83,7 +83,7 @@ export default function TwoFactorVerify() {
                   value={digit}
                   onChange={(e) => handleChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
-                  ref={(el) => (inputRefs.current[index] = el)}
+                  ref={(el) => (inputRefs.current[index] = el) as any}
                   className="w-14 h-14 text-center text-2xl"
                   aria-label={`Digit ${index + 1}`}
                 />

@@ -37,7 +37,13 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated";
-
+  const signOutUser = async()=>{
+    const isVerified = localStorage.getItem("isVerified")
+    if(isVerified){
+      localStorage.removeItem("isVerified")
+    }
+    signOut().then(()=>router.push("/login"))
+  }
   return (
     <div className="navbarGradient  flex justify-between items-top p-1 pl-6">
       <nav className="flex items-top p-2 justify-start flex-wrap">
@@ -112,12 +118,12 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
                 />
               )}
               <span className="text-white">{session?.user?.name}</span>
-              <button
-                onClick={() => signOut()}
+              <a href={"/"}
+                onClick={signOutUser}
                 className="navbar-button px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
               >
                 Sign Out
-              </button>
+              </a>
             </div>
           </>
         ) : (
