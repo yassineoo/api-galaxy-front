@@ -1,9 +1,63 @@
 // Sidebar.js
 "use client";
-import { useApiById, useApiByUserId } from "@/hooks/apis/api.queries";
+import { useApiByUserId } from "@/hooks/apis/api.queries";
 import Link from "next/link";
-import { memo, useCallback, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useParams, usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Input } from "../ui/input";
+
+const menuItems = [
+  {
+    ID: 90,
+    name: "Dashboard",
+    icon: "/icons/icon_dashboard.svg",
+    url: "/dashboard",
+    active: true,
+  },
+  {
+    ID: 91,
+    name: "Inbox",
+    icon: "/icons/icon_inbox.svg",
+    url: "/dashboard/inbox",
+    active: false,
+  },
+  {
+    ID: 92,
+    name: "Add new API",
+    icon: "/icons/icon_business_time_solid.svg",
+    url: "/dashboard/add-new-api",
+    active: false,
+  },
+  {
+    ID: 93,
+    name: "Billing",
+
+    icon: "/icons/icon_billing.svg",
+    url: "/dashboard/billing/billing-information",
+    active: false,
+    children: [
+      {
+        name: "Billing Information",
+        active: true,
+        icon: "/icons/credit-card.svg",
+        url: "/dashboard/billing/billing-information",
+      },
+      {
+        name: "Transaction history",
+        active: false,
+        icon: "/icons/transaction-history.svg",
+        url: "/dashboard/billing/transaction-history",
+      },
+      {
+        name: "Subscription",
+        active: false,
+        icon: "/icons/subscription.svg",
+        url: "/dashboard/billing/subscription",
+      },
+    ],
+  },
+];
 
 export default function Sidebar() {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
@@ -13,8 +67,11 @@ export default function Sidebar() {
   const pathSegments = pathname.split("/");
   const activeItem = pathSegments[2]; // Assuming the item is the third segment
   let activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
-  const maApisListCallback = useCallback(() => useApiByUserId(123), []);
+
+  const maApisListCallback = useCallback(() => useApiByUserId(1), []);
   const maApisList = maApisListCallback();
+  console.log("maApisList-------", maApisList.data);
+
   let apiId = 0;
   if (activeItem != "apis") {
     activeChildName = pathname;
@@ -86,66 +143,20 @@ const Menu = ({
   activeItem,
   activeChildName,
 }: any) => {
-  const menuItems = [
-    {
-      ID: 90,
-      name: "Dashboard",
-      icon: "/icons/icon_dashboard.svg",
-      url: "/dashboard",
-      active: true,
-    },
-    {
-      ID: 91,
-      name: "Inbox",
-      icon: "/icons/icon_inbox.svg",
-      url: "/dashboard/inbox",
-      active: false,
-    },
-    {
-      ID: 92,
-      name: "Add new API",
-      icon: "/icons/icon_business_time_solid.svg",
-      url: "/dashboard/add-new-api",
-      active: false,
-    },
-    {
-      ID: 93,
-      name: "Billing",
-
-      icon: "/icons/icon_billing.svg",
-      url: "/dashboard/billing/billing-information",
-      active: false,
-      children: [
-        {
-          name: "Billing Information",
-          active: true,
-          icon: "/icons/credit-card.svg",
-          url: "/dashboard/billing/billing-information",
-        },
-        {
-          name: "Transaction history",
-          active: false,
-          icon: "/icons/transaction-history.svg",
-          url: "/dashboard/billing/transaction-history",
-        },
-        {
-          name: "Subscription",
-          active: false,
-          icon: "/icons/subscription.svg",
-          url: "/dashboard/billing/subscribers",
-        },
-      ],
-    },
-  ];
-
   const activeOne = menuItems.find((item) => item.url.includes(activeItem));
-  const [activeMenu, setActiveMenu] = useState<number>(
-    apiId || activeOne?.ID || 90
-  ); // 90 is the id of the dashboard
+  const [activeMenu, setActiveMenu] = useState(apiId || activeOne?.ID || 90);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleMenuClick = (ID: number) => {
+  const handleMenuClick = (ID: any) => {
     setActiveMenu(ID);
   };
+
+  const filteredApis = useMemo(() => {
+    if (!maApisList.isSuccess || !maApisList.data) return [];
+    return maApisList.data.filter((api: any) =>
+      api.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [maApisList.data, maApisList.isSuccess, searchTerm]);
 
   return (
     <div className="flex flex-col mt-6 text-sm">
@@ -159,29 +170,38 @@ const Menu = ({
           activeChildName={activeChildName}
         />
       ))}
-      {isMenuOpen && <Separator text="MY apis" />}
-      {isMenuOpen && maApisList.isLoading && <div>Loading...</div>}
-      <div className="flex flex-col items-start justify-start  h-64 overflow-scroll">
+      {isMenuOpen && <Separator text="MY APIs" />}
+      {isMenuOpen && (
+        <div className="px-4 mt-2 mb-4 text-black">
+          <Input
+            type="text"
+            placeholder="Search APIs..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full"
+          />
+        </div>
+      )}
+      {isMenuOpen && maApisList.isLoading && (
+        <div className="px-4">Loading...</div>
+      )}
+      <div className="flex flex-col items-start justify-start h-80 overflow-y-auto overflow-x-hidden">
         {isMenuOpen &&
           maApisList.isSuccess &&
-          maApisList.data.data
-            .map((api: any) => {
-              return {
-                ID: api.ID,
-                name: api.Name,
-                active: api.ID == apiId,
-              };
-            })
-            .map((item: any) => (
-              <ApiMenuItem
-                key={item.ID}
-                item={item}
-                active={activeMenu == item.ID}
-                onClick={handleMenuClick}
-                isMenuOpen={isMenuOpen}
-                activeChildName={activeChildName}
-              />
-            ))}
+          filteredApis.map((api: any) => (
+            <ApiMenuItem
+              key={api.id}
+              item={{
+                ID: api.id,
+                name: api.name,
+                active: api.id == apiId,
+              }}
+              active={activeMenu == api.id}
+              onClick={handleMenuClick}
+              isMenuOpen={isMenuOpen}
+              activeChildName={activeChildName}
+            />
+          ))}
       </div>
     </div>
   );
@@ -292,7 +312,7 @@ const ApiMenuItem = ({
   let url = `/dashboard/apis/${item.ID || 0}/Analyse`;
 
   return (
-    <div className="flex flex-col items-start justify-start w-4/5">
+    <div className={cn("flex flex-col items-start justify-start w-full")}>
       <Link
         href={url}
         className={`w-full flex items-center gap-2 py-3 cursor-pointer ${

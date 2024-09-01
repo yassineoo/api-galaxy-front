@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prestart": "tsx src/lib/env",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -37,9 +38,11 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
+    "dotenv": "^16.4.5",
     "embla-carousel-react": "8.0.0-rc23",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.292.0",
     "next": "13.5.6",
     "next-auth": "^4.24.6",
@@ -57,13 +60,16 @@
     "react-quill": "^2.0.0",
     "react-resizable-panels": "^2.0.17",
     "react-select": "^5.8.0",
+    "react-spinners": "^0.14.1",
     "react-stars": "^2.2.5",
     "react-syntax-highlighter": "^15.5.0",
-    "react-toastify": "^10.0.4",
+    "react-toastify": "^10.0.5",
     "reactflow": "^11.10.1",
     "recharts": "^2.10.1",
+    "socket.io-client": "^4.7.5",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
+    "tsx": "^4.19.0",
     "vaul": "^0.9.0",
     "zod": "^3.22.4",
     "zustand": "^4.5.0"
@@ -80,5 +86,9 @@
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.2.2"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8",
+    "utf-8-validate": "^6.0.4"
   }
 }

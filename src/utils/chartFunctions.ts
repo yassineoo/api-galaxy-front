@@ -1,3 +1,8 @@
+import { Api } from "@/app/dashboard/apis/[id]/Analyse/api.interface";
+import { ChartData } from "@/app/dashboard/apis/[id]/Analyse/data";
+import { Endpoint } from "@/app/dashboard/apis/[id]/Analyse/endpoints.interface";
+import { LogStat } from "@/app/dashboard/apis/[id]/Analyse/interfaces";
+
 export function formatDate(input: string | number): string {
   const date = new Date(input);
   return date.toLocaleDateString("en-US", {
@@ -7,45 +12,48 @@ export function formatDate(input: string | number): string {
   });
 }
 
-export function replaceNullValues(input: any) {
-  return input.map((item: any) => {
-    for (const key in item) {
+export function replaceNullValues(input: ChartData[]) {
+  return input.map((item) => {
+
+    let newItem = { ...item }
+
+    for (let key in item) {
       if (item[key] === null) {
-        item[key] = { Calls: 0, Errors: 0, Latency: 0 };
+        // TODO GHDWA_SBA7 Aglb mn error {getTodo , getTodos } L 
+        // => getTodo{error,calls}, getTodo{error,calls}
+        newItem[key] = { Calls: 0, Errors: 0, Latency: 0 } as unknown as string;
       }
     }
-    return item;
+    return newItem;
   });
 }
 
-export function ChartFormater(stat: any, endpointsList: any) {
-  return stat
-    ? replaceNullValues(stat).map((item: any) => {
-        const updatedEndpoints = Object.keys(item).reduce((acc: any, key) => {
-          if (key !== "name") {
-            const endpointId = parseInt(key, 10);
-            const matchingEndpoint: any = endpointsList.find(
-              (ep: any) => ep?.ID == endpointId
-            );
-            if (matchingEndpoint) {
-              acc[matchingEndpoint?.Name] = item[key];
-            }
-            console.log(
-              matchingEndpoint?.Name,
-              "matchingEndpoint?.Name",
-              endpointId,
-              key
-            );
+export function ChartFormater(stat: ChartData[], endpointsList: (Endpoint | Api)[]) {
+  const result = stat
+    ? replaceNullValues(stat).map((item) => {
+      console.log({ item })
+      const updatedEndpoints = Object.keys(item).reduce((acc: any, key) => {
+
+        if (key !== "name") {
+          const endpointId = parseInt(key, 10);
+          const matchingEndpoint: (Endpoint | Api) | undefined = endpointsList.find(
+            (ep: any) => ep?.ID == endpointId
+          );
+          if (matchingEndpoint) {
+            acc[matchingEndpoint.Name] = item[key];
           }
-          return acc;
-        }, {});
 
-        console.log("updatedEndpoints", updatedEndpoints);
+        }
+        return acc;
+      }, {});
 
-        return {
-          name: item.name,
-          ...updatedEndpoints,
-        };
-      })
+
+      return {
+        name: item.name,
+        ...updatedEndpoints,
+      };
+    })
     : null;
+
+  return result as ChartData[]
 }

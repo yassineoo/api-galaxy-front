@@ -83,7 +83,7 @@ export default React.memo(function ApiDocsGraph({
     setSelectedNodeId(nodeId);
   };
   return (
-    <div className=" h-[400px]  w-4/5 ">
+    <div className=" h-[400px]  w-8/12 ">
       <ReactFlow
         nodes={nodes}
         edges={edges}

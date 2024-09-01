@@ -1,5 +1,6 @@
 // app/apis/columns.tsx
 import { Button } from "@/components/ui/button";
+import { CldImage } from "next-cloudinary";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,35 +22,36 @@ export type ApiEntity = {
 
 export const columns: ColumnDef<ApiEntity>[] = [
   {
-    accessorKey: "Name",
+    accessorKey: "name",
     header: "API Name",
-    cell: ({ row }) => row.getValue("Name"),
+    cell: ({ row }) => row.getValue("name"),
   },
   {
-    accessorKey: "ProviderID",
+    accessorKey: "provider_id",
     header: "Provider ID",
-    cell: ({ row }) => row.getValue("ProviderID"),
+    cell: ({ row }) => row.getValue("provider_id"),
   },
   {
-    accessorKey: "ImagePath",
+    accessorKey: "image_path",
     header: "Image",
     cell: ({ row }) => (
-      <img
-        className="w-8 h-8"
-        src={row.getValue("ImagePath")}
+      <CldImage
+        src={`${row.getValue("image_path")}`}
+        width={20}
+        height={20}
         alt="API Image"
       />
     ),
   },
   {
-    accessorKey: "CategoryID",
+    accessorKey: "category_id",
     header: "Category ID",
-    cell: ({ row }) => row.getValue("CategoryID"),
+    cell: ({ row }) => row.getValue("category_id"),
   },
   {
-    accessorKey: "Status",
+    accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => row.getValue("Status"),
+    cell: ({ row }) => row.getValue("status"),
   },
   {
     id: "actions",

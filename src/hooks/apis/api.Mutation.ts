@@ -4,28 +4,40 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosRequestConfig } from "axios";
 import { Api, ApiCreation } from "./interfaces";
 import { ApiUrl } from "@/utils/constants";
+import { useSession } from "next-auth/react";
 
 export const useCreateApi = () => {
   const queryClient = useQueryClient();
+  const { data: session } = useSession()
 
   return useMutation({
     mutationFn: async (apiData: ApiCreation) => {
-      const response = await axios.post(`${ApiUrl}/apis`, apiData); // Adjust the endpoint
+      const response = await axios.post(
+        `${ApiUrl}/apis`,
+        apiData,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
+      );
+
       return response.data;
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["apiListkk"] });
+      queryClient.invalidateQueries({ queryKey: ["apiList"] });
     },
   });
 };
 
 export const useUpdateApi = () => {
   const queryClient = useQueryClient();
+  const { data: session } = useSession()
 
   return useMutation({
     mutationFn: async (apiData: Api) => {
-      const response = await axios.put(`${ApiUrl}/apis/${apiData.ID}`, apiData); // Adjust the endpoint
+      const response = await axios.put(
+        `${ApiUrl}/apis/${apiData.ID}`,
+        apiData,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
+      ); // Adjust the endpoint
       return response.data;
     },
 
@@ -37,10 +49,14 @@ export const useUpdateApi = () => {
 
 export const useDeleteApi = () => {
   const queryClient = useQueryClient();
+  const { data: session } = useSession()
 
   return useMutation({
     mutationFn: async (apiId: string) => {
-      await axios.delete(`${ApiUrl}/apis/${apiId}`); // Adjust the endpoint
+      await axios.delete(
+        `${ApiUrl}/apis/${apiId}`,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
+      ); // Adjust the endpoint
     },
 
     onSuccess: () => {
@@ -51,6 +67,7 @@ export const useDeleteApi = () => {
 
 export const useUpdateDocs = () => {
   const queryClient = useQueryClient();
+  const { data: session } = useSession()
 
   return useMutation({
     mutationFn: async (data: {
@@ -58,7 +75,11 @@ export const useUpdateDocs = () => {
       Content: string;
       apiID: number;
     }) => {
-      await axios.patch(`${ApiUrl}/apis-docs/${data.docsId}`, data); // Adjust the endpoint
+      await axios.patch(
+        `${ApiUrl}/apis-docs/${data.docsId}`,
+        data,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
+      ); // Adjust the endpoint
     },
 
     onSuccess: (_, variables) => {
@@ -82,6 +103,7 @@ interface Data {
 
 export const useSendRequest = () => {
   const queryClient = useQueryClient();
+  const { data: session } = useSession()
 
   return useMutation({
     mutationFn: async (RequestData: Data) => {
@@ -92,6 +114,7 @@ export const useSendRequest = () => {
       // Add X-Endpoint-Key to the headers
       const updatedHeaders = {
         ...Headers,
+        "Authorization": `Bearer ${session?.token}`,
         "X-Endpoint-Key": RequestData.EndpointID.toString(),
       };
 
@@ -160,12 +183,14 @@ export const useHelthSendRequest = () => {
   return useMutation({
     mutationFn: async (HelthRequestData: HelthRequestData) => {
       const { ApiID, EndpointID } = HelthRequestData;
+      const { data: session } = useSession()
 
       console.log("loog HelthRequestData", HelthRequestData);
 
       const config: AxiosRequestConfig = {
         //headers: updatedHeaders,
         // params: Params,
+        headers: { "Authorization": `Bearer ${session?.token}` },
         withCredentials: true,
       };
 

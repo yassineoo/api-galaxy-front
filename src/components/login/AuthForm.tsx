@@ -33,7 +33,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
 
   useEffect(() => {
     if (success && type === "register") setShwoModal(true);
-    if (success && type === "login") push("/");
+    if (success && type === "login") push("/hub");
   }, [success, type, push]);
 
   const togglePasswordVisibility = () => {
@@ -152,7 +152,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
             <Button
               type="submit"
               className="w-full text-center py-2  rounded-md font-semibold"
-              disabled={isLoading}
+              // disabled={isLoading}
             >
               {isLoading ? "Loading..." : type}
             </Button>

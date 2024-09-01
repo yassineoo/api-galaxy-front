@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Provider } from "./provider";
-import { SessionProvider, getSession } from "next-auth/react";
 import Providers from "./Providers";
+import { cn } from "@/lib/utils";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -13,13 +13,16 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+
+
+      <body>
+
         <Provider>
           <ThemeProvider
             attribute="class"
@@ -27,9 +30,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Providers>
-            {children}
-            </Providers>
+            <Providers>{children}</Providers>
           </ThemeProvider>
         </Provider>
       </body>

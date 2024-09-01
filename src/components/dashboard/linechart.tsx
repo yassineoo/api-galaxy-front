@@ -18,6 +18,10 @@ const LineChartComponent = () => {
     { name: "May", Translator: 18, MovieAPI: 48 },
     { name: "Jun", Translator: 23, MovieAPI: 38 },
     { name: "Jul", Translator: 34, MovieAPI: 43 },
+    { name: "Jul", Translator: 34, MovieAPI: 33 },
+    { name: "Jul", Translator: 34, MovieAPI: 16 },
+    { name: "Jul", Translator: 34, MovieAPI: 43 },
+    { name: "Jul", Translator: 34, MovieAPI: 143 },
   ];
   return (
     <ResponsiveContainer width="100%" height={300}>

@@ -5,15 +5,21 @@ import axios from "axios";
 
 import { ApiUrl } from "@/utils/constants";
 import { ApiEndpoints } from "./interfaces";
+import { useSession } from "next-auth/react";
 
 export const useCreateApiEndpoints = () => {
   const queryClient = useQueryClient();
+  const { data: session } = useSession()
 
   return useMutation({
     mutationFn: async (data: any) => {
       console.log("data ============ ", data);
 
-      const response = await axios.post(`${ApiUrl}/endpoints`, data); // Adjust the endpoint
+      const response = await axios.post(
+        `${ApiUrl}/endpoints`,
+        data,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
+      ); // Adjust the endpoint
       return response.data;
     },
 
@@ -25,12 +31,17 @@ export const useCreateApiEndpoints = () => {
 
 export const useCreateExtractedApiEndpoints = () => {
   const queryClient = useQueryClient();
+  const { data: session } = useSession()
 
   return useMutation({
     mutationFn: async (data: any) => {
       console.log("data ============ ", data);
 
-      const response = await axios.post(`${ApiUrl}/endpoints/multi`, data); // Adjust the endpoint
+      const response = await axios.post(
+        `${ApiUrl}/endpoints/multi`,
+        data,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
+      ); // Adjust the endpoint
       return response.data;
     },
 
@@ -42,12 +53,14 @@ export const useCreateExtractedApiEndpoints = () => {
 
 export const useUpdateApiEndpoints = () => {
   const queryClient = useQueryClient();
+  const { data: session } = useSession()
 
   return useMutation({
     mutationFn: async (apiData: Partial<ApiEndpoints>) => {
       const response = await axios.patch(
         `${ApiUrl}/endpoints/${apiData.ID}`,
-        apiData
+        apiData,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
       ); // Adjust the endpoint
       console.log(response.data);
       return response.data;
@@ -61,10 +74,14 @@ export const useUpdateApiEndpoints = () => {
 
 export const useDeleteApiEndpoints = () => {
   const queryClient = useQueryClient();
+  const { data: session } = useSession()
 
   return useMutation({
     mutationFn: async (id: string) => {
-      await axios.delete(`${ApiUrl}/endpoints/${id}`); // Adjust the endpoint
+      await axios.delete(
+        `${ApiUrl}/endpoints/${id}`,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
+      ); // Adjust the endpoint
     },
 
     onSuccess: () => {

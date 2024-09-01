@@ -52,7 +52,11 @@ function PricingCardsApi({ api, plans }: any) {
         Choose the Right Plan For You
       </h3>
       <p className="mb-8 text-sm text-gray-600 text-center max-w-2xl">
+<<<<<<< HEAD
         API Galaxy partners directly with API providers to give you no-fuss,
+=======
+        RapidAPI partners directly with API providers to give you no-fuss,
+>>>>>>> 0364dfdf1e3b7a99f851713fc81cff74a5a477c5
         transparent pricing. Find a plan that best matches the scale you need
         for your application.
       </p>
