@@ -10,6 +10,7 @@ import Reviews from "@/components/Vetrine/reviews";
 import { getCurrentUser } from "@/lib/session";
 
 export default function VetrinePage() {
+
   return (
 
     <div>

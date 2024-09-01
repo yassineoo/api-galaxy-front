@@ -7,7 +7,9 @@ import { useSession, signOut } from "next-auth/react";
 import SearchApiInput from "./searchInput";
 import { useMutation } from "@tanstack/react-query";
 import { clearAuthToken } from "@/lib/get-auth-token";
+
 import { useAuthSession } from "../auth-provider";
+
 
 const Navbar = ({
   apiHub = "hub",

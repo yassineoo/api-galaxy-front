@@ -52,8 +52,10 @@ const items = [
 ];
 
 export default function TopCollection() {
+
   // const { data: session, status } = useSession();
   const { session } = useAuthSession();
+
 
   const { data: auth, isSuccess } = useAuth();
 

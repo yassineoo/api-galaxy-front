@@ -6,7 +6,9 @@ import { Dispatch, SetStateAction } from "react";
 import { ApiAuth } from "@/utils/constants";
 
 export const placeholderApi = axios.create({
+
   baseURL:  ApiAuth,
+
 });
 
 export type UserData = {
@@ -43,7 +45,7 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
     return res.data;
   } catch (error: any) {
     console.log({ error })
-    console.log(error.response.data)
+
     throw error;
   }
 };

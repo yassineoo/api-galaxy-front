@@ -1,7 +1,9 @@
 // apiQueries.ts
 
 
+
 import { useAuthSession } from "@/components/auth-provider";
+
 
 import { ApiAuth, ApiUrl } from "@/utils/constants";
 
@@ -18,8 +20,10 @@ export const placeholderApis = axios.create({
 });
 
 export const useApiCategoryList = () => {
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useQuery({
     queryKey: ["apiCategoryList"],
@@ -44,6 +48,7 @@ export const useApiCategoryList = () => {
 };
 
 export const useApiCategoryById = (apiId: string) => {
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
 

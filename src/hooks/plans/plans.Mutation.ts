@@ -5,13 +5,17 @@ import axios from "axios";
 
 import { ApiUrl } from "@/utils/constants";
 import { useSession } from "next-auth/react";
+
 import { useAuthSession } from "@/components/auth-provider";
+
 //import { ApiPlans } from "./interfaces";
 
 export const useCreateApiPlans = () => {
   const queryClient = useQueryClient();
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (data: any) => {
@@ -33,8 +37,10 @@ export const useCreateApiPlans = () => {
 
 export const useUpdateApiPlans = () => {
   const queryClient = useQueryClient();
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (apiData: any) => {
@@ -57,8 +63,10 @@ export const useUpdateApiPlans = () => {
 
 export const useDeleteApiPlans = () => {
   const queryClient = useQueryClient();
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (id: string) => {

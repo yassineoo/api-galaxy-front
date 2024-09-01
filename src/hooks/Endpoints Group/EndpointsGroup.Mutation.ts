@@ -6,12 +6,14 @@ import axios from "axios";
 import { ApiUrl } from "@/utils/constants";
 import { EndpointsGroup, EndpointsGroupCreation } from "./interfaces";
 import { useSession } from "next-auth/react";
+
 import { useAuthSession } from "@/components/auth-provider";
 
 export const useCreateEndpointsGroup = () => {
   const queryClient = useQueryClient();
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (data: EndpointsGroupCreation) => {
@@ -31,8 +33,10 @@ export const useCreateEndpointsGroup = () => {
 
 export const useUpdateEndpointsGroup = () => {
   const queryClient = useQueryClient();
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (apiData: EndpointsGroup) => {
@@ -53,8 +57,10 @@ export const useUpdateEndpointsGroup = () => {
 
 export const useDeleteEndpointsGroup = () => {
   const queryClient = useQueryClient();
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (id: string) => {

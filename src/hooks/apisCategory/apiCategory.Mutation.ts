@@ -5,12 +5,14 @@ import axios from "axios";
 import { ApiCategory, ApiCategoryCreation } from "./interfaces";
 import { ApiUrl } from "@/utils/constants";
 import { useSession } from "next-auth/react";
+
 import { useAuthSession } from "@/components/auth-provider";
 
 export const useCreateApiCategory = () => {
   const queryClient = useQueryClient();
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (data: ApiCategory) => {
@@ -30,8 +32,10 @@ export const useCreateApiCategory = () => {
 
 export const useUpdateApiCategory = () => {
   const queryClient = useQueryClient();
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (apiData: ApiCategory) => {
@@ -51,6 +55,7 @@ export const useUpdateApiCategory = () => {
 
 export const useDeleteApiCategory = () => {
   const queryClient = useQueryClient();
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
 

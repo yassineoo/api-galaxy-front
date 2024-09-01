@@ -8,7 +8,9 @@ import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
 import CardSkeleton from "../HubXs/skeleton";
 import { useSession } from "next-auth/react";
 import useAuth from "@/hooks/useAuth";
+
 import { useAuthSession } from "../auth-provider";
+
 
 const buttons = [
   {
@@ -84,7 +86,9 @@ export default function ProductsHub() {
   const [search, setSearch] = useState("");
   const [apis, setApis] = useState([]);
   const [ids, setIds] = useState([1]);
+
   const { session } = useAuthSession();
+
 
   const apiList = useApiList({
     page,
@@ -92,6 +96,8 @@ export default function ProductsHub() {
     filter,
     search,
     userId: session?.userId || 1,
+
+
   });
 
   const ApiCategoryList = useApiCategoryList();

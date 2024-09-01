@@ -5,10 +5,13 @@ import { useSearchApiList } from "@/hooks/apis/api.queries";
 import { CldImage } from "next-cloudinary";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+
 import { useAuthSession } from "../auth-provider";
+
 
 export default function SearchApiInput() {
   const [searchTerm, setSearchTerm] = useState("");
+
 
   // const { data: session, status } = useSession();
   const { session } = useAuthSession();
@@ -21,6 +24,7 @@ export default function SearchApiInput() {
   const [filteredSuggestions, setFilteredSuggestions] = useState<any[]>([]); // State to store filtered suggestions
 
 
+
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef(null);
   const router = useRouter();
@@ -29,6 +33,7 @@ export default function SearchApiInput() {
     data: filteredSuggestions,
     isLoading,
     refetch,
+
   } = useSearchApiList({ search: searchTerm , authToken: session?.token ?? "" });
 
 

@@ -5,12 +5,14 @@ import axios, { AxiosRequestConfig } from "axios";
 import { Api, ApiCreation } from "./interfaces";
 import { ApiUrl } from "@/utils/constants";
 import { useSession } from "next-auth/react";
+
 import { useAuthSession } from "@/components/auth-provider";
 
 export const useCreateApi = () => {
   const queryClient = useQueryClient();
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (apiData: ApiCreation) => {
@@ -31,8 +33,10 @@ export const useCreateApi = () => {
 
 export const useUpdateApi = () => {
   const queryClient = useQueryClient();
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (apiData: Api) => {
@@ -52,8 +56,10 @@ export const useUpdateApi = () => {
 
 export const useDeleteApi = () => {
   const queryClient = useQueryClient();
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (apiId: string) => {
@@ -71,8 +77,10 @@ export const useDeleteApi = () => {
 
 export const useUpdateDocs = () => {
   const queryClient = useQueryClient();
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (data: {
@@ -108,8 +116,10 @@ interface Data {
 
 export const useSendRequest = () => {
   const queryClient = useQueryClient();
+
   // const { data: session } = useSession()
   const { session } = useAuthSession();
+
 
   return useMutation({
     mutationFn: async (RequestData: Data) => {
@@ -189,8 +199,10 @@ export const useHelthSendRequest = () => {
   return useMutation({
     mutationFn: async (HelthRequestData: HelthRequestData) => {
       const { ApiID, EndpointID } = HelthRequestData;
+
       // const { data: session } = useSession()
       const { session } = useAuthSession();
+
 
       console.log("loog HelthRequestData", HelthRequestData);
 
