@@ -1,16 +1,6 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/TaoVJjmMmIb
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Provider } from "@/types/common.types";
-import { signIn } from "next-auth/react";
 import { WelcomeSection } from "@/components/login/AuthProviderButton";
 import { AuthForm } from "@/components/login/AuthForm";
+import Image from "next/image";
 
 export default function LoginPage() {
   return (
@@ -19,11 +9,12 @@ export default function LoginPage() {
         <WelcomeSection welcome="Get started now" type="login" />
         <AuthForm type="login" />
       </div>
-      <div className="hidden md:block bg-gray-100 dark:bg-gray-950">
-        <img
+      <div className="hidden md:block bg-gray-100 dark:bg-gray-950 relative">
+      <Image
           src="/images/login_bg_gateway.jpg"
           alt="Login image"
-          className="h-full w-full object-cover"
+          layout="fill"
+          objectFit="cover"
         />
       </div>
     </div>

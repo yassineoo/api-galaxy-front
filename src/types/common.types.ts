@@ -26,3 +26,11 @@ export type resetPasswordInputs={
   confirmPass:string 
   errorMessage:string
 }
+
+// add error types
+
+export type Errors = {
+  password?: string;
+  confirmPassword?: string;
+  auth?: string;
+};

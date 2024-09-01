@@ -6,9 +6,7 @@ import { Dispatch, SetStateAction } from "react";
 import { ApiAuth } from "@/utils/constants";
 
 export const placeholderApi = axios.create({
-
   baseURL: ApiAuth,
-
 });
 
 export type UserData = {
@@ -35,12 +33,9 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
         },
       }
     );
-    if (res.data?.message) {
-      throw new Error(res.data.message);
-    } else {
-      return res.data;
-    }
+    return res
   } catch (error: any) {
+    console.log("hi",error.reponse.data)
     throw error;
   }
 };
@@ -81,8 +76,6 @@ export const getUserSession = async (email: string) => {
 export const verifyEmail = async (data: any, type: string) => {
   try {
     if (type == "confirmRegistration") {
-      const session = await getSession();
-
       const res = await placeholderApi.post(`/verifyEmail/${data}`, {});
       if (res.status == 200) {
         return true;
@@ -131,25 +124,48 @@ export const resetPassword = async (
 };
 
 export const authenticate = async (
-  data: Inputs,
-  setError: UseFormSetError<Inputs>,
+  data: any,
+  setError: Dispatch<SetStateAction<string>>,
   setSuccess: Dispatch<SetStateAction<boolean>>
 ) => {
-  try {
+  console.log(data)
     const res = await signIn("credentials", {
       ...data,
       redirect: false,
     });
-    if (res?.ok) {
-      setSuccess(true);
+    if (res?.error) {
+      // Handle error here
+    setError(res.error)
     } else {
-      setError("errorMessage", {
-        message: res?.error!,
-      });
+      // Handle success here
+      setSuccess(true);
     }
-  } catch (error: any) {
-    setError("errorMessage", {
-      message: error?.message,
-    });
-  }
 };
+
+
+// activate two factor authentification:
+export const activeTwoFactorAuthentification = async(id:any)=>{
+  try{
+    const res = await placeholderApi.put(`/activate-two-factors/${id}`)
+  }catch(error){
+    console.log(error)
+  }
+}
+
+
+// activate two factor authentification:
+export const verifyOTP = async(id:any,otp:string)=>{
+  try{
+    const res = await placeholderApi.post(`/verifyOTP`,JSON.stringify({
+      userId: id,
+      otp
+    }),{
+      headers:{
+        "Content-Type":"application/json"
+      }
+    })
+    return res.data
+  }catch(error){
+    throw error
+  }
+}

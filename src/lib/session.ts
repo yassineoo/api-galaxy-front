@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialProvider from "next-auth/providers/credentials";
-import { UserData, authUser, getUserSession, oauthUser } from "@/actions/auth";
+import { UserData, authUser, oauthUser } from "@/actions/auth";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -38,9 +38,14 @@ export const authOptions: NextAuthOptions = {
         }
         try {
           const res = await authUser(data, isRegister);
-          return res;
-        } catch (error) {
-          console.log("error happened");
+          console.log("response",res)
+          return res.data;
+        } catch (error:any) {
+          const errorMessage = error.response?.data?.message || "Authentication failed";
+          console.log("Authorization Error:", errorMessage);
+
+    // Throw a new error with the message
+    throw new Error(errorMessage);
         }
       },
     }),
@@ -61,37 +66,44 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         if (user?.name) {
+          //console.log("awchahooo")
           const res = await oauthUser({
             Email: user?.email,
             Username: user?.name,
           });
-
-          //console.log("response =================================================");
-          //console.log(res)
           if (!res.data?.message) {
             token.backendToken = res.data.token;
             token.userId = res.data.userId;
-
+            token.twoFactorEnabled = res.data.twoFactorEnabled;
+            token.is2faAuthenticated = !res.data.twoFactorEnabled;
           }
         } else {
           token.backendToken = user.token;
           token.userId = user.userId;
+          token.name=user.name ?? user.username
+          token.twoFactorEnabled = user.twoFactorEnabled;
+          token.is2faAuthenticated = !user.twoFactorEnabled;
         }
+        // Add two-factor authentication status to the toke
+      token.isVerified = false
       } else {
+        console.log("hi from else")
         // subsequent calls so the token object has already the needed values
       }
       return token;
     },
     async session({ session, token }): Promise<any> {
       // Add the backend token to the session object
-      //console.log(token)
+      console.log('token',token)
       session.token = token.backendToken as string;
       session.userId = token.userId as number;
+      session.twoFactorEnabled = token.twoFactorEnabled as boolean;
+      session.isVerified = token.isVerified as boolean;
       return session;
     },
-    async redirect(params) {
-      return params.baseUrl;
-    },
+    async redirect({ url, baseUrl }) {
+      return `${baseUrl}/dashboard`;
+    }
   },
   pages: {
     signIn: "/login",

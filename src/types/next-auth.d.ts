@@ -13,6 +13,8 @@ declare module "next-auth" {
        userId:number
        verified:boolean
     token:string
+    twoFactorEnabled:boolean
+    isVerified : boolean
   }
   interface User {
     email:string 
@@ -21,6 +23,7 @@ declare module "next-auth" {
     image:string 
     token:string 
     expiry:string
+    twoFactorEnabled:boolean
   }
 
  

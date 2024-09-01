@@ -3,7 +3,7 @@ import { verifyEmail } from "@/actions/auth";
 import LoadingPage from "@/components/shared/loadingPage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-const page = () => {
+const Page = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") as string;
   const [loading, setLoading] = useState(false);
@@ -24,4 +24,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

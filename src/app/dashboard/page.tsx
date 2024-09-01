@@ -57,7 +57,8 @@ import {
   YAxis,
 } from "recharts";
 import { useApisStatsQuery } from "@/hooks/apiLogs/apiLogs.queries";
-
+import {useRouter} from "next/navigation"
+import { useSession } from "next-auth/react";
 // function useGetApis(){
 //   return useQuery({
 //     queryKey:["apis"],
@@ -110,11 +111,18 @@ interface SelectedApi {
 export default function DashboardPage() {
   const [search, setSearch] = useState("");
   // const { data: searchApiResult, status } = useSearchApiList({ search });
-
   const [selectedApiList, setSelectedApiList] = useState<
     MultiValue<SelectedApi>
   >([]);
 
+  const router = useRouter()
+  const {data:session,status} = useSession()
+  useEffect(() => {
+    const isVerified = localStorage.getItem("isVerified")
+    if (status === "authenticated" && session && session.twoFactorEnabled && isVerified!="true") {
+      router.push("/verifyOTP");
+    }
+  }, [session, status]);
   const { data: apiList, status: apiListLoadingStatus } = useApiByUserId(1);
   let options: SelectOptions = [];
   if (apiListLoadingStatus === "success") {
