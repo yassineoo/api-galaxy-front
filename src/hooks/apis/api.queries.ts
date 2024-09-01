@@ -1,23 +1,50 @@
 // apiQueries.ts
 
 import { Api } from "@/app/dashboard/apis/[id]/Analyse/api.interface";
-import { ApiUrl } from "@/utils/constants";
+import { ApiAuth, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 
 import axios from "axios";
-import { getUserApis, getUserFollowings } from "@/actions/api";
+import { baseApiUrl, getUserApis, getUserFollowings } from "@/actions/api";
 import { basedApiUrl, getAPIRating } from "@/actions/api";
 import { getInactiveAPI } from "@/actions/admin";
+import { useSession } from "next-auth/react";
+
 export const useApiList = ({ page, limit, filter, search, userId }: any) => {
+
   //const userData = await getCurrentUser()
+  const { data: session } = useSession();
   //console.log("helll",userData)
   return useQuery({
-    queryKey: ["apiList", page, limit, filter, search],
+
+    queryKey: ["apiList", page, limit, filter, search ?? ""],
     queryFn: async () => {
       try {
-        const response = await basedApiUrl.get(
-          `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}`
-        );
+        let response;
+        if (!authToken) {
+          response = await axios.get(
+            `http://localhost:5000/apis-service/apis/?limit=12&page=1&search=&filter=0`
+          );
+          console.log("logged token data : ", response.data.data.apis);
+
+          const mappedApis = response.data.data.apis.map((api) => ({
+            id: api.ID,
+            name: api.Name,
+            imagePath: api.ImagePath,
+            description: api.Description,
+            status: api.Status,
+          }));
+
+          return mappedApis;
+        } else
+          response = await basedApiUrl.get(
+            `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}`,
+            {
+              headers: { Authorization: `Bearer ${authToken?.token}` },
+            }
+          );
+        return [];
+
         //console.log("response from api query : ", response.data);
         return response.data;
       } catch (error: any) {
@@ -37,7 +64,7 @@ export const useApiListForAdmin = ({
   //const userData = await getCurrentUser()
   //console.log("helll",userData)
   return useQuery({
-    queryKey: ["apiListAdmin", page, limit, filter, search],
+    queryKey: ["apiListAdmin", page, limit, filter, search ?? undefined],
     queryFn: async () => {
       try {
         const response = await basedApiUrl.get(
@@ -51,17 +78,30 @@ export const useApiListForAdmin = ({
     },
   });
 };
-export const useSearchApiList = ({ search }: { search: string }) => {
+
+export const useSearchApiList = ({ search, authToken }: { search: string, authToken: string }) => {
+
   return useQuery<Api[]>({
-    queryKey: ["apiListSearch", search],
+    queryKey: ["apiListSearch", search ?? undefined],
     queryFn: async () => {
       console.log("logged from api quety : ", search);
 
-      const response = await axios.get(`${ApiUrl}/apis/search`, {
-        params: { search }, // Add query parameters
-      });
-      console.log(response.data);
-      return (response.data as { data: Api[] }).data;
+      try {
+
+        const response = await axios.get(
+          `${ApiUrl}/apis/search`,
+          {
+            params: { search },
+            headers: { Authorization: `Bearer ${authToken}` }
+          },
+        );
+        console.log(response.data);
+        return (response.data as { data: Api[] }).data;
+      } catch (e) {
+        console.log({ e })
+        return []
+
+      }
     },
   });
 };
@@ -78,11 +118,13 @@ export const useApiById = (apiId: number) => {
 };
 
 export const useApiByUserId = (userId: number) => {
-  return useQuery<Api[]>({
+  return useQuery<any[]>({
     queryKey: ["myApis", userId],
     queryFn: async () => {
       //const response = await axios.get(`${ApiUrl}/apis/user-apis/${userId}`); // Adjust the endpoint
       const data = await getUserApis(userId);
+      console.log("data from api users : ", data);
+
       return data;
     },
   });
@@ -109,13 +151,17 @@ export const useAPIRating = (api_id: number) => {
   });
 };
 
-export const useInactiveAPI=()=>{
+export const useInactiveAPI = () => {
   return useQuery({
-    queryKey:["inactiveAPI"],
-    queryFn:async() => {
+    queryKey: ["inactiveAPI"],
+    queryFn: async () => {
+
+
       const response = await getInactiveAPI()
       return response
     }
   })
 }
+
+
 // export function useApi

@@ -11,7 +11,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useCollectionList } from "@/hooks/Endpoint collections/EndpointsCollection.queries";
+import useAuth from "@/hooks/useAuth";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useAuthSession } from "../auth-provider";
 
 const items = [
   {
@@ -49,7 +52,19 @@ const items = [
 ];
 
 export default function TopCollection() {
-  const ColllectionList = useCollectionList();
+
+  // const { data: session, status } = useSession();
+  const { session } = useAuthSession();
+
+
+  const { data: auth, isSuccess } = useAuth();
+
+  const ColllectionList = useCollectionList({
+    authToken: session?.userId && isSuccess ? auth : "",
+  });
+  if (ColllectionList.isSuccess) {
+    console.log({ data: ColllectionList.data });
+  }
   return (
     <div className="bg-mainColor">
       <h1 className="text-white text-center text-2xl md:text-4xl font-bold py-6">

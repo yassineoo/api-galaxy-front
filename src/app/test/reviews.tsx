@@ -9,6 +9,7 @@ import ReviewSkeleton from "@/components/HubXs/ReviewSkeleton";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { reportAnComment } from "@/actions/api";
+import { useAuthSession } from "@/components/auth-provider";
 
 type Comment = {
   id: string;
@@ -25,7 +26,7 @@ export default function ReviewsTab() {
   const { id } = useParams();
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
-  const { data } = useSession();
+  const { session: data } = useAuthSession();
   const [comments, setComments] = useState<any>([]);
   const apiReviews = useApiReviews({
     api_id: id,

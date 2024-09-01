@@ -1,3 +1,4 @@
+
 import { WelcomeSection } from "@/components/login/AuthProviderButton";
 import { AuthForm } from "@/components/login/AuthForm";
 import Image from "next/image";

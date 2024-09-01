@@ -5,16 +5,58 @@ import { useApiList } from "@/hooks/apis/api.queries";
 import { useEffect, useState } from "react";
 import PaginationManual from "../dashboard/billing/paginationManual";
 import { useApiCategoryList } from "@/hooks/apisCategory/apiCategory.queries";
-import { Search } from "../shared/search";
 import CardSkeleton from "../HubXs/skeleton";
-import { useApiHealthCheakStats } from "@/hooks/HealthCheak/apiHealthCheak.queries";
 import { useSession } from "next-auth/react";
+import useAuth from "@/hooks/useAuth";
+
+import { useAuthSession } from "../auth-provider";
+
 
 const buttons = [
   {
     iconPath: "/assets/hub_assets/layers.svg",
     buttonText: "Sports",
     option: false,
+  },
+  {
+    iconPath: "/assets/hub_assets/dollar-sign.svg",
+    buttonText: "Low price",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/credit-card.svg",
+    buttonText: "Price range",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/user.svg",
+    buttonText: "Creators",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/camera.svg",
+    buttonText: "Photography",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/dollar-sign.svg",
+    buttonText: "Low price",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/credit-card.svg",
+    buttonText: "Price range",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/user.svg",
+    buttonText: "Creators",
+    option: true,
+  },
+  {
+    iconPath: "/assets/hub_assets/camera.svg",
+    buttonText: "Photography",
+    option: true,
   },
   {
     iconPath: "/assets/hub_assets/dollar-sign.svg",
@@ -44,13 +86,18 @@ export default function ProductsHub() {
   const [search, setSearch] = useState("");
   const [apis, setApis] = useState([]);
   const [ids, setIds] = useState([1]);
-  const { status, data: user } = useSession();
+
+  const { session } = useAuthSession();
+
+
   const apiList = useApiList({
     page,
     limit: 12,
     filter,
     search,
-    userId: user?.userId || 1,
+    userId: session?.userId || 1,
+
+
   });
 
   const ApiCategoryList = useApiCategoryList();
@@ -68,30 +115,35 @@ export default function ProductsHub() {
     }
   }, [apiList.isSuccess]);
 
-  useEffect(() => {
-    if (apiHealthStats?.isSuccess) {
-      setApis((prev: any) => {
-        return prev.map((api: any) => {
-          const stat = apiHealthStats?.data?.find(
-            (health: any) => health.ApiID === api.ID
-          );
-          console.log("stat", stat, apiHealthStats?.data, api.ID);
+  // TODO
+  // useEffect(() => {
+  //   if (apiHealthStats?.isSuccess) {
+  //     setApis((prev: any) => {
+  //       return prev.map((api: any) => {
+  //         const stat = apiHealthStats?.data?.find(
+  //           (health: any) => health.ApiID === api.ID
+  //         );
+  //         console.log("stat", stat, apiHealthStats?.data, api.ID);
 
-          return {
-            ...api,
-            Availability: (2 || 0) * 100,
-            Latency: 5 || 0,
-            Rating: 2,
-          };
-        });
-      });
-    }
-  }, [apiHealthStats.isSuccess]);
+  //         return {
+  //           ...api,
+  //           Availability: (2 || 0) * 100,
+  //           Latency: 5 || 0,
+  //           Rating: 2,
+  //         };
+  //       });
+  //     });
+  //   }
+  // }, [apiHealthStats.isSuccess]);
   /*
   useEffect(() => {
     console.log("apissss", apis);
   }, [apis]);
 */
+
+  useEffect(() => {
+    console.log("filterrrrrr", filter);
+  }, [filter]);
   return (
     <>
       <div className="bg-white py-10  text-black flex">
@@ -107,7 +159,7 @@ export default function ProductsHub() {
             <CategoryList
               setFilter={setFilter}
               filter={filter}
-              categories={ApiCategoryList?.data}
+              categories={ApiCategoryList.data}
             />
           )}
         </div>
@@ -115,8 +167,6 @@ export default function ProductsHub() {
           <h1 className="text-black text-title text-xl md:text-3xl font-bold">
             Discover more APIs
           </h1>
-          {apiHealthStats.isLoading && <p>Loading apiHealthStats.isLoading</p>}
-          {apiHealthStats.isError && <p>Eroro : apiHealthStats.Error</p>}
 
           <div className="flex flex-wrap gap-3 p-2">
             {apiList.isLoading &&
@@ -127,19 +177,19 @@ export default function ProductsHub() {
               ))}
 
             {apiList.isSuccess &&
-              apis?.map((card: any, index: any) => (
+              apis?.map((api: any, index: any) => (
                 <ProductCard
                   key={index}
-                  userId={user?.userId}
+                  userId={session?.userId}
                   cardData={{
-                    id: card.id,
+                    id: api.id,
                     averageRating: 3,
-                    latency: card.Latency,
-                    availability: card.status,
-                    imagePath: card.image_path,
-                    cardTitle: card.name,
-                    cardDescription: card.description,
-                    liked: card.isLiked,
+                    latency: api.Latency,
+                    availability: api.status,
+                    imagePath: api.image_path,
+                    cardTitle: api.name,
+                    cardDescription: api.description,
+                    liked: api.isLiked,
                   }}
                 />
               ))}
@@ -156,21 +206,21 @@ export default function ProductsHub() {
 }
 
 const CategoryList = ({ categories, filter, setFilter }: any) => {
-  console.log("categories", categories);
+  console.log("categoriesss", categories, categories?.length);
 
   return (
     <div>
       <h4 className="font-bold mb-4 mt-2">Categories</h4>
-      {categories?.data?.map((category: any, index: any) => (
+      {categories?.map((category: any, index: any) => (
         <div key={index} className="">
           <LeftBarButton
             filter={filter}
             setFilter={setFilter}
             key={index}
             iconPath={buttons[index].iconPath}
-            buttonText={category.CategoryName}
+            buttonText={category.category_name}
             option={buttons[index].option}
-            index={category.ID}
+            index={category.id}
           />
         </div>
       ))}

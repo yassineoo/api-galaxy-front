@@ -4,16 +4,28 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 import { ApiUrl } from "@/utils/constants";
+import { useSession } from "next-auth/react";
+
+import { useAuthSession } from "@/components/auth-provider";
+
 //import { ApiPlans } from "./interfaces";
 
 export const useCreateApiPlans = () => {
   const queryClient = useQueryClient();
 
+  // const { data: session } = useSession()
+  const { session } = useAuthSession();
+
+
   return useMutation({
     mutationFn: async (data: any) => {
       console.log("data create Plans  ============ ", data);
 
-      const response = await axios.post(`${ApiUrl}/plans/`, data); // Adjust the endpoint
+      const response = await axios.post(
+        `${ApiUrl}/plans/`,
+        data,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
+      ); // Adjust the endpoint
       return response.data;
     },
 
@@ -26,11 +38,19 @@ export const useCreateApiPlans = () => {
 export const useUpdateApiPlans = () => {
   const queryClient = useQueryClient();
 
+  // const { data: session } = useSession()
+  const { session } = useAuthSession();
+
+
   return useMutation({
     mutationFn: async (apiData: any) => {
       console.log("updateEndpoint ========== ", apiData);
 
-      const response = await axios.patch(`${ApiUrl}/plans/`, apiData); // Adjust the endpoint
+      const response = await axios.patch(
+        `${ApiUrl}/plans/`,
+        apiData,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
+      ); // Adjust the endpoint
       console.log(response.data);
       return response.data;
     },
@@ -44,9 +64,16 @@ export const useUpdateApiPlans = () => {
 export const useDeleteApiPlans = () => {
   const queryClient = useQueryClient();
 
+  // const { data: session } = useSession()
+  const { session } = useAuthSession();
+
+
   return useMutation({
     mutationFn: async (id: string) => {
-      await axios.delete(`/plans/${id}`); // Adjust the endpoint
+      await axios.delete(
+        `/plans/${id}`,
+        { headers: { "Authorization": `Bearer ${session?.token}` } }
+      ); // Adjust the endpoint
     },
 
     onSuccess: () => {

@@ -5,6 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import SearchApiInput from "./searchInput";
+import { useMutation } from "@tanstack/react-query";
+import { clearAuthToken } from "@/lib/get-auth-token";
+
+import { useAuthSession } from "../auth-provider";
+
 
 const Navbar = ({
   apiHub = "hub",
@@ -12,9 +17,12 @@ const Navbar = ({
   ListApi = "s",
   myApis = "dashboard",
 }) => {
+  
   const [isOpen, setIsOpen] = useState(false);
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === "authenticated";
+  // const { data: session, status } = useSession();
+  const { session,isAuthenticated } = useAuthSession();
+
+  // const isAuthenticated = status === "authenticated";
 
   return (
     <div className="bg-white flex flex-row justify-between items-center py-2 px-4 shadow-md">
@@ -48,12 +56,12 @@ const Navbar = ({
             >
               API Hub
             </Link>
-            <Link
+            <a
               href={docs}
               className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-mainColor"
             >
               Docs
-            </Link>
+            </a>
             <Link
               href={ListApi}
               className="block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-mainColor"

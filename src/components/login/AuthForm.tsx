@@ -163,7 +163,9 @@ export function AuthForm({ type = "login" }: { type: string }) {
             )}
             <Button
               className="w-full text-center py-2  rounded-md font-semibold"
+
               type="submit"
+
             >
               {isLoading ? "Loading..." : type}
             </Button>

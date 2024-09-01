@@ -127,8 +127,8 @@ export default function DashboardPage() {
   let options: SelectOptions = [];
   if (apiListLoadingStatus === "success") {
     options = apiList.map((api) => ({
-      value: api.ID,
-      label: api.Name,
+      value: api.id,
+      label: api.name,
     }));
 
     console.log({ options });

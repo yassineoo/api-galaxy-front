@@ -8,6 +8,7 @@ import Chatroom from "./chatroom";
 
 import { ApiUsersUrl } from "@/utils/constants";
 import { useSession } from "next-auth/react";
+import { useAuthSession } from "@/components/auth-provider";
 
 
 const user = { id: 1 };
@@ -38,7 +39,8 @@ export default async function page({
   params: { chatId: string };
   searchParams: { search: string };
 }) {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
+  const {session} = useAuthSession()
   console.log("session", session?.userId);
 
   const chatrooms = await getUserChatrooms(

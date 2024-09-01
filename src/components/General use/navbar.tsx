@@ -5,6 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
+import { clearAuthToken } from "@/lib/get-auth-token";
+import { useMutation } from "@tanstack/react-query";
+
+import { useAuthSession } from "../auth-provider";
+
 
 interface Links {
   services: string;
@@ -34,6 +39,7 @@ const handleClick = (
 
 const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
   const [isOpen, setIsOpen] = useState(false);
+
   const router = useRouter();
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated";
@@ -44,14 +50,13 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
     }
     signOut().then(()=>router.push("/login"))
   }
+
   return (
-    <div className="navbarGradient  flex justify-between items-top p-1 pl-6">
+    <div className="navbarGradient  flex justify-between items-center p-1 px-6">
       <nav className="flex items-top p-2 justify-start flex-wrap">
-        <div
+        <Link
+          href="/hub"
           className="navbar-logo flex items-center flex-shrink-0 text-white mr-6 cursor-pointer"
-          onClick={() => {
-            router.push(`/hub`);
-          }}
         >
           {/* SVG Logo */}
           <Image
@@ -65,45 +70,45 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
             API <br />
             GALAXY
           </span>
-        </div>
+        </Link>
         <div
           className={`${
             isOpen ? "block" : "hidden"
-          } w-full block flex-grow lg:flex lg:items-center lg:w-auto lg:flex-grow-0`}
+          } w-full block flex-grow lg:flex lg:items-center lg:w-auto lg:flex-grow-0 `}
         >
-          <div className="text-sm lg:flex-grow text-white ml-4">
-            <a
+          <div className="text-sm lg:flex-grow text-white ml-4 ">
+            <Link
               href={`#${services}`}
               onClick={(e) => handleClick(e, services)}
               className="block navbar-link mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"
             >
               Services
-            </a>
-            <a
+            </Link>
+            <Link
               href={`#${about}`}
               onClick={(e) => handleClick(e, about)}
               className="navbar-link block mt-4 lg:inline-block lg:mt-0 mr-4  hover:text-white"
             >
               About
-            </a>
-            <a
+            </Link>
+            <Link
               href={`#${pricing}`}
               onClick={(e) => handleClick(e, pricing)}
               className="navbar-link block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"
             >
               Pricing
-            </a>
-            <a
+            </Link>
+            <Link
               href={`#${contacts}`}
               onClick={(e) => handleClick(e, contacts)}
               className="navbar-link block mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"
             >
               Contacts
-            </a>
+            </Link>
           </div>
         </div>
       </nav>
-      <div className="space-x-2 pt-2 flex justify-start items-baseline font-body pr-4 text-xs sm:text-base">
+      <div className="space-x-2 flex justify-start items-baseline font-body text-xs sm:text-base">
         {isAuthenticated ? (
           <>
             <div className="flex items-center space-x-2">
@@ -118,9 +123,11 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
                 />
               )}
               <span className="text-white">{session?.user?.name}</span>
+
               <a href={"/"}
                 onClick={signOutUser}
                 className="navbar-button px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
+
               >
                 Sign Out
               </a>
@@ -130,13 +137,13 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
           <>
             <Link
               href="/login"
-              className="login navbar-button px-3 py-2 rounded hover:bg-deepBlue text-white"
+              className="login navbar-button px-3 py-2 rounded hover:bg-deepBlue hover:text-gray-200 text-white transition-all"
             >
               Login
             </Link>
             <Link
               href="/register"
-              className="signup navbar-button px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
+              className="signup navbar-button px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-inherit/80 transition-all"
             >
               Sign Up
             </Link>

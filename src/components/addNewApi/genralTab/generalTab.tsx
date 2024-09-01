@@ -78,6 +78,7 @@ export default function GenralApiInfoTab({ api }: any) {
         Visibility: Visibility,
         HealthCheckEndpointId,
         EmailNotifcation,
+        Rating: api.Rating,
       };
 
       await updateApi(Data);
@@ -171,7 +172,10 @@ export default function GenralApiInfoTab({ api }: any) {
 
                 uploadPreset="Pfe_Uplaod"
                 onSuccess={(results) => {
-                  console.log("Public ID", results?.info?.public_id);
+                  console.log(
+                    "Public ID",
+                    (results?.info as unknown)?.public_id
+                  );
                   setImage(results?.info?.public_id);
                 }}
               >
@@ -325,7 +329,7 @@ export default function GenralApiInfoTab({ api }: any) {
       </Card>
       <div className="flex flex-col justify-start items-center gap-8">
         <ProductCard
-          id={api.ID}
+          id={api.id}
           averageRating={api.averageRating}
           latency={api.latency}
           availability={api.availability}

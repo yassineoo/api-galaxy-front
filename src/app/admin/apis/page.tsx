@@ -21,12 +21,18 @@ import { useCollectionList } from "@/hooks/Endpoint collections/EndpointsCollect
 import { useApiListForAdmin } from "@/hooks/apis/api.queries";
 import { useState } from "react";
 
+// import { useSession } from "next-auth/react";
+import { useAuthSession } from "@/components/auth-provider";
+
+
 export default function DefinitionTab() {
   const [page, setPage] = useState(1);
-  const adminId = 1
-  const ApiList = useApiListForAdmin({ page, limit: 8 ,search : "", adminId });
+  const adminId = 1;
+  const ApiList = useApiListForAdmin({ page, limit: 8, search: "", adminId });
 
-  const CollectionList = useCollectionList();
+  const {session,isAuthenticated} = useAuthSession()
+
+  const CollectionList = useCollectionList({ authToken: session?.token ?? "" });
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
       <Header />

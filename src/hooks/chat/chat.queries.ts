@@ -53,7 +53,7 @@ export function useChatMessages(
 
 export function useChatsQuery(userId: number = 1, search: string) {
   return useQuery<Chat[]>({
-    queryKey: ["chats", `user-${userId}`, search],
+    queryKey: ["chats", `user-${userId}`, search ?? undefined],
     queryFn: async () => {
       try {
         const res = await fetch(

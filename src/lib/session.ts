@@ -4,12 +4,12 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialProvider from "next-auth/providers/credentials";
 import { UserData, authUser, oauthUser } from "@/actions/auth";
 
+
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId:
-        "324751400836-30maqup4crb42q245kj56p3knn576jvd.apps.googleusercontent.com",
-      clientSecret: "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",
+      clientId: SERVER_ENV.GOOGLE_CLIENT_ID,
+      clientSecret: SERVER_ENV.GOOGLE_CLIENT_SECRET,
     }),
     CredentialProvider({
       name: "credentials",
@@ -27,7 +27,7 @@ export const authOptions: NextAuthOptions = {
           label: "username",
         },
       },
-      async authorize(credentials, req): Promise<any> {
+      async authorize(credentials): Promise<any> {
         const isRegister = Boolean(credentials?.username);
         const data = {
           email: credentials?.email,
@@ -38,6 +38,7 @@ export const authOptions: NextAuthOptions = {
         }
         try {
           const res = await authUser(data, isRegister);
+
           console.log("response",res)
           return res.data;
         } catch (error:any) {
@@ -46,6 +47,7 @@ export const authOptions: NextAuthOptions = {
 
     // Throw a new error with the message
     throw new Error(errorMessage);
+
         }
       },
     }),
@@ -63,7 +65,8 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, session, ...props }) {
+      console.log({ token, user, session, props })
       if (user) {
         if (user?.name) {
           //console.log("awchahooo")
@@ -71,13 +74,16 @@ export const authOptions: NextAuthOptions = {
             Email: user?.email,
             Username: user?.name,
           });
+
           if (!res.data?.message) {
+
             token.backendToken = res.data.token;
             token.userId = res.data.userId;
             token.twoFactorEnabled = res.data.twoFactorEnabled;
             token.is2faAuthenticated = !res.data.twoFactorEnabled;
           }
         } else {
+          token.token = user.token;
           token.backendToken = user.token;
           token.userId = user.userId;
           token.name=user.name ?? user.username
@@ -92,10 +98,12 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    async session({ session, token }): Promise<any> {
+    async session({ session, token, ...props }): Promise<any> {
+      console.log({ session, token, ...props })
       // Add the backend token to the session object
       console.log('token',token)
       session.token = token.backendToken as string;
+
       session.userId = token.userId as number;
       session.twoFactorEnabled = token.twoFactorEnabled as boolean;
       session.isVerified = token.isVerified as boolean;

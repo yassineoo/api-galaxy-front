@@ -7,18 +7,25 @@ import Header from "@/components/dashboard/header";
 import { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { getUserApis, getUserFollowings } from "@/actions/api";
-import { useApiById, useApiByUserId, useFollowingApis } from "@/hooks/apis/api.queries";
+import {
+  useApiById,
+  useApiByUserId,
+  useFollowingApis,
+} from "@/hooks/apis/api.queries";
 import ReviewSkeleton from "@/components/HubXs/ReviewSkeleton";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function ProfilePage({ params }: any) {
-  const { data: session, status } = useSession();
+  const { session } = useAuthSession();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(session?.user?.name || "");
+
   //console.log("session",session)
   const myApis = useApiByUserId(session?.userId as number)
   const myFollowingApis= useFollowingApis(session?.userId as number)
   
   
+
   useEffect(() => {
     setName(session?.user?.name || "");
   }, [session?.user?.name]);
@@ -109,6 +116,7 @@ export default function ProfilePage({ params }: any) {
                   <TabsContent value="published" className="mt-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
 
+
                       {
                         myApis.isLoading ? <ReviewSkeleton /> : (
                           (myApis.isSuccess && myApis.data.length) ? myApis.data.map((api:any,index:number) => (
@@ -129,10 +137,12 @@ export default function ProfilePage({ params }: any) {
                       }
                       
 
+
                     </div>
                   </TabsContent>
                   <TabsContent value="following">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+
                     {
                         myFollowingApis.isLoading ? <ReviewSkeleton /> : (
                          (myFollowingApis.isSuccess && myFollowingApis.data.length) ? myFollowingApis.data.map((api:any,index:number) => (
@@ -152,6 +162,7 @@ export default function ProfilePage({ params }: any) {
                         )
                       }
                       
+
                     </div>
                   </TabsContent>
                 </Tabs>
