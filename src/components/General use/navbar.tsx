@@ -40,10 +40,16 @@ const handleClick = (
 const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // const { data: session, status } = useSession();
-  const customSession = useAuthSession();
-  const { session, isAuthenticated } = customSession;
-
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated";
+  const signOutUser = async()=>{
+    const isVerified = localStorage.getItem("isVerified")
+    if(isVerified){
+      localStorage.removeItem("isVerified")
+    }
+    signOut().then(()=>router.push("/login"))
+  }
 
   return (
     <div className="navbarGradient  flex justify-between items-center p-1 px-6">
@@ -117,17 +123,14 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
                 />
               )}
               <span className="text-white">{session?.user?.name}</span>
-              <button
-                type="submit"
 
-                onClick={() => signOut()}
+              <a href={"/"}
+                onClick={signOutUser}
+                className="navbar-button px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
 
-                onClick={() => mutate()}
-
-                className="navbar-button px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-inherit/80"
               >
                 Sign Out
-              </button>
+              </a>
             </div>
           </>
         ) : (

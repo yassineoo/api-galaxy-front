@@ -7,7 +7,7 @@ import { ApiAuth } from "@/utils/constants";
 
 export const placeholderApi = axios.create({
 
-  baseURL:  ApiAuth,
+  baseURL: ApiAuth,
 
 });
 
@@ -40,11 +40,10 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
         }
       }
     );
-    console.log({ res })
 
-    return res.data;
+    return res
   } catch (error: any) {
-    console.log({ error })
+    console.log("hi",error.reponse.data)
 
     throw error;
   }
@@ -91,8 +90,6 @@ export const getUserSession = async (email: string) => {
 export const verifyEmail = async (data: any, type: string) => {
   try {
     if (type == "confirmRegistration") {
-      const session = await getSession();
-
       const res = await placeholderApi.post(`/verifyEmail/${data}`, {});
       if (res.status == 200) {
         return true;
@@ -141,28 +138,50 @@ export const resetPassword = async (
 };
 
 export const authenticate = async (
-  data: Inputs,
-  setError: UseFormSetError<Inputs>,
+  data: any,
+  setError: Dispatch<SetStateAction<string>>,
   setSuccess: Dispatch<SetStateAction<boolean>>
 ) => {
-  try {
+  console.log(data)
     const res = await signIn("credentials", {
       ...data,
       redirect: false,
     });
-    if (res?.ok) {
+
+    if (res?.error) {
+      // Handle error here
+    setError(res.error)
+    } else {
+      // Handle success here
       setSuccess(true);
     }
-    else {
-      console.log({ res })
-      setError("errorMessage", {
-        message: res?.error!,
-      });
-    }
-  } catch (error: any) {
-    console.log({ error })
-    setError("errorMessage", {
-      message: error?.message,
-    });
-  }
+
 };
+
+
+// activate two factor authentification:
+export const activeTwoFactorAuthentification = async(id:any)=>{
+  try{
+    const res = await placeholderApi.put(`/activate-two-factors/${id}`)
+  }catch(error){
+    console.log(error)
+  }
+}
+
+
+// activate two factor authentification:
+export const verifyOTP = async(id:any,otp:string)=>{
+  try{
+    const res = await placeholderApi.post(`/verifyOTP`,JSON.stringify({
+      userId: id,
+      otp
+    }),{
+      headers:{
+        "Content-Type":"application/json"
+      }
+    })
+    return res.data
+  }catch(error){
+    throw error
+  }
+}
