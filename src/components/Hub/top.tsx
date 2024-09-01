@@ -14,6 +14,7 @@ import { useCollectionList } from "@/hooks/Endpoint collections/EndpointsCollect
 import useAuth from "@/hooks/useAuth";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useAuthSession } from "../auth-provider";
 
 const items = [
   {
@@ -51,7 +52,9 @@ const items = [
 ];
 
 export default function TopCollection() {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
+  const { session } = useAuthSession();
+
   const { data: auth, isSuccess } = useAuth();
 
   const ColllectionList = useCollectionList({

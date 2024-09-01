@@ -11,9 +11,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useSession } from "next-auth/react";
+import { useAuthSession } from "../auth-provider";
 
 export function UserNav() {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
+  const {session} = useAuthSession()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

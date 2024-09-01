@@ -1,7 +1,7 @@
 // apiQueries.ts
 
 import { Api } from "@/app/dashboard/apis/[id]/Analyse/api.interface";
-import { ApiUrl } from "@/utils/constants";
+import { ApiAuth, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 
 import axios from "axios";
@@ -16,8 +16,10 @@ export const useApiList = ({ page, limit, filter, search, userId }: any) => {
     queryKey: ["apiList", page, limit, filter, search ?? undefined],
     queryFn: async () => {
       try {
+
         const response = await basedApiUrl.get(
           `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}`
+
         );
         //console.log("response from api query : ", response.data);
         return response.data;
