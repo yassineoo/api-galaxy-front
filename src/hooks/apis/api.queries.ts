@@ -170,9 +170,11 @@ export const useProviderInfo = (providerId: string) => {
       console.log("Fetching provider info for:", providerId);
 
       try {
-        const response = await axios.get(`${ApiUrl}/providers/${providerId}`);
+        const response = await basedApiUrl.get(
+          `/userApi/provider/${providerId}`
+        );
         console.log(response.data);
-        return response.data; // Assuming the response data is the provider info
+        return JSON.parse(response.data); // Assuming the response data is the provider info
       } catch (error) {
         console.error("Error fetching provider info:", error);
         throw new Error("Could not fetch provider info");

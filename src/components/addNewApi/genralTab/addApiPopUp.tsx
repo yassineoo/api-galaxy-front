@@ -49,7 +49,7 @@ export default function AddNewApiForm({ closeModal }: any) {
     try {
       const Data = {
         Name: name,
-        ProviderID: 123,
+        ProviderID: 1,
         ApiUrl: apiUrl,
         CategoryID: 1,
         ImagePath: image, // Use the fake URL for testing
@@ -58,7 +58,7 @@ export default function AddNewApiForm({ closeModal }: any) {
       };
 
       const res = await createApi(Data);
-      router.push(`/dashboard/apis/${res.ID}`);
+      router.push(`/dashboard/apis/${res.ID}/configuration`);
       closeModal();
 
       console.log("API entity created successfully!");

@@ -3,7 +3,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-import { ApiUrl } from "@/utils/constants";
+const ApiUrl = "http://localhost:9000";
+
 import {
   EndpointsGroup,
   EndpointsGroupCreation,

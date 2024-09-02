@@ -3,13 +3,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosRequestConfig } from "axios";
 import { Api, ApiCreation } from "./interfaces";
-import { ApiUrl } from "@/utils/constants";
-
+const ApiUrl = "http://localhost:9000";
+const ApiUrlReplace = "http://localhost:9000";
 export const useCreateApi = (authToken: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (apiData: ApiCreation) => {
+      console.log(` ----------------------------------      ${ApiUrl}/apis`);
+
       const response = await axios.post(`${ApiUrl}/apis`, apiData, {
         headers: { Authorization: `Bearer ${authToken}` },
       });

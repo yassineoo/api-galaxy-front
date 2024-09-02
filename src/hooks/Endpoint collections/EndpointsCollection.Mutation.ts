@@ -3,8 +3,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-import { ApiUrl } from "@/utils/constants";
 import { Collection, CollectionCreation } from "./interfaces";
+const ApiUrl = "http://localhost:9000";
 
 export const useCreateCollection = (authToken: string) => {
   const queryClient = useQueryClient();

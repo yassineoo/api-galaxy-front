@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { ApiCategory, ApiCategoryCreation } from "./interfaces";
-import { ApiUrl } from "@/utils/constants";
+const ApiUrl = "http://localhost:9000";
 
 export const useCreateApiCategory = (authToken: string) => {
   const queryClient = useQueryClient();

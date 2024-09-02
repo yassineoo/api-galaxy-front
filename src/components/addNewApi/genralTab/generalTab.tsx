@@ -332,12 +332,18 @@ export default function GenralApiInfoTab({ api }: any) {
       <div className="flex flex-col justify-start items-center gap-8">
         <ProductCard
           id={api.id}
-          averageRating={api.averageRating}
-          latency={api.latency}
-          availability={api.availability}
-          imagePath={image}
-          cardTitle={name}
-          cardDescription={description}
+          userId={api.ProviderID}
+          cardData={{
+            id: api.id,
+
+            averageRating: 5,
+            latency: "50ms",
+            availability: "100%",
+            imagePath: image,
+            cardTitle: name,
+            cardDescription: description,
+            liked: true,
+          }}
         />
         <Button
           onClick={() => {
