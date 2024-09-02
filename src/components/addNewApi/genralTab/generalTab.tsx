@@ -22,8 +22,10 @@ import ProductCard from "@/components/HubXs/productCard";
 import HealthForm from "./healthForm";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { useRouter } from "next/navigation";
+import { useAuthSession } from "@/components/auth-provider";
 export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields
+  const { session } = useAuthSession();
   const [name, setName] = useState(api.Name);
   const [categoryId, setCategoryId] = useState(api.CategoryID);
   const [apiUrl, setApiUrl] = useState(api.ApiUrl);
@@ -53,7 +55,7 @@ export default function GenralApiInfoTab({ api }: any) {
     isPending,
     error,
     isSuccess,
-  } = useUpdateApi();
+  } = useUpdateApi(session?.token || "");
 
   useEffect(() => {
     if (isError) {

@@ -4,23 +4,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { ApiCategory, ApiCategoryCreation } from "./interfaces";
 import { ApiUrl } from "@/utils/constants";
-import { useSession } from "next-auth/react";
 
-import { useAuthSession } from "@/components/auth-provider";
-
-export const useCreateApiCategory = () => {
+export const useCreateApiCategory = (authToken: string) => {
   const queryClient = useQueryClient();
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (data: ApiCategory) => {
-      const response = await axios.post(
-        `${ApiUrl}/categories`,
-        data,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
-      ); // Adjust the endpoint
+      const response = await axios.post(`${ApiUrl}/categories`, data, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }); // Adjust the endpoint
       return response.data;
     },
 
@@ -30,19 +22,15 @@ export const useCreateApiCategory = () => {
   });
 };
 
-export const useUpdateApiCategory = () => {
+export const useUpdateApiCategory = (authToken: string) => {
   const queryClient = useQueryClient();
-
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (apiData: ApiCategory) => {
       const response = await axios.put(
         `${ApiUrl}/categories/${apiData.id}`,
         apiData,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
+        { headers: { Authorization: `Bearer ${authToken}` } }
       ); // Adjust the endpoint
       return response.data;
     },
@@ -53,18 +41,14 @@ export const useUpdateApiCategory = () => {
   });
 };
 
-export const useDeleteApiCategory = () => {
+export const useDeleteApiCategory = (authToken: string) => {
   const queryClient = useQueryClient();
-
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
 
   return useMutation({
     mutationFn: async (id: string) => {
-      await axios.delete(
-        `/categories/${id}`,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
-      ); // Adjust the endpoint
+      await axios.delete(`/categories/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }); // Adjust the endpoint
     },
 
     onSuccess: () => {

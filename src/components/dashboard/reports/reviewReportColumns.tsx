@@ -1,6 +1,6 @@
 // app/apis/columns.tsx
 import { Button } from "@/components/ui/button";
-import {deleteReview} from "@/actions/api"
+import { deleteReview } from "@/actions/api";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +12,7 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAuthSession } from "@/components/auth-provider";
 
 export type ApiEntity = {
   providerID: number;
@@ -25,7 +26,7 @@ export const columns: ColumnDef<ApiEntity>[] = [
   {
     accessorKey: "reason",
     header: "Reason",
-    cell: ({ row }) => row.getValue("reason")
+    cell: ({ row }) => row.getValue("reason"),
   },
   {
     accessorKey: "description",
@@ -50,11 +51,13 @@ export const columns: ColumnDef<ApiEntity>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-        const query= useQueryClient()
-        const deleteReviewReport=(id:number)=>{
-                    deleteReview(id)
-                    query.invalidateQueries({queryKey:["reviewReportsList"]})
-        }
+      const query = useQueryClient();
+      const { session } = useAuthSession();
+
+      const deleteReviewReport = (id: number) => {
+        deleteReview(id, session?.token ?? "");
+        query.invalidateQueries({ queryKey: ["reviewReportsList"] });
+      };
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -68,7 +71,11 @@ export const columns: ColumnDef<ApiEntity>[] = [
             className="bg-gray-300 shadow-lg p-2 cursor-pointer space-y-2"
           >
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={()=>deleteReviewReport(row.getValue("id"))}>delete</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => deleteReviewReport(row.getValue("id"))}
+            >
+              delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

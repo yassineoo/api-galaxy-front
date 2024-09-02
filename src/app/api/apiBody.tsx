@@ -19,6 +19,7 @@ import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import ParamterControler from "./paramterController";
 import ProviderInfo from "./providerInfo";
 import PrcingTabs from "@/components/addNewApi/monitazation/pricingCardsApi";
+import { useAuthSession } from "@/components/auth-provider";
 const codeString = `
 const axios = require('axios');
 
@@ -36,12 +37,13 @@ export function ApiTabs({ api, api_id, user_id }: any) {
   const [selectedNodeId, setSelectedNodeId] = useState(100);
   const [resquestResult, setResquestResult] = useState();
   const [defaultValue, setDefaultValue] = useState("CodeSnippet");
+  const { session } = useAuthSession();
   const {
     mutateAsync: sendRequest,
     isError,
     isPending,
     isSuccess,
-  } = useSendRequest();
+  } = useSendRequest(session?.token || "");
   // States for each input field
 
   console.log("api", api);
@@ -88,8 +90,8 @@ export function ApiTabs({ api, api_id, user_id }: any) {
                 setSelectedNodeId={setSelectedNodeId}
               />
               <ProviderInfo
-                providerId={api.provider_id}
-                category={api.category_name}
+                providerId={api.ProviderID}
+                category={api.Category.CategoryName}
               />
             </div>
           )}

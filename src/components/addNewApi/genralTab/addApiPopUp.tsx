@@ -20,6 +20,7 @@ import {
   CldUploadWidget,
   CloudinaryUploadWidgetInfo,
 } from "next-cloudinary";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function AddNewApiForm({ closeModal }: any) {
   const router = useRouter();
@@ -34,13 +35,14 @@ export default function AddNewApiForm({ closeModal }: any) {
   // Create a ref for file input
   const fileInputRef = useRef<HTMLButtonElement>(null);
 
+  const { session } = useAuthSession();
   const {
     mutateAsync: createApi,
     isError,
     isPending,
     error,
     isSuccess,
-  } = useCreateApi();
+  } = useCreateApi(session?.token || "");
 
   // Handle form submission
   const handleSubmit = async () => {

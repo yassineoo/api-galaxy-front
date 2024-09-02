@@ -27,6 +27,7 @@ import { useUpdateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
 import AddNewEndpointDrawer from "../endpoints/addNewEndpointDrawer";
 import { AlertDialogDemo } from "../deleteModal";
 import CreateEndpointsGroupForm from "../endpoints/endpointGroupCreateModal";
+import { useAuthSession } from "@/components/auth-provider";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -38,7 +39,8 @@ export function EndpointsGroupsTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const updateEndpoint = useUpdateApiEndpoints();
+  const { session } = useAuthSession();
+  const updateEndpoint = useUpdateApiEndpoints(session?.token || "");
 
   const table = useReactTable({
     data,

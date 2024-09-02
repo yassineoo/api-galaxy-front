@@ -5,25 +5,17 @@ import axios from "axios";
 
 import { ApiUrl } from "@/utils/constants";
 import { ApiEndpoints } from "./interfaces";
-import { useSession } from "next-auth/react";
 
-import { useAuthSession } from "@/components/auth-provider";
-
-export const useCreateApiEndpoints = () => {
+export const useCreateApiEndpoints = (authToken: string) => {
   const queryClient = useQueryClient();
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (data: any) => {
       console.log("data ============ ", data);
 
-      const response = await axios.post(
-        `${ApiUrl}/endpoints`,
-        data,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
-      ); // Adjust the endpoint
+      const response = await axios.post(`${ApiUrl}/endpoints`, data, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }); // Adjust the endpoint
       return response.data;
     },
 
@@ -33,22 +25,16 @@ export const useCreateApiEndpoints = () => {
   });
 };
 
-export const useCreateExtractedApiEndpoints = () => {
+export const useCreateExtractedApiEndpoints = (authToken: string) => {
   const queryClient = useQueryClient();
-
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (data: any) => {
       console.log("data ============ ", data);
 
-      const response = await axios.post(
-        `${ApiUrl}/endpoints/multi`,
-        data,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
-      ); // Adjust the endpoint
+      const response = await axios.post(`${ApiUrl}/endpoints/multi`, data, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }); // Adjust the endpoint
       return response.data;
     },
 
@@ -58,19 +44,15 @@ export const useCreateExtractedApiEndpoints = () => {
   });
 };
 
-export const useUpdateApiEndpoints = () => {
+export const useUpdateApiEndpoints = (authToken: string) => {
   const queryClient = useQueryClient();
-
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (apiData: Partial<ApiEndpoints>) => {
       const response = await axios.patch(
         `${ApiUrl}/endpoints/${apiData.ID}`,
         apiData,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
+        { headers: { Authorization: `Bearer ${authToken}` } }
       ); // Adjust the endpoint
       console.log(response.data);
       return response.data;
@@ -82,19 +64,14 @@ export const useUpdateApiEndpoints = () => {
   });
 };
 
-export const useDeleteApiEndpoints = () => {
+export const useDeleteApiEndpoints = (authToken: string) => {
   const queryClient = useQueryClient();
-
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (id: string) => {
-      await axios.delete(
-        `${ApiUrl}/endpoints/${id}`,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
-      ); // Adjust the endpoint
+      await axios.delete(`${ApiUrl}/endpoints/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }); // Adjust the endpoint
     },
 
     onSuccess: () => {

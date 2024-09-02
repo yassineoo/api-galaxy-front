@@ -95,7 +95,7 @@ export default function ProductsHub() {
     search,
     userId: session?.userId || 1,
 
-    authToken: session,
+    authToken: session?.token || "",
   });
 
   const ApiCategoryList = useApiCategoryList();

@@ -4,23 +4,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosRequestConfig } from "axios";
 import { Api, ApiCreation } from "./interfaces";
 import { ApiUrl } from "@/utils/constants";
-import { useSession } from "next-auth/react";
 
-import { useAuthSession } from "@/components/auth-provider";
-
-export const useCreateApi = () => {
+export const useCreateApi = (authToken: string) => {
   const queryClient = useQueryClient();
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (apiData: ApiCreation) => {
-      const response = await axios.post(
-        `${ApiUrl}/apis`,
-        apiData,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
-      );
+      const response = await axios.post(`${ApiUrl}/apis`, apiData, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
 
       return response.data;
     },
@@ -31,19 +23,15 @@ export const useCreateApi = () => {
   });
 };
 
-export const useUpdateApi = () => {
+export const useUpdateApi = (authToken: string) => {
   const queryClient = useQueryClient();
-
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (apiData: Api) => {
       const response = await axios.put(
         `${ApiUrl}/apis/${apiData.ID}`,
         apiData,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
+        { headers: { Authorization: `Bearer ${authToken}` } }
       ); // Adjust the endpoint
       return response.data;
     },
@@ -54,19 +42,14 @@ export const useUpdateApi = () => {
   });
 };
 
-export const useDeleteApi = () => {
+export const useDeleteApi = (authToken: string) => {
   const queryClient = useQueryClient();
-
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (apiId: string) => {
-      await axios.delete(
-        `${ApiUrl}/apis/${apiId}`,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
-      ); // Adjust the endpoint
+      await axios.delete(`${ApiUrl}/apis/${apiId}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }); // Adjust the endpoint
     },
 
     onSuccess: () => {
@@ -75,12 +58,8 @@ export const useDeleteApi = () => {
   });
 };
 
-export const useUpdateDocs = () => {
+export const useUpdateDocs = (authToken: string) => {
   const queryClient = useQueryClient();
-
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (data: {
@@ -88,11 +67,9 @@ export const useUpdateDocs = () => {
       Content: string;
       apiID: number;
     }) => {
-      await axios.patch(
-        `${ApiUrl}/apis-docs/${data.docsId}`,
-        data,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
-      ); // Adjust the endpoint
+      await axios.patch(`${ApiUrl}/apis-docs/${data.docsId}`, data, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }); // Adjust the endpoint
     },
 
     onSuccess: (_, variables) => {
@@ -114,12 +91,8 @@ interface Data {
   EndpointID: number;
 }
 
-export const useSendRequest = () => {
+export const useSendRequest = (authToken: string) => {
   const queryClient = useQueryClient();
-
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (RequestData: Data) => {
@@ -130,7 +103,7 @@ export const useSendRequest = () => {
       // Add X-Endpoint-Key to the headers
       const updatedHeaders = {
         ...Headers,
-        "Authorization": `Bearer ${session?.token}`,
+        Authorization: `Bearer ${authToken}`,
         "X-Endpoint-Key": RequestData.EndpointID.toString(),
       };
 
@@ -193,23 +166,19 @@ interface HelthRequestData {
   EndpointID: number;
   Email?: string;
 }
-export const useHelthSendRequest = () => {
+export const useHelthSendRequest = (authToken: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (HelthRequestData: HelthRequestData) => {
       const { ApiID, EndpointID } = HelthRequestData;
 
-      // const { data: session } = useSession()
-      const { session } = useAuthSession();
-
-
       console.log("loog HelthRequestData", HelthRequestData);
 
       const config: AxiosRequestConfig = {
         //headers: updatedHeaders,
         // params: Params,
-        headers: { "Authorization": `Bearer ${session?.token}` },
+        headers: { Authorization: `Bearer ${authToken}` },
         withCredentials: true,
       };
 

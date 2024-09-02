@@ -19,9 +19,7 @@ export default function TopCollection() {
 
   const { data: auth, isSuccess } = useAuth();
 
-  const ColllectionList = useCollectionList({
-    authToken: session?.userId && isSuccess ? auth : "",
-  });
+  const ColllectionList = useCollectionList();
   if (ColllectionList.isSuccess) {
     console.log({ data: ColllectionList.data });
   }

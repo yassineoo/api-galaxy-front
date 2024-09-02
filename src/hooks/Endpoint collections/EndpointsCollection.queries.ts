@@ -4,7 +4,7 @@ import { ApiAuth, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const useCollectionList = ({ authToken }: { authToken: string }) => {
+export const useCollectionList = () => {
   return useQuery({
     queryKey: ["CollectionList"],
     queryFn: async () => {
