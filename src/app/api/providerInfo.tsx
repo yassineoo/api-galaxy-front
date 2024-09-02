@@ -22,17 +22,20 @@ export default function ProviderInfo({
   providerId: string;
   category: string;
 }) {
-  const { data, error, isLoading } = useProviderInfo(providerId);
+  const { data, error, isLoading, isSuccess, isPending } =
+    useProviderInfo(providerId);
 
-  if (isLoading) {
+  if (error) {
+    return <div className="text-red-500">Error fetching provider info</div>;
+  }
+
+  if (!data) {
     <div className="w-full h-full flex justify-center items-center">
       <RingLoader size="78" speedMultiplier={0.5} color="blue" />
     </div>;
   }
 
-  if (error) {
-    return <div className="text-red-500">Error fetching provider info</div>;
-  }
+  console.log("Provider Info sss:", data);
 
   return (
     <Card className="w-full max-w-sm border-0 shadow">
@@ -45,16 +48,16 @@ export default function ProviderInfo({
           <Avatar>
             <AvatarImage
               src={data?.avatarUrl || "/placeholder-user.jpg"}
-              alt={data?.name}
+              alt={data?.username}
             />
             <AvatarFallback>{data?.initials || "N/A"}</AvatarFallback>
           </Avatar>
-          <div>by {data?.name}</div>
+          <div>by {data?.username}</div>
         </div>
         <Separator />
         <div className="flex items-center justify-between">
           <div>Subscribers</div>
-          <div className="font-medium">{data?.subscribers}</div>
+          <div className="font-medium">{data?.subscribers || 2}</div>
         </div>
         <Separator />
         <div className="flex items-center justify-between">

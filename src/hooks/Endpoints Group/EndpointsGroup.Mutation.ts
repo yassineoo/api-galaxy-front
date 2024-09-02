@@ -3,25 +3,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-import { ApiUrl } from "@/utils/constants";
+const ApiUrl = "http://localhost:9000";
+
 import { EndpointsGroup, EndpointsGroupCreation } from "./interfaces";
-import { useSession } from "next-auth/react";
 
-import { useAuthSession } from "@/components/auth-provider";
-
-export const useCreateEndpointsGroup = () => {
+export const useCreateEndpointsGroup = (authToken: string) => {
   const queryClient = useQueryClient();
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (data: EndpointsGroupCreation) => {
-      const response = await axios.post(
-        `${ApiUrl}/endpoints-group`,
-        data,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
-      ); // Adjust the endpoint
+      const response = await axios.post(`${ApiUrl}/endpoints-group`, data, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }); // Adjust the endpoint
       return response.data;
     },
 
@@ -31,19 +24,15 @@ export const useCreateEndpointsGroup = () => {
   });
 };
 
-export const useUpdateEndpointsGroup = () => {
+export const useUpdateEndpointsGroup = (authToken: string) => {
   const queryClient = useQueryClient();
-
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (apiData: EndpointsGroup) => {
       const response = await axios.patch(
         `${ApiUrl}/endpoints-group/${apiData.ID}`,
         apiData,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
+        { headers: { Authorization: `Bearer ${authToken}` } }
       ); // Adjust the endpoint
       console.log(response.data);
       return response.data;
@@ -55,19 +44,14 @@ export const useUpdateEndpointsGroup = () => {
   });
 };
 
-export const useDeleteEndpointsGroup = () => {
+export const useDeleteEndpointsGroup = (authToken: string) => {
   const queryClient = useQueryClient();
-
-  // const { data: session } = useSession()
-  const { session } = useAuthSession();
-
 
   return useMutation({
     mutationFn: async (id: string) => {
-      await axios.delete(
-        `/endpoints-group/${id}`,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
-      ); // Adjust the endpoint
+      await axios.delete(`/endpoints-group/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }); // Adjust the endpoint
     },
 
     onSuccess: () => {

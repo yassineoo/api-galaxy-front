@@ -1,3 +1,4 @@
+import { useAuthSession } from "@/components/auth-provider";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,8 +15,14 @@ import { useDeleteCollection } from "@/hooks/Endpoint collections/EndpointsColle
 import { useDeleteApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
 
 export function AlertDialogDemo({ action, target, name }: any) {
-  const { mutateAsync: deleteEndpoint } = useDeleteApiEndpoints();
-  const { mutateAsync: deleteCollection } = useDeleteCollection();
+  const { session } = useAuthSession();
+
+  const { mutateAsync: deleteEndpoint } = useDeleteApiEndpoints(
+    session?.token || ""
+  );
+  const { mutateAsync: deleteCollection } = useDeleteCollection(
+    session?.token || ""
+  );
 
   const handleDelete = async () => {
     try {

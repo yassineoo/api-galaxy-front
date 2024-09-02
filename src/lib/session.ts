@@ -39,9 +39,11 @@ export const authOptions: NextAuthOptions = {
         try {
           const res = await authUser(data, isRegister);
 
-          console.log("response", res);
-          return res.data;
+          //   console.log("response", res);
+          return res?.data;
         } catch (error: any) {
+          //   console.log("error login", error);
+
           const errorMessage =
             error.response?.data?.message || "Authentication failed";
           console.log("Authorization Error:", errorMessage);
@@ -95,8 +97,11 @@ export const authOptions: NextAuthOptions = {
         // Add two-factor authentication status to the toke
         token.isVerified = false;
       } else {
-        // console.log("hi from else");
+
+        console.log("hi from elseeee");
+
         // subsequent calls so the token object has already the needed values
+        //  console.log({ token, user, session });
       }
       return token;
     },
@@ -106,7 +111,7 @@ export const authOptions: NextAuthOptions = {
       // Add the backend token to the session object
       // console.log("token", token);
       session.token = token.backendToken as string;
-      // console.log({ session });
+
       session.userId = token.userId as number;
       session.twoFactorEnabled = token.twoFactorEnabled as boolean;
       return session;

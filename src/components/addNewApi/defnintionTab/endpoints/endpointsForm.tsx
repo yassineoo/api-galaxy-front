@@ -29,6 +29,7 @@ import {
 
 import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import { useAuthSession } from "@/components/auth-provider";
 
 const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
   const [parameters, setParameters] = useState<Parameter[]>(
@@ -99,19 +100,19 @@ const AddEndpointsForm = ({ apiID, endpoint, edit, Colser }: any) => {
     setParameters(pathParameters);
   };
   // Function to extract path parameters from the URL
-
+  const { session } = useAuthSession();
   const {
     mutateAsync: createEndpoint,
     isError,
     isPending,
     error,
-  } = useCreateApiEndpoints();
+  } = useCreateApiEndpoints(session?.token || "");
   const {
     mutateAsync: updateEndpoint,
     isError: isUpdateError,
     isPending: isUpdatePending,
     error: updateError,
-  } = useUpdateApiEndpoints();
+  } = useUpdateApiEndpoints(session?.token || "");
   // Handle form submission
   const handleSubmit = useCallback(async () => {
     try {

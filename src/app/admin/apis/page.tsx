@@ -27,11 +27,13 @@ import { useAuthSession } from "@/components/auth-provider";
 export default function DefinitionTab() {
   const [page, setPage] = useState(1);
   const adminId = 1;
-  const ApiList = useApiListForAdmin({ page, limit: 8, search: "", adminId });
-
   const { session, isAuthenticated } = useAuthSession();
+  const ApiList = useApiListForAdmin(
+    { page, limit: 8, search: "", adminId },
+    session?.token ?? ""
+  );
 
-  const CollectionList = useCollectionList({ authToken: session?.token ?? "" });
+  const CollectionList = useCollectionList();
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
       <Header />

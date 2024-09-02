@@ -22,6 +22,7 @@ const Navbar = ({
   const [isOpen, setIsOpen] = useState(false);
   const { session, isAuthenticated } = useAuthSession();
 
+
   return (
     <div className="bg-white sticky top-0 z-[1000] flex flex-row justify-between items-center py-2 px-4 shadow-md">
       <nav className="flex items-center justify-start flex-wrap">
@@ -43,9 +44,8 @@ const Navbar = ({
         </div>
 
         <div
-          className={`${
-            isOpen ? "block" : "hidden"
-          } w-full lg:flex lg:items-center lg:w-auto`}
+          className={`${isOpen ? "block" : "hidden"
+            } w-full lg:flex lg:items-center lg:w-auto`}
         >
           <div className="text-base lg:flex-grow text-black ml-4">
             <Link
@@ -80,7 +80,9 @@ const Navbar = ({
         {isAuthenticated ? (
           <div className="flex items-center space-x-2">
             {session?.user?.image && (
+
               <Link href={`dashboard/profile`}>
+
                 <Image
                   src={session.user.image}
                   alt={session.user.name || "User Avatar"}

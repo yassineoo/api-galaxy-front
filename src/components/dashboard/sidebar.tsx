@@ -50,10 +50,10 @@ const menuItems = [
         url: "/dashboard/billing/transaction-history",
       },
       {
-        name: "Subscription",
+        name: "Subscribers",
         active: false,
         icon: "/icons/subscription.svg",
-        url: "/dashboard/billing/subscription",
+        url: "/dashboard/billing/subscribers",
       },
     ],
   },

@@ -28,9 +28,9 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
     const res = await placeholderApi.post(
       isRegister ? "/register" : "/login",
       {
-        email: data.email,
-        password: data.password,
-        username: data.username,
+        email: data?.email ?? "",
+        password: data?.password ?? "",
+        username: data?.username ?? "",
       },
       {
         headers: {
@@ -39,11 +39,14 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
       }
     );
 
+    // console.log("data login  suc", res);
+
     return res;
   } catch (error: any) {
-    console.log("hi", error.reponse.data);
+    //  console.log("data login  fali", error);
 
     throw error;
+
   }
 };
 
@@ -55,8 +58,8 @@ export const oauthUser = async (data: { Email: string; Username: string }) => {
         "Content-Type": "application/json",
       },
     });
-    console.log("response from oauth", res);
-    console.log({ res })
+    console.log("response from oauth", res?.data);
+    //   console.log({ res });
     return res;
   } catch (error) {
     console.log({ OAUTH_ERROR: error });

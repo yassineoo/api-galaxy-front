@@ -78,6 +78,12 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
         >
           <div className="text-sm lg:flex-grow text-white ml-4 ">
             <Link
+              href={`/hub`}
+              className="block navbar-link mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"
+            >
+              Hub
+            </Link>
+            <Link
               href={`#${services}`}
               onClick={(e) => handleClick(e, services)}
               className="block navbar-link mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"

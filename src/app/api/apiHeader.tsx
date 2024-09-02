@@ -35,6 +35,7 @@ const ApiHeader = ({
 
       <div className="flex items-center gap-8">
         <div className="text-center">
+
           <div className="text-md font-semibold text-gray-600">
             {Rating} Rating{" "}
           </div>
@@ -47,6 +48,7 @@ const ApiHeader = ({
               edit={false}
             />
           </div>
+
         </div>
         <div className="text-center">
           <div className="text-md font-semibold text-gray-600">Latency</div>

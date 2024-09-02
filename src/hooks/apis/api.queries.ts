@@ -8,7 +8,6 @@ import axios from "axios";
 import { baseApiUrl, getUserApis, getUserFollowings } from "@/actions/api";
 import { basedApiUrl, getAPIRating } from "@/actions/api";
 import { getInactiveAPI } from "@/actions/admin";
-import { useSession } from "next-auth/react";
 
 export const useApiList = ({
   page,
@@ -25,7 +24,6 @@ export const useApiList = ({
     queryFn: async () => {
       try {
         let response;
-        console.log("logged token datasss : ", authToken);
 
         if (!authToken) {
           response = await axios.get(
@@ -48,7 +46,7 @@ export const useApiList = ({
         response = await basedApiUrl.get(
           `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}`,
           {
-            headers: { Authorization: `Bearer ${authToken?.token}` },
+            headers: { Authorization: `Bearer ${authToken}` },
           }
         );
         // return [];
@@ -63,13 +61,10 @@ export const useApiList = ({
   });
 };
 
-export const useApiListForAdmin = ({
-  page,
-  limit,
-  filter,
-  search,
-  adminId,
-}: any) => {
+export const useApiListForAdmin = (
+  { page, limit, filter, search, adminId }: any,
+  authToken: string
+) => {
   //const userData = await getCurrentUser()
   //console.log("helll",userData)
   return useQuery({
@@ -77,7 +72,10 @@ export const useApiListForAdmin = ({
     queryFn: async () => {
       try {
         const response = await basedApiUrl.get(
-          `/userApi/admin/${adminId}?limit=${limit}&page=${page}&search=${search}`
+          `/userApi/admin/${adminId}?limit=${limit}&page=${page}&search=${search}`,
+          {
+            headers: { Authorization: `Bearer ${authToken}` },
+          }
         );
         //console.log("response from api query : ", response.data);
         return response.data;
@@ -172,9 +170,11 @@ export const useProviderInfo = (providerId: string) => {
       console.log("Fetching provider info for:", providerId);
 
       try {
-        const response = await axios.get(`${ApiUrl}/providers/${providerId}`);
+        const response = await basedApiUrl.get(
+          `/userApi/provider/${providerId}`
+        );
         console.log(response.data);
-        return response.data; // Assuming the response data is the provider info
+        return JSON.parse(response.data); // Assuming the response data is the provider info
       } catch (error) {
         console.error("Error fetching provider info:", error);
         throw new Error("Could not fetch provider info");
