@@ -1,4 +1,4 @@
-// DashboardPage.js
+    // DashboardPage.js
 "use client";
 
 import Header from "@/components/dashboard/header";
@@ -43,9 +43,9 @@ const TransactionTable =  function () {
             {Array.isArray(transactionData) && transactionData.map((transaction) => (
               <TableRow key={transaction.id}>
                 <TableCell>{transaction.id}</TableCell>
-                <TableCell>{transaction.date}</TableCell>
+                <TableCell>{transaction.transaction_date}</TableCell>
                 <TableCell>{transaction.amount}</TableCell>
-                <TableCell>Client Payment</TableCell>
+                <TableCell>{transaction.payment_method_id}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -58,7 +58,6 @@ const TransactionTable =  function () {
 export default function DashboardPage() {
   return (
     <div className=" bg-dashboardBg dark:bg-transparent flex flex-col w-full ">
-      <Header />
       <div className=" w-full ml-4 mt-4 mb-4">
         <BreadcrumbSeparator/>
       </div>

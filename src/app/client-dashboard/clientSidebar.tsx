@@ -10,30 +10,30 @@ const menuItems = [
     ID: 90,
     name: "Dashboard",
     icon: "/icons/icon_dashboard.svg",
-    url: "/dashboard/client",
+    url: "/client-dashboard",
   },
   {
     ID: 91,
-    name: "My APIs",
-    icon: "/icons/icon_apis.svg",
-    url: "/dashboard/client/apis",
+    name: "API subscriptions",
+    icon: "",
+    url: "/client-dashboard/api-subscriptions",
   },
   {
     ID: 92,
     name: "Billing",
     icon: "/icons/icon_billing.svg",
-    url: "/dashboard/client/billing",
+    url: "/client-dashboard/billing",
     children: [
-      {
-        name: "Billing Information",
-        icon: "/icons/credit-card.svg",
-        url: "/dashboard/client/billing/billing-information",
-      },
       {
         name: "Transaction History",
         icon: "/icons/transaction-history.svg",
-        url: "/dashboard/client/billing/transaction-history",
+        url: "/client-dashboard/billing/transaction-history",
       },
+      {
+        name: "Subscriptions",
+        icon: "/icons/credit-card.svg",
+        url: "/client-dashboard/billing/subscriptions",
+      }
     ],
   },
   // Add more client-specific links here

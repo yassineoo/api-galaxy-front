@@ -18,10 +18,12 @@ export default function ClientDashboardPage() {
     }, [session, status]);
 
     return (
-        <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full max-h-full overflow-y-auto">
-            <Header />
-            <div className="text-center">Select an API to view stats</div>
-        </div>
+        <>
+          
+            <div>
+                <div className="text-center">Select an API to view stats</div>
+            </div>
+        </>
     );
 }
 

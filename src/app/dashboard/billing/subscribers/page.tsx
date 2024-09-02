@@ -8,46 +8,17 @@ import Sidebar from "@/components/dashboard/sidebar";
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
+import { useGetSubscribersForProvider } from "@/hooks/EndpointsPayment/endpoints.queries";
+import { useSession } from "next-auth/react";
 
 const TableSubscribers = function () {
-  const subscribers = [
-    {
-      id: 1001,
-      name: "John Doe",
-      email: "john@example.com",
-      subscriptionDate: "2022-03-15",
-      status: "Active"
-    },
-    {
-      id: 1002,
-      name: "Jane Smith",
-      email: "jane@example.com",
-      subscriptionDate: "2021-08-22",
-      status: "Inactive"
-    },
-    {
-      id: 1003,
-      name: "Michael Johnson",
-      email: "michael@example.com",
-      subscriptionDate: "2023-01-01",
-      status: "Active"
-    },
-    {
-      id: 1004,
-      name: "Emily Davis",
-      email: "emily@example.com",
-      subscriptionDate: "2022-11-30",
-      status: "Canceled"
-    },
-    {
-      id: 1005,
-      name: "David Wilson",
-      email: "david@example.com",
-      subscriptionDate: "2023-04-10",
-      status: "Active"
-    }
-  ];
+  const { data: session, status } = useSession();
+  const userId = session?.userId;
 
+  // Use the hook to fetch subscribers for the provider
+  const { data: subscribers, isLoading } = useGetSubscribersForProvider(userId?.toString() || "");
+
+  
   return (
     <Card>
       <CardHeader className="px-7">
@@ -67,22 +38,29 @@ const TableSubscribers = function () {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {subscribers.map((subscriber) => (
-              <TableRow key={subscriber.id}>
-                <TableCell>{subscriber.id}</TableCell>
-                <TableCell>{subscriber.name}</TableCell>
-                <TableCell>{subscriber.email}</TableCell>
-                <TableCell>{subscriber.subscriptionDate}</TableCell>
-                <TableCell>{subscriber.status}</TableCell>
-                <TableCell>premium </TableCell>
-
-              </TableRow>
-            ))}
+            {isLoading ? (
+              <p>Loading subscribers...</p>
+            ) : (
+              !subscribers || subscribers.length === 0 ? (
+                <p>No subscribers found.</p>
+              ) : (
+                subscribers.map((subscriber: any) => (
+                  <TableRow key={subscriber.id}>
+                    <TableCell>{subscriber.id}</TableCell>
+                    <TableCell>{subscriber.name}</TableCell>
+                    <TableCell>{subscriber.email}</TableCell>
+                    <TableCell>{subscriber.subscriptionDate}</TableCell>
+                    <TableCell>{subscriber.status}</TableCell>
+                    <TableCell>premium</TableCell>
+                  </TableRow>
+                ))
+              )
+            )}
           </TableBody>
         </Table>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 export default function DashboardPage() {
@@ -90,7 +68,7 @@ export default function DashboardPage() {
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full ">
       <Header />
       <div className=" w-full ml-4 mt-4 mb-4">
-        <BreadcrumbWithCustomSeparator/>
+        <BreadcrumbWithCustomSeparator />
       </div>
       <TableSubscribers />
     </div>
