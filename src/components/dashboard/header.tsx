@@ -29,7 +29,6 @@ const Header = () => {
     setDropdownOpen(!isDropdownOpen);
   };
   const { session } = useAuthSession();
-  console.log("sessionnn", session);
 
   return (
     <header className="bg-white w-full  dark:bg-slate-900  p-4 flex justify-between 2xl:justify-around items-center">

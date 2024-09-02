@@ -1,7 +1,7 @@
 // apiMutations.ts
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { Api, ApiCreation } from "./interfaces";
 import { ApiUrl } from "@/utils/constants";
 import { useSession } from "next-auth/react";
@@ -16,13 +16,20 @@ export const useCreateApi = () => {
 
   return useMutation({
     mutationFn: async (apiData: ApiCreation) => {
-      const response = await axios.post(
-        `${ApiUrl}/apis`,
-        apiData,
-        { headers: { "Authorization": `Bearer ${session?.token}` } }
-      );
-
-      return response.data;
+      try {
+        const response = await axios.post(
+          `${ApiUrl}/apis`,
+          apiData,
+          { headers: { "Authorization": `Bearer ${session?.token}` } }
+        );
+        console.log({ response, data: response.data })
+        return response.data;
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          console.log({ error: error.response, data: error.response?.data })
+        }
+        else console.log({ error })
+      }
     },
 
     onSuccess: () => {

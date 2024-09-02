@@ -56,9 +56,10 @@ export default function AddNewApiForm({ closeModal }: any) {
       };
 
       const res = await createApi(Data);
-      router.push(`/dashboard/apis/${res.ID}`);
-      closeModal();
-
+      console.log({ res });
+      if(isSuccess)router.push(`/dashboard/apis/${res?.ID}`);
+      if(isSuccess)closeModal();
+      alert("API is not created")
       console.log("API entity created successfully!");
     } catch (error) {
       console.error("Error creating API entity:", error);

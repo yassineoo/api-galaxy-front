@@ -43,10 +43,11 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated";
   const signOutUser = async () => {
-    const isVerified = localStorage.getItem("isVerified");
-    if (isVerified) {
-      localStorage.removeItem("isVerified");
-    }
+    // const isVerified = localStorage.getItem("isVerified");
+    // if (isVerified) {
+    //   localStorage.removeItem("isVerified");
+    // }
+    localStorage.removeItem("isVerified");
     signOut().then(() => router.push("/login"));
   };
 
@@ -123,13 +124,13 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
               )}
               <span className="text-white">{session?.user?.name}</span>
 
-              <a
-                href={"/"}
-                onClick={() => signOutUser()}
+              <button
+                // href={"/"}
+                onClick={signOutUser}
                 className="navbar-button px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
               >
                 Sign Out
-              </a>
+              </button>
             </div>
           </>
         ) : (

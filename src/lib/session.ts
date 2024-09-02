@@ -66,7 +66,7 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user, session, ...props }) {
-      console.log({ token, user, session, props });
+      // console.log({ token, user, session, props });
       if (user) {
         console.log({ user });
         if (user?.name) {
@@ -75,7 +75,7 @@ export const authOptions: NextAuthOptions = {
             Email: user?.email,
             Username: user?.name,
           });
-          console.log("responsessss", res.data);
+          // console.log("responsessss", res.data);
 
           if (!res.data?.message) {
             token.token = res.data.token.token;
@@ -95,18 +95,18 @@ export const authOptions: NextAuthOptions = {
         // Add two-factor authentication status to the toke
         token.isVerified = false;
       } else {
-        console.log("hi from else");
+        // console.log("hi from else");
         // subsequent calls so the token object has already the needed values
       }
       return token;
     },
     async session({ session, token, ...props }): Promise<any> {
       // l
-      console.log({ session, token, ...props });
+      // console.log({ session, token, ...props });
       // Add the backend token to the session object
       // console.log("token", token);
       session.token = token.backendToken as string;
-      console.log({ session });
+      // console.log({ session });
       session.userId = token.userId as number;
       session.twoFactorEnabled = token.twoFactorEnabled as boolean;
       return session;
