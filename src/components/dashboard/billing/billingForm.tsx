@@ -60,7 +60,7 @@ const MethodeForm: React.FC<MethodeFormProps> = ({ setPage }) => {
   return (
     <form
       className="absolute bg-white pl-4 md:left-[45%] lg:left-[45%] md:w-1/2 w-4/5"
-      action="http://localhost:4242/stripe-subscription/create-checkout-session"
+      action="http://localhost:5000/payment-service/stripe-subscription/create-checkout-session"
       method="POST"
     >
          <fieldset className="mb-4">

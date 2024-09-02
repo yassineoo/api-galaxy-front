@@ -19,6 +19,8 @@ const Navbar = ({
   const [isOpen, setIsOpen] = useState(false);
   // const { data: session, status } = useSession();
   const { session, isAuthenticated } = useAuthSession();
+
+  const userdId = session?.userId;
   console.log("logged token datasssfffff : ", session);
 
   // const isAuthenticated = status === "authenticated";
@@ -44,9 +46,8 @@ const Navbar = ({
         </div>
 
         <div
-          className={`${
-            isOpen ? "block" : "hidden"
-          } w-full lg:flex lg:items-center lg:w-auto`}
+          className={`${isOpen ? "block" : "hidden"
+            } w-full lg:flex lg:items-center lg:w-auto`}
         >
           <div className="text-base lg:flex-grow text-black ml-4">
             <Link
@@ -81,13 +82,15 @@ const Navbar = ({
         {isAuthenticated ? (
           <div className="flex items-center space-x-2">
             {session?.user?.image && (
-              <Image
-                src={session.user.image}
-                alt={session.user.name || "User Avatar"}
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
+              <Link href={`/dashboard/profile/${userdId}`}>
+                <Image
+                  src={session.user.image}
+                  alt={session.user.name || "User Avatar"}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              </Link>
             )}
             <span className="text-black">{session?.user?.name}</span>
             <button
