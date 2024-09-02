@@ -44,7 +44,7 @@ export default function Settings() {
                 <div className="space-y-1">
                   <Link
                     className="text-sm font-medium"
-                    href={`/dashboard/profile/${session?.userId || 5}`}
+                    href={`/dashboard/profile}`}
                   >
                     Profile
                   </Link>

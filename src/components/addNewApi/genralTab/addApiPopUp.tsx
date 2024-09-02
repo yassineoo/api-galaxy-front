@@ -20,6 +20,7 @@ import {
   CldUploadWidget,
   CloudinaryUploadWidgetInfo,
 } from "next-cloudinary";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function AddNewApiForm({ closeModal }: any) {
   const router = useRouter();
@@ -34,20 +35,21 @@ export default function AddNewApiForm({ closeModal }: any) {
   // Create a ref for file input
   const fileInputRef = useRef<HTMLButtonElement>(null);
 
+  const { session } = useAuthSession();
   const {
     mutateAsync: createApi,
     isError,
     isPending,
     error,
     isSuccess,
-  } = useCreateApi();
+  } = useCreateApi(session?.token || "");
 
   // Handle form submission
   const handleSubmit = async () => {
     try {
       const Data = {
         Name: name,
-        ProviderID: 123,
+        ProviderID: 1,
         ApiUrl: apiUrl,
         CategoryID: 1,
         ImagePath: image, // Use the fake URL for testing
@@ -56,7 +58,7 @@ export default function AddNewApiForm({ closeModal }: any) {
       };
 
       const res = await createApi(Data);
-      router.push(`/dashboard/apis/${res.ID}`);
+      router.push(`/dashboard/apis/${res.ID}/configuration`);
       closeModal();
 
       console.log("API entity created successfully!");

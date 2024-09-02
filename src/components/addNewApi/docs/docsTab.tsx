@@ -13,18 +13,19 @@ import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import { formats, modules } from "@/utils/reactQuill";
 import { ToastContainer, toast } from "react-toastify";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function DocsTab({ api }: any) {
   // Define states for input fields
   const [docs, setDocs] = useState<string>(api?.ApiDocs?.Content || "");
-
+  const { session } = useAuthSession();
   const {
     mutateAsync: updateApiDocs,
     isError,
     isPending,
     error,
     isSuccess,
-  } = useUpdateDocs();
+  } = useUpdateDocs(session?.token || "");
 
   useEffect(() => {
     console.log(docs);

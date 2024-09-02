@@ -26,6 +26,7 @@ import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
 import { useUpdateApiEndpoints } from "@/hooks/Endpoints/Endpoints.Mutation";
 import AddNewEndpointDrawer from "../endpoints/addNewEndpointDrawer";
 import { AlertDialogDemo } from "../deleteModal";
+import { useAuthSession } from "@/components/auth-provider";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -42,7 +43,8 @@ export function EndpointsTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
-  const updateEndpoint = useUpdateApiEndpoints();
+  const { session } = useAuthSession();
+  const updateEndpoint = useUpdateApiEndpoints(session?.token || "");
 
   const handleGroupChange = (groupId: string) => {
     setSelectedGroup(groupId);

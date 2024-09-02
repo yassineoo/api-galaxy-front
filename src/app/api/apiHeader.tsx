@@ -9,8 +9,7 @@ const ApiHeader = ({
   Latency,
   Availability,
 }: any) => {
-
-  console.log("starts ",Rating)
+  console.log("starts ", Rating);
   return (
     <div className="w-full flex items-center justify-between bg-gradient-to-r from-blue-50 via-white to-blue-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
       <div className="flex items-center gap-6">
@@ -36,14 +35,20 @@ const ApiHeader = ({
 
       <div className="flex items-center gap-8">
         <div className="text-center">
-          <div className="text-md font-semibold text-gray-600">Rating</div>
-          <ReactStars
-            count={5}
-            size={20}
-            color2={"#ffd700"}
-            value={Rating}
-            edit={true}
-          />
+
+          <div className="text-md font-semibold text-gray-600">
+            {Rating} Rating{" "}
+          </div>
+          <div className="text-blue-900 text-lg font-bold">
+            <ReactStars
+              count={5}
+              value={Rating}
+              size={24}
+              color2={"#ffd700"}
+              edit={false}
+            />
+          </div>
+
         </div>
         <div className="text-center">
           <div className="text-md font-semibold text-gray-600">Latency</div>
