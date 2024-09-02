@@ -79,7 +79,13 @@ const buttons = [
   },
 ];
 
-export default function ProductsHub() {
+export default function ProductsHub({
+  keyword,
+  title,
+}: {
+  keyword?: string;
+  title: string;
+}) {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState(0);
   const [search, setSearch] = useState("");
@@ -92,7 +98,7 @@ export default function ProductsHub() {
     page,
     limit: 12,
     filter,
-    search,
+    search: keyword ?? "",
     userId: session?.userId || 1,
 
     authToken: session?.token || "",
@@ -168,7 +174,7 @@ export default function ProductsHub() {
         </div>
         <div className="relative left-8">
           <h1 className="text-black text-title text-xl md:text-3xl font-bold">
-            Discover more APIs
+            {title}
           </h1>
 
           <div className="flex flex-wrap gap-3 p-2">

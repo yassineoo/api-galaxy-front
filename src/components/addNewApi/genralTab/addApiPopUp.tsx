@@ -58,6 +58,7 @@ export default function AddNewApiForm({ closeModal }: any) {
       };
 
       const res = await createApi(Data);
+
       router.push(`/dashboard/apis/${res.ID}/configuration`);
       closeModal();
 

@@ -77,7 +77,7 @@ export const authOptions: NextAuthOptions = {
             Email: user?.email,
             Username: user?.name,
           });
-          console.log("responsessss", res.data);
+          // console.log("responsessss", res.data);
 
           if (!res.data?.message) {
             token.token = res.data.token.token;
@@ -97,7 +97,9 @@ export const authOptions: NextAuthOptions = {
         // Add two-factor authentication status to the toke
         token.isVerified = false;
       } else {
+
         console.log("hi from elseeee");
+
         // subsequent calls so the token object has already the needed values
         //  console.log({ token, user, session });
       }
@@ -109,7 +111,7 @@ export const authOptions: NextAuthOptions = {
       // Add the backend token to the session object
       // console.log("token", token);
       session.token = token.backendToken as string;
-      //  console.log({ session });
+
       session.userId = token.userId as number;
       session.twoFactorEnabled = token.twoFactorEnabled as boolean;
       return session;

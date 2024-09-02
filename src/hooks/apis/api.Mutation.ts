@@ -1,7 +1,7 @@
 // apiMutations.ts
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { Api, ApiCreation } from "./interfaces";
 const ApiUrl = "http://localhost:9000";
 const ApiUrlReplace = "http://localhost:9000";
@@ -10,6 +10,7 @@ export const useCreateApi = (authToken: string) => {
 
   return useMutation({
     mutationFn: async (apiData: ApiCreation) => {
+
       console.log(` ----------------------------------      ${ApiUrl}/apis`);
 
       const response = await axios.post(`${ApiUrl}/apis`, apiData, {
@@ -17,6 +18,7 @@ export const useCreateApi = (authToken: string) => {
       });
 
       return response.data;
+
     },
 
     onSuccess: () => {
