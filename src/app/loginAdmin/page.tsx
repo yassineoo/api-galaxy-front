@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,7 +11,9 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Icons } from "react-toastify";
+import { useState } from "react";
+import { authUser } from "@/actions/auth";
+
 
 const Logo = () => {
   return (
@@ -25,11 +29,32 @@ const Logo = () => {
 };
 
 export default function Page() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      const response = await authUser({ email, password }, false); 
+      console.log("Login successful:", response);
+    } catch (error: any) {
+      console.error("Login failed:", error);
+      setError(error.message || "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+
   return (
-    <div className="h-[100vh] w-full flex flex-col justify-start gap-8 items-center  bg-transparent">
+    <div className="h-[100vh] w-full flex flex-col justify-start gap-8 items-center bg-transparent">
       <img
         src="/images/loginAdmin.jpg"
-        className="absolute w-full h-full  -z-10 bg-cover object-cover"
+        className="absolute w-full h-full -z-10 bg-cover object-cover"
       />
       <Logo />
 
@@ -41,18 +66,34 @@ export default function Page() {
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="m@example.com" />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" />
-          </div>
+          <form onSubmit={handleSubmit} className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            {error && <div className="text-red-500">{error}</div>}
+            <CardFooter>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Loading..." : "Login"}
+              </Button>
+            </CardFooter>
+          </form>
         </CardContent>
-        <CardFooter>
-          <Button className="w-full">Create account</Button>
-        </CardFooter>
       </Card>
     </div>
   );

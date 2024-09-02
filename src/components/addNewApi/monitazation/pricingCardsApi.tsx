@@ -52,7 +52,7 @@ function PricingCardsApi({ api, plans }: any) {
         Choose the Right Plan For You
       </h3>
       <p className="mb-8 text-sm text-gray-600 text-center max-w-2xl">
-        RapidAPI partners directly with API providers to give you no-fuss,
+        API Galaxy partners directly with API providers to give you no-fuss,
         transparent pricing. Find a plan that best matches the scale you need
         for your application.
       </p>
@@ -99,7 +99,7 @@ function PricingCardsApi({ api, plans }: any) {
                   <p className="text-2xl text-red-500">x</p>
                 )}
               </div>
-            ))}
+            ))} 
           </>
         )}
       </div>

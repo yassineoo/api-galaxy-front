@@ -32,7 +32,7 @@ const PlanConfermationModal = ({ plan }: any) => {
         <div className="flex w-2/3  justify-start gap-4">
           {(plan.Price != 0 || plan.Type != "Monthely") && (
             <div className="">
-              <DemoPaymentMethod />
+              <DemoPaymentMethod plan={plan} />
             </div>
           )}
           <hr className="my-2 border-t" />
