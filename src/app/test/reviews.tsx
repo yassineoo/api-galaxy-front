@@ -1,15 +1,22 @@
 import { useApiReviews } from "@/hooks/reviews/reviews.queries";
-import { useCreateApi } from "@/hooks/reviews/review.Mutation";
+import { useReviewCreation } from "@/hooks/reviews/review.Mutation";
 import { formatDistanceToNow } from "date-fns";
 import { useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import ReactStars from "react-stars";
 import ReviewSkeleton from "@/components/HubXs/ReviewSkeleton";
-import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { reportAnComment } from "@/actions/api";
 import { useAuthSession } from "@/components/auth-provider";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 type Comment = {
   id: string;
@@ -21,17 +28,15 @@ type Comment = {
   imagePath: string;
   date_rated: string;
 };
+
 export default function ReviewsTab() {
-  // Sample comments data (replace with actual data from your backend)
   const { id } = useParams();
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const { session: data } = useAuthSession();
   const [comments, setComments] = useState<any>([]);
-  const apiReviews = useApiReviews({
-    api_id: id,
-  });
-
+  const apiReviews = useApiReviews({ api_id: id });
+  const { session } = useAuthSession();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedComment, setSelectedComment] = useState<string | null>(null);
 
@@ -46,24 +51,23 @@ export default function ReviewsTab() {
   };
 
   const handleReportSubmit = async (reason: string, description: string) => {
-    // Submit the report to your API
     const response = await reportAnComment(
       reason,
       description,
       selectedComment as string,
-      data?.userId as number
+      data?.userId as number,
+      session?.token as string
     );
-    //console.log(response)
     if (response) {
       toast.success(`Reported comment ${selectedComment} for ${reason}.`);
     }
     setIsDialogOpen(false);
   };
 
-  // create review mutation
-  const createReviewMutation = useCreateApi();
+  const { mutate: createReviewMutation, isPending } = useReviewCreation(
+    session?.token || ""
+  );
 
-  // submit an review
   const submitReview = (event: React.FormEvent) => {
     event.preventDefault();
     const newReview = {
@@ -73,37 +77,31 @@ export default function ReviewsTab() {
       rating,
     };
 
-    // trigger the mutation
-    createReviewMutation.mutate(newReview, {
+    createReviewMutation(newReview, {
       onSuccess: () => {
-        // Reset the form or do something else on success
-
         setComment("");
         setRating(0);
       },
       onError: (error) => {
-        // Handle error, display error message, etc.
         console.error("Error adding review:", error);
-        //alert('Failed to add review. Please try again.');
       },
     });
   };
+
   useEffect(() => {
     if (apiReviews.isSuccess) {
-      console.log("wi chabiba");
       setComments(apiReviews.data);
     }
   }, [apiReviews.isRefetching, apiReviews.isFetched]);
 
   return (
-    <div className="flex flex-col w-2/3 ">
+    <div className="flex flex-col w-full md:w-2/3 mx-auto">
       <div className="px-4 py-6 md:px-6 md:py-12 bg-white shadow-lg rounded-lg">
         <div className="mx-auto w-full">
           <h2 className="mb-6 text-3xl font-extrabold text-gray-800 dark:text-gray-200">
             API Reviews
           </h2>
           <div className="space-y-6">
-            {/* Check for comments loading */}
             {apiReviews.isLoading ? (
               <ReviewSkeleton />
             ) : apiReviews.isError ? (
@@ -120,11 +118,13 @@ export default function ReviewsTab() {
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 px-4 py-6 md:px-6 md:py-12 dark:bg-gray-950 mt-6 rounded-lg shadow-lg">
-        <div className="prose prose-gray mx-auto max-w-4xl dark:prose-invert">
-          <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-gray-200">
+      <Card className="bg-white dark:bg-gray-800 shadow-lg">
+        <CardHeader className=" dark:bg-gray-700 px-6 py-4">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
             Write a Review
           </h2>
+        </CardHeader>
+        <CardContent className="px-6 py-4">
           <form className="space-y-4" onSubmit={submitReview}>
             <div>
               <label
@@ -133,34 +133,68 @@ export default function ReviewsTab() {
               >
                 Review
               </label>
-              <textarea
-                className="mt-1 p-3 outline-none block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300"
+              <Textarea
                 id="review"
                 value={comment}
-                rows={3}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  setComment(e.target?.value)
-                }
+                onChange={(e) => setComment(e.target.value)}
                 placeholder="Share your experience..."
+                className="mt-1 p-3 block w-full rounded-md  shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                rows={3}
               />
             </div>
-            <ReactStars
-              count={5}
-              size={24}
-              color2={"#ffd700"}
-              value={rating} // Initialize to zero or use state for dynamic value
-              onChange={(newRating) => setRating(newRating)} // Handle rating change
-              edit={true}
-            />
-            <button
-              className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
-              type="submit"
-            >
-              Submit
-            </button>
+            <div className="flex items-center space-x-4">
+              <span className="text-gray-700 dark:text-gray-300">Rating:</span>
+              <ReactStars
+                count={5}
+                size={24}
+                color2={"#ffd700"}
+                value={rating}
+                onChange={setRating}
+                edit={true}
+              />
+              <span className="text-black text-bold ml-4 text-lg  dark:text-gray-300">
+                {" "}
+                {rating}
+              </span>
+            </div>
           </form>
-        </div>
-      </div>
+        </CardContent>
+        <CardFooter className="bg-gray-100 dark:bg-gray-700 px-6 py-4 flex justify-end">
+          <Button
+            type="submit"
+            className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+            disabled={isPending}
+          >
+            {isPending ? (
+              <>
+                <svg
+                  className="animate-spin h-5 w-5 mr-3 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+                Submitting...
+              </>
+            ) : (
+              "Submit"
+            )}
+          </Button>
+        </CardFooter>
+      </Card>
       <ReportDialog
         isOpen={isDialogOpen}
         onClose={handleDialogClose}
@@ -169,7 +203,6 @@ export default function ReviewsTab() {
     </div>
   );
 }
-
 const ReviewComponent = ({
   comment,
   report,

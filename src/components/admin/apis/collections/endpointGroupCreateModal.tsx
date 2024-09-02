@@ -16,6 +16,7 @@ import {
   useCreateCollection,
   useUpdateCollection,
 } from "@/hooks/Endpoint collections/EndpointsCollection.Mutation";
+import { useAuthSession } from "@/components/auth-provider";
 
 const CreateCollectionForm = ({ apiId, edit, collection }: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -30,9 +31,10 @@ const CreateCollectionForm = ({ apiId, edit, collection }: any) => {
   const [collectionImage, setCollectionImage] = useState(
     edit ? collection?.Image : ""
   );
+  const { session } = useAuthSession();
 
-  const createEndpointCollection = useCreateCollection();
-  const updateCollection = useUpdateCollection();
+  const createEndpointCollection = useCreateCollection(session?.token ?? "");
+  const updateCollection = useUpdateCollection(session?.token ?? "");
 
   useEffect(() => {
     Modal.setAppElement("body"); // Set the app element to the body element

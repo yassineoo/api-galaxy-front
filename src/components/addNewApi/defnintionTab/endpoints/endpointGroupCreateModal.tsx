@@ -14,6 +14,7 @@ import {
   useUpdateEndpointsGroup,
 } from "@/hooks/Endpoints Group/EndpointsGroup.Mutation";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuthSession } from "@/components/auth-provider";
 
 const CreateEndpointsGroupForm = ({ apiId, edit, group }: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -23,8 +24,9 @@ const CreateEndpointsGroupForm = ({ apiId, edit, group }: any) => {
     edit ? group?.Description : ""
   );
 
-  const createEndpointGroup = useCreateEndpointsGroup();
-  const updateGroup = useUpdateEndpointsGroup();
+  const { session } = useAuthSession();
+  const createEndpointGroup = useCreateEndpointsGroup(session?.token || "");
+  const updateGroup = useUpdateEndpointsGroup(session?.token || "");
 
   useEffect(() => {
     Modal.setAppElement("body"); // Set the app element to the body element

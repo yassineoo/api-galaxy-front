@@ -3,10 +3,8 @@
 import { useState, FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import SearchApiInput from "./searchInput";
-import { useMutation } from "@tanstack/react-query";
-import { clearAuthToken } from "@/lib/get-auth-token";
 
 import { useAuthSession } from "../auth-provider";
 
@@ -15,18 +13,22 @@ const Navbar = ({
   docs = "https://api-galaxy-docs.vercel.app/",
   ListApi = "s",
   myApis = "dashboard",
+}: {
+  apiHub?: string;
+  docs?: string;
+  ListApi?: string;
+  myApis?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // const { data: session, status } = useSession();
   const { session, isAuthenticated } = useAuthSession();
 
-  const userdId = session?.userId;
-  console.log("logged token datasssfffff : ", session);
 
-  // const isAuthenticated = status === "authenticated";
+  const userdId = session?.userId;
+
+
 
   return (
-    <div className="bg-white flex flex-row justify-between items-center py-2 px-4 shadow-md">
+    <div className="bg-white sticky top-0 z-[1000] flex flex-row justify-between items-center py-2 px-4 shadow-md">
       <nav className="flex items-center justify-start flex-wrap">
         <div className="flex items-center flex-shrink-0 p-1 text-black mr-4">
           <Link href={apiHub}>
@@ -82,7 +84,11 @@ const Navbar = ({
         {isAuthenticated ? (
           <div className="flex items-center space-x-2">
             {session?.user?.image && (
-              <Link href={`/dashboard/profile/${userdId}`}>
+
+
+              <Link href={`dashboard/profile`}>
+
+
                 <Image
                   src={session.user.image}
                   alt={session.user.name || "User Avatar"}

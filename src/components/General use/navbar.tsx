@@ -43,10 +43,11 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated";
   const signOutUser = async () => {
-    const isVerified = localStorage.getItem("isVerified");
-    if (isVerified) {
-      localStorage.removeItem("isVerified");
-    }
+    // const isVerified = localStorage.getItem("isVerified");
+    // if (isVerified) {
+    //   localStorage.removeItem("isVerified");
+    // }
+    localStorage.removeItem("isVerified");
     signOut().then(() => router.push("/login"));
   };
 
@@ -76,6 +77,12 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
           } w-full block flex-grow lg:flex lg:items-center lg:w-auto lg:flex-grow-0 `}
         >
           <div className="text-sm lg:flex-grow text-white ml-4 ">
+            <Link
+              href={`/hub`}
+              className="block navbar-link mt-4 lg:inline-block lg:mt-0 mr-4 hover:text-white"
+            >
+              Hub
+            </Link>
             <Link
               href={`#${services}`}
               onClick={(e) => handleClick(e, services)}
@@ -123,13 +130,13 @@ const Navbar: FC<Links> = ({ services, about, pricing, contacts }) => {
               )}
               <span className="text-white">{session?.user?.name}</span>
 
-              <a
-                href={"/"}
-                onClick={() => signOutUser()}
+              <button
+                // href={"/"}
+                onClick={signOutUser}
                 className="navbar-button px-3 py-2 rounded bg-goldColor hover:bg-white hover:text-goldColor"
               >
                 Sign Out
-              </a>
+              </button>
             </div>
           </>
         ) : (

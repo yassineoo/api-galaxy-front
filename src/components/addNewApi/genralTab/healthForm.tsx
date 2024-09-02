@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useApiEndpointsList } from "@/hooks/Endpoints/Endpoints.queries";
 import { useHelthSendRequest } from "@/hooks/apis/api.Mutation";
 import { Switch } from "@/components/ui/switch";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function HealthForm({
   alertEnabled,
@@ -34,6 +35,7 @@ export default function HealthForm({
 
   //const [selectedEndpoint, setSelectedEndpoint] = useState(18);
   const [statusReq, setStatusReq] = useState("Not Checked");
+  const { session } = useAuthSession();
 
   const {
     mutateAsync: HelthSendRequest,
@@ -41,7 +43,7 @@ export default function HealthForm({
     isSuccess,
     isError,
     error,
-  } = useHelthSendRequest();
+  } = useHelthSendRequest(session?.token || "");
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
