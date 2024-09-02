@@ -31,7 +31,7 @@ axios.get('https://yourapi.com/endpoint')
     });
 `;
 
-export function ApiTabs({ api,api_id,user_id }: any) {
+export function ApiTabs({ api, api_id, user_id }: any) {
   const endpointList = useApiEndpointsById(api.ID);
   const [selectedNodeId, setSelectedNodeId] = useState(100);
   const [resquestResult, setResquestResult] = useState();
@@ -44,10 +44,11 @@ export function ApiTabs({ api,api_id,user_id }: any) {
   } = useSendRequest();
   // States for each input field
 
+  console.log("api", api);
+
   return (
     <>
       <Tabs defaultValue="endpoints">
-
         <TabsList className="grid grid-cols-4 w-2/3 md:w-1/2 lg:w-1/3 ml-8 my-2 items-center">
           <TabsTrigger
             value="endpoints"
@@ -73,7 +74,6 @@ export function ApiTabs({ api,api_id,user_id }: any) {
           >
             Pricing
           </TabsTrigger>
-
         </TabsList>
         <TabsContent
           value="endpoints"
@@ -87,7 +87,10 @@ export function ApiTabs({ api,api_id,user_id }: any) {
                 endpointsList={endpointList.data}
                 setSelectedNodeId={setSelectedNodeId}
               />
-              <ProviderInfo />
+              <ProviderInfo
+                providerId={api.provider_id}
+                category={api.category_name}
+              />
             </div>
           )}
           <div className="w-full flex justify-center h-screen">
@@ -138,7 +141,7 @@ export function ApiTabs({ api,api_id,user_id }: any) {
           value="report"
           className="w-full flex flex-col justify-start mx-12 items-start"
         >
-          <Report userId = {user_id} api_id={api_id} />
+          <Report userId={user_id} api_id={api_id} />
         </TabsContent>
       </Tabs>
       <section className="">

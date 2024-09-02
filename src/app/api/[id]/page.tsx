@@ -12,7 +12,7 @@ import { useApiHealthCheakStats } from "@/hooks/HealthCheak/apiHealthCheak.queri
 import { useAuthSession } from "@/components/auth-provider";
 // import { useSession } from "next-auth/react";
 
-const DashboardPage = ({ params }: any) => {
+const ApiPage = ({ params }: any) => {
   const { id } = params;
   // const { data: session } = useSession();
   const { session } = useAuthSession();
@@ -22,7 +22,6 @@ const DashboardPage = ({ params }: any) => {
   const [apiLogsStats, setApiLogsStats] = useState<any>();
 
   const [apiRate, setApiRate] = useState(0);
-  console.log(apiSelected.data, "hello");
   const apiRating = useAPIRating(Number(id));
   useEffect(() => {
     if (apiRating.isSuccess) {
@@ -45,7 +44,7 @@ const DashboardPage = ({ params }: any) => {
   return (
     <div className=" ">
       <Head>
-        <title>Dashboard</title>
+        <title>Api</title>
       </Head>
       <Navbar services="2" about="3" pricing="4" contacts="6" />
       {apiSelected.isLoading && <p>Loading ... </p>}
@@ -71,4 +70,4 @@ const DashboardPage = ({ params }: any) => {
   );
 };
 
-export default DashboardPage;
+export default ApiPage;

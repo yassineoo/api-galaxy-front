@@ -99,7 +99,7 @@ const IconDropdown = ({ session }: any) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={`/dashboard/profile/${session?.userId}`}>Profile </Link>
+          <Link href={`/dashboard/profile`}>Profile </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>Billing</DropdownMenuItem>
         <DropdownMenuItem asChild>

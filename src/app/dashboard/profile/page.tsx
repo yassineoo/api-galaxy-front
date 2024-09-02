@@ -16,8 +16,7 @@ import ReviewSkeleton from "@/components/HubXs/ReviewSkeleton";
 import { useAuthSession } from "@/components/auth-provider";
 
 export default function ProfilePage({ params }: any) {
-  const { session } = useAuthSession();
-  console.log("session", session);
+  const { session, isAuthenticated } = useAuthSession();
 
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(session?.user?.name || "");
@@ -37,9 +36,8 @@ export default function ProfilePage({ params }: any) {
     // Logic to save the updated name (e.g., send it to the server)
     setIsEditing(false);
   };
-  const { idx } = params;
+  const idx = session?.userId;
 
-  const isAuthenticated = idx == session?.userId;
   return (
     <div className="">
       {isAuthenticated ? (
@@ -171,7 +169,7 @@ export default function ProfilePage({ params }: any) {
                 {/* add two factors button */}
                 <ProfileTwoFactor
                   isVerified={session?.twoFactorEnabled || false}
-                  userId={idx}
+                  userId={idx || 0}
                 />
               </div>
             </div>
@@ -235,7 +233,7 @@ function ProfileTwoFactor({
   userId,
   isVerified,
 }: {
-  userId: string;
+  userId: number;
   isVerified: boolean;
 }) {
   const [isLoading, setIsLoading] = useState(false);

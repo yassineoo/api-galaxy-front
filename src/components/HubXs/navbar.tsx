@@ -81,13 +81,15 @@ const Navbar = ({
         {isAuthenticated ? (
           <div className="flex items-center space-x-2">
             {session?.user?.image && (
-              <Image
-                src={session.user.image}
-                alt={session.user.name || "User Avatar"}
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
+              <Link href={`dashboard/profile`}>
+                <Image
+                  src={session.user.image}
+                  alt={session.user.name || "User Avatar"}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              </Link>
             )}
             <span className="text-black">{session?.user?.name}</span>
             <button

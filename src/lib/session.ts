@@ -68,7 +68,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, session, ...props }) {
       console.log({ token, user, session, props });
       if (user) {
-        console.log({ user })
+        console.log({ user });
         if (user?.name) {
           //console.log("awchahooo")
           const res = await oauthUser({
@@ -79,7 +79,7 @@ export const authOptions: NextAuthOptions = {
 
           if (!res.data?.message) {
             token.token = res.data.token.token;
-            token.backendToken = res.data.token.token
+            token.backendToken = res.data.token.token;
             token.userId = res.data.userId;
             token.twoFactorEnabled = res.data.twoFactorEnabled;
             token.is2faAuthenticated = !res.data.twoFactorEnabled;
@@ -106,10 +106,9 @@ export const authOptions: NextAuthOptions = {
       // Add the backend token to the session object
       // console.log("token", token);
       session.token = token.backendToken as string;
-      console.log({ session })
+      console.log({ session });
       session.userId = token.userId as number;
       session.twoFactorEnabled = token.twoFactorEnabled as boolean;
-      session.isVerified = token.isVerified as boolean;
       return session;
     },
     async redirect({ url, baseUrl }) {

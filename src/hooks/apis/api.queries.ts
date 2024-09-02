@@ -88,12 +88,7 @@ export const useApiListForAdmin = ({
   });
 };
 
-export const useSearchApiList = ({
-  search,
-}: {
-  search: string;
-  authToken: string;
-}) => {
+export const useSearchApiList = ({ search }: { search: string }) => {
   return useQuery<Api[]>({
     queryKey: ["apiListSearch", search ?? undefined],
     queryFn: async () => {
@@ -169,3 +164,22 @@ export const useInactiveAPI = () => {
 };
 
 // export function useApi
+
+export const useProviderInfo = (providerId: string) => {
+  return useQuery({
+    queryKey: ["providerInfo", providerId],
+    queryFn: async () => {
+      console.log("Fetching provider info for:", providerId);
+
+      try {
+        const response = await axios.get(`${ApiUrl}/providers/${providerId}`);
+        console.log(response.data);
+        return response.data; // Assuming the response data is the provider info
+      } catch (error) {
+        console.error("Error fetching provider info:", error);
+        throw new Error("Could not fetch provider info");
+      }
+    },
+    enabled: !!providerId, // Only run the query if providerId is not null or undefined
+  });
+};
