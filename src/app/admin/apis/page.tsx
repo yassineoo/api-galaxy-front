@@ -24,13 +24,12 @@ import { useState } from "react";
 // import { useSession } from "next-auth/react";
 import { useAuthSession } from "@/components/auth-provider";
 
-
 export default function DefinitionTab() {
   const [page, setPage] = useState(1);
   const adminId = 1;
   const ApiList = useApiListForAdmin({ page, limit: 8, search: "", adminId });
 
-  const {session,isAuthenticated} = useAuthSession()
+  const { session, isAuthenticated } = useAuthSession();
 
   const CollectionList = useCollectionList({ authToken: session?.token ?? "" });
   return (
@@ -47,7 +46,7 @@ export default function DefinitionTab() {
             <CardDescription>Manage the Apis</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
-            <Search />
+            <Search value="s" setValue={() => {}} />
             <div className="flex gap-4 justify-end items-center">
               <CreateEndpointsCollectionForm />
             </div>

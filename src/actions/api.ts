@@ -12,11 +12,24 @@ export const basedApiUrl = axios.create({
 export const baseApiUrl = axios.create({
   baseURL: ApiUrl,
 });
-export const likeAnAPI = async (user_id: number, api_id: number) => {
+export const likeAnAPI = async (
+  user_id: number,
+  api_id: number,
+  authToken: string
+) => {
   try {
-    const res = await basedApiUrl.post(`/userApi/likeApi/${api_id}`, {
-      user_id,
-    });
+    const res = await basedApiUrl.post(
+      `/userApi/likeApi/${api_id}`,
+      {
+        user_id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
     console.log("like", res);
     return true;
   } catch (error: any) {
@@ -25,11 +38,25 @@ export const likeAnAPI = async (user_id: number, api_id: number) => {
   }
 };
 
-export const disLikeAnAPI = async (user_id: number, api_id: number) => {
+export const disLikeAnAPI = async (
+  user_id: number,
+  api_id: number,
+  authToken: string
+) => {
   try {
-    const res = await basedApiUrl.post(`/userApi/dislikeApi/${api_id}`, {
-      user_id,
-    });
+    const res = await basedApiUrl.post(
+      `/userApi/dislikeApi/${api_id}`,
+      {
+        user_id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+
     console.log("dislike", res);
     return true;
   } catch (error: any) {

@@ -4,6 +4,8 @@ import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CldImage } from "next-cloudinary";
 import { disLikeAnAPI, likeAnAPI } from "@/actions/api";
+import { useAuthSession } from "../auth-provider";
+import { Button } from "../ui/button";
 
 interface CardType {
   cardData: {
@@ -35,7 +37,8 @@ const ProductCard = ({
   const router = useRouter();
   const [isLiked, setIsLiked] = useState(liked);
   let timeout: any;
-  const likeEvent = (event: React.MouseEvent<HTMLImageElement>) => {
+  const { session, isAuthenticated } = useAuthSession();
+  const likeEvent = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     setIsLiked((prev: any) => !prev);
     if (timeout) {
@@ -47,11 +50,16 @@ const ProductCard = ({
         if (!isLiked) {
           // like the api
           console.log("like");
-          await likeAnAPI(userId as number, id);
+          const f = await likeAnAPI(
+            userId as number,
+            id,
+            session?.token as string
+          );
+          console.log(f);
         } else {
           // dislike the api
           console.log("dislikne");
-          await disLikeAnAPI(userId as number, id);
+          await disLikeAnAPI(userId as number, id, session?.token as string);
         }
       } catch (error) {
         // use react toastify
@@ -76,25 +84,37 @@ const ProductCard = ({
             height={45}
           />
         </div>
-        <div className="flex gap-1 ">
+        <div className="flex gap-2 items-center ">
           {isLiked ? (
-            <Image
-              className="md:w-7 md:h-7 hover:scale-110 cursor-pointer"
-              src={"/icons/icon_heart.png"}
-              alt="Card Image"
-              width={20}
-              height={20}
+            <Button
               onClick={likeEvent}
-            />
+              variant="ghost"
+              className="p-0 hover:bg-transparent"
+              disabled={!isAuthenticated}
+            >
+              <Image
+                className="md:w-7 md:h-7 hover:scale-110 cursor-pointer"
+                src={"/icons/icon_heart.png"}
+                alt="Card Image"
+                width={20}
+                height={20}
+              />
+            </Button>
           ) : (
-            <Image
-              className="md:w-7 md:h-7 hover:scale-110 cursor-pointer"
-              src={"/icons/icon_outline_heart.png"}
-              alt="Card Image"
-              width={20}
-              height={20}
+            <Button
               onClick={likeEvent}
-            />
+              variant="ghost"
+              className="p-0 hover:bg-transparent"
+              disabled={!isAuthenticated}
+            >
+              <Image
+                className="md:w-7 md:h-7 hover:scale-110 cursor-pointer"
+                src={"/icons/icon_outline_heart.png"}
+                alt="Card Image"
+                width={20}
+                height={20}
+              />
+            </Button>
           )}
 
           <Image

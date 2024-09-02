@@ -29,6 +29,7 @@ const Header = () => {
     setDropdownOpen(!isDropdownOpen);
   };
   const { session } = useAuthSession();
+  console.log("sessionnn", session);
 
   return (
     <header className="bg-white w-full  dark:bg-slate-900  p-4 flex justify-between 2xl:justify-around items-center">
@@ -101,7 +102,9 @@ const IconDropdown = ({ session }: any) => {
           <Link href={`/dashboard/profile/${session?.userId}`}>Profile </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={`/hub`}>Hub</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>
           {" "}
           <span onClick={() => signOutUser()}>Log out</span>

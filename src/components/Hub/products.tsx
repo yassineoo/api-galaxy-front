@@ -214,6 +214,17 @@ const CategoryList = ({ categories, filter, setFilter }: any) => {
   return (
     <div>
       <h4 className="font-bold mb-4 mt-2">Categories</h4>
+      <div key={4} className="">
+        <LeftBarButton
+          filter={filter}
+          setFilter={setFilter}
+          key={4}
+          iconPath={buttons[4].iconPath}
+          buttonText={"All"}
+          option={buttons[4].option}
+          index={0}
+        />
+      </div>
       {categories?.map((category: any, index: any) => (
         <div key={index} className="">
           <LeftBarButton

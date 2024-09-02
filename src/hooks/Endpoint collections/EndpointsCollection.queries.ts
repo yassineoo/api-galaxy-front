@@ -10,15 +10,14 @@ export const useCollectionList = ({ authToken }: { authToken: string }) => {
     queryFn: async () => {
       try {
         const response = await axios.get(
-          // `${ApiUrl}/api-collections/`,
-          `${ApiAuth}/api-collections/`,
+          `${ApiUrl}/api-collections/`
+          //  `${ApiAuth}/api-collections/`,
           // { headers: { Authorization: `Bearer ${authToken}` } }
         ); // Adjust the endpoint
-        console.log({ response })
+        console.log({ response });
         return response.data;
-      }
-      catch (error) {
-        console.log({ error })
+      } catch (error) {
+        console.log({ error });
       }
     },
   });

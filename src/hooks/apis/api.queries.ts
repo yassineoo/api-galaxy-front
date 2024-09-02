@@ -36,20 +36,21 @@ export const useApiList = ({
           const mappedApis = response.data.data.apis.map((api: any) => ({
             id: api.ID,
             name: api.Name,
-            imagePath: api.ImagePath,
+            image_path: api.ImagePath,
             description: api.Description,
             status: api.Status,
           }));
           console.log("mapped apis : ", mappedApis);
 
           return mappedApis;
-        } else
-          response = await basedApiUrl.get(
-            `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}`,
-            {
-              headers: { Authorization: `Bearer ${authToken?.token}` },
-            }
-          );
+        } else console.log("logged token data filter  : ", filter);
+
+        response = await basedApiUrl.get(
+          `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}`,
+          {
+            headers: { Authorization: `Bearer ${authToken?.token}` },
+          }
+        );
         // return [];
         console.log("mapped apis 2 : ", response.data);
 
