@@ -23,9 +23,6 @@ const Navbar = ({
   const { session, isAuthenticated } = useAuthSession();
 
 
-  const userdId = session?.userId;
-
-
 
   return (
     <div className="bg-white sticky top-0 z-[1000] flex flex-row justify-between items-center py-2 px-4 shadow-md">
