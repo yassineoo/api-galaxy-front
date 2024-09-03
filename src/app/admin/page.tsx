@@ -7,8 +7,12 @@ import LineChartComponent from "../../components/dashboard/linechart";
 import DonutChartComponent from "../../components/dashboard/mainPage/donutchart";
 import FilterGroup from "../../components/dashboard/mainPage/filterGroupColor";
 import { ApiSelection } from "../../components/dashboard/mainPage/apiSelcetion";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function DashboardPage() {
+  const { session } = useAuthSession();
+  console.log("session   ", session);
+
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
       <Header />

@@ -49,3 +49,27 @@ export const useReviewsReports = (
     },
   });
 };
+
+export const useUsersList = (
+  { page, limit, search }: any,
+  authorize: string
+) => {
+  return useQuery({
+    queryKey: ["reviewReportsList", page, limit, search ?? undefined],
+    queryFn: async () => {
+      try {
+        const res = await basedApiUrl.get(
+          `/admin/userList?limit=${limit}&page=${page}&search=${search}`,
+          {
+            headers: { Authorization: `Bearer ${authorize}` },
+          }
+        );
+        console.log("response from api query : ", res.data);
+
+        return res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+};

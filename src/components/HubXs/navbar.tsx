@@ -23,6 +23,7 @@ const Navbar = ({
   const { session, isAuthenticated } = useAuthSession();
 
 
+
   return (
     <div className="bg-white sticky top-0 z-[1000] flex flex-row justify-between items-center py-2 px-4 shadow-md">
       <nav className="flex items-center justify-start flex-wrap">
@@ -81,7 +82,9 @@ const Navbar = ({
           <div className="flex items-center space-x-2">
             {session?.user?.image && (
 
+
               <Link href={`dashboard/profile`}>
+
 
                 <Image
                   src={session.user.image}

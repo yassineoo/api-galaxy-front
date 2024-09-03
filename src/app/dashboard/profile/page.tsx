@@ -2,21 +2,17 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { useSession } from "next-auth/react";
 import Header from "@/components/dashboard/header";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { getUserApis, getUserFollowings } from "@/actions/api";
-import {
-  useApiById,
-  useApiByUserId,
-  useFollowingApis,
-} from "@/hooks/apis/api.queries";
+import { useApiByUserId, useFollowingApis } from "@/hooks/apis/api.queries";
 import ReviewSkeleton from "@/components/HubXs/ReviewSkeleton";
 import { useAuthSession } from "@/components/auth-provider";
 
 export default function ProfilePage({ params }: any) {
   const { session, isAuthenticated } = useAuthSession();
+
+  console.log("session", session);
 
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(session?.user?.name || "");

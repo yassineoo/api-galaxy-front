@@ -46,7 +46,6 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
     //  console.log("data login  fali", error);
 
     throw error;
-
   }
 };
 
@@ -149,6 +148,8 @@ export const authenticate = async (
     redirect: false,
   });
 
+  console.log("resssssss", res);
+
   if (res?.error) {
     // Handle error here
     setError(res.error);
@@ -156,6 +157,9 @@ export const authenticate = async (
     // Handle success here
     setSuccess(true);
   }
+  console.log("resssssss 2", res);
+
+  return true;
 };
 
 // activate two factor authentification:
