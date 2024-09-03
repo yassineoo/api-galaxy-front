@@ -7,7 +7,7 @@ export default async function InboxLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="bg-dashboardBg dark:bg-transparent flex flex-col h-screen overflow-y-hidden">
+    <div className="bg-dashboardBg dark:bg-transparent flex flex-col h-full relative overflow-y-hidden">
       <Header />
       <div className="h-full max-h-full relative ">{children}</div>
     </div>

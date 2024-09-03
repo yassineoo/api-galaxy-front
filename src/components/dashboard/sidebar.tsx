@@ -103,9 +103,9 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`bg-black text-white  pb-4 dark:bg-sidebar  dark:text-white sticky top-0 transition-all duration-300 ${
+      className={`bg-black text-white  pb-4 dark:bg-sidebar  dark:text-white sticky top-0 transition-all duration-300 border-r overflow-y-auto border-black  ${
         isMenuOpen ? "w-1/4" : "w-16 lg:w-[6%] transform" // Use transform class for animation
-      } h-full min-h-screen`}
+      } h-screen max-h-full`}
     >
       <Logo toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
       <Menu
@@ -122,7 +122,7 @@ export default function Sidebar() {
 const Logo = ({ toggleMenu, isMenuOpen }: any) => {
   return (
     <div
-      className={`flex items-center w-full justify-between mt-4 px-4 ${
+      className={`flex items-center w-full justify-between pt-4 px-4 ${
         isMenuOpen ? "" : "transform"
       }`}
     >
@@ -159,7 +159,7 @@ const Menu = ({
   }, [maApisList.data, maApisList.isSuccess, searchTerm]);
 
   return (
-    <div className="flex flex-col mt-6 text-sm">
+    <div className="flex flex-col h-full max-h-full overflow-y-auto pt-6 text-sm">
       {menuItems.map((item: any) => (
         <RegularMenuItem
           key={item.ID}
@@ -172,7 +172,7 @@ const Menu = ({
       ))}
       {isMenuOpen && <Separator text="MY APIs" />}
       {isMenuOpen && (
-        <div className="px-4 mt-2 mb-4">
+        <div className="px-4 pt-2 pb-4">
           <Input
             type="text"
             placeholder="Search APIs..."
@@ -185,23 +185,25 @@ const Menu = ({
       {isMenuOpen && maApisList.isLoading && (
         <div className="px-4">Loading...</div>
       )}
-      <div className="flex flex-col items-start justify-start h-80 overflow-y-auto overflow-x-hidden">
-        {isMenuOpen &&
-          maApisList.isSuccess &&
-          filteredApis.map((api: any) => (
-            <ApiMenuItem
-              key={api.id}
-              item={{
-                ID: api.id,
-                name: api.name,
-                active: api.id == apiId,
-              }}
-              active={activeMenu == api.id}
-              onClick={handleMenuClick}
-              isMenuOpen={isMenuOpen}
-              activeChildName={activeChildName}
-            />
-          ))}
+      <div className="h-full relative  max-h-full overflow-x-hidden">
+        <div className="flex flex-col items-start justify-start h-full">
+          {isMenuOpen &&
+            maApisList.isSuccess &&
+            filteredApis.map((api: any) => (
+              <ApiMenuItem
+                key={api.id}
+                item={{
+                  ID: api.id,
+                  name: api.name,
+                  active: api.id == apiId,
+                }}
+                active={activeMenu == api.id}
+                onClick={handleMenuClick}
+                isMenuOpen={isMenuOpen}
+                activeChildName={activeChildName}
+              />
+            ))}
+        </div>
       </div>
     </div>
   );
@@ -230,21 +232,21 @@ const RegularMenuItem = ({
         onClick={() => onClick(item.ID)}
       >
         <img
-          className={`w-5 ${isMenuOpen ? "ml-8" : "ml-4"} `}
+          className={`w-5 ${isMenuOpen ? "pl-8" : "pl-4"} `}
           src={item.icon}
         />
 
         {isMenuOpen && <div>{item.name}</div>}
         {item.children && isMenuOpen && (
-          <img className="ml-1 w-5" src="/icons/arrow.svg" />
+          <img className="pl-1 w-5" src="/icons/arrow.svg" />
         )}
       </Link>
 
       {isActive && item.children && (
         <div
           className={`${
-            isMenuOpen ? "ml-8" : "ml-2"
-          } mr-4 mt-2 flex flex-col justify-start items-start w-full gap-2`}
+            isMenuOpen ? "pl-8" : "pl-2"
+          } pr-4 pt-2 flex flex-col justify-start items-start w-full gap-2`}
         >
           {item.children.map((child: any) => {
             const handleChildClick = () => {
@@ -256,8 +258,8 @@ const RegularMenuItem = ({
               <Link
                 href={child.url}
                 onClick={handleChildClick}
-                className={`flex items-center gap-2 text-sm text-gray-400 ml-7 cursor-pointer ${
-                  isMenuOpen ? "ml-7" : "ml-0"
+                className={`flex items-center gap-2 text-sm text-gray-400 pl-7 cursor-pointer ${
+                  isMenuOpen ? "pl-7" : "pl-0"
                 }`}
               >
                 {child.icon && (
@@ -322,21 +324,21 @@ const ApiMenuItem = ({
         onClick={() => onClick(item.ID)}
       >
         <img
-          className={`w-5 ${isMenuOpen ? "ml-4" : "ml-4"} `}
+          className={`w-5 ${isMenuOpen ? "pl-4" : "pl-4"} `}
           src={item.icon}
         />
 
         {isMenuOpen && <div>{item.name}</div>}
         {item.children && isMenuOpen && (
-          <img className="ml-1 w-3" src="/icons/arrow.svg" />
+          <img className="pl-1 w-3" src="/icons/arrow.svg" />
         )}
       </Link>
 
       {isActive && item.children && (
         <div
           className={`${
-            isMenuOpen ? "ml-8" : "ml-2"
-          } mr-4 mt-2 flex flex-col justify-start items-start w-full gap-2`}
+            isMenuOpen ? "pl-8" : "pl-2"
+          } pr-4 pt-2 flex flex-col justify-start items-start w-full gap-2`}
         >
           {item.children.map((child: any) => {
             const subUrl = `/dashboard/apis/${item.ID || 0}/${child.name}`;
@@ -344,9 +346,9 @@ const ApiMenuItem = ({
               <Link
                 href={subUrl}
                 onClick={() => setActiveChild(child.name)}
-                className={`flex items-center gap-2 text-sm text-gray-400 ml-7 cursor-pointer ${
+                className={`flex items-center gap-2 text-sm text-gray-400 pl-7 cursor-pointer ${
                   isActive ? "text-white" : ""
-                } ${isMenuOpen ? "ml-7" : "ml-0"}`}
+                } ${isMenuOpen ? "pl-7" : "pl-0"}`}
               >
                 {child.icon && (
                   <img

@@ -39,14 +39,14 @@ export const authOptions: NextAuthOptions = {
         try {
           const res = await authUser(data, isRegister);
 
-          console.log("responsessssss", res);
+          // console.log("responsessssss", res);
           return res?.data;
         } catch (error: any) {
           //   console.log("error login", error);
 
           const errorMessage =
             error.response?.data?.message || "Authentication failed";
-          console.log("Authorization Error:", errorMessage);
+          // console.log("Authorization Error:", errorMessage);
 
           // Throw a new error with the message
           throw new Error(errorMessage);
@@ -88,7 +88,7 @@ export const authOptions: NextAuthOptions = {
             token.role = res.data.role;
           }
         } else {
-          console.log("hi from elseeesssssssssssse", user);
+          // console.log("hi from elseeesssssssssssse", user);
 
           token.token = user.token;
           token.backendToken = user.token;
@@ -104,7 +104,7 @@ export const authOptions: NextAuthOptions = {
         token.isVerified = false;
       } else {
 
-        console.log("hi from elseeee");
+        // console.log("hi from elseeee");
 
         // subsequent calls so the token object has already the needed values
         //  console.log({ token, user, session });
@@ -121,7 +121,7 @@ export const authOptions: NextAuthOptions = {
       session.userId = token.userId as number;
       session.twoFactorEnabled = token.twoFactorEnabled as boolean;
       session.role = token.role as string;
-      console.log("session---", session);
+      // console.log("session---", session);
 
       return session;
     },
