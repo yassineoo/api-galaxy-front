@@ -19,8 +19,9 @@ import Notifications from "./notification";
 import Settings from "./settings";
 import { useAuthSession } from "../auth-provider";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
-const Header = () => {
+const Header = ({ className = "" }: { className?: string }) => {
   // State to manage dropdown visibility
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
@@ -31,7 +32,12 @@ const Header = () => {
   const { session } = useAuthSession();
 
   return (
-    <header className="bg-white w-full  dark:bg-slate-900  p-4 flex justify-between 2xl:justify-around items-center">
+    <header
+      className={cn(
+        "bg-white w-full   dark:bg-slate-900  p-4 flex justify-between 2xl:justify-around items-center",
+        className
+      )}
+    >
       {/* Left side: Dashboard */}
       <div>
         <span className="text-lg font-bold">Dashboard</span>

@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
 
 import { RingLoader } from "react-spinners";
-
+import { useAuthSession } from "@/components/auth-provider";
 
 function SearchIcon(props: any) {
   return (
@@ -35,9 +35,13 @@ function SearchIcon(props: any) {
 export function ChatsList({
   chats,
   userId,
+  selectedChatId,
+  onSelect,
 }: {
   chats: Chat[];
   userId: number;
+  selectedChatId: number | null;
+  onSelect: (id: number) => void;
 }) {
   const params = useParams();
   const chatId = params.chatId as string;
@@ -48,39 +52,37 @@ export function ChatsList({
 
   const [loading, setLoading] = useState(false);
 
-  const [selectedChatId, setSelectedChatId] = useState<number | undefined>(
-    chatId && chats.map((chat) => chat.id).includes(parseInt(chatId))
-      ? parseInt(chatId)
-      : undefined
-  );
+  // const [selectedChatId, setSelectedChatId] = useState<number | undefined>(
+  // chatId && chats.map((chat) => chat.id).includes(parseInt(chatId))
+  // ? parseInt(chatId)
+  // : undefined
+  // );
 
-  const chatrooms = chats.filter((chat) =>
-    chat.users.map((u) => u.name.toLowerCase().includes(search)).includes(true)
-  );
+  // const chatrooms = chats.filter((chat) =>
+  // chat.users.map((u) => u.name.toLowerCase().includes(search)).includes(true)
+  // );
 
-  const handleChatClick = async (chatId: number) => {
-    setLoading(true);
-    setSelectedChatId(chatId);
-    await router.push(`/dashboard/inbox/${chatId}`);
-    setLoading(false);
-  };
+  // const handleChatClick = async (chatId: number) => {
+  // setLoading(true);
+  // onSelect(chatId);
+  // await router.push(`/dashboard/inbox/${chatId}`);
+  // setLoading(false);
+  // };
 
   return (
     <div className="w-56 min-w-56 md:w-72 md:min-w-72 overflow-y-auto overflow-x-hidden">
-
       <div className="space-y-2 p-4 w-full">
-        {chatrooms.map((chat) => {
+        {chats?.map((chat) => {
           const otherMember: Chat["users"][0] = chat.users.filter(
             (u) => u.id !== userId
           )[0];
           return (
-
             <div
               key={chat.id}
               className={`flex items-center gap-3 rounded-md p-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 cursor-pointer ${
                 selectedChatId === chat.id ? "bg-gray-300 dark:bg-gray-700" : ""
               }`}
-              onClick={() => handleChatClick(chat.id)}
+              onClick={() => onSelect(chat.id)}
             >
               {loading && selectedChatId === chat.id ? (
                 <RingLoader size="78" speedMultiplier={0.5} color="blue" />
@@ -119,7 +121,6 @@ export function ChatsList({
                 </>
               )}
             </div>
-
           );
         })}
       </div>
@@ -132,14 +133,11 @@ export function ChatListSearch() {
   const router = useRouter();
 
   async function handleSearch() {
-
     if (!inputRef.current) return;
     router.replace(
       `/dashboard/inbox?search=${inputRef.current?.value.toLowerCase()}`
     );
-
   }
-
 
   return (
     <div className="border-b border-gray-200 dark:border-gray-800 p-4 ">
