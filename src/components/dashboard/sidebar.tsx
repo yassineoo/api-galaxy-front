@@ -215,12 +215,13 @@ const RegularMenuItem = ({
   onClick,
   isMenuOpen,
   activeChildName,
+  key,
 }: any) => {
   const isActive = active;
   const [activeChild, setActiveChild] = useState(activeChildName);
 
   return (
-    <div className="flex flex-col items-start justify-start w-4/5">
+    <div key={key} className="flex flex-col items-start justify-start w-4/5">
       <Link
         href={item.url}
         className={`w-full flex items-center gap-2 py-3 cursor-pointer ${

@@ -17,17 +17,16 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
-import {
-  useApiReports,
-  useReviewsReports,
-} from "@/hooks/reports/reviews.query";
+import { useApiReports, useReviewsReports } from "@/hooks/admin/reviews.query";
 import { ApiReportsTable } from "@/components/dashboard/reports/apiReports";
 import { ReviewReportsTable } from "@/components/dashboard/reports/reviewReportsTable";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function DefinitionTab() {
   const [page, setPage] = useState(1);
   const [reviewReportList, setReviewReportList] = useState([]);
-  const token = localStorage.getItem("token") ?? "";
+  const { session, isAuthenticated } = useAuthSession();
+  const token = session?.token ?? "";
   const ApiReportList = useApiReports({ page, limit: 10, search: "" }, token);
   const ReviewReportList = useReviewsReports(
     { page, limit: 10, search: "" },
