@@ -22,6 +22,8 @@ export default function SuccessPage() {
     return (
         <div>
             <h1>Query Parameter: {sessionId}</h1>
+
+            
         </div>
     );
 }

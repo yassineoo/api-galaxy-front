@@ -157,7 +157,7 @@ const faqs: FAQItem[] = [
   {
     question: "Why do you require a credit card for a freemium API?",
     answer:
-      "We work directly with API providers to implement clear, transparent pricing for developers. The Provider may require a credit card if a plan has a quota with an overage fee. If you would no longer like to use the API, you can unsubscribe from the plan at any time by clicking the 'unsubscribe' button under the Billing section of the RapidAPI Dashboard.",
+      "We work directly with API providers to implement clear, transparent pricing for developers. The Provider may require a credit card if a plan has a quota with an overage fee. If you would no longer like to use the API, you can un from the plan at any time by clicking the 'unsubscribe' button under the Billing section of the RapidAPI Dashboard.",
   },
   {
     question: "What if I exceed my plan limits?",

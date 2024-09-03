@@ -4,6 +4,29 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ApiUrl } from "@/utils/constants";
 import { useAuthSession } from "@/components/auth-provider";
+import { PaymentUrl } from "@/utils/constants";
+
+
+export const useGetCustomerByEmail = (email: string) => {
+  const { session } = useAuthSession();
+
+  return useQuery({
+    queryKey: ["customer", email],
+    queryFn: async () => {
+      if (!email) {
+        throw new Error("Email is required to fetch customer data.");
+      }
+
+      const response = await axios.get(`${PaymentUrl}/customers/email/${email}`, {
+        headers: { Authorization: `Bearer ${session?.token}` },
+      });
+
+      return response.data;
+    },
+    enabled: !!email, 
+  });
+};
+
 
 // Fetch all customers
 export const useListCustomers = () => {
