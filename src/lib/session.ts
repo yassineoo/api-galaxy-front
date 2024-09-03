@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
         try {
           const res = await authUser(data, isRegister);
 
-          //   console.log("response", res);
+          console.log("responsessssss", res);
           return res?.data;
         } catch (error: any) {
           //   console.log("error login", error);
@@ -70,7 +70,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, session, ...props }) {
       // console.log({ token, user, session, props });
       if (user) {
-        console.log({ user });
+        // console.log({ user });
         if (user?.name) {
           //console.log("awchahooo")
           const res = await oauthUser({
@@ -85,19 +85,24 @@ export const authOptions: NextAuthOptions = {
             token.userId = res.data.userId;
             token.twoFactorEnabled = res.data.twoFactorEnabled;
             token.is2faAuthenticated = !res.data.twoFactorEnabled;
+            token.role = res.data.role;
           }
         } else {
+          console.log("hi from elseeesssssssssssse", user);
+
           token.token = user.token;
           token.backendToken = user.token;
           token.userId = user.userId;
           token.name = user.name ?? user.username;
           token.twoFactorEnabled = user.twoFactorEnabled;
           token.is2faAuthenticated = !user.twoFactorEnabled;
+          token.role = user?.role;
+          console.log("token", token);
+          console.log("token r", user?.role);
         }
         // Add two-factor authentication status to the toke
         token.isVerified = false;
       } else {
-
         console.log("hi from elseeee");
 
         // subsequent calls so the token object has already the needed values
@@ -114,6 +119,9 @@ export const authOptions: NextAuthOptions = {
 
       session.userId = token.userId as number;
       session.twoFactorEnabled = token.twoFactorEnabled as boolean;
+      session.role = token.role as string;
+      console.log("session---", session);
+
       return session;
     },
     async redirect({ url, baseUrl }) {

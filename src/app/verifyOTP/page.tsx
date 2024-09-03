@@ -61,7 +61,7 @@ export default function TwoFactorVerify() {
         setSuccess(true);
         // set session storage
         localStorage.setItem("isVerified", "true");
-        setTimeout(() => router.push("/dashboard"), 2000);
+        setTimeout(() => router.push("/hub"), 2000);
       } else {
         setError("Invalid OTP");
       }

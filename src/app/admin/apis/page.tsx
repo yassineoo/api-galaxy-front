@@ -7,7 +7,6 @@ import { ApiTable } from "@/components/dashboard/apiTable/api-table";
 import { columns } from "@/components/dashboard/apiTable/apiColumns";
 import PaginationManual from "@/components/dashboard/billing/paginationManual";
 import Image from "next/image";
-import Header from "@/components/dashboard/header";
 import { Search } from "@/components/shared/search";
 import {
   Card,
@@ -23,6 +22,7 @@ import { useState } from "react";
 
 // import { useSession } from "next-auth/react";
 import { useAuthSession } from "@/components/auth-provider";
+import Header from "@/components/dashboard/headerAdmin";
 
 export default function DefinitionTab() {
   const [page, setPage] = useState(1);
