@@ -11,9 +11,8 @@ import { Report } from "./Report";
 import { useApiEndpointsById } from "@/hooks/Endpoints/Endpoints.queries";
 import { ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useSendRequest } from "@/hooks/apis/api.Mutation";
-import CommentsContainer from "../test/discussion";
+// import CommentsContainer from "../test/discussion";
 import { ResizableDemo } from "./resizeable";
-import ReviewsTab from "../test/reviews";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import ParamterControler from "./paramterController";
@@ -131,7 +130,7 @@ export function ApiTabs({ api, api_id, user_id }: any) {
           value="discussion"
           className="flex justify-center items-start"
         >
-          <ReviewsTab />
+          {/* <ReviewsTab /> */}
         </TabsContent>
         <TabsContent
           value="pricing"

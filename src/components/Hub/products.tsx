@@ -173,7 +173,7 @@ export default function ProductsHub({
           )}
         </div>
         <div className="relative left-8">
-          <h1 className="text-black text-title text-xl md:text-3xl font-bold">
+          <h1 className="text-black text-title text-xl md:text-3xl font-bold mb-4">
             {title}
           </h1>
 

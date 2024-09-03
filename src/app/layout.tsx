@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="relative">
+      <body className="relative overflow-x-hidden">
         <Provider>
           <ThemeProvider
             attribute="class"

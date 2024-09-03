@@ -10,7 +10,7 @@ export default function HubPage() {
       <div className="bg-white">
         <Navbar />
         <HeroHub />
-        <ProductsHub title="" />
+        <ProductsHub title="Discover our apis" />
         <TopCollection />
         <Footer />
       </div>
