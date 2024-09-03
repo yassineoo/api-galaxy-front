@@ -13,6 +13,14 @@ import { useCollectionList } from "@/hooks/Endpoint collections/EndpointsCollect
 import useAuth from "@/hooks/useAuth";
 import { useAuthSession } from "../auth-provider";
 
+export interface ApiCollection {
+  ID: number;
+  Name: string;
+  Description: string;
+  ImagePath: string;
+  Apis: any[];
+}
+
 export default function TopCollection() {
   // const { data: session, status } = useSession();
   const { session } = useAuthSession();
@@ -40,7 +48,7 @@ export default function TopCollection() {
   );
 }
 
-export function CarouselSize({ data }: any) {
+export function CarouselSize({ data }: { data: ApiCollection[] }) {
   console.log("data", data);
 
   return (
@@ -51,10 +59,11 @@ export function CarouselSize({ data }: any) {
       className="w-full  "
     >
       <CarouselContent>
-        {data.map((item: any, index: number) => (
+        {data.map((item, index: number) => (
           <CarouselItem className="basis-1/5 h-full flex " key={index}>
             <CollectionCard
               key={index}
+              id={item.ID}
               imagePath={item.ImagePath}
               cardTitle={item.Name}
             />
