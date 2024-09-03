@@ -73,3 +73,21 @@ export const useUsersList = (
     },
   });
 };
+
+export const useNotifList = (userId: number, authorize: string) => {
+  return useQuery({
+    queryKey: ["NotifList", userId],
+    queryFn: async () => {
+      try {
+        const res = await basedApiUrl.get(`/userApi/notifications/${userId}`, {
+          headers: { Authorization: `Bearer ${authorize}` },
+        });
+        console.log("response from api query : ", res.data);
+
+        return res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+};

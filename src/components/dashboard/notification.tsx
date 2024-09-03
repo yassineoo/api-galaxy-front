@@ -1,8 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/NLFAQP5ca3w
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -16,8 +11,16 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
+import { useAuthSession } from "../auth-provider";
+import { useNotifList } from "@/hooks/admin/reviews.query";
 
 export default function Notifications() {
+  const { session } = useAuthSession();
+  const { data, error, isLoading, isSuccess } = useNotifList(
+    Number(session?.userId) || 1,
+    session?.token || ""
+  );
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,42 +33,43 @@ export default function Notifications() {
         <Card className="shadow-lg border-0">
           <CardHeader className="border-b px-6 py-4">
             <CardTitle>Notifications</CardTitle>
-            <CardDescription>You have 3 new notifications</CardDescription>
+            {isLoading ? (
+              <CardDescription>Loading notifications...</CardDescription>
+            ) : error ? (
+              <CardDescription>Error loading notifications</CardDescription>
+            ) : (
+              <CardDescription>
+                {data?.length > 0
+                  ? `You have ${data.length} new notifications`
+                  : "No new notifications"}
+              </CardDescription>
+            )}
           </CardHeader>
           <CardContent className="py-4">
-            <div className="space-y-4">
-              <div className="flex items-start gap-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  <CalendarCheckIcon className="h-5 w-5" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium">
-                    Your subscription is about to expire
-                  </p>
-                  <p className="text-sm text-muted-foreground">2 hours ago</p>
-                </div>
+            {isSuccess && data?.length > 0 && (
+              <div className="space-y-4 max-h-[300px] overflow-y-auto">
+                {data.slice(0, 4).map((notification: any) => (
+                  <div key={notification.id} className="flex items-start gap-4">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                      {/* Use appropriate icon based on notification type */}
+                      <BellIcon className="h-5 w-5" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">
+                        {notification.title}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {notification.message}
+                      </p>
+                      {/* Assuming a date or timestamp field is available */}
+                      <p className="text-sm text-muted-foreground">
+                        {/* Format time accordingly */}2 hours ago
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="flex items-start gap-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
-                  <TruckIcon className="h-5 w-5" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium">
-                    Your order has been shipped
-                  </p>
-                  <p className="text-sm text-muted-foreground">1 day ago</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-muted-foreground">
-                  <BellIcon className="h-5 w-5" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium">You have a new message</p>
-                  <p className="text-sm text-muted-foreground">3 days ago</p>
-                </div>
-              </div>
-            </div>
+            )}
           </CardContent>
         </Card>
       </DropdownMenuContent>

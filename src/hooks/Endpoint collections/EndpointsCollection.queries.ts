@@ -1,11 +1,12 @@
 // apiQueries.ts
 
+import { ApiCollection } from "@/components/Hub/top";
 import { ApiAuth, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 export const useCollectionList = () => {
-  return useQuery({
+  return useQuery<ApiCollection[]>({
     queryKey: ["CollectionList"],
     queryFn: async () => {
       try {
@@ -14,7 +15,6 @@ export const useCollectionList = () => {
           //  `${ApiAuth}/api-collections/`,
           // { headers: { Authorization: `Bearer ${authToken}` } }
         ); // Adjust the endpoint
-        console.log({ response });
         return response.data;
       } catch (error) {
         console.log({ error });

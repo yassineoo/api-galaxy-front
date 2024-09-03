@@ -7,7 +7,7 @@ import useAuth from "@/hooks/useAuth";
 import { useAuthSession } from "@/components/auth-provider";
 
 export const basedApiUrl = axios.create({
-  baseURL: ApiUsersUrl,
+  baseURL: "http://localhost:7002",
 });
 export const baseApiUrl = axios.create({
   baseURL: ApiUrl,
