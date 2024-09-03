@@ -19,6 +19,7 @@ import Notifications from "./notification";
 import Settings from "./settings";
 import { useAuthSession } from "../auth-provider";
 import { useRouter } from "next/navigation";
+import { useNotifList } from "@/hooks/admin/reviews.query";
 
 const Header = () => {
   // State to manage dropdown visibility
@@ -79,6 +80,7 @@ const IconDropdown = ({ session }: any) => {
     }
     signOut().then(() => router.push("/login"));
   };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
