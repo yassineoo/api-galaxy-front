@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { Api, ApiCreation } from "./interfaces";
+import { ApiUsersUrl } from "@/utils/constants";
 const ApiUrl = "http://localhost:9000";
 const ApiUrlReplace = "http://localhost:9000";
 export const useCreateApi = (authToken: string) => {
@@ -10,7 +11,6 @@ export const useCreateApi = (authToken: string) => {
 
   return useMutation({
     mutationFn: async (apiData: ApiCreation) => {
-
       console.log(` ----------------------------------      ${ApiUrl}/apis`);
 
       const response = await axios.post(`${ApiUrl}/apis`, apiData, {
@@ -18,7 +18,6 @@ export const useCreateApi = (authToken: string) => {
       });
 
       return response.data;
-
     },
 
     onSuccess: () => {
@@ -42,6 +41,25 @@ export const useUpdateApi = (authToken: string) => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["apiList"] });
+    },
+  });
+};
+
+export const useUpdateStatusApi = (authToken: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (apiId: number) => {
+      const response = await axios.post(
+        `${ApiUsersUrl}/userApi/update-status/${apiId}`,
+        {},
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      ); // Adjust the endpoint
+      return response.data;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["apiUpdate"] });
     },
   });
 };

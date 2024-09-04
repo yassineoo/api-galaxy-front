@@ -14,15 +14,7 @@ import { MoreHorizontal } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthSession } from "@/components/auth-provider";
 
-export type ApiEntity = {
-  providerID: number;
-  Name: string;
-  ImagePath: string;
-  CategoryID: number;
-  Status: string; // Assuming status is a string like 'active', 'inactive', etc.
-};
-
-export const columns: ColumnDef<ApiEntity>[] = [
+export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "reason",
     header: "Reason",
