@@ -15,13 +15,17 @@ export default function ClientRootLayout({
       {/* Sidebar */}
       <ClientSidebar />
 
+      
       {/* Main Content Area */}
       <div className="flex flex-col w-full h-full">
         {/* Header */}
-        <Header name="Customer Dashboard" />
-
+        <Header />
+        
         {/* Children (Main Content) */}
-        <div className="w-full h-full overflow-y-auto">{children}</div>
+        <div className="w-full h-full overflow-y-auto">
+          {children}
+        </div>
+
       </div>
     </div>
   );

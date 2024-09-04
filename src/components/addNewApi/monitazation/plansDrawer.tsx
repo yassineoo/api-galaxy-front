@@ -26,11 +26,11 @@ const PlanConfermationModal = ({ plan }: any) => {
       </DrawerTrigger>
       <DrawerContent className="flex  h-[580px]  overflow-y-scroll   justify-between items-center">
         <DrawerHeader>
-          <DrawerTitle>Plans Confermation </DrawerTitle>
+          <DrawerTitle>Plan Confirmation </DrawerTitle>
           <DrawerDescription>This action cannot be undone.</DrawerDescription>
         </DrawerHeader>
         <div className="flex w-2/3  justify-start gap-4">
-          {(plan.Price != 0 || plan.Type != "Monthely") && (
+          {(plan.Price != 0 || plan.Type != "Monthly") && (
             <div className="">
               <DemoPaymentMethod plan={plan} />
             </div>
@@ -42,7 +42,7 @@ const PlanConfermationModal = ({ plan }: any) => {
               <CardDescription>
                 {plan.Type == "Usage"
                   ? "Pay per Use"
-                  : `${plan.Price}$/Monthely`}{" "}
+                  : `${plan.Price}$/Monthly`}{" "}
               </CardDescription>
               <CardDescription>
                 {" "}
@@ -67,17 +67,16 @@ const PlanConfermationModal = ({ plan }: any) => {
                 <span>Price : </span> {plan.Price} $
               </CardDescription>
               <CardDescription className="flex justify-between">
-                <span>Remise : </span> {"2 %"}
+                <span>tax : </span> {"0 %"}
               </CardDescription>
               <hr className="my-2 border-t" />
               <CardDescription className="flex justify-between">
-                <span>Total : </span> {plan.Price * 0.98} $
+                <span>Total : </span> {plan.Price } $
               </CardDescription>
             </Card>
-            <Congratulations />
 
             <DrawerClose>
-              <Button variant="outline" className="ml-4">
+              <Button variant="outline" className="w-full ">
                 Cancel
               </Button>
             </DrawerClose>
