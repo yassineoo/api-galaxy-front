@@ -50,16 +50,16 @@ export const useUpdateStatusApi = (authToken: string) => {
 
   return useMutation({
     mutationFn: async (apiId: number) => {
-      const response = await axios.post(
+      const response = await axios.get(
         `${ApiUsersUrl}/userApi/update-status/${apiId}`,
-        {},
+        //  {},
         { headers: { Authorization: `Bearer ${authToken}` } }
       ); // Adjust the endpoint
       return response.data;
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["apiUpdate"] });
+      queryClient.invalidateQueries({ queryKey: ["apiListo"] });
     },
   });
 };

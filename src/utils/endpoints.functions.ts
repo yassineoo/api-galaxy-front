@@ -42,7 +42,7 @@ export const extractPathParameters = (url: string) => {
 
   if (matches) {
     const pathParameters = matches.map((match, index) => {
-      const paramName = match.substring(1, match.length - 1); // Remove curly braces
+      const paramName = match?.substring(1, match.length - 1); // Remove curly braces
       return {
         id: Math.floor(Math.random() * 100000 + 1),
         key: paramName,

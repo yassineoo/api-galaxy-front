@@ -94,15 +94,18 @@ export default function ProductsHub({
 
   const { session } = useAuthSession();
 
-  const apiList = useApiList({
-    page,
-    limit: 12,
-    filter,
-    search: keyword ?? "",
-    userId: session?.userId || 1,
+  const apiList = useApiList(
+    {
+      page,
+      limit: 12,
+      filter,
+      search: keyword ?? "",
+    },
+    session?.userId || 1,
 
-    authToken: session?.token || "",
-  });
+    session?.token || "",
+    1
+  );
 
   const ApiCategoryList = useApiCategoryList();
   //const apiHealthStats = useApiHealthCheakStats({ apiIDs: ids });

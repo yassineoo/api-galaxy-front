@@ -6,6 +6,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   // const router = useRouter();
+
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex ">
       <AdminSidebar />

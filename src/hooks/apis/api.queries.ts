@@ -9,14 +9,13 @@ import { baseApiUrl, getUserApis, getUserFollowings } from "@/actions/api";
 import { basedApiUrl, getAPIRating } from "@/actions/api";
 import { getInactiveAPI } from "@/actions/admin";
 
-export const useApiList = ({
-  page,
-  limit,
-  filter,
-  search,
-  userId,
-  authToken,
-}: any) => {
+export const useApiList = (
+  { page, limit, filter, search }: any,
+  userId: number,
+
+  authToken: string,
+  admin = 1
+) => {
   //const userData = await getCurrentUser()
   //console.log("helll",userData)
   return useQuery({
@@ -41,10 +40,16 @@ export const useApiList = ({
           console.log("mapped apis : ", mappedApis);
 
           return mappedApis;
-        } else console.log("logged token data filter  : ", filter);
+        } else
+          console.log(
+            "logged token data filter  : ",
+            filter,
+            userId,
+            authToken
+          );
 
         response = await basedApiUrl.get(
-          `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}`,
+          `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}&status=${admin}`,
           {
             headers: { Authorization: `Bearer ${authToken}` },
           }

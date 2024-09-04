@@ -68,43 +68,37 @@ export const columns: ColumnDef<ApiEntity>[] = [
       const api = row.original;
       console.log("api", api);
       const { session } = useAuthSession();
-      const { mutate: publishApi, isPending } = useUpdateStatusApi(
-        session?.token || ""
-      );
+      const {
+        mutate: publishApi,
+        isPending,
+        isSuccess,
+      } = useUpdateStatusApi(session?.token || "");
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+        <div className="flex items-center justify-center gap-8 w-full">
+          {isSuccess ? (
+            <Button variant="ghost" className=" px-3" disabled>
+              Published
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="bg-gray-300 shadow-lg p-2 cursor-pointer space-y-2"
-          >
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(api.providerID.toString())
-              }
-            >
-              Copy Provider ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={`/api/${api.id}`}>View API Details</Link>{" "}
-            </DropdownMenuItem>
-            <DropdownMenuItem
+          ) : isPending ? (
+            <Button variant="ghost" className=" px-3" disabled>
+              Publishing...
+            </Button>
+          ) : (
+            <Button
+              // variant="ghost"
+              className=" px-3"
               onClick={() => {
                 publishApi(api.id);
               }}
             >
-              Publish Api
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              Publish
+            </Button>
+          )}
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <Link href={`/api/${api.id}`}>View Details</Link>{" "}
+          </Button>
+        </div>
       );
     },
   },

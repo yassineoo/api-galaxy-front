@@ -34,11 +34,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ApiUrl } from "@/utils/constants";
-import {
-  useApiByUserId,
-  useApiList,
-  useSearchApiList,
-} from "@/hooks/apis/api.queries";
+import { useApiByUserId } from "@/hooks/apis/api.queries";
 import { Api } from "./apis/[id]/Analyse/api.interface";
 import { Separator } from "@/components/ui/separator";
 import MultiSelect from "@/components/addNewApi/monitazation/object";
@@ -58,7 +54,6 @@ import {
 } from "recharts";
 import { useApisStatsQuery } from "@/hooks/apiLogs/apiLogs.queries";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useAuthSession } from "@/components/auth-provider";
 // function useGetApis(){
 //   return useQuery({
