@@ -2,21 +2,16 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { useSession } from "next-auth/react";
 import Header from "@/components/dashboard/header";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { getUserApis, getUserFollowings } from "@/actions/api";
-import {
-  useApiById,
-  useApiByUserId,
-  useFollowingApis,
-} from "@/hooks/apis/api.queries";
+import { useApiByUserId, useFollowingApis } from "@/hooks/apis/api.queries";
 import ReviewSkeleton from "@/components/HubXs/ReviewSkeleton";
 import { useAuthSession } from "@/components/auth-provider";
 
 export default function ProfilePage({ params }: any) {
-  const { session } = useAuthSession();
+  const { session, isAuthenticated } = useAuthSession();
+
   console.log("session", session);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -37,9 +32,8 @@ export default function ProfilePage({ params }: any) {
     // Logic to save the updated name (e.g., send it to the server)
     setIsEditing(false);
   };
-  const { idx } = params;
+  const idx = session?.userId;
 
-  const isAuthenticated = idx == session?.userId;
   return (
     <div className="">
       {isAuthenticated ? (
@@ -62,7 +56,7 @@ export default function ProfilePage({ params }: any) {
                     <Avatar className="w-24 h-24 border-4 border-white">
                       <AvatarImage src={session.user.image} alt="User Avatar" />
                       <AvatarFallback>
-                        {session.user.name || "User Avatar"}
+                        {session?.user?.name?.charAt(0) || "User Avatar"}
                       </AvatarFallback>
                     </Avatar>
                   )}
@@ -171,7 +165,7 @@ export default function ProfilePage({ params }: any) {
                 {/* add two factors button */}
                 <ProfileTwoFactor
                   isVerified={session?.twoFactorEnabled || false}
-                  userId={idx}
+                  userId={idx || 0}
                 />
               </div>
             </div>
@@ -235,7 +229,7 @@ function ProfileTwoFactor({
   userId,
   isVerified,
 }: {
-  userId: string;
+  userId: number;
   isVerified: boolean;
 }) {
   const [isLoading, setIsLoading] = useState(false);

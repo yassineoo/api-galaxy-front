@@ -79,7 +79,13 @@ const buttons = [
   },
 ];
 
-export default function ProductsHub() {
+export default function ProductsHub({
+  keyword,
+  title,
+}: {
+  keyword?: string;
+  title: string;
+}) {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState(0);
   const [search, setSearch] = useState("");
@@ -88,15 +94,18 @@ export default function ProductsHub() {
 
   const { session } = useAuthSession();
 
-  const apiList = useApiList({
-    page,
-    limit: 12,
-    filter,
-    search,
-    userId: session?.userId || 1,
+  const apiList = useApiList(
+    {
+      page,
+      limit: 12,
+      filter,
+      search: keyword ?? "",
+    },
+    session?.userId || 1,
 
-    authToken: session,
-  });
+    session?.token || "",
+    1
+  );
 
   const ApiCategoryList = useApiCategoryList();
   //const apiHealthStats = useApiHealthCheakStats({ apiIDs: ids });
@@ -167,8 +176,8 @@ export default function ProductsHub() {
           )}
         </div>
         <div className="relative left-8">
-          <h1 className="text-black text-title text-xl md:text-3xl font-bold">
-            Discover more APIs
+          <h1 className="text-black text-title text-xl md:text-3xl font-bold mb-4">
+            {title}
           </h1>
 
           <div className="flex flex-wrap gap-3 p-2">
@@ -214,6 +223,17 @@ const CategoryList = ({ categories, filter, setFilter }: any) => {
   return (
     <div>
       <h4 className="font-bold mb-4 mt-2">Categories</h4>
+      <div key={4} className="">
+        <LeftBarButton
+          filter={filter}
+          setFilter={setFilter}
+          key={4}
+          iconPath={buttons[4].iconPath}
+          buttonText={"All"}
+          option={buttons[4].option}
+          index={0}
+        />
+      </div>
       {categories?.map((category: any, index: any) => (
         <div key={index} className="">
           <LeftBarButton

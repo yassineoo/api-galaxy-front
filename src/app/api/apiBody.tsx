@@ -11,14 +11,14 @@ import { Report } from "./Report";
 import { useApiEndpointsById } from "@/hooks/Endpoints/Endpoints.queries";
 import { ParametersTypes } from "@/hooks/Endpoints/interfaces";
 import { useSendRequest } from "@/hooks/apis/api.Mutation";
-import CommentsContainer from "../test/discussion";
+// import CommentsContainer from "../test/discussion";
 import { ResizableDemo } from "./resizeable";
-import ReviewsTab from "../test/reviews";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import ParamterControler from "./paramterController";
 import ProviderInfo from "./providerInfo";
 import PrcingTabs from "@/components/addNewApi/monitazation/pricingCardsApi";
+import { useAuthSession } from "@/components/auth-provider";
 const codeString = `
 const axios = require('axios');
 
@@ -31,23 +31,25 @@ axios.get('https://yourapi.com/endpoint')
     });
 `;
 
-export function ApiTabs({ api,api_id,user_id }: any) {
+export function ApiTabs({ api, api_id, user_id }: any) {
   const endpointList = useApiEndpointsById(api.ID);
   const [selectedNodeId, setSelectedNodeId] = useState(100);
   const [resquestResult, setResquestResult] = useState();
   const [defaultValue, setDefaultValue] = useState("CodeSnippet");
+  const { session } = useAuthSession();
   const {
     mutateAsync: sendRequest,
     isError,
     isPending,
     isSuccess,
-  } = useSendRequest();
+  } = useSendRequest(session?.token || "");
   // States for each input field
+
+  console.log("api", api);
 
   return (
     <>
       <Tabs defaultValue="endpoints">
-
         <TabsList className="grid grid-cols-4 w-2/3 md:w-1/2 lg:w-1/3 ml-8 my-2 items-center">
           <TabsTrigger
             value="endpoints"
@@ -73,7 +75,6 @@ export function ApiTabs({ api,api_id,user_id }: any) {
           >
             Pricing
           </TabsTrigger>
-
         </TabsList>
         <TabsContent
           value="endpoints"
@@ -87,7 +88,10 @@ export function ApiTabs({ api,api_id,user_id }: any) {
                 endpointsList={endpointList.data}
                 setSelectedNodeId={setSelectedNodeId}
               />
-              <ProviderInfo />
+              <ProviderInfo
+                providerId={api.ProviderID}
+                category={api.Category.CategoryName}
+              />
             </div>
           )}
           <div className="w-full flex justify-center h-screen">
@@ -126,7 +130,7 @@ export function ApiTabs({ api,api_id,user_id }: any) {
           value="discussion"
           className="flex justify-center items-start"
         >
-          <ReviewsTab />
+          {/* <ReviewsTab /> */}
         </TabsContent>
         <TabsContent
           value="pricing"
@@ -138,7 +142,7 @@ export function ApiTabs({ api,api_id,user_id }: any) {
           value="report"
           className="w-full flex flex-col justify-start mx-12 items-start"
         >
-          <Report userId = {user_id} api_id={api_id} />
+          <Report userId={user_id} api_id={api_id} />
         </TabsContent>
       </Tabs>
       <section className="">

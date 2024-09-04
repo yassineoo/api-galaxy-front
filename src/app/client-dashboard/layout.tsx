@@ -14,6 +14,7 @@ export default function ClientRootLayout({
     <div className="bg-dashboardBg dark:bg-transparent flex w-full h-full max-h-full overflow-hidden">
       {/* Sidebar */}
       <ClientSidebar />
+
       
       {/* Main Content Area */}
       <div className="flex flex-col w-full h-full">
@@ -24,6 +25,7 @@ export default function ClientRootLayout({
         <div className="w-full h-full overflow-y-auto">
           {children}
         </div>
+
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ import { ApiTable } from "@/components/dashboard/apiTable/api-table";
 import { columns } from "@/components/dashboard/apiTable/apiColumns";
 import PaginationManual from "@/components/dashboard/billing/paginationManual";
 import Image from "next/image";
-import Header from "@/components/dashboard/header";
 import { Search } from "@/components/shared/search";
 import {
   Card,
@@ -17,22 +16,29 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useCollectionList } from "@/hooks/Endpoint collections/EndpointsCollection.queries";
-import { useApiListForAdmin } from "@/hooks/apis/api.queries";
+import { useApiList } from "@/hooks/apis/api.queries";
 import { useState } from "react";
 
 // import { useSession } from "next-auth/react";
 import { useAuthSession } from "@/components/auth-provider";
-
+import Header from "@/components/dashboard/headerAdmin";
 
 export default function DefinitionTab() {
   const [page, setPage] = useState(1);
-  const adminId = 1;
-  const ApiList = useApiListForAdmin({ page, limit: 8, search: "", adminId });
+  const { session, isAuthenticated } = useAuthSession();
 
-  const {session,isAuthenticated} = useAuthSession()
+  const ApiList = useApiList(
+    {
+      page,
+      limit: 8,
+      search: "",
+      filter: 0,
+    },
+    session?.userId ?? 1,
+    session?.token ?? "",
+    0
+  );
 
-  const CollectionList = useCollectionList({ authToken: session?.token ?? "" });
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
       <Header />
@@ -47,15 +53,11 @@ export default function DefinitionTab() {
             <CardDescription>Manage the Apis</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
-            <Search />
-            <div className="flex gap-4 justify-end items-center">
-              <CreateEndpointsCollectionForm />
-            </div>
+            <Search value="" setValue={() => {}} />
 
             <Tabs defaultValue="Apis">
               <TabsList className="w-[200px] border-none bg-transparent">
                 <TabsTrigger value="Apis">Apis</TabsTrigger>
-                <TabsTrigger value="Collection">Collection</TabsTrigger>
               </TabsList>
               <TabsContent value="Apis">
                 {ApiList.isLoading && (
@@ -71,18 +73,6 @@ export default function DefinitionTab() {
                 />
               </TabsContent>
               <TabsContent value="Collection">
-                {CollectionList.isLoading && (
-                  <SkeletonTable
-                    name={"Collection List"}
-                    columns={CollectionColumns}
-                  />
-                )}
-                {CollectionList.isSuccess && (
-                  <CollectionTable
-                    columns={CollectionColumns}
-                    data={CollectionList.data}
-                  />
-                )}
                 <PaginationManual
                   currentPage={page}
                   totalPages={ApiList?.data?.meta?.totalPages}

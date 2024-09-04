@@ -3,30 +3,29 @@
 import { useState, FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import SearchApiInput from "./searchInput";
-import { useMutation } from "@tanstack/react-query";
-import { clearAuthToken } from "@/lib/get-auth-token";
 
 import { useAuthSession } from "../auth-provider";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const Navbar = ({
   apiHub = "hub",
   docs = "https://api-galaxy-docs.vercel.app/",
   ListApi = "s",
   myApis = "dashboard",
+}: {
+  apiHub?: string;
+  docs?: string;
+  ListApi?: string;
+  myApis?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // const { data: session, status } = useSession();
   const { session, isAuthenticated } = useAuthSession();
 
-  const userdId = session?.userId;
-  console.log("logged token datasssfffff : ", session);
-
-  // const isAuthenticated = status === "authenticated";
 
   return (
-    <div className="bg-white flex flex-row justify-between items-center py-2 px-4 shadow-md">
+    <div className="bg-white sticky top-0 z-[1000] flex flex-row justify-between items-center py-2 px-4 shadow-md">
       <nav className="flex items-center justify-start flex-wrap">
         <div className="flex items-center flex-shrink-0 p-1 text-black mr-4">
           <Link href={apiHub}>
@@ -81,17 +80,22 @@ const Navbar = ({
       <div className="space-x-2 flex flex-row justify-start items-center font-body text-base sm:text-lg">
         {isAuthenticated ? (
           <div className="flex items-center space-x-2">
-            {session?.user?.image && (
-              <Link href={`/dashboard/profile/${userdId}`}>
-                <Image
-                  src={session.user.image}
-                  alt={session.user.name || "User Avatar"}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
+
+            {session?.user && (
+              <Link href={`dashboard/profile`}>
+                <Avatar>
+                  <AvatarImage
+                    src={"/placeholder-user.jpg"}
+                    alt={session?.user?.name?.charAt(0) || "User Avatar"}
+                  />
+                  <AvatarFallback>
+                    {session?.user?.name?.charAt(0) || "N/A"}
+                  </AvatarFallback>
+                </Avatar>
+
               </Link>
             )}
+
             <span className="text-black">{session?.user?.name}</span>
             <button
               onClick={() => signOut()}

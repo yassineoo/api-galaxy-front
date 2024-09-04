@@ -7,16 +7,29 @@ import useAuth from "@/hooks/useAuth";
 import { useAuthSession } from "@/components/auth-provider";
 
 export const basedApiUrl = axios.create({
-  baseURL: ApiUsersUrl,
+  baseURL: "http://localhost:7002",
 });
 export const baseApiUrl = axios.create({
   baseURL: ApiUrl,
 });
-export const likeAnAPI = async (user_id: number, api_id: number) => {
+export const likeAnAPI = async (
+  user_id: number,
+  api_id: number,
+  authToken: string
+) => {
   try {
-    const res = await basedApiUrl.post(`/userApi/likeApi/${api_id}`, {
-      user_id,
-    });
+    const res = await basedApiUrl.post(
+      `/userApi/likeApi/${api_id}`,
+      {
+        user_id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
     console.log("like", res);
     return true;
   } catch (error: any) {
@@ -25,11 +38,25 @@ export const likeAnAPI = async (user_id: number, api_id: number) => {
   }
 };
 
-export const disLikeAnAPI = async (user_id: number, api_id: number) => {
+export const disLikeAnAPI = async (
+  user_id: number,
+  api_id: number,
+  authToken: string
+) => {
   try {
-    const res = await basedApiUrl.post(`/userApi/dislikeApi/${api_id}`, {
-      user_id,
-    });
+    const res = await basedApiUrl.post(
+      `/userApi/dislikeApi/${api_id}`,
+      {
+        user_id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+
     console.log("dislike", res);
     return true;
   } catch (error: any) {
@@ -45,37 +72,6 @@ export const getAPIReviews = async (api_id: number) => {
     return reviews.data;
   } catch (error) {
     console.log(error);
-  }
-};
-
-// add a Review
-export const addAnAPIReview = async (reviewData: reviewCreation) => {
-  const { data: auth, isSuccess } = useAuth();
-  if (isSuccess) console.log({ auth });
-
-  const { session, isAuthenticated } = useAuthSession();
-
-  try {
-    console.log(reviewData);
-    const success = await basedApiUrl.post(
-      `/userApi/createReview/${reviewData.apiId}`,
-      {
-        comment: reviewData.comment,
-        rating: reviewData.rating,
-        userId: reviewData.userId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${isAuthenticated ? session.token : ""}`,
-
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log(success);
-    return success.data;
-  } catch (error: any) {
-    console.log(error.message);
   }
 };
 
@@ -108,10 +104,40 @@ export const getUserFollowings = async (userId: number) => {
   }
 };
 
+// add a Review
+export const addAnAPIReview = async (
+  reviewData: reviewCreation,
+  authToken: string
+) => {
+  try {
+    console.log(reviewData);
+    const success = await basedApiUrl.post(
+      `/userApi/createReview/${reviewData.apiId}`,
+      {
+        comment: reviewData.comment,
+        rating: reviewData.rating,
+        userId: reviewData.userId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(success);
+    return success.data;
+  } catch (error: any) {
+    console.log(error.message);
+  }
+};
+
 export const reportAnAPI = async (
   formData: any,
   api_id: number,
-  user_id: number
+  user_id: number,
+  authToken: string
 ) => {
   try {
     const response = await basedApiUrl.post(
@@ -119,6 +145,7 @@ export const reportAnAPI = async (
       JSON.stringify({ ...formData, userId: user_id }),
       {
         headers: {
+          Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
         },
       }
@@ -133,7 +160,8 @@ export const reportAnComment = async (
   reason: string,
   description: string,
   commentId: string,
-  userId: number
+  userId: number,
+  authToken: string
 ) => {
   try {
     const response = await basedApiUrl.post(
@@ -145,6 +173,7 @@ export const reportAnComment = async (
       }),
       {
         headers: {
+          Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
         },
       }
@@ -155,10 +184,15 @@ export const reportAnComment = async (
   }
 };
 
-export const deleteReview = async (id: number) => {
+export const deleteReview = async (id: number, authToken: string) => {
   try {
     const isDeleted = await basedApiUrl.get(
-      `/userApi/deleteReviewReport/${id}`
+      `/userApi/deleteReviewReport/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
     );
     return isDeleted;
   } catch (error) {

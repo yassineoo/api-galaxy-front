@@ -20,7 +20,17 @@ import Settings from "./settings";
 import { useAuthSession } from "../auth-provider";
 import { useRouter } from "next/navigation";
 
-const Header = () => {
+import { cn } from "@/lib/utils";
+
+import { useNotifList } from "@/hooks/admin/reviews.query";
+
+const Header = ({
+  className = "",
+  name,
+}: {
+  className?: string;
+  name: string;
+}) => {
   // State to manage dropdown visibility
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
@@ -31,10 +41,17 @@ const Header = () => {
   const { session } = useAuthSession();
 
   return (
-    <header className="bg-white w-full  dark:bg-slate-900  p-4 flex justify-between 2xl:justify-around items-center">
+    <header
+      className={cn(
+        "bg-white w-full   dark:bg-slate-900  p-4 flex justify-between 2xl:justify-around items-center",
+        className
+      )}
+    >
       {/* Left side: Dashboard */}
       <div>
-        <span className="text-lg font-bold">Dashboard</span>
+        <span className="text-lg font-bold">
+          {name ? name : "Provider Dashboard"}
+        </span>
       </div>
 
       {/* Right side: Dropdown menu */}
@@ -79,6 +96,7 @@ const IconDropdown = ({ session }: any) => {
     }
     signOut().then(() => router.push("/login"));
   };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -88,7 +106,7 @@ const IconDropdown = ({ session }: any) => {
             <Avatar className="h-8 w-8">
               <AvatarImage src={session?.user?.image || ""} alt="User Avatar" />
               <AvatarFallback>
-                {session?.user?.name || "User Avatar"}
+                {session?.user?.name?.charAt(0) || "User Avatar"}
               </AvatarFallback>
             </Avatar>
           </Button>
@@ -98,10 +116,12 @@ const IconDropdown = ({ session }: any) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={`/dashboard/profile/${session?.userId}`}>Profile </Link>
+          <Link href={`/dashboard/profile`}>Profile </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={`/hub`}>Hub</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>
           {" "}
           <span onClick={() => signOutUser()}>Log out</span>

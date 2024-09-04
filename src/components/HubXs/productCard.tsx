@@ -4,6 +4,9 @@ import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CldImage } from "next-cloudinary";
 import { disLikeAnAPI, likeAnAPI } from "@/actions/api";
+import { useAuthSession } from "../auth-provider";
+import { Button } from "../ui/button";
+import { BadgeCheckIcon, CheckIcon, HeartIcon, StarIcon } from "lucide-react";
 
 interface CardType {
   cardData: {
@@ -35,7 +38,8 @@ const ProductCard = ({
   const router = useRouter();
   const [isLiked, setIsLiked] = useState(liked);
   let timeout: any;
-  const likeEvent = (event: React.MouseEvent<HTMLImageElement>) => {
+  const { session, isAuthenticated } = useAuthSession();
+  const likeEvent = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     setIsLiked((prev: any) => !prev);
     if (timeout) {
@@ -47,11 +51,16 @@ const ProductCard = ({
         if (!isLiked) {
           // like the api
           console.log("like");
-          await likeAnAPI(userId as number, id);
+          const f = await likeAnAPI(
+            userId as number,
+            id,
+            session?.token as string
+          );
+          console.log(f);
         } else {
           // dislike the api
           console.log("dislikne");
-          await disLikeAnAPI(userId as number, id);
+          await disLikeAnAPI(userId as number, id, session?.token as string);
         }
       } catch (error) {
         // use react toastify
@@ -63,86 +72,86 @@ const ProductCard = ({
       onClick={() => {
         router.push(`/api/${id}`);
       }}
-      className="hover:scale-105  bg-white cursor-pointer border flex flex-col justify-around gap-2 border-black text-black text-body 
-        shadow-md rounded-lg p-2 md:px-6 lg:w-56"
+      className="hover:scale-105  bg-white cursor-pointer border flex flex-col justify-around gap-2 border-muted-foreground text-black text-body 
+        shadow-md rounded-lg p-2  lg:w-56"
     >
-      <div className="flex flex-row items-start justify-between">
-        <div className="h-15 w-15">
+      <div className="flex flex-row items-start justify-between w-full ">
+        <div className="relative h-40 w-40 flex-1">
           <CldImage
-            className="md:w-14 md:h-14"
+            className="object-fit object-cover max-w-full max-h-full rounded-lg"
             src={imagePath}
             alt="Card Image"
-            width={45}
-            height={45}
-          />
-        </div>
-        <div className="flex gap-1 ">
-          {isLiked ? (
-            <Image
-              className="md:w-7 md:h-7 hover:scale-110 cursor-pointer"
-              src={"/icons/icon_heart.png"}
-              alt="Card Image"
-              width={20}
-              height={20}
-              onClick={likeEvent}
-            />
-          ) : (
-            <Image
-              className="md:w-7 md:h-7 hover:scale-110 cursor-pointer"
-              src={"/icons/icon_outline_heart.png"}
-              alt="Card Image"
-              width={20}
-              height={20}
-              onClick={likeEvent}
-            />
-          )}
-
-          <Image
-            className="md:w-7 md:h-7 hover:animate-pulse cursor-pointer"
-            src={"/icons/certified.svg"}
-            alt="Card Image"
-            width={20}
-            height={20}
+            fill
           />
         </div>
       </div>
-      <h2 className="font-medium text-center text-sm md:text-base">
+      <h2 className="font-semibold text-center text-base md:text-base">
         {cardTitle}
       </h2>
-      <p className="font-light text-xs md:text-sm">{cardDescription}</p>
+      <p className="font-light text-center text-xs md:text-sm">
+        {cardDescription}
+      </p>
 
-      <div className="flex items-end justify-around pt-6">
-        <div>
-          <Image
-            className="inline-block md:w-6 md:h-6"
-            src={"/icons/star.png"}
-            alt="Card Image"
-            width={20}
-            height={20}
-          />
+      <div className="flex items-center  justify-center pt-2 gap-1">
+        <div className="items-center  flex gap-1">
+          <div className="flex flex-row gap-2 items-center ">
+            {isLiked ? (
+              <Button
+                onClick={likeEvent}
+                variant="ghost"
+                className="w-fit hover:bg-transparent relative size-5"
+                disabled={!isAuthenticated}
+              >
+                <Image
+                  className="max-w-full max-h-full hover:scale-110 cursor-pointer"
+                  src={"/icons/icon_heart.png"}
+                  alt="Card Image"
+                  fill
+                />
+              </Button>
+            ) : (
+              <Button
+                onClick={likeEvent}
+                variant="ghost"
+                size="icon"
+                className="p-0 relative size-5 hover:bg-transparent"
+                disabled={!isAuthenticated}
+              >
+                <Image
+                  className="max-w-full max-h-full hover:scale-110 cursor-pointer"
+                  src={"/icons/icon_outline_heart.png"}
+                  alt="Card Image"
+                  fill
+                />
+              </Button>
+            )}
+
+            <div className="relative size-5 ">
+              <Image
+                className="max-w-full max-h-full hover:animate-pulse cursor-pointer"
+                src={"/icons/certified.svg"}
+                alt="Card Image"
+                fill
+              />
+            </div>
+          </div>
           <p className="inline-block text-xs md:text-sm ml-1">
             {averageRating}
           </p>
+          <StarIcon className="size-5 text-yellow-500" />
         </div>
-        <div>
-          <Image
-            className="inline-block md:w-6 md:h-6"
-            src={"/icons/time.png"}
-            alt="Card Image"
-            width={20}
-            height={20}
-          />
-          <p className="inline-block text-xs md:text-sm ml-1">{latency}</p>
-        </div>
-        <div>
-          <Image
-            className="inline-block md:w-6 md:h-6"
-            src={"/icons/hours.png"}
-            alt="Card Image"
-            width={20}
-            height={20}
-          />
-          <p className="inline-block text-xs md:text-sm ml-1">{availability}</p>
+        <div className="flex items-center">
+          <div className="relative size-5">
+            <Image
+              className="inline-block max-w-full max-h-full"
+              src={"/icons/time.png"}
+              alt="Card Image"
+              fill
+            />
+          </div>
+          <p className="inline-block text-xs md:text-sm ml-1">
+            {latency ?? 50}
+          </p>
         </div>
       </div>
     </div>

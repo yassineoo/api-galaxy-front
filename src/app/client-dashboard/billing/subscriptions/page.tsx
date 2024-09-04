@@ -1,6 +1,8 @@
 "use client";
 
+
 import { useAuthSession } from "@/components/auth-provider";
+
 import BillingForm from "@/components/dashboard/billing/billingForm";
 import { BreadcrumbWithCustomSeparator } from "@/components/dashboard/breadcrumb";
 import Header from "@/components/dashboard/header";
@@ -10,6 +12,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { useGetUserSubscriptions } from "@/hooks/EndpointsPayment/endpoints.queries";
 
+
 const TableSubscriptions = function () {
   const {session} = useAuthSession();
   const userId = session?.userId;
@@ -18,6 +21,7 @@ const TableSubscriptions = function () {
   // Use the hook to fetch subscriptions for the user (client)
   const { data: subscriptions, isLoading } = useGetUserSubscriptions(userId?.toString() || "");
   console.log("subscriptions", subscriptions);
+
 
 
   return (

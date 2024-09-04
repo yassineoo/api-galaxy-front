@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+
 import { useAuthSession } from "@/components/auth-provider";
 import { PaymentUrl } from "@/utils/constants";
 
@@ -27,6 +28,7 @@ export const useGetCustomerByEmail = (email: string) => {
 };
 
 
+
 // Fetch all customers
 export const useListCustomers = () => {
   const { session } = useAuthSession();
@@ -34,7 +36,9 @@ export const useListCustomers = () => {
   return useQuery({
     queryKey: ["customers"],
     queryFn: async () => {
+
       const response = await axios.get(`${PaymentUrl}/stripeCRUD/customers`, {
+
         headers: { Authorization: `Bearer ${session?.token}` },
       });
       return response.data;
@@ -49,7 +53,9 @@ export const useGetCustomerById = (customerId: string) => {
   return useQuery({
     queryKey: ["customer", customerId],
     queryFn: async () => {
+
       const response = await axios.get(`${PaymentUrl}/stripeCRUD/customers/${customerId}`, {
+
         headers: { Authorization: `Bearer ${session?.token}` },
       });
       return response.data;
@@ -64,6 +70,7 @@ export const useGetCustomerTransactionHistory = (customerId: string) => {
   return useQuery({
     queryKey: ["customerTransactionHistory", customerId],
     queryFn: async () => {
+
       const response = await axios.get(`${PaymentUrl}/stripeCRUD/customers/${customerId}/transactions`, {
         headers: { Authorization: `Bearer ${session?.token}` },
       });
@@ -79,14 +86,13 @@ export const useGetUserTransactionHistory = (userId: string) => {
     queryKey: ["customerTransactionHistory", userId],
     queryFn: async () => {
       const response = await axios.get(`${PaymentUrl}/transcation/transactions/${userId}`, {
+
         headers: { Authorization: `Bearer ${session?.token}` },
       });
       return response.data;
     },
   });
 };
-
-
 
 // Fetch all products
 export const useGetProducts = () => {
@@ -95,7 +101,9 @@ export const useGetProducts = () => {
   return useQuery({
     queryKey: ["products"],
     queryFn: async () => {
+
       const response = await axios.get(`${PaymentUrl}/stripeCRUD/products`, {
+
         headers: { Authorization: `Bearer ${session?.token}` },
       });
       return response.data;
@@ -110,7 +118,9 @@ export const useGetProductById = (productId: string) => {
   return useQuery({
     queryKey: ["product", productId],
     queryFn: async () => {
+
       const response = await axios.get(`${PaymentUrl}/stripeCRUD/products/${productId}`, {
+
         headers: { Authorization: `Bearer ${session?.token}` },
       });
       return response.data;
@@ -125,7 +135,9 @@ export const useGetPrices = (productId: string) => {
   return useQuery({
     queryKey: ["prices", productId],
     queryFn: async () => {
+
       const response = await axios.get(`${PaymentUrl}/stripeCRUD/prices/${productId}`, {
+
         headers: { Authorization: `Bearer ${session?.token}` },
       });
       return response.data;
@@ -140,7 +152,9 @@ export const useGetSubscriptions = () => {
   return useQuery({
     queryKey: ["subscriptions"],
     queryFn: async () => {
+
       const response = await axios.get(`${PaymentUrl}/subscription/subscriptions`, {
+
         headers: { Authorization: `Bearer ${session?.token}` },
       });
       return response.data;
@@ -155,7 +169,9 @@ export const useGetUserSubscriptions = (userId: string) => {
   return useQuery({
     queryKey: ["userSubscriptions", userId],
     queryFn: async () => {
+
       const response = await axios.get(`${PaymentUrl}/subscription/subscriptions/${userId}`, {
+
         headers: { Authorization: `Bearer ${session?.token}` },
       });
       return response.data;
@@ -170,7 +186,9 @@ export const useGetPlans = () => {
   return useQuery({
     queryKey: ["plans"],
     queryFn: async () => {
+
       const response = await axios.get(`${PaymentUrl}/subscription/plans`, {
+
         headers: { Authorization: `Bearer ${session?.token}` },
       });
       return response.data;
@@ -185,7 +203,9 @@ export const useGetObjectPlans = () => {
   return useQuery({
     queryKey: ["objectPlans"],
     queryFn: async () => {
+
       const response = await axios.get(`${PaymentUrl}/subscription/object-plans`, {
+
         headers: { Authorization: `Bearer ${session?.token}` },
       });
       return response.data;
@@ -200,7 +220,9 @@ export const useGetSubscribersForProvider = (providerId: string) => {
   return useQuery({
     queryKey: ["subscribers", providerId],
     queryFn: async () => {
+
       const response = await axios.get(`${PaymentUrl}/subscription/providers/${providerId}`, {
+
         headers: { Authorization: `Bearer ${session?.token}` },
       });
       return response.data;

@@ -1,4 +1,6 @@
+
 import { useEffect, useState } from 'react';
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
 import { useCreateCheckoutSession } from '@/hooks/EndpointsPayment/stripe.service';
 import { CheckoutSessionData } from '@/hooks/EndpointsPayment/stripe.interfaces';
 
@@ -69,6 +72,7 @@ export function DemoPaymentMethod(plan: any) {
     });
   };
 
+
   return (
     <Card>
       <CardHeader>
@@ -77,12 +81,16 @@ export function DemoPaymentMethod(plan: any) {
           Add a new payment method to your account.
         </CardDescription>
       </CardHeader>
+
       <form onSubmit={handleSubmit}>
+
         <CardContent className="grid gap-2">
           <RadioGroup
             defaultValue="card"
             className="grid grid-cols-2 gap-2"
+
             onValueChange={(value) => setPaymentMethod(value)}
+
           >
             <div>
               <RadioGroupItem value="card" id="card" className="peer sr-only" />
@@ -107,7 +115,9 @@ export function DemoPaymentMethod(plan: any) {
               </Label>
             </div>
             <div>
+
               <RadioGroupItem value="paypal" id="paypal" className="peer sr-only" />
+
               <Label
                 htmlFor="paypal"
                 className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
@@ -119,6 +129,7 @@ export function DemoPaymentMethod(plan: any) {
           </RadioGroup>
           <div className="grid gap-2">
             <Label htmlFor="name">Full name:</Label>
+
             <Input
               id="name"
               name="name"
@@ -145,6 +156,7 @@ export function DemoPaymentMethod(plan: any) {
             {isPending ? 'Processing...' : 'Continue'}
           </Button>
         </CardFooter>
+
       </form>
     </Card>
   );

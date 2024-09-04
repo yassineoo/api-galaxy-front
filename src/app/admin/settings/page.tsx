@@ -1,13 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useQueryClient } from "@tanstack/react-query";
-import { Tabs,TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,14 +20,14 @@ import {
   updateEarning_pourcentage,
   updatePrivacyAndPolicy,
   updateTermsAndConditions,
-  publishAnAPI
+  publishAnAPI,
 } from "@/actions/admin";
 import { useAuthSession } from "@/components/auth-provider";
 // import { useSession } from "next-auth/react";
 
 export default function Settings() {
   const InactiveAPIS = useInactiveAPI();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const [earningPercentage, setEarningPercentage] = useState(0);
   const [termsAndConditions, setTermsAndConditions] = useState("");
   const [privacyAndPolicy, setPrivacyAndPolicy] = useState("");
@@ -40,16 +35,17 @@ export default function Settings() {
   const [success2, setSuccess2] = useState(false);
   const [success3, setSuccess3] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [selected,setSelected] = useState("")
-  const [success4,setSuccess4] = useState(false)
+  const [selected, setSelected] = useState("");
+  const [success4, setSuccess4] = useState(false);
   // const { data: session } = useSession();
-  const {session} = useAuthSession()
+  const { session } = useAuthSession();
   // handle earning update
   const handleEarning = async () => {
     try {
       await updateEarning_pourcentage(
         earningPercentage,
-        session?.userId as number
+        session?.userId as number,
+        session?.token as string
       );
       setSuccess1(true);
       setTimeout(() => setSuccess1(false), 2000);
@@ -61,7 +57,8 @@ export default function Settings() {
     try {
       await updateTermsAndConditions(
         termsAndConditions,
-        session?.userId as number
+        session?.userId as number,
+        session?.token as string
       );
       setSuccess2(true);
       setTimeout(() => setSuccess2(false), 2000);
@@ -71,24 +68,28 @@ export default function Settings() {
   // handle privacy and policy update
   const handlePrivacyAndPolicy = async () => {
     try {
-      await updatePrivacyAndPolicy(privacyAndPolicy, session?.userId as number);
+      await updatePrivacyAndPolicy(
+        privacyAndPolicy,
+        session?.userId as number,
+        session?.token as string
+      );
       setSuccess3(true);
       setTimeout(() => setSuccess3(false), 2000);
     } catch (e) {}
   };
 
-  const publishanAPI=async()=>{
+  const publishanAPI = async () => {
     try {
-      if(!selected) return;
-      await publishAnAPI(+selected)
-      // revalidate userInactiveAPI to get new inactive list 
-      queryClient.refetchQueries({queryKey:["inactiveAPI"]})
-      setSuccess4(true)
+      if (!selected) return;
+      await publishAnAPI(+selected);
+      // revalidate userInactiveAPI to get new inactive list
+      queryClient.refetchQueries({ queryKey: ["inactiveAPI"] });
+      setSuccess4(true);
       setTimeout(() => setSuccess4(false), 2000);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -131,7 +132,9 @@ export default function Settings() {
                   update
                 </Button>
                 {success1 && (
-                  <span className="block text-green-500 font-semibold">Earning percentage will be updated soon</span>
+                  <span className="block text-green-500 font-semibold">
+                    Earning percentage will be updated soon
+                  </span>
                 )}
               </div>
             </div>
@@ -181,7 +184,7 @@ export default function Settings() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="api-approval">API Approval Notification</Label>
-              <Select onValueChange={(e)=>setSelected(e)}>
+              <Select onValueChange={(e) => setSelected(e)}>
                 <SelectTrigger id="api-approval">
                   <SelectValue placeholder="Select API" />
                 </SelectTrigger>
@@ -196,8 +199,10 @@ export default function Settings() {
                 </SelectContent>
               </Select>
               {success4 && (
-                  <span className="block text-green-500 font-semibold">your api has been successufully published </span>
-                )}
+                <span className="block text-green-500 font-semibold">
+                  your api has been successufully published{" "}
+                </span>
+              )}
               <Button onClick={publishanAPI}>publish</Button>
             </div>
           </CardContent>

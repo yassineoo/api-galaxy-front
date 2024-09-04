@@ -1,29 +1,35 @@
 "use client";
-import Header from "../../components/dashboard/header";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-
-import { useApiList } from "@/hooks/apis/api.queries";
+import { useAuthSession } from "@/components/auth-provider";
 
 export default function ClientDashboardPage() {
-    const [selectedApi, setSelectedApi] = useState<number | null>(null);
-    const router = useRouter();
-    const { data: session, status } = useSession();
+  const [selectedApi, setSelectedApi] = useState<number | null>(null);
+  const router = useRouter();
+  const { session, isAuthenticated } = useAuthSession();
 
-    useEffect(() => {
-        if (status === "authenticated" && session?.twoFactorEnabled) {
-            router.push("/verifyOTP");
-        }
-    }, [session, status]);
-
-    return (
-        <>
-          
-            <div>
-                <div className="text-center">Select an API to view stats</div>
-            </div>
-        </>
+  useEffect(() => {
+    const isVerified = localStorage.getItem("isVerified");
+    console.log(
+      "isVerified",
+      isVerified,
+      session?.twoFactorEnabled,
+      isAuthenticated
     );
+
+    if (isAuthenticated && session && session.twoFactorEnabled && !isVerified) {
+      router.push("/verifyOTP");
+    }
+  }, [session]);
+
+  return (
+    <>
+      <div>
+        <div className="text-center">Select an API to view stats</div>
+      </div>
+    </>
+  );
 }
 

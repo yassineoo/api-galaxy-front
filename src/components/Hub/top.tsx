@@ -2,7 +2,6 @@
 
 import CollectionCard from "../HubXs/collectionCard";
 
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -12,61 +11,28 @@ import {
 } from "@/components/ui/carousel";
 import { useCollectionList } from "@/hooks/Endpoint collections/EndpointsCollection.queries";
 import useAuth from "@/hooks/useAuth";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useAuthSession } from "../auth-provider";
 
-const items = [
-  {
-    ImagePath: "/assets/hub_assets/translate.svg",
-    Title: "Best translation API",
-  },
-  {
-    ImagePath: "/assets/hub_assets/movie.svg",
-    Title: "Top Movie API",
-  },
-  {
-    ImagePath: "/assets/hub_assets/chat.svg",
-    Title: "Top Sms API",
-  },
-  {
-    ImagePath: "/assets/hub_assets/hosting.svg",
-    Title: "Top Proxies API",
-  },
-  {
-    ImagePath: "/assets/hub_assets/location.svg",
-    Title: "Top location API",
-  },
-  {
-    ImagePath: "/assets/hub_assets/movie.svg",
-    Title: "Top Movie API",
-  },
-  {
-    ImagePath: "/assets/hub_assets/movie.svg",
-    Title: "Top Movie API",
-  },
-  {
-    ImagePath: "/assets/hub_assets/movie.svg",
-    Title: "Top Movie API",
-  },
-];
+export interface ApiCollection {
+  ID: number;
+  Name: string;
+  Description: string;
+  ImagePath: string;
+  Apis: any[];
+}
 
 export default function TopCollection() {
-
   // const { data: session, status } = useSession();
   const { session } = useAuthSession();
 
-
   const { data: auth, isSuccess } = useAuth();
 
-  const ColllectionList = useCollectionList({
-    authToken: session?.userId && isSuccess ? auth : "",
-  });
+  const ColllectionList = useCollectionList();
   if (ColllectionList.isSuccess) {
     console.log({ data: ColllectionList.data });
   }
   return (
-    <div className="bg-mainColor">
+    <div className="bg-gradient-to-r   from-blue-300  to-mainColor">
       <h1 className="text-white text-center text-2xl md:text-4xl font-bold py-6">
         Top Collection
       </h1>
@@ -82,7 +48,7 @@ export default function TopCollection() {
   );
 }
 
-export function CarouselSize({ data }: any) {
+export function CarouselSize({ data }: { data: ApiCollection[] }) {
   console.log("data", data);
 
   return (
@@ -93,10 +59,11 @@ export function CarouselSize({ data }: any) {
       className="w-full  "
     >
       <CarouselContent>
-        {data.map((item: any, index: number) => (
-          <CarouselItem className="basis-1/5" key={index}>
+        {data.map((item, index: number) => (
+          <CarouselItem className="basis-1/5 h-full flex " key={index}>
             <CollectionCard
               key={index}
+              id={item.ID}
               imagePath={item.ImagePath}
               cardTitle={item.Name}
             />

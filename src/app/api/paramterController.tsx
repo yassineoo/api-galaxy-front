@@ -84,7 +84,7 @@ const ParamterControler = ({
       // Example: Make a request using the input values
       let updatedUrl = url; // Check if the URL ends with "/"
       if (url.charAt(url.length - 1) === "/") {
-        updatedUrl = url.substring(0, url.length - 1); // Remove the last character
+        updatedUrl = url?.substring(0, url.length - 1); // Remove the last character
       }
       const Data = {
         ApiID: ApiID,

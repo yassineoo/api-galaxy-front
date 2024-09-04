@@ -14,6 +14,7 @@ declare module "next-auth" {
     verified: boolean;
     token: string;
     twoFactorEnabled: boolean;
+    role: string;
     // isVerified: boolean;
     is2faAuthenticated: boolean;
     //isVerified: false;
@@ -26,5 +27,6 @@ declare module "next-auth" {
     token: string;
     expiry: string;
     twoFactorEnabled: boolean;
+    role: string;
   }
 }

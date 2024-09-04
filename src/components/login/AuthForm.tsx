@@ -23,16 +23,19 @@ export function AuthForm({ type = "login" }: { type: string }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMismatch, setPasswordMismatch] = useState(false);
   const [erreurs, setErreurs] = useState<Errors>({});
-  
-  const [data,setData] = useState<any>({
-    email:"",
-    password:""
-  })
-  const onsubmit = async (e:any) => {
-    e.preventDefault()
+
+  const [data, setData] = useState<any>({
+    email: "",
+    password: "",
+  });
+  const onsubmit = async (e: any) => {
+    e.preventDefault();
     setIsLoading(true); // Set loading state to true at the start
 
-    const validationErrors = type === "register" ? validatePassword(data.password, confirmPassword) : {};
+    const validationErrors =
+      type === "register"
+        ? validatePassword(data.password, confirmPassword)
+        : {};
     if (Object.keys(validationErrors).length > 0) {
       setErreurs(validationErrors);
       setIsLoading(false); // Stop loading if validation fails
@@ -40,7 +43,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
     }
 
     try {
-      await authenticate(data,setError, setSuccess);
+      await authenticate(data, setError, setSuccess);
       setIsLoading(false); // Stop loading after successful authentication
     } catch (e) {
       console.log(e);
@@ -50,7 +53,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
 
   useEffect(() => {
     if (success && type === "register") setShwoModal(true);
-    if (success && type === "login") push("/dashboard");
+    if (success && type === "login") push("/hub");
   }, [success, type, push]);
 
   const togglePasswordVisibility = () => {
@@ -73,10 +76,12 @@ export function AuthForm({ type = "login" }: { type: string }) {
                   type="email"
                   className="p-2 my-2 "
                   placeholder="m@example.com"
-                 onChange={(e)=>setData({
-                  ...data,
-                  email:e.target.value
-                 })}
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      email: e.target.value,
+                    })
+                  }
                 />
               </Label>
             </div>
@@ -89,10 +94,12 @@ export function AuthForm({ type = "login" }: { type: string }) {
                       className="p-2 my-2 "
                       type={"text"}
                       placeholder="username"
-                      onChange={(e)=>setData({
-                        ...data,
-                        username:e.target.value
-                       })}
+                      onChange={(e) =>
+                        setData({
+                          ...data,
+                          username: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </Label>
@@ -108,10 +115,12 @@ export function AuthForm({ type = "login" }: { type: string }) {
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     className="p-2 my-2 "
-                    onChange={(e)=>setData({
-                      ...data,
-                      password:e.target.value
-                    })}
+                    onChange={(e) =>
+                      setData({
+                        ...data,
+                        password: e.target.value,
+                      })
+                    }
                   />
                   <button
                     type="button"
@@ -135,7 +144,9 @@ export function AuthForm({ type = "login" }: { type: string }) {
                     )}
                   </button>
                 </div>
-                {erreurs.password && <p style={{ color: 'red' }}>{erreurs.password}</p>}
+                {erreurs.password && (
+                  <p style={{ color: "red" }}>{erreurs.password}</p>
+                )}
               </Label>
             </div>
             {type == "register" && (
@@ -149,7 +160,9 @@ export function AuthForm({ type = "login" }: { type: string }) {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
-                  {erreurs.confirmPassword  && <p style={{ color: 'red' }}>{erreurs.confirmPassword }</p>}
+                  {erreurs.confirmPassword && (
+                    <p style={{ color: "red" }}>{erreurs.confirmPassword}</p>
+                  )}
                 </Label>
               </div>
             )}
@@ -163,9 +176,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
             )}
             <Button
               className="w-full text-center py-2  rounded-md font-semibold"
-
               type="submit"
-
             >
               {isLoading ? "Loading..." : type}
             </Button>

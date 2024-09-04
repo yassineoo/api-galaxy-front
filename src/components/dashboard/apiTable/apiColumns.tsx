@@ -11,6 +11,9 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
+import Link from "next/link";
+import { useUpdateStatusApi } from "@/hooks/apis/api.Mutation";
+import { useAuthSession } from "@/components/auth-provider";
 
 export type ApiEntity = {
   providerID: number;
@@ -18,6 +21,7 @@ export type ApiEntity = {
   ImagePath: string;
   CategoryID: number;
   Status: string; // Assuming status is a string like 'active', 'inactive', etc.
+  id: number;
 };
 
 export const columns: ColumnDef<ApiEntity>[] = [
@@ -37,8 +41,8 @@ export const columns: ColumnDef<ApiEntity>[] = [
     cell: ({ row }) => (
       <CldImage
         src={`${row.getValue("image_path")}`}
-        width={20}
-        height={20}
+        width={40}
+        height={40}
         alt="API Image"
       />
     ),
@@ -54,35 +58,47 @@ export const columns: ColumnDef<ApiEntity>[] = [
     cell: ({ row }) => row.getValue("status"),
   },
   {
+    accessorKey: "id",
+    header: "API Id",
+    cell: ({ row }) => row.getValue("id"),
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const api = row.original;
+      console.log("api", api);
+      const { session } = useAuthSession();
+      const {
+        mutate: publishApi,
+        isPending,
+        isSuccess,
+      } = useUpdateStatusApi(session?.token || "");
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+        <div className="flex items-center justify-center gap-8 w-full">
+          {isSuccess ? (
+            <Button variant="ghost" className=" px-3" disabled>
+              Published
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="bg-gray-300 shadow-lg p-2 cursor-pointer space-y-2"
-          >
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(api.providerID.toString())
-              }
+          ) : isPending ? (
+            <Button variant="ghost" className=" px-3" disabled>
+              Publishing...
+            </Button>
+          ) : (
+            <Button
+              // variant="ghost"
+              className=" px-3"
+              onClick={() => {
+                publishApi(api.id);
+              }}
             >
-              Copy Provider ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View API Details</DropdownMenuItem>
-            <DropdownMenuItem>Edit API</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              Publish
+            </Button>
+          )}
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <Link href={`/api/${api.id}`}>View Details</Link>{" "}
+          </Button>
+        </div>
       );
     },
   },

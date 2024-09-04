@@ -22,8 +22,10 @@ import ProductCard from "@/components/HubXs/productCard";
 import HealthForm from "./healthForm";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { useRouter } from "next/navigation";
+import { useAuthSession } from "@/components/auth-provider";
 export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields
+  const { session } = useAuthSession();
   const [name, setName] = useState(api.Name);
   const [categoryId, setCategoryId] = useState(api.CategoryID);
   const [apiUrl, setApiUrl] = useState(api.ApiUrl);
@@ -53,7 +55,7 @@ export default function GenralApiInfoTab({ api }: any) {
     isPending,
     error,
     isSuccess,
-  } = useUpdateApi();
+  } = useUpdateApi(session?.token || "");
 
   useEffect(() => {
     if (isError) {
@@ -330,12 +332,18 @@ export default function GenralApiInfoTab({ api }: any) {
       <div className="flex flex-col justify-start items-center gap-8">
         <ProductCard
           id={api.id}
-          averageRating={api.averageRating}
-          latency={api.latency}
-          availability={api.availability}
-          imagePath={image}
-          cardTitle={name}
-          cardDescription={description}
+          userId={api.ProviderID}
+          cardData={{
+            id: api.id,
+
+            averageRating: 5,
+            latency: "50ms",
+            availability: "100%",
+            imagePath: image,
+            cardTitle: name,
+            cardDescription: description,
+            liked: true,
+          }}
         />
         <Button
           onClick={() => {

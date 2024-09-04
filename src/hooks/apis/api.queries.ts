@@ -8,16 +8,14 @@ import axios from "axios";
 import { baseApiUrl, getUserApis, getUserFollowings } from "@/actions/api";
 import { basedApiUrl, getAPIRating } from "@/actions/api";
 import { getInactiveAPI } from "@/actions/admin";
-import { useSession } from "next-auth/react";
 
-export const useApiList = ({
-  page,
-  limit,
-  filter,
-  search,
-  userId,
-  authToken,
-}: any) => {
+export const useApiList = (
+  { page, limit, filter, search }: any,
+  userId: number,
+
+  authToken: string,
+  admin = 1
+) => {
   //const userData = await getCurrentUser()
   //console.log("helll",userData)
   return useQuery({
@@ -25,7 +23,6 @@ export const useApiList = ({
     queryFn: async () => {
       try {
         let response;
-        console.log("logged token datasss : ", authToken);
 
         if (!authToken) {
           response = await axios.get(
@@ -36,7 +33,7 @@ export const useApiList = ({
           const mappedApis = response.data.data.apis.map((api: any) => ({
             id: api.ID,
             name: api.Name,
-            imagePath: api.ImagePath,
+            image_path: api.ImagePath,
             description: api.Description,
             status: api.Status,
           }));
@@ -44,12 +41,19 @@ export const useApiList = ({
 
           return mappedApis;
         } else
-          response = await basedApiUrl.get(
-            `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}`,
-            {
-              headers: { Authorization: `Bearer ${authToken?.token}` },
-            }
+          console.log(
+            "logged token data filter  : ",
+            filter,
+            userId,
+            authToken
           );
+
+        response = await basedApiUrl.get(
+          `/userApi/${userId}?limit=${limit}&page=${page}&search=${search}&filter=${filter}&status=${admin}`,
+          {
+            headers: { Authorization: `Bearer ${authToken}` },
+          }
+        );
         // return [];
         console.log("mapped apis 2 : ", response.data);
 
@@ -62,13 +66,10 @@ export const useApiList = ({
   });
 };
 
-export const useApiListForAdmin = ({
-  page,
-  limit,
-  filter,
-  search,
-  adminId,
-}: any) => {
+export const useApiListForAdmin = (
+  { page, limit, filter, search, adminId }: any,
+  authToken: string
+) => {
   //const userData = await getCurrentUser()
   //console.log("helll",userData)
   return useQuery({
@@ -76,7 +77,10 @@ export const useApiListForAdmin = ({
     queryFn: async () => {
       try {
         const response = await basedApiUrl.get(
-          `/userApi/admin/${adminId}?limit=${limit}&page=${page}&search=${search}`
+          `/userApi/admin/${adminId}?limit=${limit}&page=${page}&search=${search}`,
+          {
+            headers: { Authorization: `Bearer ${authToken}` },
+          }
         );
         //console.log("response from api query : ", response.data);
         return response.data;
@@ -87,12 +91,7 @@ export const useApiListForAdmin = ({
   });
 };
 
-export const useSearchApiList = ({
-  search,
-}: {
-  search: string;
-  authToken: string;
-}) => {
+export const useSearchApiList = ({ search }: { search: string }) => {
   return useQuery<Api[]>({
     queryKey: ["apiListSearch", search ?? undefined],
     queryFn: async () => {
@@ -168,3 +167,24 @@ export const useInactiveAPI = () => {
 };
 
 // export function useApi
+
+export const useProviderInfo = (providerId: string) => {
+  return useQuery({
+    queryKey: ["providerInfo", providerId],
+    queryFn: async () => {
+      console.log("Fetching provider info for:", providerId);
+
+      try {
+        const response = await basedApiUrl.get(
+          `/userApi/provider/${providerId}`
+        );
+        console.log(response.data);
+        return JSON.parse(response.data); // Assuming the response data is the provider info
+      } catch (error) {
+        console.error("Error fetching provider info:", error);
+        throw new Error("Could not fetch provider info");
+      }
+    },
+    enabled: !!providerId, // Only run the query if providerId is not null or undefined
+  });
+};

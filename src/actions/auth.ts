@@ -28,9 +28,9 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
     const res = await placeholderApi.post(
       isRegister ? "/register" : "/login",
       {
-        email: data.email,
-        password: data.password,
-        username: data.username,
+        email: data?.email ?? "",
+        password: data?.password ?? "",
+        username: data?.username ?? "",
       },
       {
         headers: {
@@ -38,18 +38,17 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
         },
       }
     );
+
+
+
+    // console.log("data login  suc", res);
+
     return res;
   } catch (error: any) {
-    if (error.response) {
-      console.error("Server Error:", error.response.data);
-      throw new ApiError(error.response.data.message, error.response.status);
-    } else if (error.request) {
-      console.error("Network Error:", error.message);
-      throw new ApiError("Network error, please try again later.", 503);
-    } else {
-      console.error("Error:", error.message);
-      throw new ApiError(error.message || "An unexpected error occurred", 500);
-    }
+    //  console.log("data login  fali", error);
+
+    throw error;
+
   }
 };
 
@@ -61,8 +60,8 @@ export const oauthUser = async (data: { Email: string; Username: string }) => {
         "Content-Type": "application/json",
       },
     });
-    console.log("response from oauth", res);
-    console.log({ res })
+    console.log("response from oauth", res?.data);
+    //   console.log({ res });
     return res;
   } catch (error) {
     console.log({ OAUTH_ERROR: error });
@@ -152,6 +151,8 @@ export const authenticate = async (
     redirect: false,
   });
 
+  console.log("resssssss", res);
+
   if (res?.error) {
     // Handle error here
     setError(res.error);
@@ -159,6 +160,9 @@ export const authenticate = async (
     // Handle success here
     setSuccess(true);
   }
+  console.log("resssssss 2", res);
+
+  return true;
 };
 
 // activate two factor authentification:

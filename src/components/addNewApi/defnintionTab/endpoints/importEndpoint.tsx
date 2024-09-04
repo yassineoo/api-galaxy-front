@@ -10,18 +10,19 @@ import {
   useCreateExtractedApiEndpoints,
 } from "@/hooks/Endpoints/Endpoints.Mutation";
 import { log } from "console";
+import { useAuthSession } from "@/components/auth-provider";
 
 const ImportEndpoint = ({ apiID }: { apiID: number }) => {
   const [file, setFile] = useState(null);
   const [apiData, setApiData] = useState<any>(null);
   const [errorFile, setErrorFile] = useState("");
-
+  const { session } = useAuthSession();
   const {
     mutateAsync: createEndpoint,
     isError,
     isPending,
     error,
-  } = useCreateExtractedApiEndpoints();
+  } = useCreateExtractedApiEndpoints(session?.token || "");
 
   const handleFileChange = (event: any) => {
     const newFile = event.target.files[0];
@@ -47,12 +48,12 @@ const ImportEndpoint = ({ apiID }: { apiID: number }) => {
           setApiData(parsedData);
           setErrorFile("");
         } catch (error) {
-          setErrorFile("Error parsing OpenAPI file: " + error?.message || "");
+          setErrorFile("Error parsing OpenAPI file: ");
         }
       };
       reader.readAsText(file);
     } catch (error) {
-      setErrorFile("Error reading file: " + error?.message);
+      setErrorFile("Error reading file: ");
     }
   };
 
@@ -187,7 +188,7 @@ const ImportEndpoint = ({ apiID }: { apiID: number }) => {
           Create Endpoints
         </Button>
       )}
-      {errorFile && <p className="text-red-500 mt-4">{errorFile?.message}</p>}
+      {errorFile && <p className="text-red-500 mt-4">{errorFile}</p>}
       {apiData && (
         <ul className="mt-4">
           {mapToEndpointsDto().map((endpoint) => (
