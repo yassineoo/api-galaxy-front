@@ -55,54 +55,11 @@ import {
 import { useApisStatsQuery } from "@/hooks/apiLogs/apiLogs.queries";
 import { useRouter } from "next/navigation";
 import { useAuthSession } from "@/components/auth-provider";
-// function useGetApis(){
-//   return useQuery({
-//     queryKey:["apis"],
-//     queryFn:async()=>{
-//       const response = await axios.get(`${ApiUrl}/`)
-//     }
-//   })
-// }
 
 interface SelectedApi {
   label: string;
   value: number;
 }
-
-// function ListSearchResults({
-//   data,
-//   selectedApis,
-//   setSelectedApis,
-//   setSearch,
-// }: {
-//   data: Api[];
-//   selectedApis: SelectedApi[];
-//   setSelectedApis: (data: SelectedApi[]) => void;
-//   setSearch: (data: string) => void;
-// }) {
-//   const prettyData = data.filter(
-//     (api) => !selectedApis.map((api) => api.id).includes(api.ID)
-//   );
-
-//   if (prettyData.length === 0) {
-//     return <div className="grid place-content-center h-10">No Apis found</div>;
-//   }
-//   return prettyData?.map((api) => (
-//     <button
-//       key={api.ID}
-//       onClick={() => {
-//         setSelectedApis([
-//           ...selectedApis,
-//           { name: api.Name, id: Number(api.ID) },
-//         ]);
-//         setSearch("");
-//       }}
-//       className="py-2 cursor-pointer hover:border border-input text-start w-full px-3"
-//     >
-//       {api.Name}
-//     </button>
-//   ));
-// }
 
 export default function DashboardPage() {
   const [search, setSearch] = useState("");
@@ -154,41 +111,6 @@ export default function DashboardPage() {
       <Header />
       <StatisticsBoxes />
 
-      {/* <div className="w-full">
-        <div className="w-4/5 mx-auto ">
-          <div className="relative">
-            <Search value={search} setValue={setSearch} />
-            {search && status === "success" && (
-              <div className=" z-10 absolute top-11 w-full h-fit flex flex-col bg-card text-muted-foreground rounded-sm border border-input max-h-64 overflow-y-auto pb-1">
-                <p className="px-4 py-2 font-semibold ">Search Results</p>
-                <Separator />
-                <ListSearchResults
-                  data={searchApiResult}
-                  selectedApis={selectedApiList}
-                  setSelectedApis={setSelectedApiList}
-                  setSearch={setSearch}
-                />
-              </div>
-            )}
-          </div>
-          <ul className="my-4 flex justify-start items-center gap-2">
-            {selectedApiList.map((api) => (
-              <li key={api.id}>
-                <Button onClick={() => removeApi(api.id)}>
-                  {api.name}{" "}
-                  <span className="ml-2 mr-1 text-blue-700  text-lg font-base">
-                    X
-                  </span>
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div> */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-10 px-6">
-        <ApiAnalyticsChart />
-        <EarningsChart />
-      </div> */}
       <div className=" w-full ">
         {/* <h2 className="px-12 text-lg font-bold py-2  ">{api.Name} </h2> */}
         <div className="px-12 py-2">
@@ -218,83 +140,6 @@ export default function DashboardPage() {
   );
 }
 
-// function ApiAnalyticsChart() {
-//   const [timeRange, setTimeRange] = useState<TimeRangeFilter>("7d");
-
-//   // const {data:apiStats} = use
-
-//   return (
-//     <div className="bg-white p-6 rounded-lg shadow">
-//       <div className="w-full flex items-center justify-between mb-2">
-//         <h2 className="text-lg font-semibold">API Analytics</h2>
-//         <TimeFilterDropdown
-//           value={timeRange}
-//           setValue={(v) => {
-//             setTimeRange(v as TimeRangeFilter);
-//           }}
-//         />
-//       </div>
-//       <LineChartComponent data={} />
-//     </div>
-//   );
-// }
-
-// function EarningsChart() {
-//   const [timeRange, setTimeRange] = useState<TimeRangeFilter>("7d");
-
-//   return (
-//     <div className="bg-white p-6 rounded-lg shadow">
-//       <div className="w-full flex items-center justify-between mb-2">
-//         <h2 className="text-lg font-semibold">Earnings</h2>
-//         <TimeFilterDropdown
-//           value={timeRange}
-//           setValue={(v) => {
-//             setTimeRange(v as TimeRangeFilter);
-//           }}
-//         />
-//       </div>
-//       <DonutChartComponent />
-//     </div>
-//   );
-// }
-
-// function TimeFilterDropdown({
-//   value,
-//   setValue,
-// }: {
-//   value: TimeRangeFilter;
-//   setValue: (v: string) => void;
-// }) {
-//   return (
-//     <DropdownMenu>
-//       <DropdownMenuTrigger asChild>
-//         <Button variant="outline" className="flex items-center gap-2">
-//           <CalendarIcon className="h-4 w-4" />
-//           {value}
-//           <ChevronDownIcon className="h-4 w-4" />
-//         </Button>
-//       </DropdownMenuTrigger>
-//       <DropdownMenuContent align="end" className="w-[200px]">
-//         <DropdownMenuLabel>Time Range</DropdownMenuLabel>
-//         <DropdownMenuSeparator />
-//         <DropdownMenuRadioGroup value={value} onValueChange={setValue}>
-//           <DropdownMenuRadioItem value="1h">1 hour ago</DropdownMenuRadioItem>
-//           <DropdownMenuRadioItem value="3h">3 hours ago</DropdownMenuRadioItem>
-//           <DropdownMenuRadioItem value="6h">6 hours ago</DropdownMenuRadioItem>
-//           <DropdownMenuRadioItem value="12h">
-//             12 hours ago
-//           </DropdownMenuRadioItem>
-//           <DropdownMenuRadioItem value="24h">
-//             24 hours ago
-//           </DropdownMenuRadioItem>
-//           <DropdownMenuRadioItem value="7d">7 days ago</DropdownMenuRadioItem>
-//           <DropdownMenuRadioItem value="30d">30 days ago</DropdownMenuRadioItem>
-//           <DropdownMenuRadioItem value="90d">90 days ago</DropdownMenuRadioItem>
-//         </DropdownMenuRadioGroup>
-//       </DropdownMenuContent>
-//     </DropdownMenu>
-//   );
-// }
 const LineWrapper = ({
   selectedApiList: selectedApiList,
   apiList,

@@ -72,7 +72,7 @@ const IconDropdown = ({ session, admin }: any) => {
             <Avatar className="h-8 w-8">
               <AvatarImage src={session?.user?.image || ""} alt="User Avatar" />
               <AvatarFallback>
-                {session?.user?.name || "User Avatar"}
+                {session?.user?.name?.charAt(0) || "User Avatar"}
               </AvatarFallback>
             </Avatar>
           </Button>

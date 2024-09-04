@@ -24,8 +24,13 @@ import { cn } from "@/lib/utils";
 
 import { useNotifList } from "@/hooks/admin/reviews.query";
 
-
-const Header = ({ className = "" }: { className?: string }) => {
+const Header = ({
+  className = "",
+  name,
+}: {
+  className?: string;
+  name: string;
+}) => {
   // State to manage dropdown visibility
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
@@ -44,7 +49,9 @@ const Header = ({ className = "" }: { className?: string }) => {
     >
       {/* Left side: Dashboard */}
       <div>
-        <span className="text-lg font-bold">Dashboard</span>
+        <span className="text-lg font-bold">
+          {name ? name : "Provider Dashboard"}
+        </span>
       </div>
 
       {/* Right side: Dropdown menu */}
@@ -99,7 +106,7 @@ const IconDropdown = ({ session }: any) => {
             <Avatar className="h-8 w-8">
               <AvatarImage src={session?.user?.image || ""} alt="User Avatar" />
               <AvatarFallback>
-                {session?.user?.name || "User Avatar"}
+                {session?.user?.name?.charAt(0) || "User Avatar"}
               </AvatarFallback>
             </Avatar>
           </Button>

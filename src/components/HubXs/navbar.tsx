@@ -7,6 +7,7 @@ import { signOut } from "next-auth/react";
 import SearchApiInput from "./searchInput";
 
 import { useAuthSession } from "../auth-provider";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const Navbar = ({
   apiHub = "hub",
@@ -21,8 +22,6 @@ const Navbar = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { session, isAuthenticated } = useAuthSession();
-
-
 
   return (
     <div className="bg-white sticky top-0 z-[1000] flex flex-row justify-between items-center py-2 px-4 shadow-md">
@@ -45,8 +44,9 @@ const Navbar = ({
         </div>
 
         <div
-          className={`${isOpen ? "block" : "hidden"
-            } w-full lg:flex lg:items-center lg:w-auto`}
+          className={`${
+            isOpen ? "block" : "hidden"
+          } w-full lg:flex lg:items-center lg:w-auto`}
         >
           <div className="text-base lg:flex-grow text-black ml-4">
             <Link
@@ -80,21 +80,20 @@ const Navbar = ({
       <div className="space-x-2 flex flex-row justify-start items-center font-body text-base sm:text-lg">
         {isAuthenticated ? (
           <div className="flex items-center space-x-2">
-            {session?.user?.image && (
-
-
+            {session?.user && (
               <Link href={`dashboard/profile`}>
-
-
-                <Image
-                  src={session.user.image}
-                  alt={session.user.name || "User Avatar"}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
+                <Avatar>
+                  <AvatarImage
+                    src={"/placeholder-user.jpg"}
+                    alt={session?.user?.name?.charAt(0) || "User Avatar"}
+                  />
+                  <AvatarFallback>
+                    {session?.user?.name?.charAt(0) || "N/A"}
+                  </AvatarFallback>
+                </Avatar>
               </Link>
             )}
+
             <span className="text-black">{session?.user?.name}</span>
             <button
               onClick={() => signOut()}
