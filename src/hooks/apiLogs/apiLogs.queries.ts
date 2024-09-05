@@ -97,13 +97,15 @@ export function useApisStatsQuery({
     queryKey: ["ApiLogsStats", apiIds, timeFilter],
     queryFn: async () => {
       try {
+        console.log("endpointIds from logs stats ====================", apiIds);
+
         const response = await axios.post(
           `${ApiStatUrl}/stats/apis?duration=${timeFilter}`,
           { api_ids: apiIds }
         );
         // /endpoints
         console.log({ apiIds });
-        console.log({ data: response.data });
+        console.log("stat res ,", { data: response.data });
         // console.log("response from logs stat", response.data);
         // console.log("type response from logs stat", typeof response.data);
 

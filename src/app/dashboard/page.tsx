@@ -40,7 +40,7 @@ import { Separator } from "@/components/ui/separator";
 import MultiSelect from "@/components/addNewApi/monitazation/object";
 import { MultiValue } from "react-select";
 import TimeFilterButtons from "./apis/[id]/Analyse/timeRange";
-import { ChartFormater } from "@/utils/chartFunctions";
+import { ChartFormater, ChartFormaterApis } from "@/utils/chartFunctions";
 import { ChartData } from "./apis/[id]/Analyse/data";
 import {
   CartesianGrid,
@@ -151,13 +151,13 @@ const LineWrapper = ({
 }) => {
   console.log({ result: selectedApiList.length > 0 });
 
-  const stat =
-    selectedApiList?.length > 0
-      ? useApisStatsQuery({
-          apiIds: selectedApiList.map((option) => Number(option.value)),
-          timeFilter: timeRnageFilter,
-        })
-      : null;
+  const stat = useApisStatsQuery({
+    apiIds: selectedApiList.map((option) => Number(option.value)),
+    timeFilter: timeRnageFilter,
+  });
+  useEffect(() => {
+    console.log("stat res data", stat.data);
+  }, [stat.data]);
 
   return (
     <>
@@ -169,7 +169,7 @@ const LineWrapper = ({
       )}
       {stat?.isSuccess && (
         <LineChartComponent
-          data={ChartFormater(stat.data, apiList)}
+          data={ChartFormaterApis(stat.data, apiList)}
           // selectedEndpointList={selectedEndpointList}
         />
       )}
@@ -180,9 +180,10 @@ const LineWrapper = ({
 const LineChartComponent = ({
   data,
 }: {
-  data: ChartData[];
+  data: any[];
   // selectedEndpointList: SelectOptions;
 }) => {
+  console.log("stat res dddlll", data);
   const [TotalData, setTotalData] = useState(data);
 
   const [chartData, setChartData] = useState(
