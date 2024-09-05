@@ -3,20 +3,18 @@ import Link from "next/link";
 
 export default function Hero(): JSX.Element {
   return (
-    <div className="bg-gradient-to-r from-slate-300  to-white text-black flex justify-between items-center border-b p-6 sm:p-10">
-      <div className="max-w-lg">
-        <h1 className="font-title font-bold text-4xl sm:text-5xl">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500">
-            Discover,
-          </span>
-          <br />
+    <div className="bg-white text-black flex justify-between">
+      <div className="p-10">
+        <h1 className="font-title font-semibold text-4xl sm:text-5xl ">
+          <p className="text-mainColor">Discover ,</p>
           Share and <br />
-          Monetize your APIs
+          monetize your APIs
         </h1>
-        <p className="font-medium mt-4 mb-8 text-lg sm:text-xl">
-          The one-stop hub for developers and businesses to access cutting-edge
-          API solutions.
+        <p className="font-title font-medium my-4 ">
+          The one-stop hub for developers and businesses <br /> to access
+          cutting-edge API solutions.
         </p>
+
         <div className="flex space-x-4">
           <Link href="/hub" passHref>
             <button
@@ -37,14 +35,13 @@ export default function Hero(): JSX.Element {
         </div>
       </div>
 
-      <div className="hidden sm:block">
+      <div className="hidden sm:block self-end ">
         <Image
           src="/assets/hero.png"
           alt="API GALAXY"
-          width={350}
-          height={350}
+          width={300}
+          height={300}
           priority
-          className="transform transition-transform duration-300 hover:scale-105"
         />
       </div>
     </div>

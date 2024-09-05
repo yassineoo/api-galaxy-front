@@ -63,9 +63,9 @@ export function AuthForm({ type = "login" }: { type: string }) {
     <>
       {showModal && <Modal closeModal={setShwoModal} type={type} />}
       <Card className="w-full max-w-md">
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-2">
           <form
-            className="flex flex-col gap-4 text-black items-center p-5 py-10"
+            className="flex flex-col gap-4 text-black items-center px-5 pt-3 "
             onSubmit={onsubmit}
           >
             <div className="w-full">

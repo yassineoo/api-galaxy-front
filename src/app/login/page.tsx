@@ -1,23 +1,18 @@
-
-import { WelcomeSection } from "@/components/login/AuthProviderButton";
 import { AuthForm } from "@/components/login/AuthForm";
-import Image from "next/image";
+import { WelcomeSection } from "@/components/login/AuthProviderButton";
+import AuthSide from "../../components/login/authSide";
 
 export default function LoginPage() {
   return (
-    <div className="grid md:grid-cols-2 min-h-screen w-full">
-      <div className="bg-gray-100 dark:bg-gray-950 flex flex-col justify-center items-center gap-8 p-8">
+    <div className=" md:flex flex-row-reverse h-screen overflow-hidden ">
+      {/* Right side  */}
+      <div className="bg-gray-100 slide-in-right dark:bg-gray-950 flex w-1/2 flex-col justify-center items-center gap-8 p-8">
         <WelcomeSection welcome="Get started now" type="login" />
         <AuthForm type="login" />
       </div>
-      <div className="hidden md:block bg-gray-100 dark:bg-gray-950 relative">
-      <Image
-          src="/images/login_bg_gateway.jpg"
-          alt="Login image"
-          layout="fill"
-          objectFit="cover"
-        />
-      </div>
+      {/* Left side  */}
+
+      <AuthSide />
     </div>
   );
 }

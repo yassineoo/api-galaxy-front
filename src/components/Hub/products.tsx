@@ -32,50 +32,33 @@ const buttons = [
     buttonText: "Creators",
     option: true,
   },
+
   {
-    iconPath: "/assets/hub_assets/camera.svg",
-    buttonText: "Photography",
-    option: true,
-  },
-  {
-    iconPath: "/assets/hub_assets/dollar-sign.svg",
-    buttonText: "Low price",
-    option: true,
-  },
-  {
-    iconPath: "/assets/hub_assets/credit-card.svg",
-    buttonText: "Price range",
-    option: true,
+    iconPath: "/assets/hub_assets/layers.svg",
+    buttonText: "Sports",
+    option: false,
   },
   {
     iconPath: "/assets/hub_assets/user.svg",
     buttonText: "Creators",
     option: true,
   },
+
   {
-    iconPath: "/assets/hub_assets/camera.svg",
-    buttonText: "Photography",
-    option: true,
-  },
-  {
-    iconPath: "/assets/hub_assets/dollar-sign.svg",
-    buttonText: "Low price",
-    option: true,
-  },
-  {
-    iconPath: "/assets/hub_assets/credit-card.svg",
-    buttonText: "Price range",
-    option: true,
+    iconPath: "/assets/hub_assets/layers.svg",
+    buttonText: "Sports",
+    option: false,
   },
   {
     iconPath: "/assets/hub_assets/user.svg",
     buttonText: "Creators",
     option: true,
   },
+
   {
-    iconPath: "/assets/hub_assets/camera.svg",
-    buttonText: "Photography",
-    option: true,
+    iconPath: "/assets/hub_assets/layers.svg",
+    buttonText: "Sports",
+    option: false,
   },
 ];
 
@@ -223,11 +206,11 @@ const CategoryList = ({ categories, filter, setFilter }: any) => {
   return (
     <div>
       <h4 className="font-bold mb-4 mt-2">Categories</h4>
-      <div key={4} className="">
+      <div key={0} className="">
         <LeftBarButton
           filter={filter}
           setFilter={setFilter}
-          key={4}
+          key={0}
           iconPath={buttons[4].iconPath}
           buttonText={"All"}
           option={buttons[4].option}
@@ -235,14 +218,14 @@ const CategoryList = ({ categories, filter, setFilter }: any) => {
         />
       </div>
       {categories?.map((category: any, index: any) => (
-        <div key={index} className="">
+        <div key={index + 1} className="">
           <LeftBarButton
             filter={filter}
             setFilter={setFilter}
             key={index}
-            iconPath={buttons[index].iconPath}
+            iconPath={buttons[index + 1].iconPath}
             buttonText={category.category_name}
-            option={buttons[index].option}
+            option={buttons[index + 1].option}
             index={category.id}
           />
         </div>

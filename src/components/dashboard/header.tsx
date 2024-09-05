@@ -29,7 +29,7 @@ const Header = ({
   name,
 }: {
   className?: string;
-  name: string;
+  name: boolean;
 }) => {
   // State to manage dropdown visibility
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -50,7 +50,7 @@ const Header = ({
       {/* Left side: Dashboard */}
       <div>
         <span className="text-lg font-bold">
-          {name ? name : "Provider Dashboard"}
+          {name ? "Customer Dashboard " : "Provider Dashboard"}
         </span>
       </div>
 

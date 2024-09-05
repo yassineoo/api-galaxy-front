@@ -99,14 +99,15 @@ const ProductCard = ({
               <Button
                 onClick={likeEvent}
                 variant="ghost"
-                className="w-fit hover:bg-transparent relative size-5"
+                className="w-fit hover:bg-transparent relative "
                 disabled={!isAuthenticated}
               >
                 <Image
-                  className="max-w-full max-h-full hover:scale-110 cursor-pointer"
+                  className="md:w-7 md:h-7 hover:scale-110 cursor-pointer"
                   src={"/icons/icon_heart.png"}
                   alt="Card Image"
-                  fill
+                  width={40}
+                  height={40}
                 />
               </Button>
             ) : (
@@ -114,14 +115,15 @@ const ProductCard = ({
                 onClick={likeEvent}
                 variant="ghost"
                 size="icon"
-                className="p-0 relative size-5 hover:bg-transparent"
+                className="p-0 relative  hover:bg-transparent"
                 disabled={!isAuthenticated}
               >
                 <Image
-                  className="max-w-full max-h-full hover:scale-110 cursor-pointer"
+                  className="md:w-7 md:h-7 hover:scale-110 cursor-pointer"
                   src={"/icons/icon_outline_heart.png"}
                   alt="Card Image"
-                  fill
+                  width={40}
+                  height={40}
                 />
               </Button>
             )}

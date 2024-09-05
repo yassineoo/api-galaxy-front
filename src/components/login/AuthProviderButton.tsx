@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export function WelcomeSection({ type, welcome = "Welcome back !" }: any) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <h1 className="text-3xl font-bold">{welcome}</h1>
       <div className="grid gap-2">
         <Button
@@ -15,7 +15,7 @@ export function WelcomeSection({ type, welcome = "Welcome back !" }: any) {
           className="flex items-center justify-center gap-2"
         >
           <ChromeIcon className="h-5 w-5" />
-            {type == "register" ? "Sign up with Google" : "Login with Google"}
+          {type == "register" ? "Sign up with Google" : "Login with Google"}
         </Button>
         {/* <Button
           onClick={() => signIn("github")}
@@ -26,18 +26,17 @@ export function WelcomeSection({ type, welcome = "Welcome back !" }: any) {
 
           Login with GitHub
         </Button> */}
-
       </div>
 
       {type == "register" ? (
-        <p className="mt-4 text-base mb-1">
+        <p className="mt-2 text-base mb-1">
           Have an account ?{" "}
           <Link href="/login" className="text-blue-500 ml-3 underline">
             login
           </Link>
         </p>
       ) : (
-        <p className="mt-4 text-base mb-1">
+        <p className="mt-2 text-base ">
           {"Don't Have an account ?"}{" "}
           <Link href="/register" className="text-blue-500 ml-3 underline">
             Sign up
