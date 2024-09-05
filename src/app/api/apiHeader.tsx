@@ -37,6 +37,7 @@ const ApiHeader = ({
         <div className="text-center">
 
 
+
           <div className="text-md font-semibold text-gray-600">
             {Rating} Rating{" "}
           </div>

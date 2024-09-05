@@ -1,11 +1,13 @@
 "use client";
 
+
 import { authenticate } from "@/actions/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import { Errors } from "@/types/common.types";
+
 import {
   Card,
   CardContent,
@@ -14,8 +16,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
 
 const Logo = () => {
   return (
@@ -31,6 +35,7 @@ const Logo = () => {
 };
 
 export default function Page() {
+
   const { push } = useRouter();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -83,6 +88,7 @@ export default function Page() {
             Enter your email below to access your account
           </CardDescription>
         </CardHeader>
+
         <CardContent className="space-y-1">
           <form
             className="flex flex-col gap-2 text-black items-center "
@@ -164,6 +170,7 @@ export default function Page() {
               {isLoading ? "Loading..." : "login"}
             </Button>
             {error && <span className="text-red-500">{error}</span>}
+
           </form>
         </CardContent>
       </Card>

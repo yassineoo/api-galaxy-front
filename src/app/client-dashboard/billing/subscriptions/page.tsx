@@ -1,5 +1,8 @@
 "use client";
 
+
+import { useAuthSession } from "@/components/auth-provider";
+
 import BillingForm from "@/components/dashboard/billing/billingForm";
 import { BreadcrumbWithCustomSeparator } from "@/components/dashboard/breadcrumb";
 import Header from "@/components/dashboard/header";
@@ -8,14 +11,18 @@ import Sidebar from "@/components/dashboard/sidebar";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { useGetUserSubscriptions } from "@/hooks/EndpointsPayment/endpoints.queries";
-import { useSession } from "next-auth/react";
+
 
 const TableSubscriptions = function () {
-  const { data: session, status } = useSession();
+  const {session} = useAuthSession();
   const userId = session?.userId;
 
+  console.log("the userId is: ", userId?.toString());
   // Use the hook to fetch subscriptions for the user (client)
   const { data: subscriptions, isLoading } = useGetUserSubscriptions(userId?.toString() || "");
+  console.log("subscriptions", subscriptions);
+
+
 
   return (
     <Card>

@@ -39,6 +39,8 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
       }
     );
 
+
+
     // console.log("data login  suc", res);
 
     return res;
@@ -46,6 +48,7 @@ export const authUser = async (data: UserData, isRegister: boolean) => {
     //  console.log("data login  fali", error);
 
     throw error;
+
   }
 };
 
