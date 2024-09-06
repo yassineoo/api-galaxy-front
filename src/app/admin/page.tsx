@@ -1,21 +1,14 @@
 // DashboardPage.js
-"use client";
 import Header from "../../components/dashboard/header";
-import Sidebar from "../../components/dashboard/sidebar";
 import StatisticsBoxes from "../../components/dashboard/mainPage/stat";
 import LineChartComponent from "../../components/dashboard/linechart";
 import DonutChartComponent from "../../components/dashboard/mainPage/donutchart";
-import FilterGroup from "../../components/dashboard/mainPage/filterGroupColor";
 import { ApiSelection } from "../../components/dashboard/mainPage/apiSelcetion";
-import { useAuthSession } from "@/components/auth-provider";
 
 export default function DashboardPage() {
-  const { session } = useAuthSession();
-  console.log("session   ", session);
-
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
-      <Header />
+      <Header type="admin" />
       <StatisticsBoxes />
       <ApiSelection />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

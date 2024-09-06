@@ -41,7 +41,7 @@ const AnalysePage = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex h-full flex-col ">
-      <Header name />
+      <Header type="provider" />
 
       {(apiSelected.isLoading || endpointsList.isLoading) && (
         <div className="py-4">
@@ -87,7 +87,7 @@ const AnalysePage = ({ params }: { params: { id: string } }) => {
           </>
         )}
 
-        {logs.isError && <p>logs ERROR</p>}
+        {/* {logs.isError && <p>logs ERROR</p>} */}
         {/* <PaginationManual
           currentPage={page}
           totalPages={logs?.data?.meta?.totalPages}

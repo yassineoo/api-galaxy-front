@@ -22,14 +22,12 @@ import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
-import { useNotifList } from "@/hooks/admin/reviews.query";
-
 const Header = ({
   className = "",
-  name,
+  type,
 }: {
   className?: string;
-  name: boolean;
+  type: "customer" | "provider" | "admin";
 }) => {
   // State to manage dropdown visibility
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -40,6 +38,19 @@ const Header = ({
   };
   const { session } = useAuthSession();
 
+  let title: string;
+  switch (type) {
+    case "customer":
+      title = "Customer Dashboard";
+      break;
+    case "provider":
+      title = "Provider Dashboard";
+      break;
+    case "admin":
+      title = "Admin Dashboard";
+      break;
+  }
+
   return (
     <header
       className={cn(
@@ -49,9 +60,7 @@ const Header = ({
     >
       {/* Left side: Dashboard */}
       <div>
-        <span className="hidden md:block text-lg font-bold">
-          {name ? "Customer Dashboard " : "Provider Dashboard"}
-        </span>
+        <span className="hidden md:block text-lg font-bold">{title}</span>
       </div>
 
       {/* Right side: Dropdown menu */}

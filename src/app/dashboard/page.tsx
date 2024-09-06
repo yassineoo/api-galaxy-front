@@ -56,7 +56,7 @@ import { useApisStatsQuery } from "@/hooks/apiLogs/apiLogs.queries";
 import { useRouter } from "next/navigation";
 import { useAuthSession } from "@/components/auth-provider";
 
-interface SelectedApi {
+export interface SelectedApi {
   label: string;
   value: number;
 }
@@ -107,7 +107,7 @@ export default function DashboardPage() {
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full max-h-full overflow-y-auto">
       {/*  TODO fix name of header */}
-      <Header name />
+      <Header type="provider" />
       <StatisticsBoxes />
 
       <div className=" w-full ">

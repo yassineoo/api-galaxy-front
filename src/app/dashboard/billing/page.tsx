@@ -1,9 +1,7 @@
 // DashboardPage.js
-"use client";
 
 import BillingForm from "@/components/dashboard/billing/billingForm";
 import Header from "@/components/dashboard/header";
-import Sidebar from "@/components/dashboard/sidebar";
 
 export default function DashboardPage() {
   return (
@@ -11,7 +9,7 @@ export default function DashboardPage() {
       {/* <Sidebar activeItem="Billing" /> */}
 
       <div className="w-full h-full overflow-x-hidden">
-        <Header name />
+        <Header type="provider" />
         <BillingForm />
       </div>
     </div>
