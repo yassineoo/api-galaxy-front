@@ -18,7 +18,7 @@ const StatisticBox = ({ title, value, icon, percentage, arrowType }: any) => {
 
 const StatisticsBoxes = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-5 mx-6 text-black ">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-5 mx-6 text-black">
       <Card title="Total users" value="89,935" percentage={10.2} />
       <Card title="Total users" value="89,935" percentage={10.2} />
       <Card title="Total requests" value="23,283.5" percentage={0.49} />

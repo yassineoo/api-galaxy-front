@@ -3,10 +3,7 @@
 
 import { useAuthSession } from "@/components/auth-provider";
 
-import BillingForm from "@/components/dashboard/billing/billingForm";
 import { BreadcrumbWithCustomSeparator } from "@/components/dashboard/breadcrumb";
-import Header from "@/components/dashboard/header";
-import Sidebar from "@/components/dashboard/sidebar";
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";

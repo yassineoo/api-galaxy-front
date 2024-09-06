@@ -32,9 +32,9 @@ export default function TimeFilterButtons({
   name: string;
 }) {
   return (
-    <div className="flex  justify-start gap-6 my-3 items-center">
-      <h3 className="font-bold "> {name}</h3>
-      <div className="flex rounded-s-none">
+    <div className="flex w-full flex-col lg:flex-row justify-start gap-2 lg:gap-4 my-3 items-start lg:items-center">
+      <h3 className="font-bold"> {name}</h3>
+      <div className="flex flex-wrap flex-1 justify-center lg:justify-start  rounded-s-none w-full max-w-full ">
         {timeFilter.map((option) => (
           <TimeFilterButton
             active={timeSelected}

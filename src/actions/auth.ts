@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction } from "react";
 import { ApiAuth } from "@/utils/constants";
 
 export const placeholderApi = axios.create({
-  baseURL: ApiAuth,
+  baseURL: "http://localhost:7000"//ApiAuth,
 });
 
 export type UserData = {

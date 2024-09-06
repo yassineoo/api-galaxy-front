@@ -5,12 +5,22 @@ import {
   LogStat,
   TimeRangeFilter,
 } from "@/app/dashboard/apis/[id]/Analyse/interfaces";
+import { useAuthSession } from "@/components/auth-provider";
 import { ApiStatUrl, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 
 export const useApiLogsList = (data: any) => {
-  return useQuery<LogStat[]>({
+  return useQuery<{
+    logs: any[],
+    meta: {
+      totalItems: number,
+      itemCount: number,
+      itemsPerPage: number,
+      totalPages: number,
+      currentPage: number
+    }
+  }>({
     queryKey: ["ApiLogs", data.apiId, data.page, data.limit],
     queryFn: async () => {
       const response = await axios.get(`${ApiUrl}/apis-logs/${data?.apiId}`, {
@@ -18,7 +28,7 @@ export const useApiLogsList = (data: any) => {
       }); // Adjust the endpoint
       // console.log("response from logs", response.data);
       // console.log("type  response from logs", typeof response.data);
-
+      console.log({ response: response, data: response.data })
       return response.data;
     },
   });
@@ -51,6 +61,7 @@ export const useEndpointsLogsStats = ({
   endpointIds: number[];
   timeFilter: TimeRangeFilter;
 }) => {
+  const { session } = useAuthSession()
   return useQuery<ChartData[]>({
     queryKey: ["EndpointsLogsStats", endpointIds, timeFilter], // Adjust the queryKey
     queryFn: async () => {
@@ -65,8 +76,13 @@ export const useEndpointsLogsStats = ({
       // });
       try {
         const response = await axios.post(
-          `${ApiStatUrl}/stats/endpoints?duration=${timeFilter}`,
-          { endpoint_ids: endpointIds }
+          `http://localhost:7001/stats/endpoints?duration=${timeFilter}`,
+          { endpoint_ids: endpointIds },
+          {
+            headers: {
+              Authorization: `Bearer ${session?.token}`
+            }
+          }
         );
         // /endpoints
         console.log({ endpointIds });
@@ -93,6 +109,7 @@ export function useApisStatsQuery({
   apiIds: number[];
   timeFilter: TimeRangeFilter;
 }) {
+  const { session } = useAuthSession()
   return useQuery<ChartData[]>({
     queryKey: ["ApiLogsStats", apiIds, timeFilter],
     queryFn: async () => {
@@ -100,8 +117,13 @@ export function useApisStatsQuery({
         console.log("endpointIds from logs stats ====================", apiIds);
 
         const response = await axios.post(
-          `${ApiStatUrl}/stats/apis?duration=${timeFilter}`,
-          { api_ids: apiIds }
+          `http://localhost:7001/stats/apis?duration=${timeFilter}`,
+          { api_ids: apiIds },
+          {
+            headers: {
+              Authorization: `Bearer ${session?.token}`
+            }
+          }
         );
         // /endpoints
         console.log({ apiIds });
@@ -112,6 +134,7 @@ export function useApisStatsQuery({
         return response.data;
       } catch (e) {
         if (e instanceof AxiosError) {
+          console.log({ e: e })
           console.log(e.response?.data);
           throw e;
         }

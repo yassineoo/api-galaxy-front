@@ -12,6 +12,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { Errors } from "@/types/common.types";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 export function AuthForm({ type = "login" }: { type: string }) {
   const { push } = useRouter();
@@ -69,7 +70,10 @@ export function AuthForm({ type = "login" }: { type: string }) {
             onSubmit={onsubmit}
           >
             <div className="w-full">
-              <Label className="text-sm font-semibold" htmlFor="email">
+              <Label
+                className="text-sm font-semibold dark:text-white"
+                htmlFor="email"
+              >
                 Email
                 <Input
                   id="email"
@@ -87,7 +91,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
             </div>
             {type == "register" && (
               <div className="w-full relative">
-                <Label className="text-sm font-semibold">
+                <Label className="text-sm font-semibold dark:text-white">
                   Username
                   <div className="flex items-center">
                     <Input
@@ -107,7 +111,10 @@ export function AuthForm({ type = "login" }: { type: string }) {
             )}
 
             <div className="w-full relative">
-              <Label className="text-sm font-semibold" htmlFor="password">
+              <Label
+                className="text-sm font-semibold dark:text-white"
+                htmlFor="password"
+              >
                 Password
                 <div className="flex items-center">
                   <Input
@@ -124,23 +131,25 @@ export function AuthForm({ type = "login" }: { type: string }) {
                   />
                   <button
                     type="button"
-                    className="absolute right-2 top-9"
+                    className="absolute right-2 h-full my-auto"
                     onClick={togglePasswordVisibility}
                   >
                     {showPassword ? (
-                      <Image
-                        src="/icons/eye.svg"
-                        alt="Eye Icon"
-                        width={5}
-                        height={5}
-                      />
+                      <EyeIcon className="size-5" />
                     ) : (
-                      <Image
-                        src="/icons/eye-off.svg"
-                        width={5}
-                        height={5}
-                        alt="Eye Off Icon"
-                      />
+                      // <Image
+                      // src="/icons/eye.svg"
+                      // alt="Eye Icon"
+                      // width={5}
+                      // height={5}
+                      // />
+                      <EyeOffIcon className="size-5" />
+                      // <Image
+                      // src="/icons/eye-off.svg"
+                      // width={5}
+                      // height={5}
+                      // alt="Eye Off Icon"
+                      // />
                     )}
                   </button>
                 </div>
@@ -151,7 +160,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
             </div>
             {type == "register" && (
               <div className="w-full relative">
-                <Label className="text-sm font-semibold">
+                <Label className="text-sm font-semibold dark:text-white">
                   Confirm Password
                   <Input
                     type={showPassword ? "text" : "password"}
@@ -167,7 +176,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
               </div>
             )}
             {type == "login" && (
-              <span className="self-start text-sm">
+              <span className="self-start text-sm dark:text-white">
                 you forgot password ?{" "}
                 <a className="text-sm font-bold underline" href="/forgotPass">
                   click here
@@ -175,7 +184,7 @@ export function AuthForm({ type = "login" }: { type: string }) {
               </span>
             )}
             <Button
-              className="w-full text-center py-2  rounded-md font-semibold"
+              className="w-full text-center py-2  rounded-md text-base font-semibold"
               type="submit"
             >
               {isLoading ? "Loading..." : type}

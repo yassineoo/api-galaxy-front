@@ -4,10 +4,13 @@ const Card = ({ title, value, percentage }: any) => {
   const trend = percentage > 0 ? "text-green-500" : "text-red-500";
 
   return (
-    <div className="bg-white p-5 rounded-lg shadow ">
+    <div className="bg-white p-5 rounded-lg shadow w-full">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="text-gray-400 text-sm">{title}</p>
+        <div className="w-full">
+          <p className="flex flex-col lg:flex-row items-start w-full justify-between text-gray-400 text-sm">
+            <span>{title}</span>
+            <span className={trend}>{Math.abs(percentage)}%</span>
+          </p>
           <p className="text-2xl font-semibold">{value}</p>
         </div>
         <div className={`${trend} flex items-center`}>
@@ -20,7 +23,6 @@ const Card = ({ title, value, percentage }: any) => {
               {/* Down arrow SVG here */}
             </svg>
           )}
-          <span>{Math.abs(percentage)}%</span>
         </div>
       </div>
     </div>

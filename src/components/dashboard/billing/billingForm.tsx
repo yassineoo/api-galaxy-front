@@ -7,10 +7,8 @@ const BillingForm = () => {
   const [page, setPage] = useState("paymentMethode");
 
   return (
-
-    <div className="flex w-full flex-col items-center justify-start h-screen min-h-screen bg-gray-100 dark:bg-transparent">
+    <div className="flex w-full flex-col items-center justify-start h-screen min-h-screen bg-gray-100 dark:bg-transparent overflow-x-hidden overflow-y-hidden">
       <div className="w-full ml-4 mt-4">
-
         <h1 className="text-xl font-bold">Billing Information</h1>
       </div>
       <div
@@ -65,7 +63,7 @@ const MethodeForm: React.FC<MethodeFormProps> = ({ setPage }) => {
       action="http://localhost:5000/payment-service/stripe-subscription/create-checkout-session"
       method="POST"
     >
-         <fieldset className="mb-4">
+      <fieldset className="mb-4">
         {/* Grouped Radio Buttons */}
         <div className="space-y-4">
           {/* Option 1 */}
@@ -104,8 +102,6 @@ const MethodeForm: React.FC<MethodeFormProps> = ({ setPage }) => {
               <img className="w-14 lg:w-20" src="/images/paypal.png" />
             </label>
           </div>
-
-        
         </div>
       </fieldset>
 

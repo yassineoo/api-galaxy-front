@@ -62,7 +62,6 @@ interface SelectedApi {
 }
 
 export default function DashboardPage() {
-  const [search, setSearch] = useState("");
   // const { data: searchApiResult, status } = useSearchApiList({ search });
   const [selectedApiList, setSelectedApiList] = useState<
     MultiValue<SelectedApi>
@@ -83,6 +82,7 @@ export default function DashboardPage() {
       router.push("/verifyOTP");
     }
   }, [session]);
+
   const { data: apiList, status: apiListLoadingStatus } = useApiByUserId(1);
   let options: SelectOptions = [];
   if (apiListLoadingStatus === "success") {
@@ -90,10 +90,8 @@ export default function DashboardPage() {
       value: api.id,
       label: api.name,
     }));
-
-    console.log({ options });
   }
-
+  console.log({ apiList });
   function removeApi(apiIdToRemove: number) {
     setSelectedApiList(
       selectedApiList.filter((api) => Number(api.value) !== apiIdToRemove)
@@ -108,12 +106,13 @@ export default function DashboardPage() {
 
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full max-h-full overflow-y-auto">
-      <Header />
+      {/*  TODO fix name of header */}
+      <Header name />
       <StatisticsBoxes />
 
       <div className=" w-full ">
         {/* <h2 className="px-12 text-lg font-bold py-2  ">{api.Name} </h2> */}
-        <div className="px-12 py-2">
+        <div className="px-12 py-2 flex flex-col gap-4">
           <MultiSelect
             options={options}
             selectedValues={selectedApiList}
@@ -141,7 +140,7 @@ export default function DashboardPage() {
 }
 
 const LineWrapper = ({
-  selectedApiList: selectedApiList,
+  selectedApiList,
   apiList,
   timeRnageFilter,
 }: {
@@ -149,19 +148,13 @@ const LineWrapper = ({
   apiList: Api[];
   timeRnageFilter: TimeRangeFilter;
 }) => {
-  console.log({ result: selectedApiList.length > 0 });
-
   const stat = useApisStatsQuery({
     apiIds: selectedApiList.map((option) => Number(option.value)),
     timeFilter: timeRnageFilter,
   });
-  useEffect(() => {
-    console.log("stat res data", stat.data);
-  }, [stat.data]);
-
   return (
     <>
-      {stat === null && <EmptyLineChartComponent />}
+      {(stat?.isError || stat === null) && <EmptyLineChartComponent />}
       {stat?.isLoading && (
         <div className="w-full h-[300px] grid place-content-center">
           <Loader2 className="size-10 animate-spin" />
@@ -169,7 +162,7 @@ const LineWrapper = ({
       )}
       {stat?.isSuccess && (
         <LineChartComponent
-          data={ChartFormaterApis(stat.data, apiList)}
+          data={ChartFormaterApis(stat.data, apiList)!}
           // selectedEndpointList={selectedEndpointList}
         />
       )}
@@ -320,7 +313,7 @@ const LineChartComponent = ({
     setChartData(data as any);
   }, [TotalData, metrics]);
   return (
-    <div className="w-full mb-10">
+    <div className="w-full flex flex-col gap-6 mb-10">
       <div className="flex justify-center gap-6 items-center mb-8">
         <AnlyseButtonType
           metrics={metrics}
@@ -377,7 +370,7 @@ const LineChartComponent = ({
 
 const EmptyLineChartComponent = ({}: any) => {
   return (
-    <div className="w-full ">
+    <div className="w-full flex flex-col gap-6">
       <div className="flex justify-center gap-6 items-center mb-1">
         <AnlyseButtonType
           metrics=""

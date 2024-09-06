@@ -4,7 +4,7 @@ import { Api } from "@/app/dashboard/apis/[id]/Analyse/api.interface";
 import { ApiAuth, ApiUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { baseApiUrl, getUserApis, getUserFollowings } from "@/actions/api";
 import { basedApiUrl, getAPIRating } from "@/actions/api";
 import { getInactiveAPI } from "@/actions/admin";
@@ -115,9 +115,16 @@ export const useApiById = (apiId: number) => {
   return useQuery<Api>({
     queryKey: ["api", apiId],
     queryFn: async () => {
-      const response = await axios.get(`${ApiUrl}/apis/${apiId}`); // Adjust the endpoint
+      try {
+        const response = await axios.get(`http://localhost:9000/apis/${apiId}`); // Adjust the endpoint
 
-      return response.data;
+        return response.data;
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          console.log({ e, response: e.response, data: e.response?.data })
+        }
+        throw e
+      }
     },
   });
 };

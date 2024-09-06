@@ -39,6 +39,7 @@ const MultiSelect = ({
 }) => {
   return (
     <Select
+      className="text-black"
       isMulti
       options={options}
       value={selectedValues}

@@ -25,7 +25,7 @@ export default function Settings() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full">
-          <SettingsIcon className="h-6 w-6" />
+          <SettingsIcon className="size-6" />
           <span className="sr-only">Settings</span>
         </Button>
       </DropdownMenuTrigger>
