@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth/next";
-import { NextAuthOptions, User } from "next-auth";
+import { NextAuthOptions, Role, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialProvider from "next-auth/providers/credentials";
 import { UserData, authUser, oauthUser } from "@/actions/auth";
@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: 60 * 60 * 10,//10hr
   },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET!,
@@ -120,7 +120,7 @@ export const authOptions: NextAuthOptions = {
 
       session.userId = token.userId as number;
       session.twoFactorEnabled = token.twoFactorEnabled as boolean;
-      session.role = token.role as string;
+      session.role = token.role as Role;
       // console.log("session---", session);
 
       return session;

@@ -43,13 +43,13 @@ const Header = ({
   return (
     <header
       className={cn(
-        "bg-white w-full   dark:bg-slate-900  p-4 flex justify-between 2xl:justify-around items-center",
+        "bg-white w-full dark:bg-slate-900  p-4 flex justify-between 2xl:justify-between  items-center",
         className
       )}
     >
       {/* Left side: Dashboard */}
       <div>
-        <span className="text-lg font-bold">
+        <span className="hidden md:block text-lg font-bold">
           {name ? "Customer Dashboard " : "Provider Dashboard"}
         </span>
       </div>
@@ -100,10 +100,10 @@ const IconDropdown = ({ session }: any) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="ml-4 relative flex justify-center items-center gap-6">
-          {session?.user?.name}
+        <div className="relative flex justify-center items-center gap-3">
+          <p className="hidden md:block">{session?.user?.name}</p>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-            <Avatar className="h-8 w-8">
+            <Avatar className="size-8">
               <AvatarImage src={session?.user?.image || ""} alt="User Avatar" />
               <AvatarFallback>
                 {session?.user?.name?.charAt(0) || "User Avatar"}

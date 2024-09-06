@@ -27,6 +27,7 @@ import { useApiHealthCheakList } from "@/hooks/HealthCheak/apiHealthCheak.querie
 const AnalysePage = ({ params }: { params: { id: string } }) => {
   const id = Number(params.id);
   const apiSelected = useApiById(id);
+  console.log({ apiSelected });
   const endpointsList = useApiEndpointsList(id);
   // if (endpointsList.isSuccess) console.log(endpointsList.data);
   const [page, setPage] = useState(1);
@@ -40,13 +41,17 @@ const AnalysePage = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex h-full flex-col ">
-      <Header />
+      <Header name />
 
-      {apiSelected.isLoading && <LoadingPage />}
+      {(apiSelected.isLoading || endpointsList.isLoading) && (
+        <div className="py-4">
+          <LoadingPage />
+        </div>
+      )}
       {apiSelected.isError && <NotFoundPage />}
       {apiSelected.isSuccess && (
         <div className="w-full flex-col ">
-          {endpointsList.isLoading && <p>loading ...</p>}
+          {/* {endpointsList.isLoading && <p>loading ...</p>} */}
 
           {endpointsList.isSuccess && (
             <Statis api={apiSelected.data} endpointsList={endpointsList.data} />
@@ -60,7 +65,7 @@ const AnalysePage = ({ params }: { params: { id: string } }) => {
         {logs.isSuccess && (
           <>
             <div className="flex justify-start gap-6 items-center">
-              <h3 className="font-bold m-4"> Time Range</h3>
+              <h3 className="font-bold mx-4 my-0">Time Range</h3>
 
               <SelectButton
                 handleSelectionChange={changeLogsFilter}
@@ -69,7 +74,7 @@ const AnalysePage = ({ params }: { params: { id: string } }) => {
                 items={timeFilter}
               />
             </div>
-            {/* <LogsTable
+            <LogsTable
               columns={Logscolumns}
               data={logs.data?.logs.map((log: any) => {
                 return {
@@ -78,7 +83,7 @@ const AnalysePage = ({ params }: { params: { id: string } }) => {
                   EndpointName: log.Endpoint?.Name,
                 };
               })}
-            /> */}
+            />
           </>
         )}
 
@@ -90,15 +95,15 @@ const AnalysePage = ({ params }: { params: { id: string } }) => {
         /> */}
       </div>
 
-      <div className="px-12 py-10 ">
-        {HealthCheck?.isLoading && (
+      {/* <div className="px-12 py-10 "> */}
+      {/* {HealthCheck?.isLoading && (
           <SkeletonTable
             name={"HealthCheck List"}
             columns={HealthCheckcolumns}
           />
-        )}
-        {/* TODO */}
-        {/* {HealthCheck?.isSuccess && (
+        )} */}
+      {/* TODO */}
+      {/* {HealthCheck?.isSuccess && (
           <>
             <div className="flex justify-start gap-6 items-center"></div>
             <HealthCheckTable
@@ -112,14 +117,14 @@ const AnalysePage = ({ params }: { params: { id: string } }) => {
           </>
         )} */}
 
-        {HealthCheck?.isError && <p>HealthCheck ERROR</p>}
-        {/* TODO */}
-        {/* <PaginationManual
+      {/* {HealthCheck?.isError && <p>HealthCheck ERROR</p>} */}
+      {/* TODO */}
+      {/* <PaginationManual
           currentPage={page}
           totalPages={HealthCheck?.data?.meta?.totalPages}
           onPageChange={setPage}
         /> */}
-      </div>
+      {/* </div> */}
     </div>
   );
 };

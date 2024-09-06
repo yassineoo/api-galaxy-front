@@ -225,6 +225,7 @@ const LineChartComponent = ({
     // Update state with the calculated values
     setStatResult([totalCalls, averageErrors, averageLatency]);
   }, [TotalData]);
+
   useEffect(() => {
     let data;
     if (metrics === "Calls") {
@@ -275,9 +276,10 @@ const LineChartComponent = ({
 
     setChartData(data as any);
   }, [TotalData, metrics]);
+
   return (
-    <div className="w-full ">
-      <div className="flex justify-center gap-6 items-center mb-8">
+    <div className="w-full">
+      <div className="flex flex-col md:flex-row justify-center gap-6 items-center mb-8">
         <AnlyseButtonType
           metrics={metrics}
           setMetrics={setMetrics}
@@ -333,8 +335,8 @@ const LineChartComponent = ({
 
 const EmptyLineChartComponent = ({}: any) => {
   return (
-    <div className="w-full ">
-      <div className="flex justify-center gap-6 items-center mb-1">
+    <div className="w-full flex flex-col gap-6">
+      <div className="flex w-full flex-col md:flex-row justify-center gap-4 md:gap-6 items-center mb-1">
         <AnlyseButtonType
           metrics=""
           setMetrics={() => {}}
@@ -360,18 +362,20 @@ const EmptyLineChartComponent = ({}: any) => {
           unite=" ms"
         />
       </div>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart
-          data={[{ name: "No Data", "No Data": 0 }]}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-        </LineChart>
-      </ResponsiveContainer>
+      <div className="max-w-full w-full mx-auto pr-10">
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={[{ name: "No Data", "No Data": 0 }]}
+            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };
@@ -386,7 +390,7 @@ const AnlyseButtonType = ({
 }: any) => {
   return (
     <Button
-      className={`w-1/3 flex flex-col h-20   text-black border-2 hover:bg-blue-200" ${
+      className={`w-full md:w-1/3 flex flex-col h-20   text-black border-2 hover:bg-blue-200" ${
         metrics === type ? "bg-blue-200" : "bg-slate-100"
       }`}
       onClick={() => {

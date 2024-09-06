@@ -5,6 +5,12 @@ declare module "next-auth" {
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
 
+  enum Role {
+    USER_CLIENT = "userClient",
+    API_CLIENT = "APIClient",
+    ADMIN = "admin"
+  }
+
   interface Session {
     name: string;
     email: string;
@@ -14,7 +20,7 @@ declare module "next-auth" {
     verified: boolean;
     token: string;
     twoFactorEnabled: boolean;
-    role: string;
+    role: Role;
     // isVerified: boolean;
     is2faAuthenticated: boolean;
     //isVerified: false;
@@ -27,6 +33,6 @@ declare module "next-auth" {
     token: string;
     expiry: string;
     twoFactorEnabled: boolean;
-    role: string;
+    role: Role;
   }
 }

@@ -25,7 +25,7 @@ export default function Notifications() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full">
-          <BellIcon className="h-6 w-6" />
+          <BellIcon className="size-6" />
           <span className="sr-only">Notifications</span>
         </Button>
       </DropdownMenuTrigger>
@@ -46,7 +46,7 @@ export default function Notifications() {
             )}
           </CardHeader>
           <CardContent className="py-4">
-            {isSuccess && data?.length > 0 && (
+            {isSuccess && data?.length > 0 ? (
               <div className="space-y-4 max-h-[300px] overflow-y-auto">
                 {data.slice(0, 4).map((notification: any) => (
                   <div key={notification.id} className="flex items-start gap-4">
@@ -69,6 +69,10 @@ export default function Notifications() {
                   </div>
                 ))}
               </div>
+            ) : (
+              <p className="text-sm text-muted-foreground w-full h-10 grid place-content-center">
+                No Notifications
+              </p>
             )}
           </CardContent>
         </Card>

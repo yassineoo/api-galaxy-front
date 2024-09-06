@@ -1,4 +1,3 @@
-import Header from "@/components/dashboard/header";
 import { ReactNode } from "react";
 
 export default async function InboxLayout({
