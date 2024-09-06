@@ -1,6 +1,6 @@
 import AdminSidebar from "@/components/admin/adminSidebar";
 import { getCurrentUser } from "@/lib/session";
-import { Role } from "next-auth";
+import { Role } from "@/utils/constants";
 import { redirect } from "next/navigation";
 
 // SERVER COMPONENT

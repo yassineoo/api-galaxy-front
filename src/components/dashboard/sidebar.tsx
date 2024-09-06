@@ -250,7 +250,7 @@ export default function Sidebar() {
 }
 
 function AppLogo() {
-  return <img className="absolute top-2 left-2 w-10" src="/logos/logo.svg" />;
+  return <img className="absolute top-2 left-2 w-6" src="/logos/logo.svg" />;
 }
 const Logo = () => {
   const { isOpen, open, close } = useSidebar();
@@ -265,7 +265,7 @@ const Logo = () => {
       className={`flex items-center w-full  justify-center md:justify-between pt-2 md:pt-3 md:px-4 transform md:transform-none
          `}
     >
-      {isOpen && <img className="size-10" src="/logos/logo.svg" />}
+      {isOpen && <img className="w-12" src="/logos/logo.svg" />}
 
       <Button variant="ghost" size="icon" onClick={toggleSidebar}>
         <MenuIcon className="size-6" />
@@ -293,12 +293,7 @@ const Menu = ({ apiId, maApisList, activeItem, activeChildName }: any) => {
 
   return (
     <div className="flex flex-col flex-1 h-full pt-6 text-sm">
-      <div
-        className={cn(
-          "flex flex-col h-full overflow-y-auto ",
-          isOpen && "h-44"
-        )}
-      >
+      <div className="flex flex-col  ">
         {menuItems.map((item: any) => (
           <RegularMenuItem
             key={item.ID}
@@ -369,8 +364,8 @@ const RegularMenuItem = ({
     >
       <Link
         href={item.url}
-        className={`w-full pl-4 flex items-center gap-2 py-3 cursor-pointer hover:bg-zinc-800  rounded-r-3xl ${
-          isActive ? "bg-orangePure hover:bg-orangePure" : ""
+        className={`w-full pl-4 flex items-center gap-2 py-3 cursor-pointer   rounded-r-3xl ${
+          isActive ? "bg-orangePure hover:bg-orangePure" : "hover:bg-zinc-800"
         }`}
         onClick={() => onClick(item.ID)}
       >
@@ -398,13 +393,12 @@ const RegularMenuItem = ({
                 className={`flex items-center gap-2  w-full text-sm group text-gray-400 cursor-pointer md:pl-7 pl-0`}
               >
                 {child.icon && (
-                  <img
-                    className={`w-5 text-white p-2 group-hover:bg-zinc-800 ${
+                  <child.icon
+                    className={` text-white   ${
                       activeChild == child.url
-                        ? "bg-orangePure hover:bg-orangePure w-9 border-1 border-orangePure rounded-xl"
-                        : "w-9 border-1 rounded-xl"
+                        ? "bg-orangePure hover:bg-orangePure w-9 border-1 border-orangePure rounded-full"
+                        : "w-9 border-1 rounded-xl group-hover:bg-zinc-800"
                     }`}
-                    src={child.icon}
                   />
                 )}
                 {isOpen && <div className="">{child.name}</div>}

@@ -5,12 +5,6 @@ declare module "next-auth" {
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
 
-  enum Role {
-    USER_CLIENT = "userClient",
-    API_CLIENT = "APIClient",
-    ADMIN = "admin"
-  }
-
   interface Session {
     name: string;
     email: string;
