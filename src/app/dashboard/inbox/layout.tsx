@@ -8,7 +8,7 @@ export default async function InboxLayout({
 }) {
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col h-full relative overflow-y-hidden">
-      <Header />
+      <Header type="provider" />
       <div className="h-full max-h-full relative ">{children}</div>
     </div>
   );

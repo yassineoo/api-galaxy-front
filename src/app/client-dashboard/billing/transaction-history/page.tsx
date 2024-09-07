@@ -1,11 +1,6 @@
 // DashboardPage.js
 "use client";
 
-import Header from "@/components/dashboard/header";
-import Sidebar from "@/components/dashboard/sidebar";
-
-import HistoryBody from "@/components/dashboard/billing/historyBody";
-
 import { useAuthSession } from "@/components/auth-provider";
 import {
   Card,

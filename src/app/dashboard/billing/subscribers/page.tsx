@@ -1,6 +1,7 @@
 // DashboardPage.js
 "use client";
 
+import { useAuthSession } from "@/components/auth-provider";
 import Header from "@/components/dashboard/header";
 
 import {
@@ -22,7 +23,7 @@ import { useGetSubscribersForProvider } from "@/hooks/EndpointsPayment/endpoints
 import { useSession } from "next-auth/react";
 
 const TableSubscribers = function () {
-  const { data: session, status } = useSession();
+  const { session } = useAuthSession();
   const userId = session?.userId;
 
   // Use the hook to fetch subscribers for the provider
@@ -75,7 +76,7 @@ const TableSubscribers = function () {
 export default function DashboardPage() {
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full ">
-      <Header />
+      <Header type="provider" />
 
       <TableSubscribers />
     </div>

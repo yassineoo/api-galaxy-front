@@ -18,7 +18,7 @@ const AddApiPage = ({ params }: any) => {
       {apiSelceted.isError && <NotFoundPage />}
       {apiSelceted.isSuccess && (
         <div className="w-full">
-          <Header />
+          <Header type="provider" />
 
           <ApiConfigTabs api={apiSelceted.data} />
         </div>
