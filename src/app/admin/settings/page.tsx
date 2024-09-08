@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useQueryClient } from "@tanstack/react-query";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,7 +23,6 @@ import {
   publishAnAPI,
 } from "@/actions/admin";
 import { useAuthSession } from "@/components/auth-provider";
-// import { useSession } from "next-auth/react";
 
 export default function Settings() {
   const InactiveAPIS = useInactiveAPI();
@@ -37,9 +36,20 @@ export default function Settings() {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState("");
   const [success4, setSuccess4] = useState(false);
-  // const { data: session } = useSession();
   const { session } = useAuthSession();
-  // handle earning update
+
+  useEffect(() => {
+    setLoading(true);
+    getSettings()
+      .then((data) => {
+        setEarningPercentage(data.earning_percentage);
+        setTermsAndConditions(data.termsAndConditions);
+        setPrivacyAndPolicy(data.privacyAndPolicy);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
   const handleEarning = async () => {
     try {
       await updateEarning_pourcentage(
@@ -52,7 +62,6 @@ export default function Settings() {
     } catch (e) {}
   };
 
-  // handle terms and conditions update
   const handleTermsAndConditions = async () => {
     try {
       await updateTermsAndConditions(
@@ -65,7 +74,6 @@ export default function Settings() {
     } catch (e) {}
   };
 
-  // handle privacy and policy update
   const handlePrivacyAndPolicy = async () => {
     try {
       await updatePrivacyAndPolicy(
@@ -82,7 +90,6 @@ export default function Settings() {
     try {
       if (!selected) return;
       await publishAnAPI(+selected);
-      // revalidate userInactiveAPI to get new inactive list
       queryClient.refetchQueries({ queryKey: ["inactiveAPI"] });
       setSuccess4(true);
       setTimeout(() => setSuccess4(false), 2000);
@@ -91,120 +98,133 @@ export default function Settings() {
     }
   };
 
-  useEffect(() => {
-    setLoading(true);
-    getSettings()
-      .then((data) => {
-        setEarningPercentage(data.earning_percentage);
-        setTermsAndConditions(data.termsAndConditions);
-        setPrivacyAndPolicy(data.privacyAndPolicy);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
   return (
-    <Tabs defaultValue="settings">
-      <TabsContent value="settings">
+    <Tabs defaultValue="earning">
+      <TabsList className="mb-4">
+        <TabsTrigger value="earning">Earning Percentage</TabsTrigger>
+        <TabsTrigger value="terms">Terms & Conditions</TabsTrigger>
+        <TabsTrigger value="privacy">Privacy Policy</TabsTrigger>
+        <TabsTrigger value="api">API Approval</TabsTrigger>
+      </TabsList>
+
+      {/* Earning Percentage Tab */}
+      <TabsContent value="earning">
         <Card>
           <CardHeader>
-            <CardTitle>Admin Settings</CardTitle>
+            <CardTitle>Update Earning Percentage</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="earning-percentage">
-                Update Earning Percentage
-              </Label>
-              <div className="flex gap-2 items-center">
-                {loading ? (
-                  <Skeleton />
-                ) : (
-                  <Input
-                    id="earning-percentage"
-                    value={earningPercentage}
-                    type="number"
-                    className="outline-none"
-                    placeholder="Enter new percentage %"
-                    onChange={(e) => setEarningPercentage(+e.target.value)}
-                  />
-                )}
-
-                <Button onClick={handleEarning} className="">
-                  update
-                </Button>
-                {success1 && (
-                  <span className="block text-green-500 font-semibold">
-                    Earning percentage will be updated soon
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="terms-conditions">
-                Update Terms and Conditions
-              </Label>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="earning-percentage">Earning Percentage (%)</Label>
               {loading ? (
                 <Skeleton />
               ) : (
-                <Textarea
-                  id="terms-conditions"
-                  placeholder="Enter new terms and conditions"
-                  className="min-h-[100px] outline-none"
-                  value={termsAndConditions}
-                  onChange={(e) => setTermsAndConditions(e.target.value)}
+                <Input
+                  id="earning-percentage"
+                  value={earningPercentage}
+                  type="number"
+                  className="w-32"
+                  placeholder="Enter percentage"
+                  onChange={(e) => setEarningPercentage(+e.target.value)}
                 />
               )}
+              <Button onClick={handleEarning}>Update</Button>
+            </div>
+            {success1 && (
+              <span className="text-green-500 font-semibold">
+                Earning percentage updated successfully!
+              </span>
+            )}
+          </CardContent>
+        </Card>
+      </TabsContent>
 
-              <Button onClick={handleTermsAndConditions}>update</Button>
-              {success2 && (
-                <span className="block text-green-500 font-semibold">
-                  terms and conditions are updated successufully
-                </span>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="privacy-policy">Update Privacy Policy</Label>
-              {loading ? (
-                <Skeleton />
-              ) : (
-                <Textarea
-                  id="terms-conditions"
-                  placeholder="Enter new terms and conditions"
-                  className="min-h-[100px] outline-none"
-                  value={termsAndConditions}
-                  onChange={(e) => setTermsAndConditions(e.target.value)}
-                />
-              )}
+      {/* Terms and Conditions Tab */}
+      <TabsContent value="terms">
+        <Card>
+          <CardHeader>
+            <CardTitle>Update Terms and Conditions</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Label htmlFor="terms-conditions">Terms and Conditions</Label>
+            {loading ? (
+              <Skeleton />
+            ) : (
+              <Textarea
+                id="terms-conditions"
+                value={termsAndConditions}
+                placeholder="Enter new terms"
+                className="min-h-[100px]"
+                onChange={(e) => setTermsAndConditions(e.target.value)}
+              />
+            )}
+            <Button onClick={handleTermsAndConditions}>Update</Button>
+            {success2 && (
+              <span className="text-green-500 font-semibold">
+                Terms and conditions updated successfully!
+              </span>
+            )}
+          </CardContent>
+        </Card>
+      </TabsContent>
 
-              <Button onClick={handlePrivacyAndPolicy}>update</Button>
-              {success3 && (
-                <span className="block text-green-500 font-semibold">
-                  privacy and policy rules are updated successufully
-                </span>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="api-approval">API Approval Notification</Label>
-              <Select onValueChange={(e) => setSelected(e)}>
-                <SelectTrigger id="api-approval">
-                  <SelectValue placeholder="Select API" />
-                </SelectTrigger>
-                <SelectContent>
-                  {InactiveAPIS.isSuccess
-                    ? InactiveAPIS.data.map((api: any) => (
-                        <SelectItem key={api.id} value={api.id}>
-                          {api.name}
-                        </SelectItem>
-                      ))
-                    : null}
-                </SelectContent>
-              </Select>
-              {success4 && (
-                <span className="block text-green-500 font-semibold">
-                  your api has been successufully published{" "}
-                </span>
-              )}
-              <Button onClick={publishanAPI}>publish</Button>
-            </div>
+      {/* Privacy Policy Tab */}
+      <TabsContent value="privacy">
+        <Card>
+          <CardHeader>
+            <CardTitle>Update Privacy Policy</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Label htmlFor="privacy-policy">Privacy Policy</Label>
+            {loading ? (
+              <Skeleton />
+            ) : (
+              <Textarea
+                id="privacy-policy"
+                value={privacyAndPolicy}
+                placeholder="Enter new privacy policy"
+                className="min-h-[100px]"
+                onChange={(e) => setPrivacyAndPolicy(e.target.value)}
+              />
+            )}
+            <Button onClick={handlePrivacyAndPolicy}>Update</Button>
+            {success3 && (
+              <span className="text-green-500 font-semibold">
+                Privacy policy updated successfully!
+              </span>
+            )}
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      {/* API Approval Tab */}
+      <TabsContent value="api">
+        <Card>
+          <CardHeader>
+            <CardTitle>API Approval</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Label htmlFor="api-approval">Select API to Approve</Label>
+            <Select onValueChange={(e) => setSelected(e)}>
+              <SelectTrigger id="api-approval">
+                <SelectValue placeholder="Select API" />
+              </SelectTrigger>
+              <SelectContent>
+                {InactiveAPIS.isSuccess
+                  ? InactiveAPIS.data.map((api: any) => (
+                      <SelectItem key={api.id} value={api.id}>
+                        {api.name}
+                      </SelectItem>
+                    ))
+                  : null}
+              </SelectContent>
+            </Select>
+            <Button onClick={publishanAPI}>Publish</Button>
+            {success4 && (
+              <span className="text-green-500 font-semibold">
+                API published successfully!
+              </span>
+            )}
           </CardContent>
         </Card>
       </TabsContent>
@@ -213,5 +233,7 @@ export default function Settings() {
 }
 
 const Skeleton = () => {
-  return <div className={"animate-pulse bg-gray-300 rounded"}></div>;
+  return (
+    <div className="animate-pulse bg-gray-300 h-10 rounded-md w-full"></div>
+  );
 };
