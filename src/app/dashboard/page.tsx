@@ -102,7 +102,7 @@ export default function DashboardPage() {
     setSelectedApiList(selectedOptions);
   }
 
-  const [timeRnageFilter, setTimeRnageFilter] = useState<TimeRangeFilter>("7d");
+  const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRangeFilter>("7d");
 
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full max-h-full overflow-y-auto">
@@ -119,9 +119,9 @@ export default function DashboardPage() {
           />
           <div className="flex justify-start items-center mb-1">
             <TimeFilterButtons
-              name="Time Rnage"
-              timeSelected={timeRnageFilter}
-              setTimeSelected={setTimeRnageFilter}
+              name="Time Range"
+              timeSelected={timeRangeFilter}
+              setTimeSelected={setTimeRangeFilter}
             />
           </div>
 
@@ -129,7 +129,7 @@ export default function DashboardPage() {
             <LineWrapper
               selectedApiList={selectedApiList}
               apiList={apiList}
-              timeRnageFilter={timeRnageFilter}
+              timeRangeFilter={timeRangeFilter}
             />
           )}
         </div>
@@ -141,15 +141,15 @@ export default function DashboardPage() {
 const LineWrapper = ({
   selectedApiList,
   apiList,
-  timeRnageFilter,
+  timeRangeFilter,
 }: {
   selectedApiList: SelectOptions;
   apiList: Api[];
-  timeRnageFilter: TimeRangeFilter;
+  timeRangeFilter: TimeRangeFilter;
 }) => {
   const stat = useApisStatsQuery({
     apiIds: selectedApiList.map((option) => Number(option.value)),
-    timeFilter: timeRnageFilter,
+    timeFilter: timeRangeFilter,
   });
   return (
     <>

@@ -101,10 +101,9 @@ export default function Settings() {
   return (
     <Tabs defaultValue="earning">
       <TabsList className="mb-4">
-        <TabsTrigger value="earning">Earning Percentage</TabsTrigger>
+        <TabsTrigger value="earning">General Setting</TabsTrigger>
         <TabsTrigger value="terms">Terms & Conditions</TabsTrigger>
         <TabsTrigger value="privacy">Privacy Policy</TabsTrigger>
-        <TabsTrigger value="api">API Approval</TabsTrigger>
       </TabsList>
 
       {/* Earning Percentage Tab */}
@@ -191,38 +190,6 @@ export default function Settings() {
             {success3 && (
               <span className="text-green-500 font-semibold">
                 Privacy policy updated successfully!
-              </span>
-            )}
-          </CardContent>
-        </Card>
-      </TabsContent>
-
-      {/* API Approval Tab */}
-      <TabsContent value="api">
-        <Card>
-          <CardHeader>
-            <CardTitle>API Approval</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Label htmlFor="api-approval">Select API to Approve</Label>
-            <Select onValueChange={(e) => setSelected(e)}>
-              <SelectTrigger id="api-approval">
-                <SelectValue placeholder="Select API" />
-              </SelectTrigger>
-              <SelectContent>
-                {InactiveAPIS.isSuccess
-                  ? InactiveAPIS.data.map((api: any) => (
-                      <SelectItem key={api.id} value={api.id}>
-                        {api.name}
-                      </SelectItem>
-                    ))
-                  : null}
-              </SelectContent>
-            </Select>
-            <Button onClick={publishanAPI}>Publish</Button>
-            {success4 && (
-              <span className="text-green-500 font-semibold">
-                API published successfully!
               </span>
             )}
           </CardContent>

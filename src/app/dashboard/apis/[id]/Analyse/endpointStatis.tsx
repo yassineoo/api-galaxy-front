@@ -45,7 +45,7 @@ const Statis = ({
     return { value: item.ID, label: item.Name };
   });
 
-  const [timeRnageFilter, setTimeRnageFilter] = useState<TimeRangeFilter>("7d");
+  const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRangeFilter>("7d");
 
   // selected Endpoints
 
@@ -61,16 +61,16 @@ const Statis = ({
         />
         <div className="flex justify-start items-center mb-1">
           <TimeFilterButtons
-            name="Time Rnage"
-            timeSelected={timeRnageFilter}
-            setTimeSelected={setTimeRnageFilter}
+            name="Time Range"
+            timeSelected={timeRangeFilter}
+            setTimeSelected={setTimeRangeFilter}
           />
         </div>
 
         <LineWrapper
           selectedEndpointList={selectedEndpointList}
           endpointsList={endpointsList}
-          timeRnageFilter={timeRnageFilter}
+          timeRangeFilter={timeRangeFilter}
         />
       </div>
     </div>
@@ -97,11 +97,11 @@ const Filter = ({ items, changeFilter, name }: any) => {
 const LineWrapper = ({
   selectedEndpointList,
   endpointsList,
-  timeRnageFilter,
+  timeRangeFilter,
 }: {
   selectedEndpointList: SelectOptions;
   endpointsList: Endpoint[];
-  timeRnageFilter: TimeRangeFilter;
+  timeRangeFilter: TimeRangeFilter;
 }) => {
   const stat =
     selectedEndpointList?.length > 0
@@ -109,7 +109,7 @@ const LineWrapper = ({
           endpointIds: selectedEndpointList.map((option: SelectOption) =>
             Number(option.value)
           ),
-          timeFilter: timeRnageFilter,
+          timeFilter: timeRangeFilter,
         })
       : null;
 
