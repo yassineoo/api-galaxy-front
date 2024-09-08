@@ -10,7 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UserNav } from "./usernav";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { signOut, useSession } from "next-auth/react";
@@ -34,7 +33,7 @@ const Header = () => {
     <header className="bg-white w-full  dark:bg-slate-900  p-4 flex justify-between 2xl:justify-around items-center">
       {/* Left side: Dashboard */}
       <div>
-        <span className="text-lg font-bold">Dashboard</span>
+        <span className="text-lg font-bold">Admin Dashboard</span>
       </div>
 
       {/* Right side: Dropdown menu */}

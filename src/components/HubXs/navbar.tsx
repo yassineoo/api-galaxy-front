@@ -12,21 +12,26 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 const Navbar = ({
   apiHub = "hub",
   docs = "https://api-galaxy-docs.vercel.app/",
-  ListApi = "s",
-  myApis = "dashboard",
+  ListApi = "/client-dashboard",
+  myApis = "/dashboard",
+  shadowHide = false,
 }: {
   apiHub?: string;
   docs?: string;
   ListApi?: string;
   myApis?: string;
+  shadowHide?: boolean;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { session, isAuthenticated } = useAuthSession();
 
-
   return (
-    <div className="bg-white sticky top-0 z-[1000] flex flex-row justify-between items-center py-2 px-4 shadow-md">
-      <nav className="flex items-center justify-start flex-wrap">
+    <div
+      className={`bg-white sticky top-0 z-[1000] flex flex-row  flex-nowrap justify-between items-center py-2 px-4 ${
+        shadowHide ? "" : "shadow-md"
+      }`}
+    >
+      <nav className="flex items-center justify-start ">
         <div className="flex items-center flex-shrink-0 p-1 text-black mr-4">
           <Link href={apiHub}>
             <Image
@@ -45,8 +50,9 @@ const Navbar = ({
         </div>
 
         <div
-          className={`${isOpen ? "block" : "hidden"
-            } w-full lg:flex lg:items-center lg:w-auto`}
+          className={`${
+            isOpen ? "block" : "hidden"
+          } w-full lg:flex lg:items-center lg:w-auto`}
         >
           <div className="text-base lg:flex-grow text-black ml-4">
             <Link
@@ -80,19 +86,17 @@ const Navbar = ({
       <div className="space-x-2 flex flex-row justify-start items-center font-body text-base sm:text-lg">
         {isAuthenticated ? (
           <div className="flex items-center space-x-2">
-
             {session?.user && (
               <Link href={`dashboard/profile`}>
                 <Avatar>
                   <AvatarImage
-                    src={"/placeholder-user.jpg"}
+                    src={session.user.image || "/placeholder-user.jpg"}
                     alt={session?.user?.name?.charAt(0) || "User Avatar"}
                   />
                   <AvatarFallback>
                     {session?.user?.name?.charAt(0) || "N/A"}
                   </AvatarFallback>
                 </Avatar>
-
               </Link>
             )}
 

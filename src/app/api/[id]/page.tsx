@@ -4,12 +4,12 @@ import LineChartComponent from "../../../components/dashboard/linechart";
 import DonutChartComponent from "../../../components/dashboard/mainPage/donutchart";
 import { useEffect, useState } from "react";
 
-import Navbar from "../../../components/General use/navbar";
 import ApiHeader from "../apiHeader";
 import { ApiTabs } from "../apiBody";
 import { useApiById, useAPIRating } from "@/hooks/apis/api.queries";
 import { useApiHealthCheakStats } from "@/hooks/HealthCheak/apiHealthCheak.queries";
 import { useAuthSession } from "@/components/auth-provider";
+import Navbar from "@/components/HubXs/navbar";
 // import { useSession } from "next-auth/react";
 
 const ApiPage = ({ params }: any) => {
@@ -46,7 +46,7 @@ const ApiPage = ({ params }: any) => {
       <Head>
         <title>Api</title>
       </Head>
-      <Navbar services="2" about="3" pricing="4" contacts="6" />
+      <Navbar shadowHide />
       {apiSelected.isLoading && <p>Loading ... </p>}
       {apiSelected.isSuccess && (
         <>

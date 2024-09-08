@@ -13,7 +13,6 @@ const AddApiPage = ({ params }: any) => {
   //const apiSelceted = useApiById(id);
   return (
     <div className="w-full h-full overflow-scroll">
-      <Header />
       <div className="flex w-full h-full justify-center items-center flex-col pt-8 gap-8">
         <img
           src="/images/create-api.jpg"

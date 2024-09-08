@@ -59,24 +59,35 @@ const Dialog = ({
 }) => {
   if (!isOpen) return null;
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-[#00000030] flex items-center justify-center">
-      <div className="relative max-w-lg w-full bg-white max-h-[60%] overflow-y-scroll p-4">
-        {screenshots.map((sc: string) => (
-          <CldImage
-            src={sc}
-            alt={"screenshot"}
-            className="w-full bg-cover"
-            width={200}
-            height={200}
-          />
-        ))}
+    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="relative max-w-lg w-full bg-white dark:bg-gray-800 max-h-[80%] overflow-y-auto rounded-lg shadow-lg p-6">
+        {/* Screenshots Section */}
+        {screenshots && screenshots.length > 0 ? (
+          <div className="space-y-4">
+            {screenshots.map((sc: string, index: number) => (
+              <CldImage
+                key={index}
+                src={sc}
+                alt={"screenshot"}
+                className="w-full h-auto object-cover rounded-lg"
+                width={400}
+                height={300}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-600 dark:text-gray-300">
+            No screenshots available
+          </p>
+        )}
 
+        {/* Close Button */}
         <Image
           src={"/icons/close_icon.svg"}
           alt="close_icon"
-          width={20}
-          height={20}
-          className="absolute top-3 right-3"
+          width={24}
+          height={24}
+          className="absolute top-4 right-4 cursor-pointer hover:opacity-75 transition-opacity duration-150"
           onClick={() => setIsOpen(false)}
         />
       </div>

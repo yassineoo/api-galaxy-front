@@ -14,12 +14,18 @@ import {
 import { useAuthSession } from "../auth-provider";
 import { useNotifList } from "@/hooks/admin/reviews.query";
 
+import React from "react";
+
 export default function Notifications() {
   const { session } = useAuthSession();
-  const { data, error, isLoading, isSuccess } = useNotifList(
+  const { data, error, isLoading, isSuccess, refetch } = useNotifList(
     Number(session?.userId) || 1,
     session?.token || ""
   );
+
+  const handleRefresh = () => {
+    refetch();
+  };
 
   return (
     <DropdownMenu>
@@ -32,7 +38,13 @@ export default function Notifications() {
       <DropdownMenuContent align="end" className="w-[360px] p-0 z-50">
         <Card className="shadow-lg border-0">
           <CardHeader className="border-b px-6 py-4">
-            <CardTitle>Notifications</CardTitle>
+            <div className="flex justify-between items-center">
+              <CardTitle>Notifications</CardTitle>
+              <Button onClick={handleRefresh} variant="ghost" size="icon">
+                <CalendarCheckIcon className="h-4 w-4" />
+                <span className="sr-only">Refresh notifications</span>
+              </Button>
+            </div>
             {isLoading ? (
               <CardDescription>Loading notifications...</CardDescription>
             ) : error ? (
@@ -51,7 +63,6 @@ export default function Notifications() {
                 {data.slice(0, 4).map((notification: any) => (
                   <div key={notification.id} className="flex items-start gap-4">
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                      {/* Use appropriate icon based on notification type */}
                       <BellIcon className="h-5 w-5" />
                     </div>
                     <div className="space-y-1">
@@ -61,9 +72,8 @@ export default function Notifications() {
                       <p className="text-sm text-muted-foreground">
                         {notification.message}
                       </p>
-                      {/* Assuming a date or timestamp field is available */}
                       <p className="text-sm text-muted-foreground">
-                        {/* Format time accordingly */}2 hours ago
+                        2 hours ago
                       </p>
                     </div>
                   </div>

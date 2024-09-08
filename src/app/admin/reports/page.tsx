@@ -39,8 +39,6 @@ export default function DefinitionTab() {
   }, [ReviewReportList.isFetching, ReviewReportList.isFetched]);
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
-      <Header />
-
       <div className="flex justify-start items-start gap-4 w-full ">
         <Card className="w-full">
           <CardHeader className="space-y-1">
@@ -57,7 +55,7 @@ export default function DefinitionTab() {
             <Search value="" setValue={() => {}} />
           </CardHeader>
           <CardContent className="grid gap-4">
-            <Tabs defaultValue="Reports">
+            <Tabs defaultValue="Apis Reports">
               <TabsList className="w-[200px] border-none bg-transparent">
                 <TabsTrigger value="Apis Reports">Apis Reports</TabsTrigger>
                 <TabsTrigger value="Reviews Reports">

@@ -13,6 +13,7 @@ import { useCreateMessageMutation } from "@/hooks/chat/chat.mutations";
 import { format } from "date-fns";
 import { BeatLoader } from "react-spinners";
 import { useAuthSession } from "@/components/auth-provider";
+import { getColorByLetter } from "../chats_list";
 
 export default function Chatroom({ chat }: { chat: ChatWithMessages }) {
   const [io, setIo] = useState<Socket | null>(null);
@@ -154,78 +155,104 @@ export default function Chatroom({ chat }: { chat: ChatWithMessages }) {
 
   return (
     <div className="flex-1 h-full max-h-full bg-gray-100 dark:bg-gray-900 flex flex-col">
-      <div className="border-b max-h-fit h-fit border-gray-200 dark:border-gray-800 p-4 py-3.5 flex items-center">
+      {/* Header */}
+      <div className="border-b border-gray-200 dark:border-gray-800 p-4 py-3.5 flex items-center">
         <UserProfilePicture user={otherMember} />
         <div className="ml-3">
-          <div className="font-medium">{otherMember.name}</div>
+          <div className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+            {otherMember.name}
+          </div>
           <div className="text-sm text-gray-500 dark:text-gray-400">Online</div>
         </div>
       </div>
-      <div className="flex-1 bg-gray-100 dark:bg-gray-900 overflow-y-auto">
-        <div className="p-4 space-y-4 h-full">
-          {messages?.map((message) => {
-            const messageSentByCurrentUser = message.userId === user.id;
-            return (
+
+      {/* Messages Container */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages?.map((message) => {
+          const messageSentByCurrentUser = message.userId === user.id;
+          return (
+            <div
+              ref={chatBox}
+              key={message.id}
+              className={`flex items-start gap-3 ${
+                messageSentByCurrentUser ? "justify-end" : "justify-start"
+              }`}
+            >
+              {/* Other User's Avatar */}
+              {!messageSentByCurrentUser && (
+                <UserProfilePicture user={otherMember} />
+              )}
+
+              {/* Message Bubble */}
               <div
-                ref={chatBox}
-                key={message.id}
-                className={`flex items-start gap-3  ${
-                  messageSentByCurrentUser ? "justify-end" : ""
+                className={`rounded-xl p-3 max-w-[80%] sm:max-w-[60%] break-words shadow-md ${
+                  messageSentByCurrentUser
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 }`}
               >
-                {!messageSentByCurrentUser && (
-                  <UserProfilePicture user={otherMember} />
-                )}
-                <div
-                  className={`rounded-lg p-3 max-w-72 w-2/3 break-words  ${
-                    messageSentByCurrentUser
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 dark:bg-gray-800"
-                  }`}
-                >
-                  <div className="flex items-center justify-between w-full">
-                    <div className="font-semibold line-clamp-1 flex-1 break-words">
-                      {messageSentByCurrentUser ? "You" : otherMember.name}
-                    </div>
-                    <div
-                      className={`w-fit text-xs mt-1 ${
-                        messageSentByCurrentUser
-                          ? "text-gray-200"
-                          : "text-gray-500 dark:text-gray-400"
-                      }`}
-                    >
-                      {format(new Date(message.createdAt ?? new Date()), "p")}
-                    </div>
+                <div className="flex items-center justify-between">
+                  {/* Sender's Name or "You" */}
+                  <div className="font-semibold flex-1">
+                    {messageSentByCurrentUser ? "You" : otherMember.name}
                   </div>
-                  <div className="text-sm">{message.message}</div>
+                  {/* Timestamp */}
+                  <div
+                    className={`text-xs ml-2 ${
+                      messageSentByCurrentUser
+                        ? "text-gray-200"
+                        : "text-gray-500 dark:text-gray-400"
+                    }`}
+                  >
+                    {format(new Date(message.createdAt ?? new Date()), "p")}
+                  </div>
                 </div>
-                {messageSentByCurrentUser && <UserProfilePicture user={user} />}
+
+                {/* Message Content */}
+                <div className="text-sm mt-1">{message.message}</div>
               </div>
-            );
-          })}
-          {isTyping && (
-            <p className="text-black z-10 dark:text-gray-400 bg-gray-200 text-sm ml-4 p-2 w-fit rounded-full flex items-center">
-              User is writing
-              <BeatLoader size="4" speedMultiplier={0.5} color="black" />
-            </p>
-          )}
-        </div>
+
+              {/* Current User's Avatar */}
+              {messageSentByCurrentUser && <UserProfilePicture user={user} />}
+            </div>
+          );
+        })}
+
+        {/* Typing Indicator */}
+        {isTyping && (
+          <div className="flex items-center gap-2 p-2 w-fit rounded-full bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+            <span>User is writing...</span>
+            <BeatLoader size="6" speedMultiplier={0.6} color="gray" />
+          </div>
+        )}
       </div>
-      <div className="relative border-t border-gray-200 dark:border-gray-800 p-4">
+
+      {/* Message Input */}
+      <div className="relative border-t border-gray-200 dark:border-gray-800 p-4 bg-white dark:bg-gray-900">
         <div className="flex items-center gap-3">
+          {/* Input Field */}
           <Input
-            className="flex-1 rounded-md bg-white px-4 py-2 text-sm focus:outline-none dark:bg-gray-800 dark:text-gray-50"
+            className="flex-1 rounded-md bg-gray-100 dark:bg-gray-800 px-4 py-2 text-sm focus:outline-none dark:text-gray-50"
             placeholder="Type your message..."
             type="text"
             value={message}
-            // onChange={handleTyping}
             onChange={(e) => setMessage((e.target as HTMLInputElement).value)}
             onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
           />
-          <Button disabled={isPending} onClick={handleSendMessage}>
+          {/* Send Button */}
+          <Button
+            disabled={isPending}
+            onClick={handleSendMessage}
+            className="flex items-center justify-center bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-colors disabled:bg-blue-400"
+          >
             Send
             {isPending && (
-              <BeatLoader size="4" speedMultiplier={0.5} color="white" />
+              <BeatLoader
+                size="6"
+                speedMultiplier={0.5}
+                color="white"
+                className="ml-2"
+              />
             )}
           </Button>
         </div>
@@ -242,7 +269,11 @@ function UserProfilePicture({
   return (
     <Avatar>
       <AvatarImage alt="Avatar" src={user?.avatar} />
-      <AvatarFallback className="text-lg uppercase bg-white">
+      <AvatarFallback
+        className={`text-lg uppercase text-white ${getColorByLetter(
+          user.name.charAt(0)
+        )}`}
+      >
         {user.name.charAt(0)}
       </AvatarFallback>
     </Avatar>

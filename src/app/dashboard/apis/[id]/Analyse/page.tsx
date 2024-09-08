@@ -41,8 +41,6 @@ const AnalysePage = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex h-full flex-col ">
-      <Header name />
-
       {(apiSelected.isLoading || endpointsList.isLoading) && (
         <div className="py-4">
           <LoadingPage />

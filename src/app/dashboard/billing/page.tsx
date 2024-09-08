@@ -11,7 +11,6 @@ export default function DashboardPage() {
       {/* <Sidebar activeItem="Billing" /> */}
 
       <div className="w-full h-full overflow-x-hidden">
-        <Header name />
         <BillingForm />
       </div>
     </div>

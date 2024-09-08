@@ -1,4 +1,5 @@
 import AdminSidebar from "@/components/admin/adminSidebar";
+import Header from "@/components/dashboard/header";
 import { getCurrentUser } from "@/lib/session";
 import { Role } from "@/utils/constants";
 import { redirect } from "next/navigation";
@@ -15,7 +16,10 @@ export default async function RootLayout({
     <div className="bg-dashboardBg dark:bg-transparent flex ">
       <AdminSidebar />
 
-      <div className="w-full h-full overflow-scroll">{children}</div>
+      <div className="w-full h-full overflow-scroll">
+        <Header name="Admin Dashboard" />
+        {children}
+      </div>
     </div>
   );
 }

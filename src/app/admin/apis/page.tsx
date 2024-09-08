@@ -41,8 +41,6 @@ export default function DefinitionTab() {
 
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
-      <Header />
-
       <div className="flex justify-start items-start gap-4 w-full ">
         <Card className="w-full">
           <CardHeader className="space-y-1">

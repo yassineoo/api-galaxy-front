@@ -15,7 +15,6 @@ export default function DashboardPage() {
 
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
-      <Header />
       <StatisticsBoxes />
       <ApiSelection />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

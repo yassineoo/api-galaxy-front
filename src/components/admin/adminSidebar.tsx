@@ -1,130 +1,297 @@
-// AdminSidebar.js
+// Sidebar.js
 "use client";
-import { useApiById, useApiByUserId } from "@/hooks/apis/api.queries";
+import { useApiByUserId } from "@/hooks/apis/api.queries";
 import Link from "next/link";
-import { memo, useCallback, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useParams, usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Input } from "../ui/input";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
+import { Button } from "../ui/button";
+import {
+  CircleDollarSignIcon,
+  HistoryIcon,
+  LayoutDashboardIcon,
+  MenuIcon,
+  MessageSquareIcon,
+  PlusCircleIcon,
+  ReceiptIcon,
+  ScrollTextIcon,
+  UsersIcon,
+  SettingsIcon,
+  LoaderIcon,
+} from "lucide-react";
+import { create } from "zustand";
+import { Tooltip } from "recharts";
 
-export default function AdminSidebar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+const menuItems = [
+  {
+    name: "Dashboard",
+    icon: LayoutDashboardIcon,
+
+    url: "/admin",
+    active: true,
+    ID: 90,
+  },
+  {
+    name: "Users",
+    icon: UsersIcon,
+
+    url: "/admin/users",
+    active: false,
+    ID: 91,
+  },
+  {
+    name: "Apis",
+    icon: LoaderIcon,
+
+    url: "/admin/apis",
+    active: false,
+    ID: 92,
+  },
+  {
+    name: "Content",
+    icon: ReceiptIcon,
+
+    url: "/admin/reports",
+    active: false,
+    ID: 93,
+  },
+  {
+    name: "Settings",
+    icon: SettingsIcon,
+
+    url: "/admin/settings",
+    active: false,
+    ID: 94,
+  },
+];
+
+const useSidebar = create<{
+  isOpen: boolean;
+  open: () => void;
+  close: () => void;
+  setIsOpen: (open: boolean) => void;
+}>()((set) => ({
+  isOpen: false,
+  open: () => set({ isOpen: true }),
+  close: () => set({ isOpen: false }),
+  setIsOpen: (open: boolean) => set({ isOpen: open }),
+}));
+
+function SidebarSheet({
+  apiId,
+  maApisList,
+  activeItem,
+  activeChildName,
+}: {
+  apiId: number;
+  maApisList: any;
+  activeItem: any;
+  activeChildName: any;
+}) {
+  const { isOpen, setIsOpen } = useSidebar();
+  return (
+    <Sheet open={isOpen} onOpenChange={setIsOpen} defaultOpen={false}>
+      <SheetContent
+        className="bg-[#0f172a] border-black dark:bg-sidebar text-white dark:text-white px-0 max-w-sm w-full"
+        position="left"
+      >
+        <SheetHeader>
+          <SheetTitle>
+            <AppLogo />
+          </SheetTitle>
+        </SheetHeader>
+        <Menu
+          isMenuOpen={isOpen}
+          apiId={apiId}
+          maApisList={maApisList}
+          activeItem={activeItem}
+          activeChildName={activeChildName}
+        />
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+function MobileSidebar({
+  apiId,
+  maApisList,
+  activeItem,
+  activeChildName,
+}: {
+  apiId: number;
+  maApisList: any;
+  activeItem: any;
+  activeChildName: any;
+}) {
+  const { isOpen } = useSidebar();
+  return (
+    <div
+      className={`text-white bg-black dark:bg-sidebar py-2  dark:text-white sticky top-0 transition-all duration-300 border-r overflow-hidden border-black w-16 h-screen max-h-screen`}
+    >
+      <Logo />
+      <SidebarSheet
+        apiId={apiId}
+        maApisList={maApisList}
+        activeItem={activeItem}
+        activeChildName={activeChildName}
+      />
+      <Menu
+        isMenuOpen={isOpen}
+        apiId={apiId}
+        maApisList={maApisList}
+        activeItem={activeItem}
+        activeChildName={activeChildName}
+      />
+    </div>
+  );
+}
+
+function DesktopSidebar({
+  apiId,
+  maApisList,
+  activeItem,
+  activeChildName,
+}: {
+  apiId: number;
+  maApisList: any;
+  activeItem: any;
+  activeChildName: any;
+}) {
+  const { isOpen } = useSidebar();
+  return (
+    <div
+      className={cn(
+        `text-white bg-[#0f172a] dark:bg-sidebar py-2 pt-1  dark:text-white sticky top-0 transition-all border-r overflow-hidden border-black w-16 h-screen max-h-screen duration-100`,
+        isOpen && "w-full max-w-xs"
+      )}
+    >
+      <Logo />
+      <Menu
+        isMenuOpen={isOpen}
+        apiId={apiId}
+        maApisList={maApisList}
+        activeItem={activeItem}
+        activeChildName={activeChildName}
+      />
+    </div>
+  );
+}
+
+export default function Sidebar() {
+  const [isMobileScreen, setIsMobileScreen] = useState(false);
   const pathname = usePathname();
 
   // Extract the active item and child from the current route
   const pathSegments = pathname.split("/");
   const activeItem = pathSegments[2]; // Assuming the item is the third segment
-  const activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
+  let activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-  const checkScreenSize = () => {
-    if (window.innerWidth <= 888) {
-      // Assuming 768px is your 'medium' breakpoint
-      setIsMenuOpen(false);
-    } else {
-      setIsMenuOpen(true);
-    }
-  };
+  const maApisListCallback = useCallback(() => useApiByUserId(1), []);
+  const maApisList = maApisListCallback();
+  console.log("maApisList-------", maApisList.data);
+
+  let apiId = 0;
+  if (activeItem != "apis") {
+    activeChildName = pathname;
+  } else {
+    activeChildName = pathSegments[4];
+    apiId = Number(pathSegments[3]);
+  }
+
+  console.log({ isOpen: useSidebar().isOpen });
 
   useEffect(() => {
-    checkScreenSize();
-    window.addEventListener("resize", checkScreenSize);
-
-    return () => {
-      window.removeEventListener("resize", checkScreenSize);
-    };
+    if (window.innerWidth <= 768) setIsMobileScreen(true);
+    else setIsMobileScreen(false);
   }, []);
 
-  return (
-    <div
-      className={`bg-blue-900 text-white pb-4 dark:bg-blue-950 overflow-scroll dark:text-white sticky top-0 transition-all duration-300 ${
-        isMenuOpen ? "w-1/4" : "w-16 lg:w-[6%] transform" // Use transform class for animation
-      } h-full min-h-screen`}
-    >
-      <Logo toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
-
-      <Menu
-        isMenuOpen={isMenuOpen}
+  {
+    /* <div className="block md:hidden"> */
+  }
+  if (isMobileScreen)
+    return (
+      <MobileSidebar
+        maApisList={maApisList}
+        apiId={apiId}
         activeItem={activeItem}
         activeChildName={activeChildName}
       />
-
-      <div className="absolute bottom-10 w-full text-center font-bold hover:underline">
-        Disconnect
-      </div>
-    </div>
-  );
+    );
+  else
+    return (
+      <DesktopSidebar
+        maApisList={maApisList}
+        apiId={apiId}
+        activeItem={activeItem}
+        activeChildName={activeChildName}
+      />
+    );
 }
 
-const Logo = ({ toggleMenu, isMenuOpen }: any) => {
+function AppLogo() {
+  return <img className="absolute top-2 left-2 w-6" src="/logos/logo.svg" />;
+}
+const Logo = () => {
+  const { isOpen, open, close } = useSidebar();
+  function toggleSidebar() {
+    if (isOpen) close();
+    else open();
+    return;
+  }
+
   return (
-    <div className={`flex items-center w-full  justify-between  mt-4 px-4 `}>
-      {isMenuOpen && <img className="w-16" src="/logos/logo.svg" />}
-      <img
-        className="cursor-pointer w-8"
-        src="/icons/buger.svg"
-        onClick={toggleMenu}
-      />
+    <div
+      className={`flex items-center w-full  justify-center md:justify-between pt-2 md:pt-3 md:px-4 transform md:transform-none
+         `}
+    >
+      {isOpen && <img className="w-12" src="/logos/logo.svg" />}
+
+      <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+        <MenuIcon className="size-6" />
+      </Button>
     </div>
   );
 };
 
-const Menu = ({ isMenuOpen, activeItem, activeChildName }: any) => {
-  const menuItems = [
-    {
-      name: "Dashboard",
-      icon: "/icons/icon_dashboard.svg",
-      url: "/admin",
-      active: true,
-    },
-    {
-      name: "Users",
-      icon: "/icons/icon_business_time_solid.svg",
-      url: "/admin/users",
-      active: false,
-    },
-    {
-      name: "Apis",
-      icon: "/icons/icon_business_time_solid.svg",
-      url: "/admin/apis",
-      active: false,
-    },
-    {
-      name: "Reports",
-      icon: "/icons/icon_billing.svg",
-      url: "/admin/reports",
-      active: false,
-    },
-    {
-      name: "Settings",
-      icon: "/icons/icon_billing.svg",
-      url: "/admin/settings",
-      active: false,
-    },
-  ];
+const Menu = ({ apiId, maApisList, activeItem, activeChildName }: any) => {
+  const { isOpen } = useSidebar();
+  const activeOne = menuItems.find((item) => item.url.includes(activeItem));
+  const [activeMenu, setActiveMenu] = useState(apiId || activeOne?.ID || 90);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const activeOne = menuItems.find((item) =>
-    item.url.toLowerCase().includes(activeItem)
-  );
-  const [activeMenu, setActiveMenu] = useState<string>(
-    activeOne?.name || "Dashboard"
-  ); // 90 is the id of the dashboard
-
-  const handleMenuClick = (Name: string) => {
-    setActiveMenu(Name);
+  const handleMenuClick = (ID: any) => {
+    setActiveMenu(ID);
   };
+
+  const filteredApis = useMemo(() => {
+    if (!maApisList.isSuccess || !maApisList.data) return [];
+    return maApisList.data.filter((api: any) =>
+      api.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [maApisList.data, maApisList.isSuccess, searchTerm]);
+
   return (
-    <div className="flex flex-col mt-6 text-sm">
-      {menuItems.map((item) => (
-        <RegularMenuItem
-          key={item.name}
-          item={item}
-          active={activeMenu === item.name}
-          onClick={handleMenuClick}
-          isMenuOpen={isMenuOpen}
-          activeChildName={activeChildName}
-        />
-      ))}
+    <div className="flex flex-col flex-1 h-full pt-6 text-sm">
+      <div className="flex flex-col  ">
+        {menuItems.map((item: any) => (
+          <RegularMenuItem
+            key={item.ID}
+            item={item}
+            active={activeMenu === item.ID}
+            onClick={handleMenuClick}
+            isMenuOpen={isOpen}
+            activeChildName={activeChildName}
+          />
+        ))}
+      </div>
     </div>
   );
 };
@@ -135,69 +302,32 @@ const RegularMenuItem = ({
   item,
   active,
   onClick,
-  isMenuOpen,
   activeChildName,
   key,
 }: any) => {
   const isActive = active;
   const [activeChild, setActiveChild] = useState(activeChildName);
-
+  const { isOpen } = useSidebar();
   return (
-    <div className="flex flex-col items-start justify-start w-4/5" key={key}>
+    <div
+      key={key}
+      className="flex flex-col items-start justify-start w-4/5 ml-1 "
+    >
       <Link
         href={item.url}
-        className={`w-full flex items-center gap-2 py-3 cursor-pointer ${
-          isActive ? "bg-slate-200 rounded-r-3xl text-black" : ""
+        className={`w-full pl-4 flex items-center gap-2 py-3 cursor-pointer   rounded-r-3xl ${
+          isActive ? "bg-orangePure hover:bg-orangePure" : "hover:bg-zinc-800"
         }`}
-        onClick={() => onClick(item.name)}
+        onClick={() => onClick(item.ID)}
       >
-        <img
-          className={`w-5 text-black ${isMenuOpen ? "ml-8" : "ml-4"} `}
-          src={item.icon}
-        />
+        {/* <img className={`w-5 md:pl-8 pl-4 `} src={item.icon} /> */}
+        <item.icon className="size-5" />
 
-        {isMenuOpen && <div>{item.name}</div>}
-        {item.children && isMenuOpen && (
-          <img className="ml-1 w-5" src="/icons/arrow.svg" />
+        {isOpen && <div className="text-white">{item.name}</div>}
+        {isOpen && item.children && (
+          <img className="pl-1 w-5" src="/icons/arrow.svg" />
         )}
       </Link>
-
-      {isActive && item.children && (
-        <div
-          className={`${
-            isMenuOpen ? "ml-8" : "ml-2"
-          } mr-4 mt-2 flex flex-col justify-start items-start w-full gap-2`}
-        >
-          {item.children.map((child: any) => {
-            const handleChildClick = () => {
-              console.log("child.url ========= ", child.url);
-
-              setActiveChild(child.url);
-            };
-            return (
-              <Link
-                href={child.url}
-                onClick={handleChildClick}
-                className={`flex items-center gap-2 text-sm text-gray-400 ml-7 cursor-pointer ${
-                  isMenuOpen ? "ml-7" : "ml-0"
-                }`}
-              >
-                {child.icon && (
-                  <img
-                    className={`w-5 text-white p-2 ${
-                      activeChild == child.url
-                        ? "bg-orangePure w-9 border-1 border-orangePure rounded-xl"
-                        : "w-9 border-1 rounded-xl"
-                    }`}
-                    src={child.icon}
-                  />
-                )}
-                {isMenuOpen && <div>{child.name}</div>}
-              </Link>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 };

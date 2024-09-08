@@ -1,7 +1,5 @@
 "use client";
 import { SkeletonTable } from "@/components/admin/apis/apis/apiSkeleton";
-import { CollectionTable } from "@/components/admin/apis/collections/collections-table";
-import { CollectionColumns } from "@/components/admin/apis/collections/collectionsColumns";
 import CreateEndpointsCollectionForm from "@/components/admin/apis/collections/endpointGroupCreateModal";
 import PaginationManual from "@/components/dashboard/billing/paginationManual";
 import Image from "next/image";
@@ -19,7 +17,6 @@ import { useState } from "react";
 
 // import { useSession } from "next-auth/react";
 import { useAuthSession } from "@/components/auth-provider";
-import Header from "@/components/dashboard/headerAdmin";
 import { useUsersList } from "@/hooks/admin/reviews.query";
 import { UserTable } from "@/components/dashboard/usersTable/user-table";
 import { userColumn } from "@/components/dashboard/usersTable/user-col";
@@ -33,11 +30,8 @@ export default function DefinitionTab() {
     session?.token ?? ""
   );
 
-  const CollectionList = useCollectionList();
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
-      <Header />
-
       <div className="flex justify-start items-start gap-4 w-full ">
         <Card className="w-full">
           <CardHeader className="space-y-1">
@@ -71,25 +65,7 @@ export default function DefinitionTab() {
                   onPageChange={setPage}
                 />
               </TabsContent>
-              <TabsContent value="Collection">
-                {CollectionList.isLoading && (
-                  <SkeletonTable
-                    name={"Collection List"}
-                    columns={CollectionColumns}
-                  />
-                )}
-                {CollectionList.isSuccess && (
-                  <CollectionTable
-                    columns={CollectionColumns}
-                    data={CollectionList.data}
-                  />
-                )}
-                <PaginationManual
-                  currentPage={page}
-                  totalPages={UsersList?.data?.meta?.totalPages}
-                  onPageChange={setPage}
-                />
-              </TabsContent>
+              <TabsContent value="Collection"></TabsContent>
             </Tabs>
           </CardContent>
         </Card>

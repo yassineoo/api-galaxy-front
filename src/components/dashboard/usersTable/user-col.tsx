@@ -11,6 +11,8 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getColorByLetter } from "@/app/dashboard/inbox/chats_list";
 
 export type UserEntity = {
   id: number;
@@ -34,14 +36,27 @@ export const userColumn: ColumnDef<UserEntity>[] = [
   {
     accessorKey: "image_path",
     header: "Image",
-    cell: ({ row }) => (
-      <CldImage
-        src={`${row.getValue("image_path")}`}
-        width={20}
-        height={20}
-        alt="API Image"
-      />
-    ),
+    cell: ({ row }) => {
+      return row.getValue("image_path") ? (
+        <CldImage
+          src={`${row.getValue("image_path")}`}
+          width={20}
+          height={20}
+          alt="API Image"
+        />
+      ) : (
+        <Avatar>
+          <AvatarImage alt="Avatar" src={row.getValue("username")} />
+          <AvatarFallback
+            className={`text-lg uppercase text-white ${getColorByLetter(
+              (row.getValue("username") as string).charAt(0)
+            )}`}
+          >
+            {(row.getValue("username") as string).charAt(0)}
+          </AvatarFallback>
+        </Avatar>
+      );
+    },
   },
   {
     accessorKey: "role",

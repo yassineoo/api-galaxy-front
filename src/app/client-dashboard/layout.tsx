@@ -1,5 +1,4 @@
 "use client";
-import { useSession } from "next-auth/react";
 import ClientSidebar from "./clientSidebar";
 import Header from "@/components/dashboard/header";
 import { useAuthSession } from "@/components/auth-provider";
@@ -20,7 +19,7 @@ export default function ClientRootLayout({
       {/* Main Content Area */}
       <div className="flex flex-col w-full h-full">
         {/* Header */}
-        <Header name/>
+        <Header name="Api Consumer Dashboard" />
 
         {/* Children (Main Content) */}
         <div className="w-full h-full overflow-y-auto">{children}</div>

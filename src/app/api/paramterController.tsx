@@ -191,7 +191,7 @@ const QueryInput = ({ parameters, state, setState }: any) => {
   return (
     <div className="mb-12">
       <ReactCodeMirror
-        value={param.ExampleValue}
+        value={param?.ExampleValue}
         onChange={(val) => {
           console.log("val", val);
           console.log("valz", val.toString().replace(/\n/g, ""));
