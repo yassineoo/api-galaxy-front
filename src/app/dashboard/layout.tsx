@@ -15,7 +15,7 @@ export default async function RootLayout({
       <Sidebar />
 
       <div className="w-full h-full overflow-y-auto">
-        <Header name="Api Provider Dashboard" />
+        <Header type="provider" />
         {children}
       </div>
     </div>

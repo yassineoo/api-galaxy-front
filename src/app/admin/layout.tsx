@@ -17,7 +17,7 @@ export default async function RootLayout({
       <AdminSidebar />
 
       <div className="w-full h-full overflow-scroll">
-        <Header name="Admin Dashboard" />
+        <Header type="admin" />
         {children}
       </div>
     </div>

@@ -1,20 +1,12 @@
-// DashboardPage.js
-import Header from "../../components/dashboard/header";
+"use client";
+
 import StatisticsBoxes from "../../components/dashboard/mainPage/stat";
 // import LineChartComponent from "../../components/dashboard/linechart";
 import DonutChartComponent from "../../components/dashboard/mainPage/donutchart";
 // import FilterGroup from "../../components/dashboard/mainPage/filterGroupColor";
-import { ApiSelection } from "../../components/dashboard/mainPage/apiSelcetion";
-import { Search } from "@/components/shared/search";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  CalendarIcon,
-  ChevronDownIcon,
-  Ear,
-  FilterIcon,
-  Loader2,
-} from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 import {
   DropdownMenu,

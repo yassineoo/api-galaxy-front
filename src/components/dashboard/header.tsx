@@ -54,43 +54,30 @@ const Header = ({
   return (
     <header
       className={cn(
-        "bg-white w-full dark:bg-slate-900  p-4 flex justify-between 2xl:justify-between  items-center",
+        "bg-white w-full dark:bg-slate-900 p-6 shadow-md flex justify-between items-center",
         className
       )}
     >
-      {/* Left side: Dashboard */}
-      <div>
-        <span className="hidden md:block text-lg font-bold">{title}</span>
+      {/* Left side: Dashboard Title */}
+      <div className="flex items-center">
+        <span className="hidden md:block text-xl font-semibold text-gray-800 dark:text-white">
+          {title}
+        </span>
       </div>
 
-      {/* Right side: Dropdown menu */}
-
-      {/* Dropdown toggle button */}
-
-      {/* Add your icons here */}
-      <div className="flex items-center justify-center gap-2">
+      {/* Right side: Dropdown menu and icons */}
+      <div className="flex items-center gap-4">
+        {/* Mode Toggle (Light/Dark Mode) */}
         <ModeToggle />
+
+        {/* Notifications Icon */}
         <Notifications />
+
+        {/* Settings Icon */}
         <Settings />
 
-        {/* Profile dropdown */}
-
-        <IconDropdown session={session}>
-          {/* <div className="ml-4 relative flex justify-center items-center gap-6">
-            {session?.user?.name}
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8">
-                <AvatarImage
-                  src={session?.user?.image || ""}
-                  alt="User Avatar"
-                />
-                <AvatarFallback>
-                  {session?.user?.name || "User Avatar"}
-                </AvatarFallback>
-              </Avatar>
-            </Button>
-          </div> */}
-        </IconDropdown>
+        {/* Profile Dropdown */}
+        <IconDropdown session={session} />
       </div>
     </header>
   );

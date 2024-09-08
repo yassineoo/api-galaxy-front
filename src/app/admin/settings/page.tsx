@@ -23,6 +23,9 @@ import {
   publishAnAPI,
 } from "@/actions/admin";
 import { useAuthSession } from "@/components/auth-provider";
+import { QuillNoSSRWrapper } from "@/components/addNewApi/docs/docsTab";
+import { formats, modules } from "@/utils/reactQuill";
+import { RingLoader } from "react-spinners";
 
 export default function Settings() {
   const InactiveAPIS = useInactiveAPI();
@@ -100,34 +103,49 @@ export default function Settings() {
 
   return (
     <Tabs defaultValue="earning">
-      <TabsList className="mb-4">
-        <TabsTrigger value="earning">General Setting</TabsTrigger>
-        <TabsTrigger value="terms">Terms & Conditions</TabsTrigger>
-        <TabsTrigger value="privacy">Privacy Policy</TabsTrigger>
+      {/* Tabs List */}
+      <TabsList className="mb-6 flex justify-center space-x-6">
+        <TabsTrigger value="earning" className="px-4 py-2 text-lg font-medium">
+          General Setting
+        </TabsTrigger>
+        <TabsTrigger value="terms" className="px-4 py-2 text-lg font-medium">
+          Terms & Conditions
+        </TabsTrigger>
+        <TabsTrigger value="privacy" className="px-4 py-2 text-lg font-medium">
+          Privacy Policy
+        </TabsTrigger>
       </TabsList>
 
       {/* Earning Percentage Tab */}
       <TabsContent value="earning">
-        <Card>
+        <Card className="shadow-lg p-6">
           <CardHeader>
-            <CardTitle>Update Earning Percentage</CardTitle>
+            <CardTitle className="text-xl font-bold">
+              Update Earning Percentage
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="earning-percentage">Earning Percentage (%)</Label>
+            <div className="flex items-center gap-4">
+              <Label htmlFor="earning-percentage" className="text-lg">
+                Earning Percentage (%)
+              </Label>
               {loading ? (
-                <Skeleton />
+                <div className="flex justify-center items-center w-full">
+                  <RingLoader size="78" speedMultiplier={0.5} color="blue" />
+                </div>
               ) : (
                 <Input
                   id="earning-percentage"
                   value={earningPercentage}
                   type="number"
-                  className="w-32"
+                  className="w-40"
                   placeholder="Enter percentage"
                   onChange={(e) => setEarningPercentage(+e.target.value)}
                 />
               )}
-              <Button onClick={handleEarning}>Update</Button>
+              <Button onClick={handleEarning} className="ml-4">
+                Update
+              </Button>
             </div>
             {success1 && (
               <span className="text-green-500 font-semibold">
@@ -140,24 +158,34 @@ export default function Settings() {
 
       {/* Terms and Conditions Tab */}
       <TabsContent value="terms">
-        <Card>
+        <Card className="shadow-lg p-6">
           <CardHeader>
-            <CardTitle>Update Terms and Conditions</CardTitle>
+            <CardTitle className="text-xl font-bold">
+              Update Terms and Conditions
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Label htmlFor="terms-conditions">Terms and Conditions</Label>
+            <Label htmlFor="terms-conditions" className="text-lg">
+              Terms and Conditions
+            </Label>
             {loading ? (
-              <Skeleton />
+              <div className="flex justify-center items-center w-full">
+                <RingLoader size="78" speedMultiplier={0.5} color="blue" />
+              </div>
             ) : (
-              <Textarea
-                id="terms-conditions"
-                value={termsAndConditions}
-                placeholder="Enter new terms"
-                className="min-h-[100px]"
-                onChange={(e) => setTermsAndConditions(e.target.value)}
-              />
+              <div className="py-6">
+                <QuillNoSSRWrapper
+                  modules={modules}
+                  formats={formats}
+                  theme="snow"
+                  value={termsAndConditions}
+                  onChange={setTermsAndConditions}
+                />
+              </div>
             )}
-            <Button onClick={handleTermsAndConditions}>Update</Button>
+            <Button onClick={handleTermsAndConditions} className="mt-4">
+              Update
+            </Button>
             {success2 && (
               <span className="text-green-500 font-semibold">
                 Terms and conditions updated successfully!
@@ -169,24 +197,34 @@ export default function Settings() {
 
       {/* Privacy Policy Tab */}
       <TabsContent value="privacy">
-        <Card>
+        <Card className="shadow-lg p-6">
           <CardHeader>
-            <CardTitle>Update Privacy Policy</CardTitle>
+            <CardTitle className="text-xl font-bold">
+              Update Privacy Policy
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Label htmlFor="privacy-policy">Privacy Policy</Label>
+            <Label htmlFor="privacy-policy" className="text-lg">
+              Privacy Policy
+            </Label>
             {loading ? (
-              <Skeleton />
+              <div className="flex justify-center items-center w-full">
+                <RingLoader size="78" speedMultiplier={0.5} color="blue" />
+              </div>
             ) : (
-              <Textarea
-                id="privacy-policy"
-                value={privacyAndPolicy}
-                placeholder="Enter new privacy policy"
-                className="min-h-[100px]"
-                onChange={(e) => setPrivacyAndPolicy(e.target.value)}
-              />
+              <div className="py-6">
+                <QuillNoSSRWrapper
+                  modules={modules}
+                  formats={formats}
+                  theme="snow"
+                  value={privacyAndPolicy}
+                  onChange={setPrivacyAndPolicy}
+                />
+              </div>
             )}
-            <Button onClick={handlePrivacyAndPolicy}>Update</Button>
+            <Button onClick={handlePrivacyAndPolicy} className="mt-4">
+              Update
+            </Button>
             {success3 && (
               <span className="text-green-500 font-semibold">
                 Privacy policy updated successfully!
@@ -198,9 +236,3 @@ export default function Settings() {
     </Tabs>
   );
 }
-
-const Skeleton = () => {
-  return (
-    <div className="animate-pulse bg-gray-300 h-10 rounded-md w-full"></div>
-  );
-};

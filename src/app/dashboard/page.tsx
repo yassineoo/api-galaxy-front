@@ -81,7 +81,6 @@ export default function DashboardPage() {
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full max-h-full overflow-y-auto">
       {/*  TODO fix name of header */}
-      <Header type="provider" />
       <StatisticsBoxes />
 
       <div className=" w-full ">

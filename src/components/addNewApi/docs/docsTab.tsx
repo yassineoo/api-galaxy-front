@@ -139,7 +139,7 @@ export default function DocsTab({ api }: any) {
   );
 }
 
-const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
+export const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
   ssr: false,
   loading: () => <p>Loading...</p>,
 });
