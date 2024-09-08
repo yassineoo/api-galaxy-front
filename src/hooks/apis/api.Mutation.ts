@@ -17,7 +17,18 @@ export const useCreateApi = (authToken: string) => {
         headers: { Authorization: `Bearer ${authToken}` },
       });
 
+      console.log(response.data.ID);
+      const responseProduct = await axios.post(`${ApiUrl}/stripeCRUD/products`, {
+        name: apiData.Name,
+        description: apiData.Description,
+        apiId: response.data.ID
+      }, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+
+      console.log(responseProduct.data);
       return response.data;
+
     },
 
     onSuccess: () => {
