@@ -39,7 +39,7 @@ export default function ProfilePage({ params }: any) {
       {isAuthenticated ? (
         <>
           <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
-            <Header name />
+            <Header type="customer" />
 
             <div className="w-full max-w-4xl mx-auto mt-10">
               <div className="overflow-visible relative h-48 bg-gradient-to-r from-[#1877F2] to-[#2196F3] rounded-t-lg">

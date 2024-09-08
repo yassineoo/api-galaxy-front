@@ -4,44 +4,18 @@ import Header from "../../components/dashboard/header";
 // import Sidebar from "../../components/dashboard/sidebar";
 import StatisticsBoxes from "../../components/dashboard/mainPage/stat";
 // import LineChartComponent from "../../components/dashboard/linechart";
-import DonutChartComponent from "../../components/dashboard/mainPage/donutchart";
 // import FilterGroup from "../../components/dashboard/mainPage/filterGroupColor";
-import { ApiSelection } from "../../components/dashboard/mainPage/apiSelcetion";
-import { Search } from "@/components/shared/search";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  CalendarIcon,
-  ChevronDownIcon,
-  Ear,
-  FilterIcon,
-  Loader2,
-} from "lucide-react";
-import {
-  SelectOption,
-  SelectOptions,
-  TimeRangeFilter,
-} from "./apis/[id]/Analyse/interfaces";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { ApiUrl } from "@/utils/constants";
+import { Loader2 } from "lucide-react";
+import { SelectOptions, TimeRangeFilter } from "./apis/[id]/Analyse/interfaces";
+
 import { useApiByUserId } from "@/hooks/apis/api.queries";
 import { Api } from "./apis/[id]/Analyse/api.interface";
-import { Separator } from "@/components/ui/separator";
 import MultiSelect from "@/components/addNewApi/monitazation/object";
 import { MultiValue } from "react-select";
 import TimeFilterButtons from "./apis/[id]/Analyse/timeRange";
-import { ChartFormater, ChartFormaterApis } from "@/utils/chartFunctions";
-import { ChartData } from "./apis/[id]/Analyse/data";
+import { ChartFormaterApis } from "@/utils/chartFunctions";
 import {
   CartesianGrid,
   Legend,
@@ -56,7 +30,7 @@ import { useApisStatsQuery } from "@/hooks/apiLogs/apiLogs.queries";
 import { useRouter } from "next/navigation";
 import { useAuthSession } from "@/components/auth-provider";
 
-interface SelectedApi {
+export interface SelectedApi {
   label: string;
   value: number;
 }
@@ -107,6 +81,7 @@ export default function DashboardPage() {
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full max-h-full overflow-y-auto">
       {/*  TODO fix name of header */}
+      <Header type="provider" />
       <StatisticsBoxes />
 
       <div className=" w-full ">

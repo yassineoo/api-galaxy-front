@@ -1,7 +1,5 @@
 // DashboardPage.js
-"use client";
 import Header from "../../components/dashboard/header";
-// import Sidebar from "../../components/dashboard/sidebar";
 import StatisticsBoxes from "../../components/dashboard/mainPage/stat";
 // import LineChartComponent from "../../components/dashboard/linechart";
 import DonutChartComponent from "../../components/dashboard/mainPage/donutchart";

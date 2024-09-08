@@ -8,6 +8,7 @@ import axios, { AxiosError } from "axios";
 import { baseApiUrl, getUserApis, getUserFollowings } from "@/actions/api";
 import { basedApiUrl, getAPIRating } from "@/actions/api";
 import { getInactiveAPI } from "@/actions/admin";
+import { useAuthSession } from "@/components/auth-provider";
 
 export const useApiList = (
   { page, limit, filter, search }: any,
@@ -195,3 +196,27 @@ export const useProviderInfo = (providerId: string) => {
     enabled: !!providerId, // Only run the query if providerId is not null or undefined
   });
 };
+
+export function useSubscribedApisQuery() {
+  const { session } = useAuthSession()
+  return useQuery<any[]>({
+    queryKey: ["subscribedApis"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get("http://localhost:7002/apis/subscribed-apis", {
+          headers: {
+            Authorization: `Bearer ${session?.token}`
+          }
+        });
+        console.log({ data: response.data })
+        return response.data
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          console.log({ e, response: e.response, data: e.response?.data })
+        }
+        else console.log({ e })
+        throw e
+      }
+    }
+  })
+}

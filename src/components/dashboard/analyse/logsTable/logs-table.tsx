@@ -2,7 +2,6 @@
 
 import {
   ColumnDef,
-  Pagination,
   SortingState,
   flexRender,
   getCoreRowModel,

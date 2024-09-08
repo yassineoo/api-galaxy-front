@@ -85,7 +85,7 @@ const AnalysePage = ({ params }: { params: { id: string } }) => {
           </>
         )}
 
-        {logs.isError && <p>logs ERROR</p>}
+        {/* {logs.isError && <p>logs ERROR</p>} */}
         {/* <PaginationManual
           currentPage={page}
           totalPages={logs?.data?.meta?.totalPages}
