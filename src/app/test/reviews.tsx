@@ -76,6 +76,7 @@ export default function ReviewsTab() {
       apiId: id as string,
       rating,
     };
+    console.log("newReview -----", newReview);
 
     createReviewMutation(newReview, {
       onSuccess: () => {
@@ -125,7 +126,7 @@ export default function ReviewsTab() {
           </h2>
         </CardHeader>
         <CardContent className="px-6 py-4">
-          <form className="space-y-4" onSubmit={submitReview}>
+          <form className="space-y-4">
             <div>
               <label
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -161,6 +162,7 @@ export default function ReviewsTab() {
         </CardContent>
         <CardFooter className="bg-gray-100 dark:bg-gray-700 px-6 py-4 flex justify-end">
           <Button
+            onClick={submitReview}
             type="submit"
             className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
             disabled={isPending}

@@ -52,7 +52,7 @@ export const defaultText = `<div>
 const About = ({ apiDocs }: any) => {
   console.log("Docs is : ", apiDocs.Content);
 
-  const [text, setText] = useState(apiDocs?.Content || defaultText);
+  const [text, setText] = useState(apiDocs?.Content);
 
   useEffect(() => {
     console.log(text);

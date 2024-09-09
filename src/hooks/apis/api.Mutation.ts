@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { Api, ApiCreation } from "./interfaces";
-import { ApiUsersUrl } from "@/utils/constants";
+import { ApiUsersUrl, PaymentUrl } from "@/utils/constants";
 const ApiUrl = "http://localhost:9000";
 const ApiUrlReplace = "http://localhost:9000";
 export const useCreateApi = (authToken: string) => {
@@ -18,17 +18,20 @@ export const useCreateApi = (authToken: string) => {
       });
 
       console.log(response.data.ID);
-      const responseProduct = await axios.post(`${ApiUrl}/stripeCRUD/products`, {
-        name: apiData.Name,
-        description: apiData.Description,
-        apiId: response.data.ID
-      }, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
+      const responseProduct = await axios.post(
+        `${PaymentUrl}/stripeCRUD/products`,
+        {
+          name: apiData.Name,
+          description: apiData.Description,
+          apiId: response.data.ID,
+        },
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
 
       console.log(responseProduct.data);
       return response.data;
-
     },
 
     onSuccess: () => {

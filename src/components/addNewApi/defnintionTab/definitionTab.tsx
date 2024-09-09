@@ -33,7 +33,9 @@ export default function DefinitionTab({ api }: any) {
           <CardDescription>Define your api Endpoints</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <Search value="" setValue={() => {}} />
+          <div className="w-full ">
+            <Search value="" setValue={() => {}} />
+          </div>
           <div className="flex gap-4 justify-end items-center">
             <ImportEndpointModal apiID={api.ID} />
             <AddNewEndpointDrawer Label="Add New Endpoint" apiID={api.ID} />

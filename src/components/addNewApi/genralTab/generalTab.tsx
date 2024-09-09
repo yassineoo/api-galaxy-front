@@ -47,7 +47,7 @@ export default function GenralApiInfoTab({ api }: any) {
   const fileInputRef = useRef<HTMLButtonElement>(null);
   const apiCategoryListQuery = useApiCategoryList();
 
-  console.log("api =========", api);
+  console.log("api =========", apiCategoryListQuery.data);
 
   const {
     mutateAsync: updateApi,
@@ -155,7 +155,7 @@ export default function GenralApiInfoTab({ api }: any) {
                   <div className="col-span-3">
                     <ApiCategorySelect
                       name={api.CategoryName}
-                      items={apiCategoryListQuery.data.data}
+                      items={apiCategoryListQuery.data}
                       defaultValue={api.CategoryID}
                       selectedOption={api.CategoryName}
                       handleSelectionChange={setCategoryId}

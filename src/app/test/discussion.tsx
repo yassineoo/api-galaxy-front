@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 const CommentBox = ({ onSubmit }: any) => {

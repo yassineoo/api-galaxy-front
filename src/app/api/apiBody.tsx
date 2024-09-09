@@ -19,6 +19,7 @@ import ParamterControler from "./paramterController";
 import ProviderInfo from "./providerInfo";
 import PrcingTabs from "@/components/addNewApi/monitazation/pricingCardsApi";
 import { useAuthSession } from "@/components/auth-provider";
+import ReviewsTab from "../test/reviews";
 const codeString = `
 const axios = require('axios');
 
@@ -130,7 +131,7 @@ export function ApiTabs({ api, api_id, user_id }: any) {
           value="discussion"
           className="flex justify-center items-start"
         >
-          {/* <ReviewsTab /> */}
+          <ReviewsTab />
         </TabsContent>
         <TabsContent
           value="pricing"

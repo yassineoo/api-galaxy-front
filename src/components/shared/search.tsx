@@ -11,7 +11,7 @@ export function Search({
     <Input
       type="search"
       placeholder="Search..."
-      className="m-auto md:w-[100px] lg:w-full"
+      className="m-auto  lg:w-full"
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />

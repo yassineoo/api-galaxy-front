@@ -70,13 +70,13 @@ export default function Footer(): JSX.Element {
         <h2>© 2024 Inc. All rights reserved.</h2>
         <div className="flex gap-4 mt-4 md:mt-0">
           <Link
-            href={""}
+            href={"/terms"}
             className="hover:text-yellow-400 transition-colors duration-300 ease-in-out"
           >
             Terms
           </Link>
           <Link
-            href={""}
+            href={"/privacy"}
             className="hover:text-yellow-400 transition-colors duration-300 ease-in-out"
           >
             Privacy Policy

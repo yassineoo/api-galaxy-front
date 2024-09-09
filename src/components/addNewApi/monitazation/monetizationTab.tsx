@@ -123,8 +123,6 @@ export default function MonetizationTab({ api, apiPlans, edit }: any) {
           <Tabs defaultValue="Public ">
             <TabsList className="grid  grid-cols-5 w-2/3  ml-8 my-2">
               <TabsTrigger value="Public ">Public </TabsTrigger>
-              <TabsTrigger value="Private">Private</TabsTrigger>
-              <TabsTrigger value="Transactions">Transactions</TabsTrigger>
             </TabsList>
             <TabsContent
               value="Public "
@@ -138,14 +136,6 @@ export default function MonetizationTab({ api, apiPlans, edit }: any) {
                 setObjectList={SetObjectList}
               />
             </TabsContent>
-            <TabsContent
-              value="Private"
-              className="w-full  flex flex-col justify-center items-start px-8 "
-            ></TabsContent>
-            <TabsContent
-              value="Transactions"
-              className="w-full  flex flex-col justify-center items-start px-8 "
-            ></TabsContent>
           </Tabs>
         </CardContent>
         <CardFooter className="w-full gap-4 m-auto  flex items-center justify-center">

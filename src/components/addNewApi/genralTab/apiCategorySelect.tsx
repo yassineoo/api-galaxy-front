@@ -16,6 +16,8 @@ export const ApiCategorySelect = ({
   handleSelectionChange = (value: any) =>
     console.log("default on change", value),
 }: any) => {
+  console.log("items", items);
+
   return (
     <Select
       defaultValue={defaultValue}
@@ -28,8 +30,8 @@ export const ApiCategorySelect = ({
       </SelectTrigger>
       <SelectContent>
         {items?.map((item: any) => (
-          <SelectItem key={item.ID} value={item.ID}>
-            {item.CategoryName} {/* Use the specific property here */}
+          <SelectItem key={item.id} value={item.id}>
+            {item.category_name} {/* Use the specific property here */}
           </SelectItem>
         ))}
       </SelectContent>
