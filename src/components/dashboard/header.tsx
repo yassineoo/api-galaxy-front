@@ -54,7 +54,7 @@ const Header = ({
   return (
     <header
       className={cn(
-        "bg-white w-full dark:bg-slate-900 p-6 shadow-md flex justify-between items-center",
+        "bg-white w-full h-[64px] dark:bg-slate-900 p-6 shadow-md flex justify-between items-center",
         className
       )}
     >

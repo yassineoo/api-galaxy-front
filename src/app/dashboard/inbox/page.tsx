@@ -78,7 +78,7 @@ export default function InboxPage({
   }, [chatrooms]);
 
   return (
-    <div className="flex h-[calc(100vh-64px)] w-full">
+    <div className="flex h-[calc(100vh-64px)] w-full overflow-hidden">
       <div className="bg-gray-100 dark:bg-gray-900 w-56 min-w-56  md:w-72 md:min-w-72 border-r border-gray-200 dark:border-gray-800 flex flex-col ">
         <ChatsList
           selectedChatId={selectedChatId}

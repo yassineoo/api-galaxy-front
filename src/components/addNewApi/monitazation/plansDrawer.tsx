@@ -22,7 +22,11 @@ const PlanConfermationModal = ({ plan }: any) => {
   return (
     <Drawer>
       <DrawerTrigger>
-        <Button>Subscribe</Button>
+        {plan?.Active ? (
+          <Button>Subscribe</Button>
+        ) : (
+          <Button disabled={true}>Subscribe</Button>
+        )}{" "}
       </DrawerTrigger>
       <DrawerContent className="flex  h-[580px]  overflow-y-scroll   justify-between items-center">
         <DrawerHeader>
@@ -71,7 +75,7 @@ const PlanConfermationModal = ({ plan }: any) => {
               </CardDescription>
               <hr className="my-2 border-t" />
               <CardDescription className="flex justify-between">
-                <span>Total : </span> {plan.Price } $
+                <span>Total : </span> {plan.Price} $
               </CardDescription>
             </Card>
 

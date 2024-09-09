@@ -1,4 +1,5 @@
 "use client";
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -14,8 +15,8 @@ import {
 } from "@/components/ui/card";
 import { useAuthSession } from "../auth-provider";
 import { useNotifList } from "@/hooks/admin/reviews.query";
-
 import React from "react";
+import { formatDistanceToNow } from "date-fns";
 
 export default function Notifications() {
   const { session } = useAuthSession();
@@ -23,6 +24,7 @@ export default function Notifications() {
     Number(session?.userId) || 1,
     session?.token || ""
   );
+  console.log("data", data);
 
   const handleRefresh = () => {
     refetch();
@@ -61,10 +63,10 @@ export default function Notifications() {
           <CardContent className="py-4">
             {isSuccess && data?.length > 0 ? (
               <div className="space-y-4 max-h-[300px] overflow-y-auto">
-                {data.slice(0, 4).map((notification: any) => (
+                {data.map((notification: any) => (
                   <div key={notification.id} className="flex items-start gap-4">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                      <BellIcon className="h-5 w-5" />
+                    <div className="flex p-2  items-center justify-center rounded-full bg-primary text-primary-foreground">
+                      <BellIcon className="h-6 w-6" />
                     </div>
                     <div className="space-y-1">
                       <p className="text-sm font-medium">
@@ -74,7 +76,13 @@ export default function Notifications() {
                         {notification.message}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        2 hours ago
+                        {/* Display the dynamic time difference */}
+                        {formatDistanceToNow(
+                          new Date(notification.created_at),
+                          {
+                            addSuffix: true,
+                          }
+                        )}
                       </p>
                     </div>
                   </div>

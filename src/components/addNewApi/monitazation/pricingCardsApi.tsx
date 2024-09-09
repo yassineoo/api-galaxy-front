@@ -99,7 +99,7 @@ function PricingCardsApi({ api, plans }: any) {
                   <p className="text-2xl text-red-500">x</p>
                 )}
               </div>
-            ))} 
+            ))}
           </>
         )}
       </div>

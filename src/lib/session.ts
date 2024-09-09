@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 60 * 60 * 10,//10hr
+    maxAge: 60 * 60 * 10, //10hr
   },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET!,
@@ -70,12 +70,13 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, session, ...props }) {
       // console.log({ token, user, session, props });
       if (user) {
-        // console.log({ user });
+        console.log({ user });
         if (user?.name) {
           //console.log("awchahooo")
           const res = await oauthUser({
             Email: user?.email,
             Username: user?.name,
+            image: user?.image,
           });
           // console.log("responsessss", res.data);
 
@@ -103,9 +104,7 @@ export const authOptions: NextAuthOptions = {
         // Add two-factor authentication status to the toke
         token.isVerified = false;
       } else {
-
         // console.log("hi from elseeee");
-
         // subsequent calls so the token object has already the needed values
         //  console.log({ token, user, session });
       }

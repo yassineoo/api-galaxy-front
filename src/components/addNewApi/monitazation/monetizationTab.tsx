@@ -34,6 +34,11 @@ export default function MonetizationTab({ api, apiPlans, edit }: any) {
   const [publicPlans, setPublicPlans] = useState(
     planss.length != 0 ? planss : defaultPlans
   );
+
+  useEffect(() => {
+    console.log("publicPlansss", publicPlans);
+  }, [publicPlans]);
+
   const [objectList, SetObjectList] = useState(
     edit
       ? apiPlans.ObjectPlans
@@ -67,13 +72,13 @@ export default function MonetizationTab({ api, apiPlans, edit }: any) {
     isPending: isCreationPending,
     isError: isCreationError,
     isSuccess: isCreationSuccess,
-  } = useCreateApiPlans();
+  } = useCreateApiPlans("toto");
   const {
     mutateAsync: updatePlan,
     isPending,
     isError,
     isSuccess,
-  } = useUpdateApiPlans();
+  } = useUpdateApiPlans("toto");
 
   useEffect(() => {
     if (isError) {
@@ -166,6 +171,8 @@ const PlanHeaders = ({
   objectList,
   setObjectList,
 }: any) => {
+  console.log({ publicPlans });
+
   return (
     <div className="grid grid-cols-5 gap-8 mb-2 w-full">
       <div className="col-span-1"></div> {/* Empty column */}

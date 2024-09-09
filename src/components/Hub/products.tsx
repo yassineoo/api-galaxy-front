@@ -182,6 +182,7 @@ export default function ProductsHub({
                     latency: api.Latency,
                     availability: api.status,
                     imagePath: api.image_path,
+
                     cardTitle: api.name,
                     cardDescription: api.description,
                     liked: api.isLiked,
@@ -189,11 +190,13 @@ export default function ProductsHub({
                 />
               ))}
           </div>
-          <PaginationManual
-            currentPage={page}
-            totalPages={apiList?.data?.data?.meta?.totalPages}
-            onPageChange={setPage}
-          />
+          {apiList?.data?.length > 6 && (
+            <PaginationManual
+              currentPage={page}
+              totalPages={apiList?.data?.data?.meta?.totalPages}
+              onPageChange={setPage}
+            />
+          )}
         </div>
       </div>
     </>
