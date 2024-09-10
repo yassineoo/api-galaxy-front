@@ -41,6 +41,8 @@ export default function DashboardPage() {
     MultiValue<SelectedApi>
   >([]);
 
+  const [loading, setLoading] = useState(true); // Add loading state
+
   const router = useRouter();
   const { session, isAuthenticated } = useAuthSession();
   useEffect(() => {
@@ -54,7 +56,7 @@ export default function DashboardPage() {
 
     if (isAuthenticated && session && session.twoFactorEnabled && !isVerified) {
       router.push("/verifyOTP");
-    }
+    } else setLoading(false);
   }, [session]);
 
   const { data: apiList, status: apiListLoadingStatus } = useApiByUserId(1);
@@ -77,6 +79,10 @@ export default function DashboardPage() {
   }
 
   const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRangeFilter>("7d");
+
+  if (loading) {
+    return <p>Loading...</p>; // Optionally show a loading spinner here
+  }
 
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full max-h-full overflow-y-auto">

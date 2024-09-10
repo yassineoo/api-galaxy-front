@@ -93,12 +93,10 @@ const useSidebar = create<{
 
 function SidebarSheet({
   apiId,
-  maApisList,
   activeItem,
   activeChildName,
 }: {
   apiId: number;
-  maApisList: any;
   activeItem: any;
   activeChildName: any;
 }) {
@@ -117,7 +115,6 @@ function SidebarSheet({
         <Menu
           isMenuOpen={isOpen}
           apiId={apiId}
-          maApisList={maApisList}
           activeItem={activeItem}
           activeChildName={activeChildName}
         />
@@ -128,12 +125,10 @@ function SidebarSheet({
 
 function MobileSidebar({
   apiId,
-  maApisList,
   activeItem,
   activeChildName,
 }: {
   apiId: number;
-  maApisList: any;
   activeItem: any;
   activeChildName: any;
 }) {
@@ -145,14 +140,12 @@ function MobileSidebar({
       <Logo />
       <SidebarSheet
         apiId={apiId}
-        maApisList={maApisList}
         activeItem={activeItem}
         activeChildName={activeChildName}
       />
       <Menu
         isMenuOpen={isOpen}
         apiId={apiId}
-        maApisList={maApisList}
         activeItem={activeItem}
         activeChildName={activeChildName}
       />
@@ -168,12 +161,10 @@ function MobileSidebar({
 
 function DesktopSidebar({
   apiId,
-  maApisList,
   activeItem,
   activeChildName,
 }: {
   apiId: number;
-  maApisList: any;
   activeItem: any;
   activeChildName: any;
 }) {
@@ -189,7 +180,6 @@ function DesktopSidebar({
       <Menu
         isMenuOpen={isOpen}
         apiId={apiId}
-        maApisList={maApisList}
         activeItem={activeItem}
         activeChildName={activeChildName}
       />
@@ -207,9 +197,6 @@ export default function ClientSidebar() {
   let activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
 
   const subscribedApis = useSubscribedApisQuery();
-  // const maApisListCallback = useCallback(() => useApiByUserId(1), []);
-  // const maApisList = maApisListCallback();
-  // console.log("maApisList-------", maApisList.data);
 
   let apiId = 0;
   if (activeItem != "apis") {
@@ -232,7 +219,6 @@ export default function ClientSidebar() {
   if (isMobileScreen)
     return (
       <MobileSidebar
-        maApisList={subscribedApis}
         apiId={apiId}
         activeItem={activeItem}
         activeChildName={activeChildName}
@@ -241,7 +227,6 @@ export default function ClientSidebar() {
   else
     return (
       <DesktopSidebar
-        maApisList={subscribedApis}
         apiId={apiId}
         activeItem={activeItem}
         activeChildName={activeChildName}
@@ -274,22 +259,14 @@ const Logo = () => {
   );
 };
 
-const Menu = ({ apiId, maApisList, activeItem, activeChildName }: any) => {
+const Menu = ({ apiId, activeItem, activeChildName }: any) => {
   const { isOpen } = useSidebar();
   const activeOne = menuItems.find((item) => item.url.includes(activeItem));
   const [activeMenu, setActiveMenu] = useState(apiId || activeOne?.ID || 90);
-  const [searchTerm, setSearchTerm] = useState("");
 
   const handleMenuClick = (ID: any) => {
     setActiveMenu(ID);
   };
-
-  const filteredApis = useMemo(() => {
-    if (!maApisList.isSuccess || !maApisList.data) return [];
-    return maApisList.data.filter((api: any) =>
-      api.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [maApisList.data, maApisList.isSuccess, searchTerm]);
 
   return (
     <div className="flex flex-col flex-1 h-full pt-6 text-sm">
@@ -314,42 +291,6 @@ const Menu = ({ apiId, maApisList, activeItem, activeChildName }: any) => {
           ))}
         </TooltipProvider>
       </div>
-      {isOpen && (
-        <>
-          <Separator text="MY APIs" />
-          <div className="px-4 pt-2 pb-4">
-            <Input
-              type="text"
-              placeholder="Search APIs..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full text-black dark:text-white"
-            />
-          </div>
-          {maApisList.isLoading && (
-            <div className="hidden md:block px-4">Loading...</div>
-          )}
-          <div className="h-64 relative max-h-full overflow-x-hidden ">
-            <div className="flex flex-col items-start justify-start h-full">
-              {maApisList.isSuccess &&
-                filteredApis.map((api: any) => (
-                  <ApiMenuItem
-                    key={api.id}
-                    item={{
-                      ID: api.id,
-                      name: api.name,
-                      active: api.id == apiId,
-                    }}
-                    active={activeMenu == api.id}
-                    onClick={handleMenuClick}
-                    isMenuOpen={isOpen}
-                    activeChildName={activeChildName}
-                  />
-                ))}
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 };

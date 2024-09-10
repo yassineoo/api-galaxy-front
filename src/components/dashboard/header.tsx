@@ -77,13 +77,13 @@ const Header = ({
         <Settings />
 
         {/* Profile Dropdown */}
-        <IconDropdown session={session} />
+        <IconDropdown session={session} type={type} />
       </div>
     </header>
   );
 };
 
-const IconDropdown = ({ session }: any) => {
+const IconDropdown = ({ session, type }: any) => {
   const router = useRouter();
   const signOutUser = async () => {
     const isVerified = localStorage.getItem("isVerified");
@@ -112,9 +112,28 @@ const IconDropdown = ({ session }: any) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={`/dashboard/profile`}>Profile </Link>
+          <Link
+            href={
+              type == "provider"
+                ? `/dashboard/profile`
+                : "/client-dashboard/profile"
+            }
+          >
+            Profile{" "}
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
+
+        {type == "provider" ? (
+          <DropdownMenuItem>
+            {" "}
+            <Link href={`/client-dashboard/`}>Switch to Customer</Link>
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem>
+            {" "}
+            <Link href={`/dashboard/`}>Switch to Provider</Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
           <Link href={`/hub`}>Hub</Link>
         </DropdownMenuItem>

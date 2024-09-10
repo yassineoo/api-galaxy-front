@@ -64,7 +64,7 @@ export const useUpdateStatusApi = (authToken: string) => {
 
   return useMutation({
     mutationFn: async (apiId: number) => {
-      const response = await axios.get(
+      const response = await axios.post(
         `${ApiUsersUrl}/userApi/update-status/${apiId}`,
         //  {},
         { headers: { Authorization: `Bearer ${authToken}` } }
