@@ -11,7 +11,7 @@ export default async function RootLayout({
   const session = await getCurrentUser();
   if (!session) redirect("/login");
   return (
-    <div className="bg-dashboardBg dark:bg-transparent flex relative h-screen">
+    <div className="bg-dashboardBg dark:bg-transparent flex relative h-screen overflow-hidden">
       <Sidebar />
 
       <div className="w-full h-full overflow-y-auto">

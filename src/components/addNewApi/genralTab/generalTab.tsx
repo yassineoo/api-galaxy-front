@@ -27,7 +27,7 @@ export default function GenralApiInfoTab({ api }: any) {
   // Define states for input fields
   const { session } = useAuthSession();
   const [name, setName] = useState(api.Name);
-  const [categoryId, setCategoryId] = useState(api.CategoryID);
+  const [categoryId, setCategoryId] = useState(Number(api.CategoryID));
   const [apiUrl, setApiUrl] = useState(api.ApiUrl);
   const [image, setImage] = useState(api.ImagePath); // Change to empty string
   const [keywords, setKeywords] = useState(api.Keywords);
@@ -100,6 +100,11 @@ export default function GenralApiInfoTab({ api }: any) {
   const handleSwitchChange = () => {
     setVisibility((prev: any) => !prev);
   };
+  const handleCategorySelectionChange = (selectedOption: any) => {
+    console.log("selectedOption", selectedOption);
+
+    setCategoryId(Number(selectedOption));
+  };
 
   const router = useRouter();
   return (
@@ -158,7 +163,7 @@ export default function GenralApiInfoTab({ api }: any) {
                       items={apiCategoryListQuery.data}
                       defaultValue={api.CategoryID}
                       selectedOption={api.CategoryName}
-                      handleSelectionChange={setCategoryId}
+                      handleSelectionChange={handleCategorySelectionChange}
                     />
                   </div>
                 </>

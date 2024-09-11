@@ -91,3 +91,24 @@ export const useNotifList = (userId: number, authorize: string) => {
     },
   });
 };
+
+export const useStatBox = (userId: number, type: string) => {
+  return useQuery({
+    queryKey: ["StatBox", userId, type],
+    queryFn: async () => {
+      try {
+        console.log("response from api stats res ", userId, type);
+
+        const res = await basedApiUrl.get(
+          `/userApi/stat-box/${userId}/${type}`,
+          {}
+        );
+        console.log("response from api stats res : ", res.data);
+
+        return res.data;
+      } catch (error) {
+        console.log("response from api stats res", error);
+      }
+    },
+  });
+};

@@ -119,7 +119,7 @@ export default function ClientDashboardPage() {
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full max-h-full overflow-y-auto">
       {/*  TODO fix name of header */}
-      <StatisticsBoxes />
+      <StatisticsBoxes type="customer" />
 
       <div className=" w-full ">
         {/* <h2 className="px-12 text-lg font-bold py-2  ">{api.Name} </h2> */}

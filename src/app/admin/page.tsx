@@ -96,11 +96,8 @@ export default function DashboardPage() {
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full max-h-full overflow-y-auto">
       {/*  TODO fix name of header */}
-      <StatisticsBoxes />
-      <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-lg font-semibold">Earnings</h2>
-        <DonutChartComponent />
-      </div>
+      <StatisticsBoxes type="admin" />
+
       <div className=" w-full ">
         {/* <h2 className="px-12 text-lg font-bold py-2  ">{api.Name} </h2> */}
         <div className="px-12 py-2 flex flex-col gap-4">
@@ -124,6 +121,11 @@ export default function DashboardPage() {
               timeRangeFilter={timeRangeFilter}
             />
           )}
+
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h2 className="text-lg font-semibold">Earnings</h2>
+            <DonutChartComponent />
+          </div>
         </div>
       </div>
     </div>
