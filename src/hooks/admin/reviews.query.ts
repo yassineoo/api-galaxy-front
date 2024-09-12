@@ -34,14 +34,14 @@ export const useReviewsReports = (
     queryFn: async () => {
       try {
         const response = await basedApiUrl.get(
-          `/userApi/reviewReports?limit=${limit}&page=${page}&search=${search}`,
+          `/userApi/adminReviwesReports?limit=${limit}&page=${page}&search=${search}`,
           {
             headers: {
               Authorization: `Bearer ${authorize}`,
             },
           }
         );
-        //console.log("response from api query : ", response.data);
+        console.log("reviews data 11 : ", response.data);
         return response.data;
       } catch (error: any) {
         console.log(error.message);

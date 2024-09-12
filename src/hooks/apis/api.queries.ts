@@ -1,7 +1,7 @@
 // apiQueries.ts
 
 import { Api } from "@/app/dashboard/apis/[id]/Analyse/api.interface";
-import { ApiAuth, ApiUrl } from "@/utils/constants";
+import { ApiAuth, ApiUrl, ApiUsersUrl } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 
 import axios, { AxiosError } from "axios";
@@ -122,9 +122,9 @@ export const useApiById = (apiId: number) => {
         return response.data;
       } catch (e) {
         if (e instanceof AxiosError) {
-          console.log({ e, response: e.response, data: e.response?.data })
+          console.log({ e, response: e.response, data: e.response?.data });
         }
-        throw e
+        throw e;
       }
     },
   });
@@ -139,6 +139,21 @@ export const useApiByUserId = (userId: number) => {
       console.log("data from api users : ", data);
 
       return data;
+    },
+  });
+};
+
+export const useGetApisIdName = () => {
+  return useQuery<any[]>({
+    queryKey: ["myApis"],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${ApiUsersUrl}/userApi/getAllApisIDNames`
+      ); // Adjust the endpoint
+
+      console.log("data from api users list: ", response.data);
+
+      return response.data;
     },
   });
 };
@@ -198,25 +213,27 @@ export const useProviderInfo = (providerId: string) => {
 };
 
 export function useSubscribedApisQuery() {
-  const { session } = useAuthSession()
+  const { session } = useAuthSession();
   return useQuery<any[]>({
     queryKey: ["subscribedApis"],
     queryFn: async () => {
       try {
-        const response = await axios.get("http://localhost:7002/apis/subscribed-apis", {
-          headers: {
-            Authorization: `Bearer ${session?.token}`
+        const response = await axios.get(
+          "http://localhost:7002/apis/subscribed-apis",
+          {
+            headers: {
+              Authorization: `Bearer ${session?.token}`,
+            },
           }
-        });
-        console.log({ data: response.data })
-        return response.data
+        );
+        console.log({ data: response.data });
+        return response.data;
       } catch (e) {
         if (e instanceof AxiosError) {
-          console.log({ e, response: e.response, data: e.response?.data })
-        }
-        else console.log({ e })
-        throw e
+          console.log({ e, response: e.response, data: e.response?.data });
+        } else console.log({ e });
+        throw e;
       }
-    }
-  })
+    },
+  });
 }

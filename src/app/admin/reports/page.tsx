@@ -34,6 +34,8 @@ export default function DefinitionTab() {
   );
   useEffect(() => {
     if (ReviewReportList.isSuccess) {
+      console.log("ReviewReportList", ReviewReportList.data);
+
       setReviewReportList(ReviewReportList.data);
     }
   }, [ReviewReportList.isFetching, ReviewReportList.isFetched]);

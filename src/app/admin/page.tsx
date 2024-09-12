@@ -2,7 +2,9 @@
 
 import StatisticsBoxes from "../../components/dashboard/mainPage/stat";
 // import LineChartComponent from "../../components/dashboard/linechart";
-import DonutChartComponent from "../../components/dashboard/mainPage/donutchart";
+import DonutChartComponent, {
+  DonutWrapper,
+} from "../../components/dashboard/mainPage/donutchart";
 // import FilterGroup from "../../components/dashboard/mainPage/filterGroupColor";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -20,7 +22,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ApiUrl } from "@/utils/constants";
-import { useApiByUserId } from "@/hooks/apis/api.queries";
+import { useApiByUserId, useGetApisIdName } from "@/hooks/apis/api.queries";
 import { Separator } from "@/components/ui/separator";
 import MultiSelect from "@/components/addNewApi/monitazation/object";
 import { MultiValue } from "react-select";
@@ -72,7 +74,7 @@ export default function DashboardPage() {
     }
   }, [session]);
 
-  const { data: apiList, status: apiListLoadingStatus } = useApiByUserId(1);
+  const { data: apiList, status: apiListLoadingStatus } = useGetApisIdName();
   let options: SelectOptions = [];
   if (apiListLoadingStatus === "success") {
     options = apiList.map((api) => ({
@@ -124,7 +126,7 @@ export default function DashboardPage() {
 
           <div className="bg-white p-6 rounded-lg shadow">
             <h2 className="text-lg font-semibold">Earnings</h2>
-            <DonutChartComponent />
+            <DonutWrapper selectedApiList={selectedApiList} />
           </div>
         </div>
       </div>
@@ -144,6 +146,7 @@ const LineWrapper = ({
   const stat = useApisStatsQuery({
     apiIds: selectedApiList.map((option: any) => Number(option.value)),
     timeFilter: timeRangeFilter,
+    authToken: "",
   });
   return (
     <>
@@ -305,6 +308,8 @@ const LineChartComponent = ({
 
     setChartData(data as any);
   }, [TotalData, metrics]);
+  console.log("chartData", chartData);
+
   return (
     <div className="w-full flex flex-col gap-6 mb-10">
       <div className="flex justify-center gap-6 items-center mb-8">
@@ -339,17 +344,20 @@ const LineChartComponent = ({
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           {/* Iterate over the endpoints and create Line components */}
-          {Object.keys(chartData[0])
-            .filter((endpointName) => endpointName != "name")
-            .map((endpointName, index) => (
-              <Line
-                key={index}
-                type="monotone"
-                dataKey={endpointName}
-                stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`} // Random color
-                activeDot={{ r: 8 }}
-              />
-            ))}
+          {chartData[0] &&
+            Object.keys(chartData[0])
+              .filter((endpointName) => endpointName != "name")
+              .map((endpointName, index) => (
+                <Line
+                  key={index}
+                  type="monotone"
+                  dataKey={endpointName}
+                  stroke={`#${Math.floor(Math.random() * 16777215).toString(
+                    16
+                  )}`} // Random color
+                  activeDot={{ r: 8 }}
+                />
+              ))}
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />

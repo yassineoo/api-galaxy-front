@@ -12,14 +12,14 @@ import axios, { AxiosError } from "axios";
 
 export const useApiLogsList = (data: any) => {
   return useQuery<{
-    logs: any[],
+    logs: any[];
     meta: {
-      totalItems: number,
-      itemCount: number,
-      itemsPerPage: number,
-      totalPages: number,
-      currentPage: number
-    }
+      totalItems: number;
+      itemCount: number;
+      itemsPerPage: number;
+      totalPages: number;
+      currentPage: number;
+    };
   }>({
     queryKey: ["ApiLogs", data.apiId, data.page, data.limit],
     queryFn: async () => {
@@ -28,7 +28,7 @@ export const useApiLogsList = (data: any) => {
       }); // Adjust the endpoint
       // console.log("response from logs", response.data);
       // console.log("type  response from logs", typeof response.data);
-      console.log({ response: response, data: response.data })
+      console.log({ response: response, data: response.data });
       return response.data;
     },
   });
@@ -57,11 +57,12 @@ export const useApiLogsStatss = (endpointIds: number[]) => {
 export const useEndpointsLogsStats = ({
   endpointIds,
   timeFilter,
+  authToken,
 }: {
   endpointIds: number[];
   timeFilter: TimeRangeFilter;
+  authToken: string;
 }) => {
-  const { session } = useAuthSession()
   return useQuery<ChartData[]>({
     queryKey: ["EndpointsLogsStats", endpointIds, timeFilter], // Adjust the queryKey
     queryFn: async () => {
@@ -80,8 +81,8 @@ export const useEndpointsLogsStats = ({
           { endpoint_ids: endpointIds },
           {
             headers: {
-              Authorization: `Bearer ${session?.token}`
-            }
+              Authorization: `Bearer ${authToken}`,
+            },
           }
         );
         // /endpoints
@@ -105,37 +106,70 @@ export const useEndpointsLogsStats = ({
 export function useApisStatsQuery({
   apiIds,
   timeFilter,
+  authToken,
 }: {
   apiIds: number[];
   timeFilter: TimeRangeFilter;
+  authToken: string;
 }) {
-  const { session } = useAuthSession()
   return useQuery<ChartData[]>({
     queryKey: ["ApiLogsStats", apiIds, timeFilter],
     queryFn: async () => {
       try {
         console.log("endpointIds from logs stats ====================", apiIds);
 
+        if (apiIds.length === 0) {
+          return [];
+        }
         const response = await axios.post(
           `http://localhost:7001/stats/apis?duration=${timeFilter}`,
           { api_ids: apiIds },
           {
             headers: {
-              Authorization: `Bearer ${session?.token}`
-            }
+              Authorization: `Bearer ${authToken}`,
+            },
           }
         );
-        // /endpoints
-        console.log({ apiIds });
-        console.log("stat res ,", { data: response.data });
-        // console.log("response from logs stat", response.data);
-        // console.log("type response from logs stat", typeof response.data);
 
         return response.data;
       } catch (e) {
         if (e instanceof AxiosError) {
-          console.log({ e: e })
+          console.log({ e: e });
           console.log(e.response?.data);
+          throw e;
+        }
+      }
+    },
+  });
+}
+
+export function useApisStatsDonutQuery({
+  apiIds,
+  authToken,
+}: {
+  apiIds: number[];
+  authToken: string;
+}) {
+  return useQuery<{ apiId: string; totalAmount: number }[]>({
+    queryKey: ["ApiLogsStatsDonut", apiIds],
+    queryFn: async () => {
+      try {
+        if (apiIds.length === 0) {
+          return [];
+        }
+        const response = await axios.post(
+          `${ApiStatUrl}/stats/apis/donut`,
+          { api_ids: apiIds },
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        return response.data;
+      } catch (e) {
+        if (e instanceof AxiosError) {
           throw e;
         }
       }

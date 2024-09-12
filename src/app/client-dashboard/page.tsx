@@ -160,9 +160,11 @@ const LineWrapper = ({
   apiList: Api[];
   timeRnageFilter: TimeRangeFilter;
 }) => {
+  const { session } = useAuthSession();
   const stat = useApisStatsQuery({
     apiIds: selectedApiList.map((option) => Number(option.value)),
     timeFilter: timeRnageFilter,
+    authToken: session?.token || "",
   });
   return (
     <>
@@ -358,7 +360,7 @@ const LineChartComponent = ({
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           {/* Iterate over the endpoints and create Line components */}
-          {Object.keys(chartData[0])
+          {Object?.keys(chartData[0])
             .filter((endpointName) => endpointName != "name")
             .map((endpointName, index) => (
               <Line

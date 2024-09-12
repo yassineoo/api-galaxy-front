@@ -127,9 +127,11 @@ const LineWrapper = ({
   apiList: Api[];
   timeRangeFilter: TimeRangeFilter;
 }) => {
+  const { session } = useAuthSession();
   const stat = useApisStatsQuery({
     apiIds: selectedApiList.map((option) => Number(option.value)),
     timeFilter: timeRangeFilter,
+    authToken: session?.token || "",
   });
   return (
     <>

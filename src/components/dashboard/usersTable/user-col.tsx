@@ -13,6 +13,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getColorByLetter } from "@/app/dashboard/inbox/chats_list";
+import Link from "next/link";
+import { useUpdateStatusUser } from "@/hooks/apis/api.Mutation";
+import { useAuthSession } from "@/components/auth-provider";
 
 export type UserEntity = {
   id: number;
@@ -20,6 +23,8 @@ export type UserEntity = {
   email: string;
   role: string;
   image_path: string;
+  is_active: boolean;
+  last_login: string;
 };
 
 export const userColumn: ColumnDef<UserEntity>[] = [
@@ -64,38 +69,49 @@ export const userColumn: ColumnDef<UserEntity>[] = [
     cell: ({ row }) => row.getValue("role"),
   },
   {
-    accessorKey: "status",
+    accessorKey: "is_active",
     header: "Status",
-    cell: ({ row }) => row.getValue("status"),
+    cell: ({ row }) => (row.getValue("is_active") ? "Active" : "Inactive"),
+  },
+  {
+    accessorKey: "last_login",
+    header: "last_login",
+    cell: ({ row }) => row.getValue("last_login"),
   },
   {
     id: "actions",
     cell: ({ row }) => {
       const api = row.original;
 
+      const { session } = useAuthSession();
+      const {
+        mutate: banUser,
+        isPending,
+        isSuccess,
+      } = useUpdateStatusUser(session?.token || "");
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+        <div className="flex items-center justify-center gap-8 w-full">
+          {isSuccess ? (
+            <Button variant="ghost" className=" px-3" disabled>
+              Banned
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="bg-gray-300 shadow-lg p-2 cursor-pointer space-y-2"
-          >
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(api.name.toString())}
+          ) : isPending ? (
+            <Button variant="ghost" className=" px-3" disabled>
+              Loading...
+            </Button>
+          ) : (
+            <Button
+              // variant="ghost"
+              className=" px-3"
+              onClick={() => {
+                banUser(api.id);
+              }}
             >
-              Copy Provider ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View API Details</DropdownMenuItem>
-            <DropdownMenuItem>Edit API</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              Ban user
+            </Button>
+          )}
+        </div>
       );
     },
   },

@@ -78,6 +78,25 @@ export const useUpdateStatusApi = (authToken: string) => {
   });
 };
 
+export const useUpdateStatusUser = (authToken: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (userId: number) => {
+      const response = await axios.post(
+        `${ApiUsersUrl}/userApi/update-user-status/${userId}`,
+        //  {},
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      ); // Adjust the endpoint
+      return response.data;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["apiListo"] });
+    },
+  });
+};
+
 export const useDeleteApi = (authToken: string) => {
   const queryClient = useQueryClient();
 

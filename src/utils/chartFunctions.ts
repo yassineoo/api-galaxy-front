@@ -1,7 +1,10 @@
 import { Api } from "@/app/dashboard/apis/[id]/Analyse/api.interface";
 import { ChartData } from "@/app/dashboard/apis/[id]/Analyse/data";
 import { Endpoint } from "@/app/dashboard/apis/[id]/Analyse/endpoints.interface";
-import { LogStat } from "@/app/dashboard/apis/[id]/Analyse/interfaces";
+import {
+  LogStat,
+  SelectOptions,
+} from "@/app/dashboard/apis/[id]/Analyse/interfaces";
 
 export function formatDate(input: string | number): string {
   const date = new Date(input);
@@ -83,6 +86,26 @@ export function ChartFormaterApis(stat: ChartData[], ApisList: any[]) {
       })
     : null;
   console.log("stat res ddd3333", result);
+
+  return result;
+}
+
+export function ChartDonutFormatterApis(
+  stat: { apiId: string; totalAmount: number }[],
+  ApisList: SelectOptions
+) {
+  // Convert the stat array to the desired format
+  const result = stat.map((item) => {
+    // Find the matching API name from ApisList
+    const matchingEndpoint = ApisList.find(
+      (ep) => ep.value == parseInt(item.apiId, 10)
+    );
+
+    return {
+      name: matchingEndpoint?.label || "Unknown API", // Use "Unknown API" if no match is found
+      totalAmount: item.totalAmount,
+    };
+  });
 
   return result;
 }

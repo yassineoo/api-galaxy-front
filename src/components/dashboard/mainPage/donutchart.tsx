@@ -7,15 +7,19 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { Loader2 } from "lucide-react";
+import { useAuthSession } from "@/components/auth-provider";
+import { useApisStatsDonutQuery } from "@/hooks/apiLogs/apiLogs.queries";
+import { SelectOptions } from "@/app/dashboard/apis/[id]/Analyse/interfaces";
+import { ChartDonutFormatterApis } from "@/utils/chartFunctions";
 
-const data = [
-  { name: "Movie API", value: 400 },
-  { name: "Translator", value: 300 },
-];
+const COLORS = ["#0088FE", "#00C49F"]; // Define colors for the chart
 
-const COLORS = ["#0088FE", "#00C49F"];
-
-const DonutChartComponent = () => (
+const DonutChartComponent = ({
+  data,
+}: {
+  data: { name: string; totalAmount: number }[];
+}) => (
   <ResponsiveContainer width="100%" height={300}>
     <PieChart>
       <Pie
@@ -24,7 +28,7 @@ const DonutChartComponent = () => (
         outerRadius={80}
         fill="#8884d8"
         paddingAngle={5}
-        dataKey="value"
+        dataKey="totalAmount"
         label
       >
         {data.map((entry, index) => (
@@ -37,4 +41,38 @@ const DonutChartComponent = () => (
   </ResponsiveContainer>
 );
 
-export default DonutChartComponent;
+export const DonutWrapper = ({
+  selectedApiList,
+}: {
+  selectedApiList: SelectOptions;
+}) => {
+  const { session } = useAuthSession();
+  const {
+    data: stat,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useApisStatsDonutQuery({
+    apiIds: selectedApiList.map((option: any) => Number(option.value)),
+    authToken: session?.token || "",
+  });
+
+  // Format the data fetched from the API
+  const formattedData = stat
+    ? ChartDonutFormatterApis(stat, selectedApiList)
+    : [];
+
+  return (
+    <>
+      {isError && <div>Error loading data</div>}
+      {isLoading && (
+        <div className="w-full h-[300px] grid place-content-center">
+          <Loader2 className="size-10 animate-spin" />
+        </div>
+      )}
+      {isSuccess && <DonutChartComponent data={formattedData} />}
+    </>
+  );
+};
+
+export default DonutWrapper;

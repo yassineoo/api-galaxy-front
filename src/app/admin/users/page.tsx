@@ -30,6 +30,8 @@ export default function DefinitionTab() {
     session?.token ?? ""
   );
 
+  console.log("UsersList", UsersList.data);
+
   return (
     <div className="bg-dashboardBg dark:bg-transparent flex flex-col w-full h-full overflow-scroll ">
       <div className="flex justify-start items-start gap-4 w-full ">
@@ -42,16 +44,9 @@ export default function DefinitionTab() {
             <CardDescription>Manage the Users</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
-            <Search value="s" setValue={() => {}} />
-            <div className="flex gap-4 justify-end items-center">
-              <CreateEndpointsCollectionForm />
-            </div>
+            <Search value="" setValue={() => {}} />
 
             <Tabs defaultValue="Apis">
-              <TabsList className="w-[200px] border-none bg-transparent">
-                <TabsTrigger value="Apis">Users</TabsTrigger>
-                <TabsTrigger value="Collection">Collection</TabsTrigger>
-              </TabsList>
               <TabsContent value="Apis">
                 {UsersList.isLoading && (
                   <SkeletonTable name={"Api List"} columns={userColumn} />

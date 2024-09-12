@@ -150,19 +150,6 @@ const Card = ({ title, value, percentage, icon }: any) => {
           >
             {percentage > 0 ? `+${percentage}%` : `${percentage}%`}
           </span>
-          <div className={`${trend} flex items-center ml-2`}>
-            {percentage > 0 ? (
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                {/* Up arrow SVG */}
-                <path d="M4 12l1.41 1.41L12 6.83l6.59 6.58L20 12l-8-8-8 8z" />
-              </svg>
-            ) : (
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                {/* Down arrow SVG */}
-                <path d="M20 12l-1.41-1.41L12 17.17l-6.59-6.58L4 12l8 8 8-8z" />
-              </svg>
-            )}
-          </div>
         </div>
       </div>
     </div>
