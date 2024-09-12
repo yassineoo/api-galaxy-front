@@ -74,6 +74,19 @@ export default function DefinitionTab() {
                     data={ApiReportList.data}
                   />
                 )}
+                {ApiReportList.isError && (
+                  <div className="flex flex-col items-center justify-center p-5">
+                    <Image
+                      src="/error.jpg"
+                      alt="Error"
+                      width={150}
+                      height={150}
+                    />
+                    <p className="text-red-500 text-sm mt-2">
+                      Please try again later.
+                    </p>
+                  </div>
+                )}
                 <PaginationManual
                   currentPage={page}
                   totalPages={ApiReportList?.data?.meta?.totalPages}
@@ -93,6 +106,20 @@ export default function DefinitionTab() {
                     data={reviewReportList}
                   />
                 )}
+                {ReviewReportList.isError && (
+                  <div className="flex flex-col items-center justify-center p-5">
+                    <Image
+                      src="/error.jpg"
+                      alt="Error"
+                      width={150}
+                      height={150}
+                    />
+                    <p className="text-red-500 text-sm mt-2">
+                      Please try again later.
+                    </p>
+                  </div>
+                )}
+
                 <PaginationManual
                   currentPage={page}
                   totalPages={ReviewReportList?.data?.meta?.totalPages}

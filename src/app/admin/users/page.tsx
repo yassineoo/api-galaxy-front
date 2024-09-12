@@ -54,6 +54,20 @@ export default function DefinitionTab() {
                 {UsersList.isSuccess && (
                   <UserTable columns={userColumn} data={UsersList.data} />
                 )}
+                {UsersList.isError && (
+                  <div className="flex flex-col items-center justify-center p-5">
+                    <Image
+                      src="/error.jpg"
+                      alt="Error"
+                      width={150}
+                      height={150}
+                    />
+                    <p className="text-red-500 text-sm mt-2">
+                      Please try again later.
+                    </p>
+                  </div>
+                )}
+
                 <PaginationManual
                   currentPage={page}
                   totalPages={UsersList?.data?.meta?.totalPages}

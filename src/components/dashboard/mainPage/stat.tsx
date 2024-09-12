@@ -25,8 +25,15 @@ const StatisticsBoxes = ({ type }: { type: string }) => {
     );
   }
 
-  if (error) return <p>Error fetching statistics: {error.message}</p>;
-
+  if (error) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-5 mx-6">
+        {[...Array(4)].map((_, index) => (
+          <ErrorCard key={index} message="Failed to load data" />
+        ))}
+      </div>
+    );
+  }
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-5 mx-6 text-black">
       {isSuccess && data ? (
@@ -156,4 +163,12 @@ const Card = ({ title, value, percentage, icon }: any) => {
   );
 };
 
+const ErrorCard = ({ message }: { message: string }) => {
+  return (
+    <div className="bg-red-100 p-5 rounded-lg shadow w-full">
+      <div className="h-6 bg-red-200 rounded w-full mb-4 animate-pulse"></div>
+      <div className="text-red-700 font-medium text-center">{message}</div>
+    </div>
+  );
+};
 export default StatisticsBoxes;
