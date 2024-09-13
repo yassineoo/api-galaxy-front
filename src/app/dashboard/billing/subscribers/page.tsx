@@ -55,7 +55,8 @@ const TableSubscribers = function () {
             ) : !subscribers || subscribers.length === 0 ? (
               <p>No subscribers found.</p>
             ) : (
-              subscribers.map((subscriber: any) => (
+              subscribers &&
+              subscribers?.map((subscriber: any) => (
                 <TableRow key={subscriber.id}>
                   <TableCell>{subscriber.id}</TableCell>
                   <TableCell>{subscriber.name}</TableCell>

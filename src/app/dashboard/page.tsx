@@ -29,6 +29,7 @@ import {
 import { useApisStatsQuery } from "@/hooks/apiLogs/apiLogs.queries";
 import { useRouter } from "next/navigation";
 import { useAuthSession } from "@/components/auth-provider";
+import DonutWrapper from "@/components/dashboard/mainPage/donutchart";
 
 export interface SelectedApi {
   label: string;
@@ -112,6 +113,10 @@ export default function DashboardPage() {
               timeRangeFilter={timeRangeFilter}
             />
           )}
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h2 className="text-lg font-semibold">Earnings</h2>
+            <DonutWrapper selectedApiList={selectedApiList} />
+          </div>
         </div>
       </div>
     </div>
@@ -327,17 +332,20 @@ const LineChartComponent = ({
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           {/* Iterate over the endpoints and create Line components */}
-          {Object.keys(chartData[0])
-            .filter((endpointName) => endpointName != "name")
-            .map((endpointName, index) => (
-              <Line
-                key={index}
-                type="monotone"
-                dataKey={endpointName}
-                stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`} // Random color
-                activeDot={{ r: 8 }}
-              />
-            ))}
+          {chartData[0] &&
+            Object.keys(chartData[0])
+              .filter((endpointName) => endpointName != "name")
+              .map((endpointName, index) => (
+                <Line
+                  key={index}
+                  type="monotone"
+                  dataKey={endpointName}
+                  stroke={`#${Math.floor(Math.random() * 16777215).toString(
+                    16
+                  )}`} // Random color
+                  activeDot={{ r: 8 }}
+                />
+              ))}
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />

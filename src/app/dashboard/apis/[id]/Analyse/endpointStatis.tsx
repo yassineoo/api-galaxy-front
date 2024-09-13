@@ -110,6 +110,7 @@ const LineWrapper = ({
             Number(option.value)
           ),
           timeFilter: timeRangeFilter,
+          authToken: "",
         })
       : null;
 
@@ -311,17 +312,20 @@ const LineChartComponent = ({
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           {/* Iterate over the endpoints and create Line components */}
-          {Object.keys(chartData[0])
-            .filter((endpointName) => endpointName != "name")
-            .map((endpointName, index) => (
-              <Line
-                key={index}
-                type="monotone"
-                dataKey={endpointName}
-                stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`} // Random color
-                activeDot={{ r: 8 }}
-              />
-            ))}
+          {chartData[0] &&
+            Object.keys(chartData[0])
+              .filter((endpointName) => endpointName != "name")
+              .map((endpointName, index) => (
+                <Line
+                  key={index}
+                  type="monotone"
+                  dataKey={endpointName}
+                  stroke={`#${Math.floor(Math.random() * 16777215).toString(
+                    16
+                  )}`} // Random color
+                  activeDot={{ r: 8 }}
+                />
+              ))}
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
