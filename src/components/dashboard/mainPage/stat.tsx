@@ -42,25 +42,25 @@ const StatisticsBoxes = ({ type }: { type: string }) => {
             <>
               <Card
                 title="Number of API Calls"
-                value={data?.apiCalls.toLocaleString()}
+                value={data?.apiCalls?.toLocaleString() || 0}
                 percentage={10}
                 icon="📊"
               />
               <Card
                 title="Money Spent"
-                value={`$${data?.moneySpent.toLocaleString()}`}
+                value={`$${data?.moneySpent?.toLocaleString() || 0}`}
                 percentage={10}
                 icon="💵"
               />
               <Card
                 title="APIs Subscribed"
-                value={data?.subscribedApis.toLocaleString()}
+                value={data?.subscribedApis?.toLocaleString()}
                 percentage={10}
                 icon="🔖"
               />
               <Card
                 title="APIs Liked"
-                value={data?.likedApis.toLocaleString()}
+                value={data?.likedApis?.toLocaleString()}
                 percentage={10}
                 icon="👍"
               />

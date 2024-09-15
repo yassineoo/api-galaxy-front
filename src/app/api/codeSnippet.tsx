@@ -15,6 +15,7 @@ import {
   generateSwiftSnippet,
 } from "@/lib/codeGenerator";
 import { SelectButton } from "@/components/dashboard/mainPage/filterGroup";
+import { useAuthSession } from "@/components/auth-provider";
 
 const supportedLanguagesForAPIIntegration = [
   { label: "Node.js", value: "Node.js" },
@@ -36,7 +37,7 @@ const snippetExample = generateAxiosSnippet(
   "post",
   { "Content-Type": "application/json" },
   { name: "John Doe", age: 30 },
-  { page: 1, limit: 10 }
+  { page: "1", limit: "10" }
 );
 
 const CodeSnippet = ({
@@ -51,6 +52,7 @@ const CodeSnippet = ({
     // console.log(value);
     setSelectedLanguage(value);
   };
+  const { session } = useAuthSession();
 
   useEffect(() => {
     let fun: any = (
@@ -107,7 +109,6 @@ const CodeSnippet = ({
         break;
     }
     console.log(selectedEndpoint);
-
     if (selectedEndpoint) {
       const { parameters } = selectedEndpoint;
 
@@ -133,7 +134,7 @@ const CodeSnippet = ({
         dynamicHeaders[param.Key] = param.ExampleValue || "";
       });
 
-      dynamicHeaders["api-key"] = "sqkdqlsd-qskdqnsd-qskjdq-qskjdkq";
+      dynamicHeaders["galaxy-api-key"] = session?.apiKey || "";
 
       queryParameters.forEach((param: any) => {
         // Map query parameters
@@ -161,7 +162,7 @@ const CodeSnippet = ({
     }
   }, [selectedLanguage, selectedEndpoint]);
   return (
-    <div className="w-full ml-2  flex flex-col justify-center h-screen  ">
+    <div className="w-full ml-2  flex flex-col justify-start h-screen   ">
       <div className="flex items-center gap-2">
         <SelectButton
           handleSelectionChange={changeFramwork}

@@ -111,7 +111,7 @@ export function ApiTabs({ api, api_id, user_id }: any) {
                 componentTwo={
                   <CodeResult
                     defaultValue={defaultValue}
-                    apiUrl={api.ApiUrl}
+                    apiUrl={`http://localhost:5000/apis-service/services/${api_id}`}
                     resquestResult={resquestResult}
                     selectedNodeId={selectedNodeId}
                     endpointList={endpointList.data}

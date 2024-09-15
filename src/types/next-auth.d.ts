@@ -17,6 +17,7 @@ declare module "next-auth" {
     role: Role;
     // isVerified: boolean;
     is2faAuthenticated: boolean;
+    apiKey?: string;
     //isVerified: false;
   }
   interface User {
