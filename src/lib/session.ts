@@ -130,6 +130,8 @@ export const authOptions: NextAuthOptions = {
         token.userId as number,
         "process.env.NEXTAUTH_SECRET!"
       );
+      console.log("session-------", token.userId);
+
       // console.log("session---", session);
 
       return session;

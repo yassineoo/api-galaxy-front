@@ -143,7 +143,7 @@ interface Data {
   Headers: Record<string, string>;
   Params: Record<string, any>;
   Data: Record<string, any>;
-  EndpointID: number;
+  apiKey: string;
 }
 
 export const useSendRequest = (authToken: string) => {
@@ -153,13 +153,13 @@ export const useSendRequest = (authToken: string) => {
     mutationFn: async (RequestData: Data) => {
       const { ApiID, URL, Headers, Params, Data, Method } = RequestData;
 
-      console.log("loog RequestData", RequestData);
+      console.log("loog RequestData looooog", RequestData);
 
       // Add X-Endpoint-Key to the headers
       const updatedHeaders = {
         ...Headers,
         Authorization: `Bearer ${authToken}`,
-        "X-Endpoint-Key": RequestData.EndpointID.toString(),
+        "Galaxy-Api-Key": RequestData.apiKey.toString(),
       };
 
       const config: AxiosRequestConfig = {

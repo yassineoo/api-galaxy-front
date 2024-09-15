@@ -95,7 +95,7 @@ const ParamterControler = ({
         Headers: headerParams,
         Params: queryParams,
         Data: bodyParams,
-        EndpointID: selectedNodeId,
+        apiKey: session?.apiKey,
       };
       const response = await sendRequest(Data);
       console.log("response");
