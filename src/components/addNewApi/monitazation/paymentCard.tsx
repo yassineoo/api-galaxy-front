@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { useCreateCheckoutSession } from '@/hooks/EndpointsPayment/stripe.service';
-import { CheckoutSessionData } from '@/hooks/EndpointsPayment/stripe.interfaces';
+import {  CheckoutSessionData } from '@/hooks/EndpointsPayment/stripe.interfaces';
 
 import { useSession } from "next-auth/react";
 import { useGetCustomerByEmail } from "@/hooks/EndpointsPayment/endpoints.queries";
