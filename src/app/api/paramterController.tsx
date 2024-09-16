@@ -1,3 +1,4 @@
+import { useAuthSession } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ParametersTypes } from "@/hooks/Endpoints/interfaces";
@@ -25,7 +26,8 @@ const ParamterControler = ({
   );
 
   const [url, setUrl] = useState(selectedEndpoint?.Url || "koko");
-  const [apiKey, setApiKey] = useState("azeazazdqzsdq");
+  const { session } = useAuthSession();
+
   const [bodyParams, setBodyParams] = useState({});
   const [headerParams, setHeaderParams] = useState({});
   const [queryParams, setQueryParams] = useState({});
@@ -93,7 +95,7 @@ const ParamterControler = ({
         Headers: headerParams,
         Params: queryParams,
         Data: bodyParams,
-        EndpointID: selectedNodeId,
+        apiKey: session?.apiKey,
       };
       const response = await sendRequest(Data);
       console.log("response");
@@ -120,7 +122,6 @@ const ParamterControler = ({
   };
 
   const handleReset = () => {
-    setApiKey("");
     setBodyParams({});
     setHeaderParams({});
     setQueryParams({});
@@ -216,6 +217,7 @@ const ParameterSection = ({
   setState,
   baseUrl,
 }: any) => {
+  const { session } = useAuthSession();
   const handleChange = (key: any, value: any) => {
     if (type === ParametersTypes.PathParmater) {
       setUrl((prv: any) => {
@@ -237,7 +239,6 @@ const ParameterSection = ({
     }, baseUrl);
     return url;
   };
-  console.log("paramters =========== ", parameters);
 
   const renderInputs = () => {
     let params = parameters?.filter(
@@ -247,12 +248,11 @@ const ParameterSection = ({
     // Add static parameters for "HeaderParmater"
     if (type === ParametersTypes.HeaderParmater && params) {
       params = [
-        { ID: 0, Key: "host", ValueType: "string", ExampleValue: "google.com" },
         {
           ID: 1,
           Key: "Api Key",
           ValueType: "string",
-          ExampleValue: "SQLIJ-lknlslq-jhvjjsb-qsjdbqk",
+          ExampleValue: session?.apiKey || "123456",
         },
         ...params,
       ];

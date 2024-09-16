@@ -1,16 +1,12 @@
 export function generateAxiosSnippet(
   endpointUrl: string,
   method: string,
-  headers = {},
-  body = {},
-  query = {}
-) {
+  headers: Record<string, string> = {},
+  body: Record<string, any> = {},
+  query: Record<string, string> = {}
+): string {
   // Convert query object to query string
-  const queryString = Object.keys(query)
-    .map(
-      (key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`
-    )
-    .join("&");
+  const queryString = new URLSearchParams(query).toString();
 
   // Add query string to endpoint URL
   const urlWithQuery = queryString
@@ -20,24 +16,39 @@ export function generateAxiosSnippet(
   // Generate headers string
   const headersString = JSON.stringify(headers, null, 2);
 
-  // Generate body string
-  const bodyString = JSON.stringify(body, null, 2);
+  // Generate body string if not a GET request
+  const bodyString =
+    method.toUpperCase() !== "GET"
+      ? `\n    data: ${JSON.stringify(body, null, 2)},`
+      : "";
 
   // Template for the Axios request
   return `
-const axios = require('axios');
+import axios from 'axios';
 
-axios({
-    method: '${method}',
-    url: '${urlWithQuery}',
-    headers: ${headersString},
-    data: ${bodyString}
-})
-.then(response => {
+async function makeRequest() {
+  try {
+    const response = await axios({
+      method: '${method.toLowerCase()}',
+      url: '${urlWithQuery}',
+      headers: ${headersString},${bodyString}
+    });
+
     console.log(response.data);
-})
-.catch(error => {
-    console.error(error);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.data || error.message);
+    } else {
+      console.error('An unexpected error occurred:', error);
+    }
+    throw error;
+  }
+}
+
+// Usage
+makeRequest().catch(error => {
+  console.error('Error in makeRequest:', error);
 });
 `;
 }

@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { create } from "zustand";
 import { Tooltip } from "recharts";
+import { useAuthSession } from "../auth-provider";
 
 const menuItems = [
   {
@@ -206,10 +207,12 @@ export default function Sidebar() {
   const pathSegments = pathname.split("/");
   const activeItem = pathSegments[2]; // Assuming the item is the third segment
   let activeChildName = pathSegments[3]; // Assuming the child is the fourth segment
-
-  const maApisListCallback = useCallback(() => useApiByUserId(1), []);
+  const { session } = useAuthSession();
+  const maApisListCallback = useCallback(
+    () => useApiByUserId(session?.userId || 2),
+    []
+  );
   const maApisList = maApisListCallback();
-  console.log("maApisList-------", maApisList.data);
 
   let apiId = 0;
   if (activeItem != "apis") {
@@ -218,8 +221,6 @@ export default function Sidebar() {
     activeChildName = pathSegments[4];
     apiId = Number(pathSegments[3]);
   }
-
-  console.log({ isOpen: useSidebar().isOpen });
 
   useEffect(() => {
     if (window.innerWidth <= 768) setIsMobileScreen(true);

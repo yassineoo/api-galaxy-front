@@ -34,6 +34,19 @@ export default function ProfilePage({ params }: any) {
   };
   const idx = session?.userId;
 
+  const [showApiKey, setShowApiKey] = useState(false);
+  const [apiKey, setApiKey] = useState(session?.apiKey || "");
+
+  const toggleApiKeyVisibility = () => {
+    setShowApiKey(!showApiKey);
+  };
+
+  const copyApiKey = () => {
+    navigator.clipboard.writeText(apiKey).then(() => {
+      alert("API Key copied to clipboard!");
+    });
+  };
+
   return (
     <div className="">
       {isAuthenticated ? (
@@ -100,6 +113,34 @@ export default function ProfilePage({ params }: any) {
                     </div>
                   )}
                 </div>
+
+                {/* New API Key section */}
+                <div className="mt-4 p-4 border rounded-md">
+                  <h3 className="text-lg font-semibold mb-2">API Key</h3>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type={showApiKey ? "text" : "password"}
+                      value={apiKey}
+                      readOnly
+                      className="flex-grow p-2 border rounded"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={toggleApiKeyVisibility}
+                    >
+                      {showApiKey ? (
+                        <EyeOffIcon className="w-5 h-5" />
+                      ) : (
+                        <EyeIcon className="w-5 h-5" />
+                      )}
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={copyApiKey}>
+                      <CopyIcon className="w-5 h-5" />
+                    </Button>
+                  </div>
+                </div>
+
                 <Tabs defaultValue="published" className="mt-4">
                   <TabsList>
                     <TabsTrigger value="published">Published APIs</TabsTrigger>
@@ -221,7 +262,7 @@ function FilePenIcon(props: any) {
 
 import Image from "next/image";
 import { activeTwoFactorAuthentification } from "@/actions/auth";
-import { Shield, Loader2 } from "lucide-react";
+import { Shield, Loader2, CopyIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 
 function ProfileTwoFactor({
   userId,

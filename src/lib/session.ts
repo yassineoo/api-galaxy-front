@@ -1,9 +1,15 @@
 import { getServerSession } from "next-auth/next";
-import { NextAuthOptions, Role, User } from "next-auth";
+import { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialProvider from "next-auth/providers/credentials";
 import { UserData, authUser, oauthUser } from "@/actions/auth";
 import { SERVER_ENV } from "./env";
+import { Role } from "@/utils/constants";
+import jwt from "jsonwebtoken";
+// Function to generate JWT
+const generateApiKey = (userId: number, secret: string) => {
+  return jwt.sign({ userId }, secret, { expiresIn: "30d" });
+};
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -120,6 +126,12 @@ export const authOptions: NextAuthOptions = {
       session.userId = token.userId as number;
       session.twoFactorEnabled = token.twoFactorEnabled as boolean;
       session.role = token.role as Role;
+      session.apiKey = await generateApiKey(
+        token.userId as number,
+        "process.env.NEXTAUTH_SECRET!"
+      );
+      console.log("session-------", token.userId);
+
       // console.log("session---", session);
 
       return session;
