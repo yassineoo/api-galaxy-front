@@ -3,7 +3,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-import { ApiUrl } from "@/utils/constants";
+import { ApiUrl, PaymentUrl } from "@/utils/constants";
+import { useAuthSession } from "@/components/auth-provider";
 
 //import { ApiPlans } from "./interfaces";
 
@@ -26,25 +27,50 @@ export const useCreateApiPlans = (authToken: string) => {
   });
 };
 
-export const useUpdateApiPlans = (authToken: string) => {
+export const useUpdateApiPlans = () => {
   const queryClient = useQueryClient();
+  const { session } = useAuthSession();
 
   return useMutation({
-    mutationFn: async (apiData: any) => {
-      console.log("updateEndpoint ========== ", apiData);
+    mutationFn: async (data: any) => {
 
-      const response = await axios.patch(`${ApiUrl}/plans/`, apiData, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      }); // Adjust the endpoint
-      console.log(response.data);
+      // Update the plan
+      const response = await axios.patch(`${ApiUrl}/plans/`, data, {
+        headers: { Authorization: `Bearer ${session?.token}` },
+      });
+
+      console.log("Plan updated", response.data);
+
+      // Assuming the response contains publicPlans like in the create function
+      const stripePricePromises = response.data.map((plan: any) => {
+        console.log("the plans in price",plan)
+        return axios.post(
+          `${PaymentUrl}/stripeCRUD/prices`,
+          {
+            planEntityId: plan.ID,
+            stripeApiId: data.ProductId, // Adjust this based on what you need to send
+            pricenumber: Number(plan.Price)*100, // Adjust the key if needed
+          },
+          {
+            headers: { Authorization: `Bearer ${session?.token}` }, // Adjust the token if needed
+          }
+        );
+      });
+
+      // Wait for all Stripe price creations to complete
+      const stripeResponses = await Promise.all(stripePricePromises);
+
+      console.log("Stripe responses", stripeResponses);
+
       return response.data;
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["apiPlansList"] });
+      queryClient.invalidateQueries({ queryKey: ["plans"] });
     },
   });
 };
+
 
 export const useDeleteApiPlans = (authToken: string) => {
   const queryClient = useQueryClient();

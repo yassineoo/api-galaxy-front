@@ -49,7 +49,7 @@ export default function AddNewApiForm({ closeModal }: any) {
     try {
       const Data = {
         Name: name,
-        ProviderID: 1,
+        ProviderID: session?.userId ||1,
         ApiUrl: apiUrl,
         CategoryID: 1,
         ImagePath: image, // Use the fake URL for testing

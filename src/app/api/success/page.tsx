@@ -40,7 +40,7 @@ export default function SuccessPage() {
 
     const handleGetInvoice = () => {
 
-        getInvoice(email, amount).then((data) => {
+        getInvoice(email, amount*100).then((data) => {
             console.log(data.invoiceLink);
             window.open(data.invoiceLink, '_blank');
         })

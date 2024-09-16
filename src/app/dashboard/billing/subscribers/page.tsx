@@ -30,6 +30,7 @@ const TableSubscribers = function () {
   const { data: subscribers, isLoading } = useGetSubscribersForProvider(
     userId?.toString() || ""
   );
+  console.log(subscribers)
 
   return (
     <Card>
@@ -55,7 +56,7 @@ const TableSubscribers = function () {
             ) : !subscribers || subscribers.length === 0 ? (
               <p>No subscribers found.</p>
             ) : (
-              subscribers &&
+              subscribers && Array.isArray(subscribers) &&
               subscribers?.map((subscriber: any) => (
                 <TableRow key={subscriber.id}>
                   <TableCell>{subscriber.id}</TableCell>
