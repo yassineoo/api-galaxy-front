@@ -147,13 +147,9 @@ interface Data {
 }
 
 export const useSendRequest = (authToken: string) => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async (RequestData: Data) => {
       const { ApiID, URL, Headers, Params, Data, Method } = RequestData;
-
-      console.log("loog RequestData looooog", RequestData);
 
       // Add X-Endpoint-Key to the headers
       const updatedHeaders = {

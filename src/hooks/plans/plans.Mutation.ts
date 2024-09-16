@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-import { ApiUrl } from "@/utils/constants";
+import { ApiUrl, PaymentUrl } from "@/utils/constants";
 
 //import { ApiPlans } from "./interfaces";
 
@@ -17,6 +17,28 @@ export const useCreateApiPlans = (authToken: string) => {
       const response = await axios.post(`${ApiUrl}/plans/`, data, {
         headers: { Authorization: `Bearer ${authToken}` },
       }); // Adjust the endpoint
+
+      console.log("response.dataaaaaaaaaaa", response.data); // Array of plan entities
+
+      // Array of promises for creating Stripe prices
+      const stripePricePromises = response.data.map((plan: any) => {
+        return axios.post(
+          `${PaymentUrl}/stripeCRUD/prices`,
+          {
+            planEntityId: plan.ID,
+            stripeApiId: plan.ApiID, // Adjust this based on what you need to send
+            pricenumber: plan.Price, // Adjust the key if needed
+          },
+          {
+            headers: { Authorization: `Bearer ${authToken}` }, // Adjust the token if needed
+          }
+        );
+      });
+
+      // Wait for all Stripe price creations to complete
+      const stripeResponses = await Promise.all(stripePricePromises);
+
+      console.log("Stripe responses", stripeResponses);
       return response.data;
     },
 

@@ -204,7 +204,7 @@ export default function ProductsHub({
 }
 
 const CategoryList = ({ categories, filter, setFilter }: any) => {
-  console.log("categoriesss", categories, categories?.length);
+  //console.log("categoriesss", categories, categories?.length);
 
   return (
     <div>

@@ -31,14 +31,6 @@ export default function LeftBarButton(buttonProp: buttonType) {
             : "bg-usedGrey text-black "
         }    inline-block cursor-pointer hover:scale-105  border rounded p-2 w-40 md:w-48`}
       >
-        <Image
-          className="inline-block mr-1 "
-          src={buttonProp.iconPath}
-          alt="Card Image"
-          width={25}
-          height={25}
-        />
-
         <span className="ml-2 text-body  text-sm md:text-base">
           {buttonProp.buttonText}
         </span>

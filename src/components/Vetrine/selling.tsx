@@ -25,9 +25,9 @@ export default function SellingCards(id: any): JSX.Element {
   return (
     <div id={id.id} className="bg-white p-6">
       <h1 className="mt-4 mb-12 text-black text-center text-2xl md:text-3xl font-title font-semibold">
-        Create & Sell&nbsp;
-        <span className="text-goldColor">your</span>
-        &nbsp;Api
+        Use our Apis&nbsp;
+        <span className="text-goldColor">If NOT</span>
+        &nbsp;Create Yours
       </h1>
       <div className="flex flex-col justify-center px-6 gap-10 md:flex-row md:p-2 md:pt-1">
         {sellingData.map((card, index) => (
