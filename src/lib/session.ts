@@ -132,7 +132,7 @@ export const authOptions: NextAuthOptions = {
       );
       console.log("session-------", token.userId);
 
-      // console.log("session---", session);
+      console.log("session---", session);
 
       return session;
     },

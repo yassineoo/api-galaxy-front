@@ -16,7 +16,6 @@ export default function VetrinePage() {
       <SellingCards />
 
       <AboutUs />
-      <Plans />
       <Reviews />
       <Footer />
     </div>

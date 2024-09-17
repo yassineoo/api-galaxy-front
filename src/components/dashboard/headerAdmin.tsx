@@ -19,7 +19,9 @@ import Settings from "./settings";
 import { useAuthSession } from "../auth-provider";
 import { useRouter } from "next/navigation";
 
-const Header = () => {
+import { cn } from "@/lib/utils";
+
+const HeaderAdmin = ({ className = "" }: { className?: string }) => {
   // State to manage dropdown visibility
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
@@ -29,46 +31,57 @@ const Header = () => {
   };
   const { session } = useAuthSession();
 
+  let title: string;
+
   return (
-    <header className="bg-white w-full  dark:bg-slate-900  p-4 flex justify-between 2xl:justify-around items-center">
-      {/* Left side: Dashboard */}
-      <div>
-        <span className="text-lg font-bold">Admin Dashboard</span>
+    <header
+      className={cn(
+        "bg-white w-full h-[64px] dark:bg-slate-900 p-6 shadow-md flex justify-between items-center",
+        className
+      )}
+    >
+      {/* Left side: Dashboard Title */}
+      <div className="flex items-center">
+        <span className="hidden md:block text-xl font-semibold text-gray-800 dark:text-white">
+          {"Admin Dashboard"}
+        </span>
       </div>
 
-      {/* Right side: Dropdown menu */}
-
-      {/* Dropdown toggle button */}
-
-      {/* Add your icons here */}
-      <div className="flex items-center justify-center gap-2">
+      {/* Right side: Dropdown menu and icons */}
+      <div className="flex items-center gap-4">
+        {/* Mode Toggle (Light/Dark Mode) */}
         <ModeToggle />
+
+        {/* Notifications Icon */}
         <Notifications />
+
+        {/* Settings Icon */}
         <Settings />
 
-        {/* Profile dropdown */}
-
-        <IconDropdown session={session} admin />
+        {/* Profile Dropdown */}
+        <IconDropdown session={session} type={"admin"} />
       </div>
     </header>
   );
 };
 
-const IconDropdown = ({ session, admin }: any) => {
+const IconDropdown = ({ session, type }: any) => {
   const router = useRouter();
   const signOutUser = async () => {
-    localStorage.removeItem("token");
-
-    router.push("/loginAdmin");
-    return;
+    const isVerified = localStorage.getItem("isVerified");
+    if (isVerified) {
+      localStorage.removeItem("isVerified");
+    }
+    signOut().then(() => router.push("/login"));
   };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="ml-4 relative flex justify-center items-center gap-6">
-          {session?.user?.name}
+        <div className="relative flex justify-center items-center gap-3">
+          <p className="hidden md:block">{session?.user?.name}</p>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-            <Avatar className="h-8 w-8">
+            <Avatar className="size-8">
               <AvatarImage src={session?.user?.image || ""} alt="User Avatar" />
               <AvatarFallback>
                 {session?.user?.name?.charAt(0) || "User Avatar"}
@@ -81,9 +94,9 @@ const IconDropdown = ({ session, admin }: any) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={`/dashboard/profile`}>Profile </Link>
+          <Link href={`/admin/profile`}>Profile </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
+
         <DropdownMenuItem asChild>
           <Link href={`/hub`}>Hub</Link>
         </DropdownMenuItem>
@@ -96,4 +109,4 @@ const IconDropdown = ({ session, admin }: any) => {
   );
 };
 
-export default Header;
+export default HeaderAdmin;
