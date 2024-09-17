@@ -152,7 +152,7 @@ const ProductCard = ({
             />
           </div>
           <p className="inline-block text-xs md:text-sm ml-1">
-            {latency ?? 50}
+            {latency ?? 99}%
           </p>
         </div>
       </div>

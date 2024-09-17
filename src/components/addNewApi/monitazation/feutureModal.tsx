@@ -166,7 +166,7 @@ const FeutureModal = ({ index, plan, objectSelceted, setObjectList }: any) => {
                     <div className="flex items-center space-x-4">
                       <RadioGroupItem value="Month" id="r1" />
                       <label className="  cursor-pointer" htmlFor="r1">
-                        Monthely
+                        Monthly
                       </label>
                     </div>
                     <div className="flex items-center space-x-4">

@@ -47,17 +47,17 @@ const TransactionTable = function () {
               <TableHead>Transaction ID</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Amount</TableHead>
-              <TableHead>Type</TableHead>
+              <TableHead>Payment method</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {Array.isArray(transactionData) &&
               transactionData.map((transaction) => (
-                <TableRow key={transaction.id}>
+                <TableRow key={Number(transaction.id)}>
                   <TableCell>{transaction.id}</TableCell>
-                  <TableCell>{transaction.date}</TableCell>
-                  <TableCell>{transaction.amount}</TableCell>
-                  <TableCell>Client Payment</TableCell>
+                  <TableCell>{transaction.transaction_date.toString()}</TableCell>
+                  <TableCell>{transaction.amount} $</TableCell>
+                  <TableCell>{transaction.payment_method_id === "1" ? "paypal" : "card"}</TableCell>
                 </TableRow>
               ))}
           </TableBody>

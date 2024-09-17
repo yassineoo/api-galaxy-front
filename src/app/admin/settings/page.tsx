@@ -57,7 +57,7 @@ export default function Settings() {
     try {
       await updateEarning_pourcentage(
         earningPercentage,
-        session?.userId as number,
+        session?.userId as number || 28,
         session?.token as string
       );
       setSuccess1(true);
@@ -69,7 +69,7 @@ export default function Settings() {
     try {
       await updateTermsAndConditions(
         termsAndConditions,
-        session?.userId as number,
+        session?.userId as number ||28 ,
         session?.token as string
       );
       setSuccess2(true);
@@ -81,7 +81,7 @@ export default function Settings() {
     try {
       await updatePrivacyAndPolicy(
         privacyAndPolicy,
-        session?.userId as number,
+        session?.userId as number || 28,
         session?.token as string
       );
       setSuccess3(true);

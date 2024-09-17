@@ -103,9 +103,9 @@ const EditPlanModal = ({ plan, setPublicPlans }: any) => {
                   className="ml-2 flex gap-8"
                 >
                   <div className="flex items-center space-x-4">
-                    <RadioGroupItem value="Monthely" id="r1" />
+                    <RadioGroupItem value="Monthly" id="r1" />
                     <label className="  cursor-pointer" htmlFor="r1">
-                      Monthely
+                      Monthly
                     </label>
                   </div>
                   <div className="flex items-center space-x-4">

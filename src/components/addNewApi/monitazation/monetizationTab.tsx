@@ -77,7 +77,7 @@ export default function MonetizationTab({ api, apiPlans, edit }: any) {
     isPending,
     isError,
     isSuccess,
-  } = useUpdateApiPlans("toto");
+  } = useUpdateApiPlans();
 
   useEffect(() => {
     if (isError) {
@@ -90,7 +90,9 @@ export default function MonetizationTab({ api, apiPlans, edit }: any) {
   // Handle form submission
   const handleSubmit = async () => {
     try {
+      
       const Data = {
+        ProductId : api.StripeProductId,
         ApiID: api.ID,
         PublicPlans: publicPlans,
         ObjectList: objectList,

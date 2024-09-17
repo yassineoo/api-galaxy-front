@@ -178,7 +178,10 @@ export default function ProductsHub({
                   userId={session?.userId}
                   cardData={{
                     id: api.id,
-                    averageRating: 3,
+                    averageRating: api?.rating
+                      ? Math.round(api.rating * 100) / 100
+                      : null,
+
                     latency: api.Latency,
                     availability: api.status,
                     imagePath: api.image_path,

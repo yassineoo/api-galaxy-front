@@ -41,7 +41,7 @@ export default function ApiList({
                 userId={userId}
                 cardData={{
                   id: api.id,
-                  averageRating: 3,
+                  averageRating: api.rating,
                   latency: api.Latency,
                   availability: api.status,
                   imagePath: api.image_path,

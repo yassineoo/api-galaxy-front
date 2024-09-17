@@ -340,8 +340,8 @@ export default function GenralApiInfoTab({ api }: any) {
           userId={api.ProviderID}
           cardData={{
             id: api.id,
+            averageRating: api.rating,
 
-            averageRating: 5,
             latency: "50ms",
             availability: "100%",
             imagePath: image,
