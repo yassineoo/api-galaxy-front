@@ -180,7 +180,7 @@ const FeutureModal = ({ index, plan, objectSelceted, setObjectList }: any) => {
                 <hr className="my-2 border-t" />
                 <div className="flex items-center gap-4 py-1 ">
                   <label className="w-1/3" htmlFor="recommended-plan-switch">
-                    Quota Limite
+                    Quota Limit
                   </label>
 
                   <Input
