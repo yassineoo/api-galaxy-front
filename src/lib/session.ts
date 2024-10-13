@@ -75,6 +75,8 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, session, ...props }) {
       // console.log({ token, user, session, props });
+      console.log("token========== ", { token });
+
       if (user) {
         console.log({ user });
         if (user?.name) {
@@ -121,13 +123,13 @@ export const authOptions: NextAuthOptions = {
       // console.log({ session, token, ...props });
       // Add the backend token to the session object
       // console.log("token", token);
-      session.token = token.backendToken as string;
+      session.token = token?.backendToken as string;
 
-      session.userId = token.userId as number;
-      session.twoFactorEnabled = token.twoFactorEnabled as boolean;
-      session.role = token.role as Role;
+      session.userId = token?.userId as number;
+      session.twoFactorEnabled = token?.twoFactorEnabled as boolean;
+      session.role = token?.role as Role;
       session.apiKey = await generateApiKey(
-        token.userId as number,
+        token?.userId as number,
         "process.env.NEXTAUTH_SECRET!"
       );
       console.log("session-------", token.userId);

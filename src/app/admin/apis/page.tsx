@@ -21,7 +21,6 @@ import { useState } from "react";
 
 // import { useSession } from "next-auth/react";
 import { useAuthSession } from "@/components/auth-provider";
-import Header from "@/components/dashboard/headerAdmin";
 
 export default function DefinitionTab() {
   const [page, setPage] = useState(1);

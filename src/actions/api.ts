@@ -2,9 +2,7 @@ import axios from "axios";
 
 import { reviewCreation } from "@/hooks/reviews/interfaces";
 
-import { ApiUrl, ApiUsersUrl } from "@/utils/constants";
-import useAuth from "@/hooks/useAuth";
-import { useAuthSession } from "@/components/auth-provider";
+import { ApiUrl } from "@/utils/constants";
 
 export const basedApiUrl = axios.create({
   baseURL: "http://localhost:7002",

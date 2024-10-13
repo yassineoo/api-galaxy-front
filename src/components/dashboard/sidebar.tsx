@@ -434,11 +434,6 @@ const ApiMenuItem = ({
       active: activeChildName === "configuration",
       icon: "/icons/config.svg",
     },
-    {
-      name: "Authorization",
-      active: activeChildName === "configuration",
-      icon: "/icons/auth.svg",
-    },
   ];
 
   const [activeChild, setActiveChild] = useState(activeChildName);
